@@ -6,22 +6,51 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# Permissions are restricted to the minimum required for publishing.
+permissions:
+  contents: read
+
 jobs:
   publish:
+    name: Publish release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout sources
         uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+          add-job-summary: 'always'
 
+      # ----------------------------------------------------------------------
+      # Validate secrets before attempting a potentially long build.
+      # ----------------------------------------------------------------------
+      - name: Verify signing secrets
+        env:
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: ./scripts/verify-signing.sh
+
+      # ----------------------------------------------------------------------
+      # Build the library first so that publishing fails fast on compile errors.
+      # ----------------------------------------------------------------------
+      - name: Build release artifacts
+        run: ./gradlew assemble
+
+      # ----------------------------------------------------------------------
+      # Publish and release to Maven Central.
+      # Note: configuration cache is disabled for release publishing because
+      # the vanniktech maven-publish plugin does not yet support it for this task.
+      # ----------------------------------------------------------------------
       - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -29,4 +58,23 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: ./gradlew publishAndReleaseToMavenCentral
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon
+
+      # ----------------------------------------------------------------------
+      # Upload artifacts for debugging / record keeping.
+      # ----------------------------------------------------------------------
+      - name: Upload publication artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maven-publication-artifacts
+          path: '**/build/libs/'
+          if-no-files-found: ignore
+
+      - name: Upload build reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: publish-build-reports
+          path: '**/build/reports/'
+          if-no-files-found: ignore

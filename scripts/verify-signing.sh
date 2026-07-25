@@ -115,9 +115,23 @@ fi
 imported_short_key_id="${imported_key_id: -8}"
 
 provided_key_id="${ORG_GRADLE_PROJECT_signingInMemoryKeyId#0x}"
+provided_key_id_trimmed="${provided_key_id//$'\n'/}"
+provided_key_id_trimmed="${provided_key_id_trimmed// /}"
 
-if [[ "$imported_key_id" != "$provided_key_id" ]] && \
-   [[ "$imported_short_key_id" != "$provided_key_id" ]]; then
+if [[ -z "$provided_key_id_trimmed" ]]; then
+    echo "ERROR: SIGNING_KEY_ID is empty after trimming whitespace."
+    rm -rf "$GNUPGHOME" "$key_decoded" "$key_normalized"
+    exit 1
+fi
+
+if [[ "$provided_key_id" != "$provided_key_id_trimmed" ]]; then
+    echo "WARNING: SIGNING_KEY_ID contains whitespace or newlines."
+    echo "         This will cause Gradle to reject the key ID."
+    echo "         Please remove any trailing/leading whitespace from the secret."
+fi
+
+if [[ "$imported_key_id" != "$provided_key_id_trimmed" ]] && \
+   [[ "$imported_short_key_id" != "$provided_key_id_trimmed" ]]; then
     echo "ERROR: SIGNING_KEY_ID does not match the imported key."
     echo "       SIGNING_KEY_ID:    $ORG_GRADLE_PROJECT_signingInMemoryKeyId"
     echo "       Long key ID:       $imported_key_id"

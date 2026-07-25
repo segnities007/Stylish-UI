@@ -1,7 +1,8 @@
 # StylishUI
 
 StylishUIは、Stylish My Vehiclesで培った視覚言語と操作原則を、
-アプリのドメインから独立して再利用するためのAndroid Composeデザインシステムです。
+アプリのドメインから独立して再利用するためのCompose Multiplatformデザインシステムです。
+AndroidとJVM Desktopをサポートしています。
 
 ## 原則
 
@@ -129,8 +130,39 @@ Light・Darkとactionable・read-only・disabledの代表状態は
 
 ## 開発
 
-各段階で`:testDebugUnitTest`と`:assembleDebug`を通し、
-ライブラリからアプリへの逆依存がないことを確認します。
+各段階で以下を通し、ライブラリからアプリへの逆依存がないことを確認します。
+
+```bash
+./gradlew check
+./gradlew publishToMavenLocal
+```
+
+## 公式サイト
+
+Stylish UI の公式サイトは 2 ターゲットで提供しています。
+
+### Desktop (JVM)
+
+```bash
+./gradlew :website:run
+```
+
+### Web (Wasm)
+
+```bash
+./gradlew :website-wasm:wasmJsBrowserRun
+```
+
+どちらも `stylish-ui` ライブラリを直接使用したコンポーネントギャラリー兼公式サイトです。
+
+### GitHub Pages
+
+`main` ブランチへ push すると、Web 版が GitHub Pages に自動デプロイされます。  
+`.github/workflows/deploy-website.yml` で構成しています。
+
+> **Web / Wasm の安定性**  
+> Compose Multiplatform の Web / Wasm サポートは現在 **ベータ** です（Kotlin/Wasm もベータ）。  
+> 実運用ではフォールバックフォントの読み込み、バンドルサイズ、ブラウザ互換性などの確認が必要です。
 
 ## リリース
 

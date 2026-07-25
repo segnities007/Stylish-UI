@@ -131,3 +131,7 @@ Light・Darkとactionable・read-only・disabledの代表状態は
 
 各段階で`:testDebugUnitTest`と`:assembleDebug`を通し、
 ライブラリからアプリへの逆依存がないことを確認します。
+
+## ライセンス
+
+[Apache License 2.0](LICENSE) の下で公開されています。

@@ -111,16 +111,24 @@ if [[ -z "$imported_key_id" ]]; then
     exit 1
 fi
 
-# Accept either the full 16-char key ID or the short 8-char ID.
-if [[ "$imported_key_id" != "$ORG_GRADLE_PROJECT_signingInMemoryKeyId"* ]] && \
-   [[ "$ORG_GRADLE_PROJECT_signingInMemoryKeyId" != "$imported_key_id"* ]]; then
+# The standard short key ID is the last 8 hex chars of the long key ID.
+imported_short_key_id="${imported_key_id: -8}"
+
+provided_key_id="${ORG_GRADLE_PROJECT_signingInMemoryKeyId#0x}"
+
+if [[ "$imported_key_id" != "$provided_key_id" ]] && \
+   [[ "$imported_short_key_id" != "$provided_key_id" ]]; then
     echo "ERROR: SIGNING_KEY_ID does not match the imported key."
-    echo "       SIGNING_KEY_ID: $ORG_GRADLE_PROJECT_signingInMemoryKeyId"
-    echo "       Imported key:   $imported_key_id"
+    echo "       SIGNING_KEY_ID:    $ORG_GRADLE_PROJECT_signingInMemoryKeyId"
+    echo "       Long key ID:       $imported_key_id"
+    echo "       Short key ID:      $imported_short_key_id"
+    echo "       Use either the full 16-char key ID or the last 8 chars."
     rm -rf "$GNUPGHOME" "$key_decoded" "$key_normalized"
     exit 1
 fi
-echo "OK: SIGNING_KEY_ID matches the imported key: $imported_key_id"
+echo "OK: SIGNING_KEY_ID matches the imported key."
+echo "    Long key ID:  $imported_key_id"
+echo "    Short key ID: $imported_short_key_id"
 
 # -----------------------------------------------------------------------------
 # Check 8: passphrase can decrypt the key

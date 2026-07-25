@@ -58,7 +58,11 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon
+        run: |
+          # Trim accidental whitespace/newlines from key ID.
+          # GitHub Secrets sometimes preserves trailing newlines when pasting.
+          export ORG_GRADLE_PROJECT_signingInMemoryKeyId=$(echo -n "$ORG_GRADLE_PROJECT_signingInMemoryKeyId" | tr -d '[:space:]')
+          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon
 
       # ----------------------------------------------------------------------
       # Upload artifacts for debugging / record keeping.

@@ -132,6 +132,19 @@ Light・Darkとactionable・read-only・disabledの代表状態は
 各段階で`:testDebugUnitTest`と`:assembleDebug`を通し、
 ライブラリからアプリへの逆依存がないことを確認します。
 
+## リリース
+
+リリースは [Release Please](https://github.com/googleapis/release-please) で自動化されています。
+
+- `main` ブランチにマージされると、Release Please がリリース PR を作成します
+- PR タイトルは [Conventional Commits](https://www.conventionalcommits.org/) に従ってください
+  - `feat:` → minor バージョンアップ
+  - `fix:` → patch バージョンアップ
+  - `feat!:` / `BREAKING CHANGE:` → major バージョンアップ
+- リリース PR をマージすると、GitHub タグが作成され、Maven Central へ公開されます
+
+詳細は [CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+
 ## ライセンス
 
 [Apache License 2.0](LICENSE) の下で公開されています。

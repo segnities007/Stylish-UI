@@ -7,7 +7,20 @@ plugins {
 }
 
 group = "io.github.segnities007"
-version = "0.1.0"
+
+// x-release-please-version
+version = providers.fileContents(
+    rootProject.layout.projectDirectory.file("version.properties")
+).asText.map { text ->
+    text.lineSequence()
+        .map { it.substringBefore("#") }
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && it.contains("=") }
+        .associate { line ->
+            val (key, value) = line.split("=", limit = 2)
+            key.trim() to value.trim()
+        }["version"] ?: "0.1.0"
+}.orElse("0.1.0")
 
 android {
     namespace = "com.segnities007.stylishui"

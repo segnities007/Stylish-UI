@@ -14,14 +14,63 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.stylishChartColors
 
-/** 円グラフの各スライス（ラベル・値・色）を表現するデータ。 */
+/**
+ * A single slice of a pie or donut chart, pairing a categorical label with
+ * its numeric magnitude and display color.
+ *
+ * Instances are consumed by [SimplePieChart] which computes each slice's
+ * angular sweep proportionally from the sum of all values.
+ *
+ * @property label Human-readable category name used in accessibility
+ *   descriptions and legends.
+ * @property value Numeric magnitude of this slice. The arc angle is derived
+ *   as `value / totalSum * 360°`. Must be non-negative.
+ * @property color Fill color of the arc segment. Typically obtained from
+ *   [stylishChartColor] to stay consistent with the theme's categorical
+ *   palette.
+ * @see SimplePieChart
+ * @see stylishChartColor
+ */
 public data class PieChartData(
     val label: String,
     val value: Float,
     val color: Color,
 )
 
-/** ドーナツ型のシンプルな円グラフを描画する Composable。 */
+/**
+ * A lightweight donut-style pie chart rendered entirely on a [Canvas].
+ *
+ * Each [PieChartData] entry contributes an arc whose sweep angle is
+ * proportional to its value relative to the total sum. A circular hole is
+ * punched in the center (controlled by [holeRatio]) to produce the donut
+ * appearance. When [data] is empty or all values are zero, a neutral
+ * skeleton ring is drawn instead so the layout space is preserved.
+ *
+ * The chart exposes a combined [contentDescription] for accessibility
+ * services, built from [contentDescriptionPrefix] followed by each
+ * label–value pair.
+ *
+ * This composable is available on all platforms (commonMain).
+ *
+ * @param data The slices to render. Colors are typically sourced via
+ *   [stylishChartColor].
+ * @param contentDescriptionPrefix Leading text for the accessibility
+ *   description (e.g. "Expense breakdown").
+ * @param modifier Modifier applied to the outer [Canvas].
+ * @param chartSize Diameter of the chart. Defaults to 160 dp.
+ * @param holeRatio Radius of the center hole as a fraction of [chartSize].
+ *   Defaults to 0.3.
+ * @param skeletonRatio Radius of the skeleton ring shown when data is empty,
+ *   as a fraction of [chartSize]. Defaults to 0.4.
+ * @param holeColor Fill color of the center hole. Defaults to
+ *   `MaterialTheme.colorScheme.surface`.
+ * @param skeletonColor Fill color of the skeleton ring displayed in the
+ *   empty state. Defaults to `MaterialTheme.colorScheme.outlineVariant`.
+ * @see PieChartData
+ * @see stylishChartColor
+ * @see SimpleBarChart
+ * @see SimpleLineChart
+ */
 @Composable
 public fun SimplePieChart(
     data: List<PieChartData>,
@@ -74,7 +123,21 @@ public fun SimplePieChart(
     }
 }
 
-/** テーマのカテゴリカルカラーパレットからインデックス対応の色を返す。 */
+/**
+ * Returns a color from the theme's categorical chart palette by index.
+ *
+ * The palette wraps cyclically: if [index] exceeds the palette size the
+ * lookup wraps around via modulo, so callers never need to bounds-check.
+ * Negative indices are not supported and will throw IndexOutOfBoundsException.
+ * Use this to assign consistent, theme-aware colors to chart series or
+ * pie slices without hard-coding hex values.
+ *
+ * @param index Zero-based position in the categorical palette. Values
+ *   beyond the palette length wrap around.
+ * @return The [Color] at the resolved palette position.
+ * @see PieChartData
+ * @see SimplePieChart
+ */
 @Composable
 public fun stylishChartColor(index: Int): Color {
     val colors = MaterialTheme.stylishChartColors.categorical

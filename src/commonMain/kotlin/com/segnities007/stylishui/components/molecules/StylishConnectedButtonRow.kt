@@ -35,7 +35,41 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 横方向に連結したボタン群。角丸・境界線を共有し、セグメントコントロールとして使う。 */
+/**
+ * A horizontally connected group of buttons that share outlines and corner
+ * radii to form a segmented-control appearance.
+ *
+ * Each button occupies an equal weight within the row and stretches to the
+ * tallest sibling via [IntrinsicSize.Min]. Outline edges and corner radii are
+ * computed automatically from each item's index: the first button rounds only
+ * its leading corners, the last button rounds only its trailing corners, and
+ * middle buttons have square corners with all four outlines drawn on every
+ * button. Items
+ * whose [StylishConnectedButtonItem.onClick] is `null` or whose
+ * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
+ * state and do not respond to interaction.
+ *
+ * @param items The list of [StylishConnectedButtonItem] data objects that
+ *   describe each button's content, click action, colors, and enabled state.
+ * @param cornerRadius The radius applied to the outer corners of the first and
+ *   last buttons. Defaults to 12 dp.
+ * @param spacing The horizontal gap between adjacent buttons. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param contentPadding The inner padding of each button. Defaults to
+ *   12 dp horizontal and 12 dp vertical.
+ * @param defaultColors The [ButtonColors] used for every item whose
+ *   [StylishConnectedButtonItem.colors] is `null`. Defaults to a grouped
+ *   container background ([MaterialTheme.stylishComponentColors.groupedContainer])
+ *   with [MaterialTheme.colorScheme.onSurface] content,
+ *   [MaterialTheme.colorScheme.surfaceVariant] disabled container, and
+ *   [MaterialTheme.colorScheme.onSurfaceVariant] disabled content.
+ *
+ * Buttons use [StylishTheme.dimensions.interactiveElevation] (1 dp) by
+ * default, 0 dp when pressed or disabled.
+ *
+ * @see StylishConnectedButtonColumn
+ * @see StylishConnectedButtonGrid
+ */
 @Composable
 public fun StylishConnectedButtonRow(
     items: List<StylishConnectedButtonItem>,

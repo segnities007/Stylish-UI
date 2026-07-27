@@ -4,7 +4,20 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
-/** StylishUI のライトテーマ用 [ColorScheme]。 */
+/**
+ * Light-mode [ColorScheme] for the Stylish UI design system.
+ *
+ * Built on the [StylishPalette] with a paper-white background ([StylishPalette.Paper]) and
+ * ink-dark foreground ([StylishPalette.Ink]), producing high-contrast surfaces with subtle
+ * warm undertones. Surface-container roles use distinct tints so that nested cards, dialogs,
+ * and bottom sheets are visually distinguishable without relying on elevation shadows alone.
+ *
+ * Pass this to the [StylishTheme] composable's `colorScheme` parameter, or use it directly
+ * with [MaterialTheme] if you only need colors without the full Stylish theme wrapper.
+ *
+ * @see StylishDarkColorScheme
+ * @see StylishTheme
+ */
 public val StylishLightColorScheme: ColorScheme = lightColorScheme(
     primary = StylishPalette.Ink,
     onPrimary = StylishPalette.PureSurface,
@@ -41,7 +54,20 @@ public val StylishLightColorScheme: ColorScheme = lightColorScheme(
     scrim = StylishPalette.Scrim,
 )
 
-/** StylishUI のダークテーマ用 [ColorScheme]。 */
+/**
+ * Dark-mode [ColorScheme] for the Stylish UI design system.
+ *
+ * Mirrors [StylishLightColorScheme] with inverted luminance roles: a deep paper-dark background
+ * ([StylishPalette.DarkPaper]) and light ink foreground ([StylishPalette.DarkInk]). Surface
+ * containers step up in brightness so that layered UI (cards, sheets, menus) reads clearly
+ * against the dark canvas.
+ *
+ * Pass this to the [StylishTheme] composable's `colorScheme` parameter, or use it directly
+ * with [MaterialTheme] if you only need colors without the full Stylish theme wrapper.
+ *
+ * @see StylishLightColorScheme
+ * @see StylishTheme
+ */
 public val StylishDarkColorScheme: ColorScheme = darkColorScheme(
     primary = StylishPalette.DarkInk,
     onPrimary = StylishPalette.DarkPaper,

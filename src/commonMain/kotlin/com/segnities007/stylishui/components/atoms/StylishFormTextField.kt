@@ -19,7 +19,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** フォーム用テキストフィールド。ラベル・プレースホルダー・エラー表示を備えたアウトライン入力欄。 */
+/**
+ * An outlined text field designed for form input, with built-in
+ * label, placeholder, and error-message support. Wraps Material's
+ * [OutlinedTextField] inside a [Column] and fills the available
+ * width.
+ *
+ * When [minLines] is 1 and [maxLines] is 1 (the default), the field
+ * operates in single-line mode. Setting [minLines] greater than 1
+ * switches to a multiline field whose [maxLines] defaults to
+ * [Int.MAX_VALUE].
+ *
+ * Error display follows a priority chain: if [supportingContent] is
+ * provided it is used as-is; otherwise, when [errorMessage] is
+ * non-null, it is rendered as supporting text in
+ * `MaterialTheme.colorScheme.error`. The [isError] flag independently
+ * controls the field's error outline color.
+ *
+ * @param value Current text value (controlled state).
+ * @param onValueChange Called with the updated text on every edit.
+ * @param label Label displayed above the field. Overridden by
+ *   [labelContent] when provided.
+ * @param placeholder Hint text shown when the field is empty.
+ *   Overridden by [placeholderContent] when provided.
+ * @param minLines Minimum visible lines. Defaults to 1.
+ * @param maxLines Maximum lines before scrolling. Defaults to 1 when
+ *   [minLines] is 1, otherwise [Int.MAX_VALUE].
+ * @param isError When `true`, the field renders its error outline
+ *   color. Independent of [errorMessage].
+ * @param errorMessage Error text displayed below the field in the
+ *   error color. Ignored when [supportingContent] is provided.
+ * @param leadingIcon Optional icon slot at the start of the field.
+ * @param trailingIcon Optional icon slot at the end of the field.
+ * @param textStyle Typography for the input text. Defaults to
+ *   `MaterialTheme.typography.bodyLarge`.
+ * @param shape Shape of the outlined border. Defaults to
+ *   `OutlinedTextFieldDefaults.shape`.
+ * @param colors Color scheme for the field. Defaults to
+ *   `OutlinedTextFieldDefaults.colors()`.
+ * @param labelContent Optional slot that replaces the default [Text]
+ *   label built from [label].
+ * @param placeholderContent Optional slot that replaces the default
+ *   [Text] placeholder built from [placeholder].
+ * @param supportingContent Optional slot rendered below the field,
+ *   replacing [errorMessage] when provided.
+ * @param fieldModifier Modifier applied to the inner
+ *   [OutlinedTextField], before `fillMaxWidth` in the modifier chain
+ *   (i.e. `fieldModifier.fillMaxWidth()`). Use this to add
+ *   test tags or input-specific modifiers without affecting the
+ *   outer [Column].
+ */
 @Composable
 public fun StylishFormTextField(
     value: String,

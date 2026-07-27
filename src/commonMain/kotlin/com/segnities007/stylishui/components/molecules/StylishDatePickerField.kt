@@ -29,24 +29,61 @@ import kotlinx.datetime.toLocalDateTime
  * ライブラリ内部で使うデフォルトの日付書式。
  * java.time への依存を避け、KMP 各ターゲットで動作させる。
  */
-@OptIn(kotlin.time.ExperimentalTime::class)
 private val defaultDateFormatter: (LocalDate) -> String = { date ->
     val month = date.monthNumber.toString().padStart(2, '0')
     val day = date.dayOfMonth.toString().padStart(2, '0')
     "${date.year}/$month/$day"
 }
 
-@OptIn(kotlin.time.ExperimentalTime::class)
 private fun LocalDate.toEpochMillis(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long {
     return this.atStartOfDayIn(timeZone).toEpochMilliseconds()
 }
 
-@OptIn(kotlin.time.ExperimentalTime::class)
 private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDate {
     return Instant.fromEpochMilliseconds(this).toLocalDateTime(timeZone).date
 }
 
-/** テキストフィールドをタップすると Material3 DatePicker ダイアログが開く日付入力フィールド。 */
+/**
+ * A date-input field that opens a Material 3 [DatePickerDialog] when tapped,
+ * displaying the selected date as formatted text in an [OutlinedTextField].
+ *
+ * The text field itself is read-only and disabled; all interaction goes
+ * through the date-picker dialog. When [value] is `null` the field shows the
+ * [placeholder] text. The dialog's confirm button commits the selected date
+ * via [onValueChange]; the dismiss button closes the dialog without changing
+ * the value. Date formatting avoids `java.time` so the component works across
+ * all Kotlin Multiplatform targets.
+ *
+ * @param value The currently selected date, or `null` if no date has been
+ *   chosen.
+ * @param onValueChange Callback invoked with the newly selected [LocalDate]
+ *   when the user confirms a date in the dialog. Receives `null`-safe: only
+ *   called when a date is actually selected. If the user confirms without
+ *   selecting a date, the dialog closes silently and [onValueChange] is not
+ *   called.
+ * @param label The label text displayed on the outlined text field. Ignored
+ *   when [labelContent] is provided.
+ * @param confirmLabel The text for the dialog's confirm button. Ignored when
+ *   [confirmLabelContent] is provided.
+ * @param dismissLabel The text for the dialog's dismiss button. Ignored when
+ *   [dismissLabelContent] is provided.
+ * @param placeholder The placeholder text shown when [value] is `null`.
+ *   Ignored when [placeholderContent] is provided.
+ * @param formatter A function that converts a [LocalDate] to its display
+ *   string. Defaults to `yyyy/MM/dd` formatting.
+ * @param labelContent An optional custom composable for the text field label.
+ *   When `null`, a [Text] composable with [label] is used.
+ * @param placeholderContent An optional custom composable for the text field
+ *   placeholder. When `null`, a [Text] composable with [placeholder] is used.
+ * @param confirmLabelContent An optional custom composable for the dialog's
+ *   confirm button content. When `null`, a [Text] composable with
+ *   [confirmLabel] is used.
+ * @param dismissLabelContent An optional custom composable for the dialog's
+ *   dismiss button content. When `null`, a [Text] composable with
+ *   [dismissLabel] is used.
+ *
+ * @see StylishFormTextField
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun StylishDatePickerField(

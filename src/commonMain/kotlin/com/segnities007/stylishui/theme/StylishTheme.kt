@@ -10,17 +10,43 @@ import com.segnities007.stylishui.tokens.LocalStylishDimensions
 import com.segnities007.stylishui.tokens.StylishDimensions
 
 /**
- * 現在の [StylishTheme] の値にアクセスするためのオブジェクト。
+ * Accessor object for the current [StylishTheme] composition-local values.
  *
- * `StylishTheme.dimensions` で、テーマが提供している [StylishDimensions] を取得できる。
+ * Use `StylishTheme.dimensions` inside any composable to retrieve the [StylishDimensions]
+ * tokens provided by the enclosing [StylishTheme] call. This mirrors the role that
+ * [MaterialTheme] plays for colors and typography, but for Stylish-specific spatial tokens.
+ *
+ * @see StylishTheme
+ * @see StylishDimensions
  */
 public object StylishTheme {
-    /** 現在のテーマが提供するディメンショントークン。 */
+    /** The dimension tokens provided by the current [StylishTheme] composition. */
     public val dimensions: StylishDimensions
         @Composable get() = LocalStylishDimensions.current
 }
 
-/** StylishUI共通テーマ。ライト/ダークの配色・タイポグラフィ・ディメンションを一括で適用する。 */
+/**
+ * Root theme composable that applies the Stylish UI design language to all descendant content.
+ *
+ * Wraps [MaterialTheme] with a [CompositionLocalProvider] for [StylishDimensions], giving every
+ * Stylish component access to consistent spacing, corner-radius, elevation, and outline tokens.
+ * Place this at the top of your composable hierarchy (typically in your `Activity` or `App`
+ * composable) so that all child components inherit the design tokens.
+ *
+ * @param darkTheme Whether to use the dark color scheme. Typically derived from
+ *   `isSystemInDarkTheme()`.
+ * @param colorScheme The Material 3 [ColorScheme] to apply. Defaults to [StylishDarkColorScheme]
+ *   when [darkTheme] is `true`, otherwise [StylishLightColorScheme].
+ * @param typography The Material 3 [Typography] scale. Defaults to [StylishTypography].
+ * @param dimensions The [StylishDimensions] spatial tokens. Defaults to [DefaultStylishDimensions].
+ *   Override globally here, or per-component via individual parameters.
+ * @param content The composable content that will be themed.
+ * @see StylishTheme
+ * @see StylishLightColorScheme
+ * @see StylishDarkColorScheme
+ * @see StylishTypography
+ * @see DefaultStylishDimensions
+ */
 @Composable
 public fun StylishTheme(
     darkTheme: Boolean,

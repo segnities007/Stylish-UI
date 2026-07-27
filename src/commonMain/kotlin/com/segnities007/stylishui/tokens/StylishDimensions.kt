@@ -7,31 +7,58 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * StylishUI の空間・輪郭・奥行きの基礎トークン。
+ * Spatial, outline, and elevation design tokens for the Stylish UI design system.
  *
- * デフォルト値で StylishUI の標準ルック（Clear, Simple, Modern）を実現する。
- * [com.segnities007.stylishui.theme.StylishTheme] の `dimensions` パラメータで
- * グローバルに上書きできるほか、各コンポーネントのパラメータで個別に上書きできる。
+ * The default values produce the standard Stylish look (Clear, Simple, Modern). Override
+ * globally via the [com.segnities007.stylishui.theme.StylishTheme] composable's `dimensions`
+ * parameter, or per-component through individual component parameters that accept [Dp] values.
+ *
+ * Access the active instance inside composables with
+ * `StylishTheme.dimensions` (see [com.segnities007.stylishui.theme.StylishTheme]).
+ *
+ * @property connectedSpacing The gap between adjacent items in Connected UI layouts (connected
+ *   cards, connected list items, connected chips, connected buttons). A small value (default
+ *   3 dp) keeps items visually grouped while remaining individually distinguishable.
+ * @property outlineWidth The stroke width of the hairline border drawn around Connected UI
+ *   items via [com.segnities007.stylishui.foundation.connectedOutline]. The default 0.4 dp
+ *   renders as a sub-pixel hairline that rounds to approximately 1 physical pixel on many device densities.
+ * @property interactiveElevation The tonal elevation applied to tappable cards and list items
+ *   to signal interactivity. Default 1 dp produces a subtle lift without a heavy shadow.
+ * @property floatingElevation The elevation for floating elements such as FABs, sticky headers,
+ *   and bottom bars. Default 2 dp keeps them clearly above scrollable content.
+ * @property connectedCornerRadius The outer corner radius for Connected UI items — the corners
+ *   that face away from neighboring items (e.g. the top corners of the first item in a
+ *   vertical list). Default 12 dp gives a soft, modern rounded-rectangle silhouette.
+ * @property joinedCornerRadius The inner (junction) corner radius where two Connected UI items
+ *   meet. Default 2 dp creates a tight notch that visually links adjacent items while
+ *   preserving a slight separation cue.
+ * @property floatingCornerRadius The corner radius for floating elements such as FABs and
+ *   pill-shaped headers. Default 28 dp produces the fully-rounded capsule look typical of
+ *   Material 3 extended FABs.
+ * @see DefaultStylishDimensions
+ * @see com.segnities007.stylishui.theme.StylishTheme
  */
 @Immutable
 public data class StylishDimensions(
-    /** Connected UIのアイテム間隔。 */
     public val connectedSpacing: Dp = 3.dp,
-    /** Connected UIの輪郭線太さ。 */
     public val outlineWidth: Dp = 0.4.dp,
-    /** タップ可能カードの浮き上がり標高。 */
     public val interactiveElevation: Dp = 1.dp,
-    /** ヘッダー/FABの浮遊標高。 */
     public val floatingElevation: Dp = 2.dp,
-    /** Connected UIの外側角丸半径。 */
     public val connectedCornerRadius: Dp = 12.dp,
-    /** Connected UIの連結（内側）角丸半径。 */
     public val joinedCornerRadius: Dp = 2.dp,
-    /** FAB/ヘッダーの角丸半径。 */
     public val floatingCornerRadius: Dp = 28.dp,
 )
 
-/** [StylishDimensions] のデフォルトインスタンス。非 Composable 文脈での既定値に使う。 */
+/**
+ * The default [StylishDimensions] instance with all tokens at their standard values.
+ *
+ * Used as the fallback in non-composable contexts (e.g. default parameter values in
+ * [com.segnities007.stylishui.foundation.connectedShape]) and as the initial value of
+ * [LocalStylishDimensions]. Inside a [com.segnities007.stylishui.theme.StylishTheme]
+ * composition, prefer accessing tokens via `StylishTheme.dimensions`.
+ *
+ * @see StylishDimensions
+ */
 public val DefaultStylishDimensions: StylishDimensions = StylishDimensions()
 
 internal val LocalStylishDimensions: ProvidableCompositionLocal<StylishDimensions> =

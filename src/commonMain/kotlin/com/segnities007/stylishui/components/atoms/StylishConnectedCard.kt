@@ -40,7 +40,65 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 接続型カード。リスト内で隣接カードと辺・角を共有するコンテナ。タップ・長押し対応。 */
+/**
+ * A connected card that shares edges and corner radii with adjacent cards,
+ * forming a visually continuous group. Supports tap and long-press
+ * interactions; long-press triggers haptic feedback. When neither [onClick] nor
+ * [onLongClick] is provided, the card renders flat (zero elevation)
+ * and ignores pointer input.
+ *
+ * Use [StylishConnectedCardRow], [StylishConnectedCardColumn], or
+ * [StylishConnectedCardGrid] to lay out multiple connected cards —
+ * those layouts compute [outlineEdges] and [outlineCorners] automatically.
+ *
+ * @param title Primary text displayed in the card body.
+ * @param supportingText Secondary text below the title.
+ *   Omitted when blank.
+ * @param onClick Called when the card is tapped. `null` (default) makes
+ *   the card display-only.
+ * @param onLongClick Called when the card is long-pressed. Triggers
+ *   [HapticFeedbackType.LongPress] before invocation.
+ * @param shape Shape of the card surface. Defaults to
+ *   [connectedShape] with [ConnectedCorners.Standalone] (all corners
+ *   use [DefaultStylishDimensions.connectedCornerRadius], a static
+ *   constant of 12 dp — theme overrides do not affect this default).
+ * @param outlineEdges Which edges of the hairline outline to draw.
+ *   Defaults to [ConnectedEdges.All]. Layouts override this to
+ *   suppress interior edges between adjacent cards.
+ * @param outlineCorners Which corners use the large (outer) radius.
+ *   Defaults to [ConnectedCorners.Standalone]. Layouts override this
+ *   so only the group's exterior corners are rounded.
+ * @param enabled When `false`, the card ignores pointer input and
+ *   renders at zero elevation regardless of [onClick].
+ * @param titleMaxLines Maximum lines for [title]. Defaults to 1.
+ * @param titleOverflow Overflow strategy for [title].
+ * @param titleStyle Text style for [title].
+ * @param supportingTextMaxLines Maximum lines for [supportingText].
+ *   Defaults to 1.
+ * @param supportingTextOverflow Overflow strategy for [supportingText].
+ * @param supportingTextStyle Text style for [supportingText].
+ * @param containerColor Background color. Defaults to
+ *   [stylishComponentColors.groupedContainer].
+ * @param contentColor Default content color. Defaults to
+ *   `MaterialTheme.colorScheme.onSurface`.
+ * @param minHeight Minimum height of the card body. Defaults to 77.dp.
+ * @param horizontalPadding Horizontal padding inside the card.
+ *   Defaults to 16.dp.
+ * @param verticalPadding Vertical padding inside the card.
+ *   Defaults to 12.dp.
+ * @param leadingContent Optional content before the text column
+ *   (e.g. an icon or thumbnail). Always rendered; pass an empty
+ *   lambda to omit.
+ * @param trailingContent Optional content after the text column
+ *   (e.g. a chevron or badge). Always rendered; pass an empty
+ *   lambda to omit.
+ *
+ * @see StylishConnectedCardRow
+ * @see StylishConnectedCardColumn
+ * @see StylishConnectedCardGrid
+ * @see connectedShape
+ * @see connectedOutline
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun StylishConnectedCard(

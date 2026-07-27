@@ -16,7 +16,36 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** ダイアログ下部の確定・キャンセルボタン行。ダイアログ内の操作ボタンとして使う。 */
+/**
+ * A full-width confirm/cancel button row for the bottom of a dialog.
+ *
+ * Renders two visually connected buttons — cancel on the left, confirm
+ * on the right — using [StylishConnectedButtonRow]. The cancel button
+ * uses a subdued [MaterialTheme.colorScheme.surfaceVariant] container
+ * while the confirm button uses the default prominent style. Place this
+ * inside a [com.segnities007.stylishui.components.atoms.StylishDialogSurface]
+ * or any dialog-like container.
+ *
+ * @param confirmLabel Text displayed on the confirm button when
+ *   [confirmContent] is null.
+ * @param cancelLabel Text displayed on the cancel button when
+ *   [cancelContent] is null.
+ * @param onConfirm Callback invoked when the confirm button is tapped.
+ * @param onCancel Callback invoked when the cancel button is tapped.
+ * @param confirmEnabled Whether the confirm button is interactive.
+ *   Defaults to true. Set to false to block confirmation until
+ *   preconditions are met (e.g. a required field is filled).
+ * @param cancelContent Optional custom composable rendered inside the
+ *   cancel button, replacing the [cancelLabel] text. When null (the
+ *   default), a [Text] with [cancelLabel] is rendered.
+ * @param confirmContent Optional custom composable rendered inside the
+ *   confirm button, replacing the [confirmLabel] text. When null (the
+ *   default), a [Text] with [confirmLabel] is rendered.
+ *
+ * @see StylishDeleteConfirmDialog
+ * @see com.segnities007.stylishui.components.atoms.StylishDialogSurface
+ * @see StylishConnectedButtonRow
+ */
 @Composable
 public fun StylishDialogActions(
     confirmLabel: String,

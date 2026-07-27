@@ -13,7 +13,28 @@ import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** セクション見出しと折れ線グラフを組み合わせたパターン。 */
+/**
+ * A page section that pairs a [StylishSectionTitle] heading with a
+ * [SimpleLineChart].
+ *
+ * Lays out the title and chart in a full-width [Column]. Use this on
+ * dashboard or summary screens to present time-series data (e.g. fuel
+ * efficiency trends) with a consistent heading style. Android-only,
+ * because [SimpleLineChart] depends on platform chart rendering.
+ *
+ * @param title Section heading text rendered by [StylishSectionTitle]
+ *   above the chart.
+ * @param data List of [LineChartData] points to plot. Each entry carries
+ *   a label and a numeric value.
+ * @param contentDescriptionPrefix Leading text for the chart's combined
+ *   accessibility description.
+ * @param emptyLabel Text displayed when [data] has fewer than two points,
+ *   informing the user that no data is available.
+ *
+ * @see BarChartSection
+ * @see SimpleLineChart
+ * @see StylishSectionTitle
+ */
 @Composable
 public fun LineChartSection(
     title: String,

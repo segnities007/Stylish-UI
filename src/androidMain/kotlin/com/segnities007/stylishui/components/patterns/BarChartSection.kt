@@ -13,7 +13,29 @@ import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.SimpleBarChart
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** セクション見出しと棒グラフを組み合わせたパターン。 */
+/**
+ * A page section that pairs a [StylishSectionTitle] heading with a
+ * [SimpleBarChart].
+ *
+ * Lays out the title and chart in a full-width [Column]. Use this on
+ * dashboard or summary screens to present categorical data (e.g. monthly
+ * expenses) with a consistent heading style. Android-only, because
+ * [SimpleBarChart] depends on platform chart rendering.
+ *
+ * @param title Section heading text rendered by [StylishSectionTitle]
+ *   above the chart.
+ * @param data List of [BarChartData] points to plot. Each entry carries
+ *   a label, a numeric value, and an optional `segments` list for
+ *   stacked bars.
+ * @param contentDescriptionPrefix Leading text for the chart's combined
+ *   accessibility description.
+ * @param emptyLabel Text displayed when [data] is empty, informing the
+ *   user that no data is available.
+ *
+ * @see LineChartSection
+ * @see SimpleBarChart
+ * @see StylishSectionTitle
+ */
 @Composable
 public fun BarChartSection(
     title: String,

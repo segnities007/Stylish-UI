@@ -23,7 +23,50 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** 角丸アイコンボタン。横長の角丸サーフェスにアイコンを配置。active 時はプライマリカラーに反転。 */
+/**
+ * A pill-shaped icon button rendered on a wide rounded-rectangle
+ * surface. Behaves like [StylishIconButton] but uses a horizontally
+ * elongated shape, making it a good fit for toolbars or action rows
+ * where a wider tap target is desirable.
+ *
+ * The [active] / [enabled] color and elevation logic mirrors
+ * [StylishIconButton]: active inverts to primary/onPrimary, and
+ * disabling removes the shadow. When [enabled] is `false`, the icon
+ * is rendered inside a plain [Box] instead of an [IconButton], so
+ * no ripple or click handling is attached.
+ *
+ * @param imageVector Icon drawn inside the button when [iconContent]
+ *   is `null`.
+ * @param contentDescription Accessibility label for [imageVector].
+ * @param onClick Called when the button is tapped. Ignored when
+ *   [enabled] is `false`.
+ * @param enabled When `false`, the button ignores pointer input,
+ *   the shadow elevation is removed, and the icon is rendered in a
+ *   non-interactive [Box].
+ * @param active When `true`, the button renders in the primary color
+ *   scheme to indicate a selected/toggled state.
+ * @param containerColor Background color override. When `null`,
+ *   resolved from [active]: `primary` if active, otherwise
+ *   `surfaceContainerHighest`.
+ * @param contentColor Content tint override. When `null`, resolved
+ *   from [active]: `onPrimary` if active, otherwise
+ *   `onSurfaceVariant`.
+ * @param shape Shape of the surface. Defaults to
+ *   `RoundedCornerShape(24.dp)`.
+ * @param minWidth Minimum width of the tappable surface.
+ *   Defaults to 80 dp.
+ * @param minHeight Minimum height of the tappable surface.
+ *   Defaults to 48 dp.
+ * @param iconContent Optional slot that replaces the default [Icon].
+ *   When `null` (default), [imageVector] and [contentDescription]
+ *   are used instead. When provided, [contentColor] is not applied
+ *   automatically — the slot is responsible for its own tinting.
+ *   Ignored when [enabled] is `false` — the disabled state always
+ *   renders the default [Icon].
+ *
+ * @see StylishIconButton
+ * @see StylishFab
+ */
 @Composable
 public fun StylishRoundedIconButton(
     imageVector: ImageVector,

@@ -19,6 +19,54 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
+/**
+ * A form-oriented outlined text field with built-in label, placeholder, and
+ * inline error-message display.
+ *
+ * This molecules-layer variant is a streamlined version of the atoms-layer
+ * [com.segnities007.stylishui.components.atoms.StylishFormTextField]. It omits
+ * the `labelContent`, `placeholderContent`, `supportingContent`, and
+ * `fieldModifier` parameters, always rendering the label and placeholder as
+ * plain [Text] composables and applying [Modifier.fillMaxWidth] to the inner
+ * field. Use this variant when the default text-based label/placeholder is
+ * sufficient; use the atoms variant when custom slot content or a separate
+ * field modifier is needed.
+ *
+ * When [minLines] is 1 and [maxLines] resolves to 1, the field operates in
+ * single-line mode. Setting [minLines] greater than 1 enables multi-line
+ * input with [maxLines] defaulting to [Int.MAX_VALUE]. When [isError] is
+ * `true` the field draws its error outline, and a non-null [errorMessage] is
+ * displayed below the field in [MaterialTheme.colorScheme.error].
+ *
+ * @param value The current text value of the field.
+ * @param onValueChange Callback invoked with the updated text whenever the
+ *   user edits the field.
+ * @param label The label text displayed above the field outline.
+ * @param placeholder The placeholder text shown when the field is empty.
+ * @param minLines The minimum number of visible text lines. Defaults to 1.
+ * @param maxLines The maximum number of visible text lines. Defaults to 1
+ *   when [minLines] is 1, otherwise [Int.MAX_VALUE].
+ * @param isError When `true`, the field renders its error visual state
+ *   (error-colored outline). Defaults to `false`.
+ * @param errorMessage An optional error message displayed as supporting text
+ *   below the field in the error color. When `null`, no supporting text is
+ *   shown.
+ * @param leadingIcon An optional composable rendered at the start of the
+ *   field, typically an [androidx.compose.material3.Icon]. When `null`, no
+ *   leading icon is shown.
+ * @param trailingIcon An optional composable rendered at the end of the
+ *   field, typically an icon or visibility toggle. When `null`, no trailing
+ *   icon is shown.
+ * @param textStyle The [TextStyle] applied to the input text. Defaults to
+ *   [MaterialTheme.typography.bodyLarge].
+ * @param shape The [Shape] of the field's outline border. Defaults to
+ *   [OutlinedTextFieldDefaults.shape].
+ * @param colors The [TextFieldColors] controlling the field's color scheme.
+ *   When `null`, defaults to [OutlinedTextFieldDefaults.colors].
+ *
+ * @see com.segnities007.stylishui.components.atoms.StylishFormTextField
+ * @see StylishDatePickerField
+ */
 @Composable
 public fun StylishFormTextField(
     value: String,

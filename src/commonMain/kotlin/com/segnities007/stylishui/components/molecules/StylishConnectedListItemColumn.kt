@@ -40,7 +40,52 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 縦方向に連結したリストアイテム群。設定画面のグループ化セクションなどに使う。 */
+/**
+ * A vertically connected group of list items that share outlines and corner
+ * radii, typically used for grouped settings sections or navigation menus.
+ *
+ * Outline edges and corner radii are computed automatically from each item's
+ * index: the first item rounds only its top corners, the last item rounds only
+ * its bottom corners, and middle items have square corners with shared
+ * horizontal outlines. Each item displays a headline, an optional supporting
+ * text line, additional supporting lines, and optional leading/trailing slot
+ * content. Items whose [StylishConnectedListItem.onClick] is `null` and whose
+ * [StylishConnectedListItem.onLongClick] is `null`, or whose
+ * [StylishConnectedListItem.enabled] is `false`, are rendered without
+ * elevation and do not respond to interaction. Long-click actions trigger
+ * haptic feedback before invoking the callback. Items with an [onClick]
+ * action are assigned `Role.Button` semantics; disabled items are marked
+ * with the `disabled()` semantic flag.
+ *
+ * @param items The list of [StylishConnectedListItem] data objects that
+ *   describe each row's headline, supporting text, click/long-click actions,
+ *   enabled state, and slot content.
+ * @param spacing The vertical gap between adjacent items. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param headlineMaxLines Maximum number of lines for the headline text.
+ *   Defaults to [Int.MAX_VALUE] (unlimited).
+ * @param headlineOverflow The [TextOverflow] strategy for the headline when it
+ *   exceeds [headlineMaxLines]. Defaults to [TextOverflow.Ellipsis].
+ * @param headlineStyle The [TextStyle] applied to each item's headline.
+ *   Defaults to [MaterialTheme.typography.titleMedium].
+ * @param supportingTextMaxLines Maximum number of lines for supporting text
+ *   and supporting lines. Defaults to [Int.MAX_VALUE] (unlimited).
+ * @param supportingTextOverflow The [TextOverflow] strategy for supporting
+ *   text. Defaults to [TextOverflow.Ellipsis].
+ * @param supportingTextStyle The [TextStyle] applied to supporting text and
+ *   supporting lines. Defaults to [MaterialTheme.typography.bodyMedium].
+ * @param containerColor The background color of each item surface. When
+ *   `null`, defaults to [MaterialTheme.stylishComponentColors.groupedContainer].
+ * @param contentColor The content color of each item surface. When `null`,
+ *   defaults to [MaterialTheme.colorScheme.onSurface] for enabled items or
+ *   [MaterialTheme.colorScheme.onSurfaceVariant] for disabled items.
+ * @param horizontalPadding The horizontal padding inside each item. Defaults
+ *   to 16 dp.
+ * @param verticalPadding The vertical padding inside each item. Defaults to
+ *   14 dp.
+ *
+ * @see StylishConnectedCardColumn
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun StylishConnectedListItemColumn(
@@ -55,7 +100,6 @@ public fun StylishConnectedListItemColumn(
     supportingTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    minHeight: Dp = 0.dp,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
 ) {

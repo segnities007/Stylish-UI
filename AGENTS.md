@@ -81,10 +81,20 @@ Every public composable, function, and data class must have a KDoc comment descr
 ## Development Workflow
 
 1. **Always work on a branch** — never push directly to `main`.
-2. **Open a Pull Request** for all changes.
-3. **Use Conventional Commits** for all commit messages and PR titles.
-4. **Use Squash merge** when merging PRs.
-5. **Do not modify release-related files** unless explicitly instructed:
+2. **One branch per PR — discard after merge.** Squash merge creates a new
+   commit on `main` with no link to the original branch. Reusing a
+   squash-merged branch causes recurring merge conflicts because Git cannot
+   recognise that the work is already in `main`. After a PR is merged,
+   delete the branch and create a fresh one from the latest `main`.
+3. **Open a Pull Request** for all changes.
+4. **Use Conventional Commits** for all commit messages and PR titles.
+   GitHub auto-generates the PR title from the branch name (e.g.
+   `docs/foo` → "Docs/foo"), which **fails the `pr-title-check` CI**.
+   Always set the PR title manually to `<type>(<scope>): <subject>`
+   format with a lowercase subject (e.g.
+   `docs(components): enrich KDoc across all public API`).
+5. **Use Squash merge** when merging PRs.
+6. **Do not modify release-related files** unless explicitly instructed:
    - `version.properties`
    - `.release-please-manifest.json`
    - `CHANGELOG.md` (managed by Release Please)

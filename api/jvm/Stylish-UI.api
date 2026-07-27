@@ -380,7 +380,7 @@ public final class com/segnities007/stylishui/components/molecules/StylishConnec
 }
 
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedListItemColumnKt {
-	public static final fun StylishConnectedListItemColumn-GspOZ8o (Ljava/util/List;Landroidx/compose/ui/Modifier;FIILandroidx/compose/ui/text/TextStyle;IILandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;FFFLandroidx/compose/runtime/Composer;III)V
+	public static final fun StylishConnectedListItemColumn-n4k5qaM (Ljava/util/List;Landroidx/compose/ui/Modifier;FIILandroidx/compose/ui/text/TextStyle;IILandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;FFLandroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/molecules/StylishDatePickerFieldKt {

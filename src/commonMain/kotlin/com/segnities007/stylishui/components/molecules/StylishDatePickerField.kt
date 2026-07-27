@@ -29,19 +29,16 @@ import kotlinx.datetime.toLocalDateTime
  * ライブラリ内部で使うデフォルトの日付書式。
  * java.time への依存を避け、KMP 各ターゲットで動作させる。
  */
-@OptIn(kotlin.time.ExperimentalTime::class)
 private val defaultDateFormatter: (LocalDate) -> String = { date ->
     val month = date.monthNumber.toString().padStart(2, '0')
     val day = date.dayOfMonth.toString().padStart(2, '0')
     "${date.year}/$month/$day"
 }
 
-@OptIn(kotlin.time.ExperimentalTime::class)
 private fun LocalDate.toEpochMillis(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long {
     return this.atStartOfDayIn(timeZone).toEpochMilliseconds()
 }
 
-@OptIn(kotlin.time.ExperimentalTime::class)
 private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDate {
     return Instant.fromEpochMilliseconds(this).toLocalDateTime(timeZone).date
 }

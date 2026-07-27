@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -134,9 +132,6 @@ public fun StylishConnectedButtonGrid(
                             )
                             StylishButtonSlot(item.trailingContent, Alignment.CenterEnd)
                         }
-                    }
-                    if (rowItems.size == columns) {
-                        repeat(columns - rowItems.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
             }

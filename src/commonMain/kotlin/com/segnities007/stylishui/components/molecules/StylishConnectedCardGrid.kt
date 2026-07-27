@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -73,7 +72,6 @@ public fun StylishConnectedCardGrid(
                     Modifier.height(IntrinsicSize.Min),
                     horizontalArrangement = Arrangement.spacedBy(spacing),
                 ) {
-                    val isFullRow = rowItems.size == columns
                     rowItems.forEachIndexed { columnIndex, item ->
                         val index = rowIndex * columns + columnIndex
                         val corners = connectedGridCorners(index, items.size, columns)
@@ -86,9 +84,6 @@ public fun StylishConnectedCardGrid(
                             ConnectedEdges.All,
                             corners,
                         )
-                    }
-                    if (isFullRow) {
-                        repeat(columns - rowItems.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
             }

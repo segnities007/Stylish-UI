@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
@@ -39,17 +41,23 @@ import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** 横方向に連結したチップ群。選択状態のアニメーション付きで、カテゴリフィルタなどに使う。 */
 @Composable
-fun StylishConnectedChipRow(
+public fun StylishConnectedChipRow(
     items: List<StylishConnectedChipItem>,
     modifier: Modifier = Modifier,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     fillWidth: Boolean = false,
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
     labelStyle: TextStyle = MaterialTheme.typography.labelLarge,
+    selectedContainerColor: Color = MaterialTheme.colorScheme.primary,
+    selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    unselectedContainerColor: Color = MaterialTheme.stylishComponentColors.groupedContainer,
+    unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
+    contentSpacing: Dp = 6.dp,
 ) {
     val haptic = LocalHapticFeedback.current
     Row(
@@ -64,14 +72,12 @@ fun StylishConnectedChipRow(
                 hasClickAction = item.onClick != null,
             )
             val containerColor by animateColorAsState(
-                targetValue = if (item.selected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.stylishComponentColors.groupedContainer,
+                targetValue = if (item.selected) selectedContainerColor else unselectedContainerColor,
                 animationSpec = tween(180),
                 label = "chipContainer",
             )
             val contentColor by animateColorAsState(
-                targetValue = if (item.selected) MaterialTheme.colorScheme.onPrimary
-                else MaterialTheme.colorScheme.onSurfaceVariant,
+                targetValue = if (item.selected) selectedContentColor else unselectedContentColor,
                 animationSpec = tween(180),
                 label = "chipContent",
             )
@@ -99,11 +105,11 @@ fun StylishConnectedChipRow(
                 shape = connectedShape(corners),
                 color = containerColor,
                 contentColor = contentColor,
-                shadowElevation = if (actionable) StylishDimensions.interactiveElevation else 0.dp,
+                shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
             ) {
                 Row(
-                    Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    Modifier.padding(contentPadding),
+                    horizontalArrangement = Arrangement.spacedBy(contentSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     item.leadingContent?.invoke(this)

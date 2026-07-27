@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.dokka)
     alias(libs.plugins.maven.publish)
 }
 
@@ -23,6 +25,8 @@ version = providers.fileContents(
 }.orElse("0.1.0").get()
 
 kotlin {
+    explicitApi()
+
     android {
         namespace = "com.segnities007.stylishui"
         compileSdk = 37
@@ -64,7 +68,17 @@ kotlin {
         jvmMain.dependencies {
             // Desktop-specific dependencies can be added here.
         }
+
+        jvmTest.dependencies {
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+            implementation(compose.desktop.currentOs)
+        }
     }
+}
+
+dokka {
+    moduleName.set("Stylish UI")
 }
 
 mavenPublishing {

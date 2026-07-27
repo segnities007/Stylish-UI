@@ -1,4 +1,6 @@
-package com.segnities007.stylishui.components.molecules
+package com.segnities007.stylishui.components.organisms
+
+import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -14,13 +16,16 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.theme.StylishTheme
 
+/** ダイアログ下部の確定・キャンセルボタン行。ダイアログ内の操作ボタンとして使う。 */
 @Composable
-fun StylishDialogActions(
+public fun StylishDialogActions(
     confirmLabel: String,
     cancelLabel: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
     confirmEnabled: Boolean = true,
+    cancelContent: @Composable (() -> Unit)? = null,
+    confirmContent: @Composable (() -> Unit)? = null,
 ) {
     StylishConnectedButtonRow(
         items = listOf(
@@ -30,11 +35,11 @@ fun StylishDialogActions(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
-            ) { Text(cancelLabel) },
+            ) { cancelContent?.invoke() ?: Text(cancelLabel) },
             StylishConnectedButtonItem(
                 onClick = onConfirm,
                 enabled = confirmEnabled,
-            ) { Text(confirmLabel) },
+            ) { confirmContent?.invoke() ?: Text(confirmLabel) },
         ),
         modifier = Modifier.fillMaxWidth(),
         defaultColors = ButtonDefaults.buttonColors(),

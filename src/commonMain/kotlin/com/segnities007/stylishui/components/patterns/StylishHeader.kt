@@ -18,41 +18,54 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** ページ上部のフローティングヘッダー。ナビゲーション・タイトル・アクションを配置する。 */
 @Composable
-fun StylishHeader(
+public fun StylishHeader(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(28.dp),
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    border: BorderStroke? = BorderStroke(
+        StylishTheme.dimensions.outlineWidth,
+        MaterialTheme.colorScheme.outlineVariant,
+    ),
+    tonalElevation: Dp = 4.dp,
+    shadowElevation: Dp = StylishTheme.dimensions.floatingElevation,
+    height: Dp = 56.dp,
+    topPadding: Dp = 8.dp,
+    bottomPadding: Dp = 16.dp,
 ) {
     Column(
         modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(top = 8.dp, bottom = 16.dp),
+            .padding(top = topPadding, bottom = bottomPadding),
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(28.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-            border = BorderStroke(
-                StylishDimensions.outlineWidth,
-                MaterialTheme.colorScheme.outlineVariant,
-            ),
-            tonalElevation = 4.dp,
-            shadowElevation = StylishDimensions.floatingElevation,
+            shape = shape,
+            color = containerColor,
+            contentColor = contentColor,
+            border = border,
+            tonalElevation = tonalElevation,
+            shadowElevation = shadowElevation,
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(height),
                 contentAlignment = Alignment.Center,
             ) {
                 Box(Modifier.semantics { heading() }) { title() }

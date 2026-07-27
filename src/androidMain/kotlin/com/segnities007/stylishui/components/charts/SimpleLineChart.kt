@@ -20,13 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class LineChartData(
+/** 折れ線グラフの1データポイント。ラベルと値。 */
+public data class LineChartData(
     val label: String,
     val value: Float,
 )
 
+/** 折れ線グラフ。領域塗りつぶし・グリッド線・ラベル付き。 */
 @Composable
-fun SimpleLineChart(
+public fun SimpleLineChart(
     data: List<LineChartData>,
     contentDescriptionPrefix: String,
     emptyLabel: String,

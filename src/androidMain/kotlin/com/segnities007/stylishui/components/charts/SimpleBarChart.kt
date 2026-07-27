@@ -22,20 +22,22 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /** 積み上げ棒グラフの1区間。value と色。 */
-data class BarChartSegment(
+public data class BarChartSegment(
     val value: Float,
     val color: Color,
 )
 
-data class BarChartData(
+/** 棒グラフの1カテゴリ。ラベル・合計値・任意の積み上げ内訳。 */
+public data class BarChartData(
     val label: String,
     val value: Float,
     /** カテゴリ別の内訳。空の場合は単色の棒として描画する。 */
     val segments: List<BarChartSegment> = emptyList(),
 )
 
+/** 積み上げ対応の棒グラフ。Canvas 描画で軽量にレンダリングする。 */
 @Composable
-fun SimpleBarChart(
+public fun SimpleBarChart(
     data: List<BarChartData>,
     contentDescriptionPrefix: String,
     emptyLabel: String,

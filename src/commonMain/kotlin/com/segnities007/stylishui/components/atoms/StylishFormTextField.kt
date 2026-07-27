@@ -1,4 +1,4 @@
-package com.segnities007.stylishui.components.molecules
+package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
+/** フォーム用テキストフィールド。ラベル・プレースホルダー・エラー表示を備えたアウトライン入力欄。 */
 @Composable
 public fun StylishFormTextField(
     value: String,
@@ -35,13 +36,17 @@ public fun StylishFormTextField(
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors? = null,
+    labelContent: @Composable (() -> Unit)? = null,
+    placeholderContent: @Composable (() -> Unit)? = null,
+    supportingContent: @Composable (() -> Unit)? = null,
+    fieldModifier: Modifier = Modifier,
 ) {
     Column(modifier) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(label) },
-            placeholder = { Text(placeholder) },
+            label = labelContent ?: { Text(label) },
+            placeholder = placeholderContent ?: { Text(placeholder) },
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
             minLines = minLines,
@@ -49,10 +54,10 @@ public fun StylishFormTextField(
             textStyle = textStyle,
             shape = shape,
             colors = colors ?: OutlinedTextFieldDefaults.colors(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = fieldModifier.fillMaxWidth(),
             singleLine = minLines == 1 && maxLines == 1,
             isError = isError,
-            supportingText = errorMessage?.let { message ->
+            supportingText = supportingContent ?: errorMessage?.let { message ->
                 {
                     Text(
                         text = message,

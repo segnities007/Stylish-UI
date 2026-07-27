@@ -36,15 +36,15 @@ import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** グリッド状に連結したボタン群。等幅セルで複数アクションを並べる。 */
 @Composable
-fun StylishConnectedButtonGrid(
+public fun StylishConnectedButtonGrid(
     items: List<StylishConnectedButtonItem>,
     columns: Int,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 12.dp,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
     defaultColors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
@@ -87,7 +87,7 @@ fun StylishConnectedButtonGrid(
                             ),
                             colors = item.colors ?: defaultColors,
                             elevation = ButtonDefaults.buttonElevation(
-                                defaultElevation = StylishDimensions.interactiveElevation,
+                                defaultElevation = StylishTheme.dimensions.interactiveElevation,
                                 pressedElevation = 0.dp,
                                 disabledElevation = 0.dp,
                             ),

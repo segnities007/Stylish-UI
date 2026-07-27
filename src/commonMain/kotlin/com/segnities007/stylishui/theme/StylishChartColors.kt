@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
+/** チャート描画に使用するカテゴリ別カラーパレット。 */
 @Immutable
-data class StylishChartColors(val categorical: List<Color>)
+public data class StylishChartColors(public val categorical: List<Color>)
 
-fun ColorScheme.toStylishChartColors() = StylishChartColors(
+/** [ColorScheme] からチャート用カラーを生成する。 */
+public fun ColorScheme.toStylishChartColors(): StylishChartColors = StylishChartColors(
     categorical = listOf(primary, tertiary, secondary, error, onSurfaceVariant, outline),
 )
 
-val MaterialTheme.stylishChartColors: StylishChartColors
+/** 現在の [MaterialTheme] から取得できるチャート用カラー。 */
+public val MaterialTheme.stylishChartColors: StylishChartColors
     @Composable get() = colorScheme.toStylishChartColors()

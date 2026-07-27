@@ -7,19 +7,21 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
-import com.segnities007.stylishui.tokens.StylishDimensions
+import com.segnities007.stylishui.theme.StylishTheme
 
+/** 連結コンポーネントの [edges] と [corners] に基づいて輪郭線を描画する Modifier。 */
 @Composable
-fun Modifier.connectedOutline(
+public fun Modifier.connectedOutline(
     edges: ConnectedEdges,
     corners: ConnectedCorners,
-    cornerRadius: Dp = StylishDimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
 ): Modifier {
     val color = MaterialTheme.colorScheme.outlineVariant
+    val outlineWidth = StylishTheme.dimensions.outlineWidth
     return drawWithContent {
         drawContent()
 
-        val strokeWidth = StylishDimensions.outlineWidth.toPx()
+        val strokeWidth = outlineWidth.toPx()
         val inset = strokeWidth / 2f
         val left = inset
         val top = inset

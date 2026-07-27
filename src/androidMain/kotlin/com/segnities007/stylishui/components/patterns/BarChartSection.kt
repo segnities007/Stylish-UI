@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.SimpleBarChart
 import com.segnities007.stylishui.theme.StylishTheme
 
+/** セクション見出しと棒グラフを組み合わせたパターン。 */
 @Composable
-fun BarChartSection(
+public fun BarChartSection(
     title: String,
     data: List<BarChartData>,
     contentDescriptionPrefix: String,

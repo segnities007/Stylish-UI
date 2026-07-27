@@ -1,4 +1,4 @@
-package com.segnities007.stylishui.components.molecules
+package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -39,11 +39,11 @@ import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** 接続型カード。リスト内で隣接カードと辺・角を共有するコンテナ。タップ・長押し対応。 */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StylishConnectedCard(
+public fun StylishConnectedCard(
     title: String,
     modifier: Modifier = Modifier,
     supportingText: String = "",
@@ -99,7 +99,7 @@ fun StylishConnectedCard(
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (actionable) StylishDimensions.interactiveElevation else 0.dp,
+            defaultElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
         ),
     ) {
         Row(

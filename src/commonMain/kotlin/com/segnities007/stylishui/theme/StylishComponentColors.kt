@@ -8,10 +8,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 
+/** コンポーネント固有の派生カラーを保持するデータ。 */
 @Immutable
-data class StylishComponentColors(val groupedContainer: Color)
+public data class StylishComponentColors(public val groupedContainer: Color)
 
-val MaterialTheme.stylishComponentColors: StylishComponentColors
+/** 現在の [MaterialTheme] から取得できるコンポーネント用派生カラー。 */
+public val MaterialTheme.stylishComponentColors: StylishComponentColors
     @Composable get() {
         val scheme = colorScheme
         return StylishComponentColors(

@@ -5,7 +5,7 @@ package com.segnities007.stylishui.foundation
  *
  * Callers should represent a missing action with `null`, never with an empty lambda.
  */
-fun isActionable(
+public fun isActionable(
     enabled: Boolean = true,
     hasClickAction: Boolean,
     hasLongClickAction: Boolean = false,

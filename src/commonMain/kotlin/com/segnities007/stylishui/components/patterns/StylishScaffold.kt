@@ -13,21 +13,25 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
+/** Material Scaffold の Stylish UI 版ラッパー。画面全体の骨格として使う。 */
 @Composable
-fun StylishScaffold(
+public fun StylishScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets.navigationBars,
+        containerColor = containerColor,
+        contentWindowInsets = contentWindowInsets,
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = floatingActionButton,

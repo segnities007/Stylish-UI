@@ -26,7 +26,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 
 /** リストが空のときのプレースホルダー。アイコン・見出し・説明・任意のアクション。 */
 @Composable
-fun StylishEmptyState(
+public fun StylishEmptyState(
     icon: ImageVector,
     title: String,
     description: String,
@@ -40,34 +40,37 @@ fun StylishEmptyState(
     descriptionOverflow: TextOverflow = TextOverflow.Ellipsis,
     descriptionStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    iconContent: (@Composable () -> Unit)? = null,
+    action: (@Composable () -> Unit)? = null,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Icon(
-            icon,
-            contentDescription = null,
-            tint = iconTint,
+        if (iconContent != null) iconContent() else Icon(
+            icon, contentDescription = null, tint = iconTint,
             modifier = Modifier.padding(bottom = 16.dp),
         )
         Text(
             title,
             style = titleStyle,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = contentColor,
             maxLines = titleMaxLines,
             overflow = titleOverflow,
         )
         Text(
             description,
             style = descriptionStyle,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = contentColor,
             maxLines = descriptionMaxLines,
             overflow = descriptionOverflow,
             modifier = Modifier.padding(top = 8.dp),
         )
-        if (actionLabel != null && onAction != null) {
+        if (action != null) {
+            action()
+        } else if (actionLabel != null && onAction != null) {
             TextButton(
                 onClick = onAction,
                 modifier = Modifier.padding(top = 16.dp),

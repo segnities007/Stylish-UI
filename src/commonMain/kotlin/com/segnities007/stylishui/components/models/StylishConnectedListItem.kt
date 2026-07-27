@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 
+/** Connected list layout の各リスト項目を表現する不変データ。 */
 @Immutable
-data class StylishConnectedListItem(
+public data class StylishConnectedListItem(
     val headline: String,
     val supportingText: String? = null,
     val onClick: (() -> Unit)? = null,

@@ -1,4 +1,4 @@
-package com.segnities007.stylishui.components.molecules
+package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -27,13 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** ダイアログサーフェス。スケール・フェードアニメーション付きのダイアログ用コンテナ。 */
 @Composable
-fun StylishDialogSurface(
+public fun StylishDialogSurface(
     onDismiss: () -> Unit,
     animate: Boolean = true,
-    shape: Shape = RoundedCornerShape(StylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color? = null,
     horizontalPadding: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit,

@@ -1,4 +1,6 @@
-package com.segnities007.stylishui.components.molecules
+package com.segnities007.stylishui.components.organisms
+
+import com.segnities007.stylishui.components.atoms.StylishDialogSurface
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -17,7 +19,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 
 /** 削除操作の確認ダイアログ。破壊的操作の前に必ず挟む。 */
 @Composable
-fun StylishDeleteConfirmDialog(
+public fun StylishDeleteConfirmDialog(
     title: String,
     message: String,
     confirmLabel: String,

@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 
+/** Connected chip layout の各チップを表現する不変データ。 */
 @Immutable
-data class StylishConnectedChipItem(
+public data class StylishConnectedChipItem(
     val label: String,
     val onClick: (() -> Unit)? = null,
     val selected: Boolean = false,

@@ -1,182 +1,118 @@
-# StylishUI
+# Stylish UI
 
-StylishUIは、Stylish My Vehiclesで培った視覚言語と操作原則を、
-アプリのドメインから独立して再利用するためのCompose Multiplatformデザインシステムです。
-AndroidとJVM Desktopをサポートしています。
+**Clear, Simple, Modern.**
 
-## 原則
+Stylish UI は、この3つを体現した Compose Multiplatform デザインシステムです。
+Android・JVM Desktop・Web（Wasm）をサポートしています。
 
-1. **Semantic first**  
-   色や寸法を画面へ直書きせず、役割を表すトークンを利用する。
-2. **State is explicit**  
-   enabled・selected・actionable・loadingなどの状態をAPIで明示する。
-   空のクリックコールバックで操作可能に見せない。
-3. **Accessibility by construction**  
-   最小タップ領域、意味的なRole、content description、十分なコントラストを
-   コンポーネント側の既定値として保証する。
-4. **One-way dependencies**  
-   tokens → foundations → components → patterns の向きだけを許可する。
-5. **No product domain**  
-   Vehicle、Fuel、Maintenance、Navigation、Room、Koinなどへ依存しない。
-6. **System adaptive**  
-   Dynamic Color、light/dark、font scale、window insetsを尊重する。
-7. **Previewable and testable**  
-   公開コンポーネントは主要状態のPreviewを持ち、geometryと状態判定は単体テスト可能にする。
+## デザイン哲学
 
-## レイヤー
+| 原則 | 意味 |
+|------|------|
+| **Clear** | 情報が明確であること。階層・状態・操作可否が見た目で伝わる |
+| **Simple** | 要素が少なく、シンプルであること。装飾ではなく構造で魅せる |
+| **Modern** | 最新のトレンドに合った、おしゃれなUIであること |
 
-```text
-tokens
-  └─ 色・寸法・タイポグラフィ・モーション・Elevation
-foundation
-  └─ Connected geometry、Outline、Theme composition locals
-components
-  ├─ atoms
-  └─ molecules
-patterns
-  └─ Header、Scaffold、Dialog、Chart sectionなどの汎用構成
+詳細は [DESIGN.md](DESIGN.md) のデザインチェックリストを参照してください。
+
+## インストール
+
+```kotlin
+dependencies {
+    implementation("io.github.segnities007:stylish-ui:<version>")
+}
 ```
 
-アプリ固有の`AddRecordDialog`、`VehicleInfoSection`、`VehicleDeadlineSection`などは
-StylishUIを組み合わせる利用側のUIであり、このモジュールには含めません。
-
-## 現在の公開トークン
-
-`StylishDimensions`が以下を一元管理します。
-
-- Connected要素間のspacing
-- Outline幅
-- 通常操作面とFloating面のElevation
-- Connected／joined／Floatingのcorner radius
-
-## 公開API
-
-- `theme`
-  - `StylishTheme`
-  - `StylishLightColorScheme` / `StylishDarkColorScheme`
-  - `StylishTypography`
-  - `MaterialTheme.stylishComponentColors`
-  - `MaterialTheme.stylishChartColors`
-- `foundation`
-  - `ConnectedCorners` / `ConnectedEdges`
-  - `connectedShape` / `connectedOutline`
-  - Row・Column・Grid用のConnected geometry
-- `components.atoms`
-  - `StylishFab`
-  - `StylishIconButton`
-  - `StylishRoundedIconButton`
-- `components.molecules`
-  - Connected Cardの単体・Row・Column・Grid
-  - Connected ButtonのRow・Column・Grid
-  - `StylishConnectedChipRow`
-  - `StylishConnectedListItemColumn`
-  - `StylishConnectedSegmentedControl`
-  - Dialog・DatePicker・FormTextField・EmptyState
-- `components.charts`
-  - Bar・Line・Pie chart primitivesと表示用データモデル
-- `components.patterns`
-  - `StylishHeader`
-  - `StylishScaffold`
-  - `StylishPageContent`
-  - `StylishSectionTitle`
-  - Bar・Line chart section
-
-## 利用例
+## 使い方
 
 ```kotlin
 StylishTheme(darkTheme = isSystemInDarkTheme()) {
+    // コンポーネントを使う
     StylishConnectedCardGrid(
         items = listOf(
-            StylishConnectedCardItem(
-                title = "操作できる項目",
-                onClick = { /* action */ },
-            ),
-            StylishConnectedCardItem(
-                title = "表示専用の項目",
-                onClick = null,
-            ),
+            StylishConnectedCardItem("操作可能", onClick = { }),
+            StylishConnectedCardItem("表示専用"),
         ),
         columns = 2,
     )
 }
 ```
 
-クリック処理のない要素へ空ラムダを渡さず、`null`を指定します。
-Card・Button・Chip・ListItemは同じactionable判定を使い、
-非actionable時にはクリック処理とElevationを付与しません。
+### カスタマイズ
 
-ホストアプリ側がDynamic Colorを使う場合は、生成した`ColorScheme`を
-`StylishTheme(colorScheme = ...)`へ渡します。設定保存、端末テーマの選択、
-Windowのsystem bar制御はデザインシステムではなくホストアプリの責務です。
-
-日付選択や確認ダイアログのボタン文言もライブラリに固定せず、
-ホストアプリが渡します。これにより文字列リソースとローカライズは
-利用アプリ側で管理できます。
-
-## 依存関係
+デフォルトパラメータで Stylish UI の標準ルックが適用されます。
+独自の UI を実現したい場合は、テーマまたはコンポーネントパラメータで上書きできます。
 
 ```kotlin
-dependencies {
-    implementation("io.github.segnities007:stylish-ui:0.1.0")
-}
+// グローバル上書き
+StylishTheme(
+    darkTheme = false,
+    dimensions = StylishDimensions(
+        connectedCornerRadius = 20.dp,
+        connectedSpacing = 6.dp,
+        outlineWidth = 1.dp,
+    ),
+) { ... }
+
+// 個別上書き
+StylishConnectedButtonRow(items = items, spacing = 8.dp)
 ```
 
-`stylish-ui`はアプリのdomain、database、navigation、DIへ依存しません。
-車両情報や記録追加などのproduct-specific UIはアプリ側で公開コンポーネントを
-組み合わせて構築します。依存方向を逆転させないでください。
+## アーキテクチャ
 
-Light・Darkとactionable・read-only・disabledの代表状態は
-`StylishComponentCatalog`のPreviewでまとめて確認できます。
+コンポーネントは Atomic Design に従い、依存は一方向です。
+
+```
+patterns → organisms → molecules → atoms → foundation / theme / tokens
+```
+
+| 層 | パッケージ | 定義 |
+|---|---|---|
+| **atoms** | `components.atoms` | 単一のUI要素。Stylish コンポーネントを合成しない |
+| **molecules** | `components.molecules` | atoms + M3 プリミティブの合成 |
+| **organisms** | `components.organisms` | 複数の molecules の合成 |
+| **patterns** | `components.patterns` | ページレベルのレイアウト |
+
+### 公開コンポーネント
+
+- **atoms** — `StylishFab`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishSectionTitle`, `StylishConnectedCard`, `StylishDialogSurface`, `StylishFormTextField`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), `StylishConnectedChipRow`, `StylishConnectedListItemColumn`, `StylishDatePickerField`, `StylishEmptyState`
+- **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`
+- **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`
+- **charts** — `SimplePieChart` (common), `SimpleBarChart`, `SimpleLineChart` (Android)
+- **theme** — `StylishTheme`, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`
+- **tokens** — `StylishDimensions`（テーマ経由でカスタマイズ可能）
 
 ## 開発
 
-各段階で以下を通し、ライブラリからアプリへの逆依存がないことを確認します。
-
 ```bash
-./gradlew check
-./gradlew publishToMavenLocal
+./gradlew jvmTest       # テスト
+./gradlew assemble      # ビルド
+./gradlew apiCheck      # ABI 互換性チェック
+./gradlew apiDump       # ABI ダンプ更新（意図的な API 変更時）
 ```
 
 ## 公式サイト
 
-Stylish UI の公式サイトは 2 ターゲットで提供しています。
+`main` ブランチへの push で GitHub Pages に自動デプロイされます。
 
-### Desktop (JVM)
+| URL | 内容 |
+|-----|------|
+| `/` | コンポーネントギャラリー（Compose Wasm） |
+| `/api/` | API リファレンス（Dokka） |
+
+ローカルでの確認:
 
 ```bash
-./gradlew :website:run
+./gradlew :website-wasm:wasmJsBrowserRun   # ギャラリー
+./gradlew dokkaGeneratePublicationHtml      # API ドキュメント
 ```
-
-### Web (Wasm)
-
-```bash
-./gradlew :website-wasm:wasmJsBrowserRun
-```
-
-どちらも `stylish-ui` ライブラリを直接使用したコンポーネントギャラリー兼公式サイトです。
-
-### GitHub Pages
-
-`main` ブランチへ push すると、Web 版が GitHub Pages に自動デプロイされます。  
-`.github/workflows/deploy-website.yml` で構成しています。
-
-> **Web / Wasm の安定性**  
-> Compose Multiplatform の Web / Wasm サポートは現在 **ベータ** です（Kotlin/Wasm もベータ）。  
-> 実運用ではフォールバックフォントの読み込み、バンドルサイズ、ブラウザ互換性などの確認が必要です。
 
 ## リリース
 
-リリースは [Release Please](https://github.com/googleapis/release-please) で自動化されています。
-
-- `main` ブランチにマージされると、Release Please がリリース PR を作成します
-- PR タイトルは [Conventional Commits](https://www.conventionalcommits.org/) に従ってください
-  - `feat:` → minor バージョンアップ
-  - `fix:` → patch バージョンアップ
-  - `feat!:` / `BREAKING CHANGE:` → major バージョンアップ
-- リリース PR をマージすると、GitHub タグが作成され、Maven Central へ公開されます
-
+[Release Please](https://github.com/googleapis/release-please) で自動化されています。
 詳細は [CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
 
 ## ライセンス
 
-[Apache License 2.0](LICENSE) の下で公開されています。
+[Apache License 2.0](LICENSE)

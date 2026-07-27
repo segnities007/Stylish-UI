@@ -6,16 +6,17 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,8 +33,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
-import com.segnities007.stylishui.foundation.connectedColumnCorners
-import com.segnities007.stylishui.foundation.connectedColumnEdges
+import com.segnities007.stylishui.foundation.connectedRowCorners
+import com.segnities007.stylishui.foundation.connectedRowEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
@@ -41,15 +42,18 @@ import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
- * A vertically connected group of list items that share outlines and corner
- * radii, typically used for grouped settings sections or navigation menus.
+ * A horizontally connected group of list items that share outlines and corner
+ * radii, typically used for side-by-side summary tiles or horizontal
+ * navigation sections.
  *
- * Outline edges and corner radii are computed automatically from each item's
- * index: the first item rounds only its top corners, the last item rounds only
- * its bottom corners, and middle items have square corners with shared
- * horizontal outlines. Each item displays a headline, an optional supporting
- * text line, additional supporting lines, and optional leading/trailing slot
- * content. Items whose [StylishConnectedListItem.onClick] is `null` and whose
+ * Each item receives equal weight within the row and stretches to the tallest
+ * sibling via [IntrinsicSize.Min]. Outline edges and corner radii are computed
+ * automatically from each item's index: the first item rounds only its
+ * leading corners, the last item rounds only its trailing corners, and middle
+ * items have square corners with shared vertical outlines. Each item displays
+ * a headline, an optional supporting text line, additional supporting lines,
+ * and optional leading/trailing slot content. Items whose
+ * [StylishConnectedListItem.onClick] is `null` and whose
  * [StylishConnectedListItem.onLongClick] is `null`, or whose
  * [StylishConnectedListItem.enabled] is `false`, are rendered without
  * elevation and do not respond to interaction. Long-click actions trigger
@@ -60,7 +64,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param items The list of [StylishConnectedListItem] data objects that
  *   describe each row's headline, supporting text, click/long-click actions,
  *   enabled state, and slot content.
- * @param spacing The vertical gap between adjacent items. Defaults to
+ * @param spacing The horizontal gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param headlineMaxLines Maximum number of lines for the headline text.
  *   Defaults to [Int.MAX_VALUE] (unlimited).
@@ -84,13 +88,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param verticalPadding The vertical padding inside each item. Defaults to
  *   14 dp.
  *
- * @see StylishConnectedListItemRow
+ * @see StylishConnectedListItemColumn
  * @see StylishConnectedListItemGrid
- * @see StylishConnectedCardColumn
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-public fun StylishConnectedListItemColumn(
+public fun StylishConnectedListItemRow(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
@@ -106,12 +109,12 @@ public fun StylishConnectedListItemColumn(
     verticalPadding: Dp = 14.dp,
 ) {
     val haptic = LocalHapticFeedback.current
-    Column(
-        modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing),
+    Row(
+        modifier.height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.spacedBy(spacing),
     ) {
         items.forEachIndexed { index, item ->
-            val corners = connectedColumnCorners(index, items.size)
+            val corners = connectedRowCorners(index, items.size)
             val actionable = isActionable(
                 enabled = item.enabled,
                 hasClickAction = item.onClick != null,
@@ -119,6 +122,8 @@ public fun StylishConnectedListItemColumn(
             )
             Surface(
                 modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
                     .then(
                         if (actionable) {
                             Modifier
@@ -142,7 +147,7 @@ public fun StylishConnectedListItemColumn(
                         if (!item.enabled) disabled()
                     }
                     .connectedOutline(
-                        edges = connectedColumnEdges(index, items.size),
+                        edges = connectedRowEdges(index, items.size),
                         corners = corners,
                     ),
                 shape = connectedShape(corners),
@@ -190,27 +195,24 @@ public fun StylishConnectedListItemColumn(
     }
 }
 
-@Preview(name = "Connected list items", showBackground = true, widthDp = 393)
+@Preview(name = "Connected list item row", showBackground = true, widthDp = 393)
 @Composable
-private fun StylishConnectedListItemColumnPreview() {
+private fun StylishConnectedListItemRowPreview() {
     StylishTheme(darkTheme = false) {
         Surface(Modifier.padding(20.dp)) {
-            StylishConnectedListItemColumn(
+            StylishConnectedListItemRow(
                 listOf(
                     StylishConnectedListItem(
                         headline = "テーマ",
-                        supportingText = "システム設定を使用",
+                        supportingText = "システム",
                         onClick = {},
                         leadingContent = { Icon(Icons.Default.Palette, null) },
-                        trailingContent = {
-                            Icon(Icons.AutoMirrored.Filled.ArrowForward, null)
-                        },
                     ),
                     StylishConnectedListItem(
                         headline = "通知",
+                        supportingText = "オン",
                         onClick = {},
                         leadingContent = { Icon(Icons.Default.Notifications, null) },
-                        trailingContent = { Switch(true, {}) },
                     ),
                 ),
             )

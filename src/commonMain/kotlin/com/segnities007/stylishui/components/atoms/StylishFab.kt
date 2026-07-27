@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.tokens.StylishDimensions
+import com.segnities007.stylishui.theme.StylishTheme
 
+/** フローティングアクションボタン。円形の浮き上がりアイコンボタン。 */
 @Composable
-fun StylishFab(
+public fun StylishFab(
     imageVector: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
@@ -32,6 +33,7 @@ fun StylishFab(
     shape: Shape? = null,
     size: Dp = 56.dp,
     border: BorderStroke? = null,
+    iconContent: (@Composable () -> Unit)? = null,
 ) {
     Surface(
         modifier = modifier.size(size),
@@ -39,14 +41,14 @@ fun StylishFab(
         color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         border = border ?: BorderStroke(
-            StylishDimensions.outlineWidth,
+            StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,
         ),
-        tonalElevation = StylishDimensions.floatingElevation,
-        shadowElevation = StylishDimensions.floatingElevation,
+        tonalElevation = StylishTheme.dimensions.floatingElevation,
+        shadowElevation = StylishTheme.dimensions.floatingElevation,
     ) {
         IconButton(onClick = onClick, enabled = enabled) {
-            Icon(imageVector, contentDescription)
+            iconContent?.invoke() ?: Icon(imageVector, contentDescription)
         }
     }
 }

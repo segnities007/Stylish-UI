@@ -6,14 +6,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-private fun style(weight: FontWeight, size: Int, lineHeight: Int) = TextStyle(
+private fun style(weight: FontWeight, size: Int, lineHeight: Int): TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = weight,
     fontSize = size.sp,
     lineHeight = lineHeight.sp,
 )
 
-val StylishTypography = Typography(
+/** StylishUI 全体のタイポグラフィ定義。 */
+public val StylishTypography: Typography = Typography(
     displayLarge = style(FontWeight.Bold, 28, 36),
     displayMedium = style(FontWeight.Bold, 24, 32),
     displaySmall = style(FontWeight.Bold, 22, 28),

@@ -34,6 +34,9 @@ jobs:
       - name: Build and test
         run: ./gradlew check
 
+      - name: Check public ABI
+        run: ./gradlew apiCheck
+
       - name: Upload build reports
         uses: actions/upload-artifact@v4
         if: always()

@@ -18,31 +18,29 @@ import com.segnities007.stylishui.foundation.connectedRowCorners
 import com.segnities007.stylishui.foundation.connectedRowEdges
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** 横方向に連結したカード群。等幅セルで数値サマリーなどに使う。 */
 @Composable
-fun StylishConnectedCardRow(
+public fun StylishConnectedCardRow(
     items: List<StylishConnectedCardItem>,
     modifier: Modifier = Modifier,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
     Row(
         modifier.height(IntrinsicSize.Min),
         horizontalArrangement = Arrangement.spacedBy(spacing),
     ) {
         items.forEachIndexed { index, item ->
-            StylishConnectedCard(
-                title = item.title,
-                supportingText = item.supportingText,
-                onClick = item.onClick,
-                onLongClick = item.onLongClick,
-                modifier = Modifier
+            val corners = connectedRowCorners(index, items.size)
+            card(
+                item,
+                Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                shape = connectedShape(connectedRowCorners(index, items.size)),
-                outlineEdges = connectedRowEdges(index, items.size),
-                outlineCorners = connectedRowCorners(index, items.size),
-                trailingContent = item.trailingContent,
+                connectedShape(corners),
+                connectedRowEdges(index, items.size),
+                corners,
             )
         }
     }

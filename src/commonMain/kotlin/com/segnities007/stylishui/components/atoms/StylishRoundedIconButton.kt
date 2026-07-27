@@ -21,10 +21,11 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.tokens.StylishDimensions
+import com.segnities007.stylishui.theme.StylishTheme
 
+/** 角丸アイコンボタン。横長の角丸サーフェスにアイコンを配置。active 時はプライマリカラーに反転。 */
 @Composable
-fun StylishRoundedIconButton(
+public fun StylishRoundedIconButton(
     imageVector: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
@@ -36,6 +37,7 @@ fun StylishRoundedIconButton(
     shape: Shape? = null,
     minWidth: Dp = 80.dp,
     minHeight: Dp = 48.dp,
+    iconContent: (@Composable () -> Unit)? = null,
 ) {
     val resolvedContainerColor = containerColor ?: if (active) {
         MaterialTheme.colorScheme.primary
@@ -53,14 +55,14 @@ fun StylishRoundedIconButton(
         shape = shape ?: RoundedCornerShape(24.dp),
         color = resolvedContainerColor,
         border = BorderStroke(
-            StylishDimensions.outlineWidth,
+            StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,
         ),
-        shadowElevation = if (enabled) StylishDimensions.interactiveElevation else 0.dp,
+        shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         if (enabled) {
             IconButton(onClick = onClick) {
-                Icon(imageVector, contentDescription, tint = resolvedContentColor)
+                iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         } else {
             Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {

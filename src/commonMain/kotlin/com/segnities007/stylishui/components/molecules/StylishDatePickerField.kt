@@ -46,9 +46,10 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
     return Instant.fromEpochMilliseconds(this).toLocalDateTime(timeZone).date
 }
 
+/** テキストフィールドをタップすると Material3 DatePicker ダイアログが開く日付入力フィールド。 */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StylishDatePickerField(
+public fun StylishDatePickerField(
     value: LocalDate?,
     onValueChange: (LocalDate?) -> Unit,
     label: String,

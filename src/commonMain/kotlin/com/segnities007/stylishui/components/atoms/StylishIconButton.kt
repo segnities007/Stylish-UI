@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.tokens.StylishDimensions
+import com.segnities007.stylishui.theme.StylishTheme
 
+/** 円形アイコンボタン。アウトライン付きのサーフェスにアイコンを配置。active 時はプライマリカラーに反転。 */
 @Composable
-fun StylishIconButton(
+public fun StylishIconButton(
     imageVector: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
@@ -33,6 +34,7 @@ fun StylishIconButton(
     shape: Shape? = null,
     minWidth: Dp = 48.dp,
     minHeight: Dp = 48.dp,
+    iconContent: (@Composable () -> Unit)? = null,
 ) {
     val resolvedContainerColor = containerColor ?: if (active) {
         MaterialTheme.colorScheme.primary
@@ -50,13 +52,13 @@ fun StylishIconButton(
         shape = shape ?: CircleShape,
         color = resolvedContainerColor,
         border = BorderStroke(
-            StylishDimensions.outlineWidth,
+            StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,
         ),
-        shadowElevation = if (enabled) StylishDimensions.interactiveElevation else 0.dp,
+        shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         IconButton(onClick = onClick, enabled = enabled) {
-            Icon(imageVector, contentDescription, tint = resolvedContentColor)
+            iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
         }
     }
 }

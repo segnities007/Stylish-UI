@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.charts
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
+/** 整数を 3 桁区切りのカンマ付き文字列にフォーマットする。 */
 internal fun formatInteger(value: Int): String {
     val absValue = kotlin.math.abs(value)
     val sign = if (value < 0) "-" else ""
@@ -11,6 +12,7 @@ internal fun formatInteger(value: Int): String {
     return "$sign$grouped"
 }
 
+/** 浮動小数点数を万/k 単位のコンパクトな文字列にフォーマットする。 */
 internal fun formatCompact(value: Float): String {
     val absValue = kotlin.math.abs(value)
     return when {

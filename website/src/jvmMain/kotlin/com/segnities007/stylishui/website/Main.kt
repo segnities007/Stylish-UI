@@ -38,20 +38,20 @@ import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
+import com.segnities007.stylishui.components.atoms.StylishDialogSurface
+import com.segnities007.stylishui.components.atoms.StylishFormTextField
+import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
-import com.segnities007.stylishui.components.molecules.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.molecules.StylishDatePickerField
-import com.segnities007.stylishui.components.molecules.StylishDeleteConfirmDialog
-import com.segnities007.stylishui.components.molecules.StylishDialogActions
-import com.segnities007.stylishui.components.molecules.StylishDialogSurface
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
-import com.segnities007.stylishui.components.molecules.StylishFormTextField
+import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
+import com.segnities007.stylishui.components.organisms.StylishDeleteConfirmDialog
+import com.segnities007.stylishui.components.organisms.StylishDialogActions
 import com.segnities007.stylishui.components.patterns.StylishHeader
 import com.segnities007.stylishui.components.patterns.StylishPageContent
-import com.segnities007.stylishui.components.patterns.StylishSectionTitle
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.datetime.LocalDate
 

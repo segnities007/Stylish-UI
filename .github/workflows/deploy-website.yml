@@ -6,21 +6,18 @@ on:
       - main
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
   build:
-    name: Build Wasm website
+    name: Build site (gallery + API docs)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -38,13 +35,22 @@ jobs:
           validate-wrappers: true
           add-job-summary: 'on-failure'
 
-      - name: Build Wasm website
+      - name: Build Wasm gallery
         run: ./gradlew :website-wasm:wasmJsBrowserProductionWebpack
+
+      - name: Build Dokka API docs
+        run: ./gradlew dokkaGeneratePublicationHtml
+
+      - name: Assemble Pages artifact
+        run: |
+          mkdir -p _site/api
+          cp -r website-wasm/build/dist/wasmJs/productionExecutable/* _site/
+          cp -r build/dokka/html/* _site/api/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website-wasm/build/dist/wasmJs/productionExecutable
+          path: _site
 
   deploy:
     name: Deploy to GitHub Pages

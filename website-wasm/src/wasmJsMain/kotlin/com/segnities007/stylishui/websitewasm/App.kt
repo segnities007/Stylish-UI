@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +26,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishDialogSurface
 import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
+import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.charts.PieChartData
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
@@ -35,34 +40,42 @@ import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
+import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
+import com.segnities007.stylishui.components.molecules.StylishConnectedButtonGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
-import com.segnities007.stylishui.components.molecules.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.molecules.StylishDatePickerField
-import com.segnities007.stylishui.components.molecules.StylishDeleteConfirmDialog
-import com.segnities007.stylishui.components.molecules.StylishDialogActions
-import com.segnities007.stylishui.components.molecules.StylishDialogSurface
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
-import com.segnities007.stylishui.components.molecules.StylishFormTextField
+import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
+import com.segnities007.stylishui.components.organisms.StylishDeleteConfirmDialog
+import com.segnities007.stylishui.components.organisms.StylishDialogActions
 import com.segnities007.stylishui.components.patterns.StylishHeader
 import com.segnities007.stylishui.components.patterns.StylishPageContent
-import com.segnities007.stylishui.components.patterns.StylishSectionTitle
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.datetime.LocalDate
 
 @Composable
 fun App() {
-    StylishTheme(darkTheme = false) {
+    var darkTheme by remember { mutableStateOf(false) }
+    StylishTheme(darkTheme = darkTheme) {
         Surface(Modifier.fillMaxSize()) {
-            WebsiteContent()
+            WebsiteContent(
+                darkTheme = darkTheme,
+                onToggleTheme = { darkTheme = !darkTheme },
+            )
         }
     }
 }
 
 @Composable
-private fun WebsiteContent() {
+private fun WebsiteContent(
+    darkTheme: Boolean,
+    onToggleTheme: () -> Unit,
+) {
     StylishPageContent(
         header = {
             StylishHeader(
@@ -81,9 +94,9 @@ private fun WebsiteContent() {
                 },
                 actions = {
                     StylishIconButton(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
-                        onClick = {},
+                        imageVector = if (darkTheme) Icons.Default.LightMode else Icons.Default.DarkMode,
+                        contentDescription = if (darkTheme) "Switch to light mode" else "Switch to dark mode",
+                        onClick = onToggleTheme,
                     )
                     StylishRoundedIconButton(
                         imageVector = Icons.Default.Add,
@@ -95,6 +108,8 @@ private fun WebsiteContent() {
         },
     ) {
         item { HeroSection() }
+        item { Spacer(Modifier.height(24.dp)) }
+        item { GettingStartedSection() }
         item { Spacer(Modifier.height(24.dp)) }
         item { SegmentedSection() }
         item { Spacer(Modifier.height(24.dp)) }
@@ -111,6 +126,8 @@ private fun WebsiteContent() {
         item { FormSection() }
         item { Spacer(Modifier.height(24.dp)) }
         item { DialogSection() }
+        item { Spacer(Modifier.height(24.dp)) }
+        item { IconsSection() }
         item { Spacer(Modifier.height(32.dp)) }
         item { EmptyStateSection() }
         item { Spacer(Modifier.height(32.dp)) }
@@ -145,6 +162,48 @@ private fun HeroSection() {
 }
 
 @Composable
+private fun GettingStartedSection() {
+    StylishSectionTitle(title = "Getting Started")
+    Spacer(Modifier.height(12.dp))
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(
+            "Add the dependency to your build.gradle.kts:",
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceVariant,
+        ) {
+            Text(
+                text = "implementation(\"io.github.segnities007:stylish-ui:<version>\")",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp),
+            )
+        }
+        Text(
+            "Wrap your app with StylishTheme:",
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceVariant,
+        ) {
+            Column(Modifier.padding(16.dp)) {
+                Text("StylishTheme(darkTheme = false) {", style = MaterialTheme.typography.bodyMedium)
+                Text("    // your content", style = MaterialTheme.typography.bodyMedium)
+                Text("}", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+        Text(
+            "Components follow Atomic Design: atoms → molecules → organisms → patterns. " +
+                "See the API reference for full documentation.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
 private fun SegmentedSection() {
     StylishSectionTitle(title = "Segmented Control")
     Spacer(Modifier.height(12.dp))
@@ -164,6 +223,9 @@ private fun SegmentedSection() {
 private fun CardsSection() {
     StylishSectionTitle(title = "Connected Cards")
     Spacer(Modifier.height(12.dp))
+
+    Text("Grid", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
     StylishConnectedCardGrid(
         items = listOf(
             StylishConnectedCardItem(
@@ -178,27 +240,65 @@ private fun CardsSection() {
         ),
         columns = 2,
     )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Row", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedCardRow(
+        items = listOf(
+            StylishConnectedCardItem("12", "Records"),
+            StylishConnectedCardItem("3", "Favorites"),
+            StylishConnectedCardItem("8", "Notes"),
+        ),
+    )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Column", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedCardColumn(
+        items = listOf(
+            StylishConnectedCardItem("Today", "3 events", onClick = {}),
+            StylishConnectedCardItem("Tomorrow", "1 event", onClick = {}),
+        ),
+    )
 }
 
 @Composable
 private fun ButtonsSection() {
     StylishSectionTitle(title = "Connected Buttons")
     Spacer(Modifier.height(12.dp))
+
+    Text("Row", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
     StylishConnectedButtonRow(
         items = listOf(
             StylishConnectedButtonItem(onClick = {}) { Text("Primary") },
             StylishConnectedButtonItem(onClick = {}) { Text("Secondary") },
         ),
     )
+
     Spacer(Modifier.height(16.dp))
-    StylishConnectedButtonRow(
+    Text("Column", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedButtonColumn(
         items = listOf(
-            StylishConnectedButtonItem(
-                onClick = {},
-                enabled = false,
-            ) { Text("Disabled") },
-            StylishConnectedButtonItem(onClick = {}) { Text("Enabled") },
+            StylishConnectedButtonItem(onClick = {}) { Text("First") },
+            StylishConnectedButtonItem(onClick = {}) { Text("Second") },
+            StylishConnectedButtonItem(onClick = {}, enabled = false) { Text("Disabled") },
         ),
+    )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Grid", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedButtonGrid(
+        items = listOf(
+            StylishConnectedButtonItem(onClick = {}) { Text("A") },
+            StylishConnectedButtonItem(onClick = {}) { Text("B") },
+            StylishConnectedButtonItem(onClick = {}) { Text("C") },
+            StylishConnectedButtonItem(onClick = {}) { Text("D") },
+        ),
+        columns = 2,
     )
 }
 
@@ -206,9 +306,12 @@ private fun ButtonsSection() {
 private fun ChipsSection() {
     StylishSectionTitle(title = "Connected Chips")
     Spacer(Modifier.height(12.dp))
+    var selectedIndex by remember { mutableStateOf(0) }
     StylishConnectedChipRow(
         items = listOf(
-            StylishConnectedChipItem("Selected", {}, selected = true),
+            StylishConnectedChipItem("All", selected = selectedIndex == 0),
+            StylishConnectedChipItem("Fuel", selected = selectedIndex == 1),
+            StylishConnectedChipItem("Maintenance", selected = selectedIndex == 2),
             StylishConnectedChipItem("Read only"),
         ),
     )
@@ -221,6 +324,7 @@ private fun ListSection() {
     StylishConnectedListItemColumn(
         items = listOf(
             StylishConnectedListItem("Actionable item", onClick = {}),
+            StylishConnectedListItem("With supporting text", supportingText = "This has a description"),
             StylishConnectedListItem("Read-only item"),
             StylishConnectedListItem("Disabled item", enabled = false),
         ),
@@ -247,7 +351,11 @@ private fun ChartSection() {
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Pie chart", style = MaterialTheme.typography.titleMedium)
-            Text("Simple pie chart from commonMain, works on all targets including Web.")
+            Text(
+                "Simple pie chart from commonMain, works on all targets including Web.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }
@@ -318,6 +426,54 @@ private fun DialogSection() {
             StylishConnectedButtonItem(onClick = { showDeleteDialog = true }) { Text("Show delete dialog") },
         ),
     )
+}
+
+@Composable
+private fun IconsSection() {
+    StylishSectionTitle(title = "Icon Buttons")
+    Spacer(Modifier.height(12.dp))
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            StylishIconButton(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search",
+                onClick = {},
+            )
+            Spacer(Modifier.height(4.dp))
+            Text("IconButton", style = MaterialTheme.typography.labelSmall)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            StylishIconButton(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search active",
+                active = true,
+                onClick = {},
+            )
+            Spacer(Modifier.height(4.dp))
+            Text("Active", style = MaterialTheme.typography.labelSmall)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            StylishRoundedIconButton(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add",
+                onClick = {},
+            )
+            Spacer(Modifier.height(4.dp))
+            Text("Rounded", style = MaterialTheme.typography.labelSmall)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            StylishFab(
+                imageVector = Icons.Default.Add,
+                contentDescription = "FAB",
+                onClick = {},
+            )
+            Spacer(Modifier.height(4.dp))
+            Text("FAB", style = MaterialTheme.typography.labelSmall)
+        }
+    }
 }
 
 @Composable

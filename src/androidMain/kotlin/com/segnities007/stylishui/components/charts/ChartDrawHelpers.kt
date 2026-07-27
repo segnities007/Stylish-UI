@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 /**
  * 上部2隅のみ角丸の矩形を描画する（積み上げ棒グラフの最上段用）。
  */
-fun DrawScope.drawTopRoundedRect(
+public fun DrawScope.drawTopRoundedRect(
     color: Color,
     left: Float,
     top: Float,

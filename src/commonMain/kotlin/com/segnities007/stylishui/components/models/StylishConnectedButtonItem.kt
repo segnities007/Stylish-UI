@@ -5,8 +5,9 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 
+/** Connected button layout の各ボタンを表現する不変データ。 */
 @Immutable
-data class StylishConnectedButtonItem(
+public data class StylishConnectedButtonItem(
     val onClick: (() -> Unit)? = null,
     val enabled: Boolean = true,
     val colors: ButtonColors? = null,

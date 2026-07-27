@@ -14,14 +14,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.stylishChartColors
 
-data class PieChartData(
+/** 円グラフの各スライス（ラベル・値・色）を表現するデータ。 */
+public data class PieChartData(
     val label: String,
     val value: Float,
     val color: Color,
 )
 
+/** ドーナツ型のシンプルな円グラフを描画する Composable。 */
 @Composable
-fun SimplePieChart(
+public fun SimplePieChart(
     data: List<PieChartData>,
     contentDescriptionPrefix: String,
     modifier: Modifier = Modifier,
@@ -72,8 +74,9 @@ fun SimplePieChart(
     }
 }
 
+/** テーマのカテゴリカルカラーパレットからインデックス対応の色を返す。 */
 @Composable
-fun stylishChartColor(index: Int): Color {
+public fun stylishChartColor(index: Int): Color {
     val colors = MaterialTheme.stylishChartColors.categorical
     return colors[index % colors.size]
 }

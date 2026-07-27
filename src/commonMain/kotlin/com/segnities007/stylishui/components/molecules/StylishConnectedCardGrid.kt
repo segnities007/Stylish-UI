@@ -20,14 +20,15 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedGridCorners
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** グリッド状に連結したカード群。等幅セルで統計ダッシュボードなどに使う。 */
 @Composable
-fun StylishConnectedCardGrid(
+public fun StylishConnectedCardGrid(
     items: List<StylishConnectedCardItem>,
     columns: Int,
     modifier: Modifier = Modifier,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
     require(columns > 0) { "columns must be greater than zero" }
     Column(
@@ -44,20 +45,14 @@ fun StylishConnectedCardGrid(
                     rowItems.forEachIndexed { columnIndex, item ->
                         val index = rowIndex * columns + columnIndex
                         val corners = connectedGridCorners(index, items.size, columns)
-                        StylishConnectedCard(
-                            title = item.title,
-                            supportingText = item.supportingText,
-                            onClick = item.onClick,
-                            onLongClick = item.onLongClick,
-                            modifier = Modifier
+                        card(
+                            item,
+                            Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                            shape = connectedShape(
-                                corners,
-                            ),
-                            outlineEdges = ConnectedEdges.All,
-                            outlineCorners = corners,
-                            trailingContent = item.trailingContent,
+                            connectedShape(corners),
+                            ConnectedEdges.All,
+                            corners,
                         )
                     }
                     if (isFullRow) {

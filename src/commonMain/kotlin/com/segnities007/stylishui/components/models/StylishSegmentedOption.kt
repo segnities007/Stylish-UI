@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 
+/** Segmented button の各選択肢を表現する不変データ。 */
 @Immutable
-data class StylishSegmentedOption<T>(
+public data class StylishSegmentedOption<T>(
     val value: T,
     val label: String,
     val leadingContent: (@Composable RowScope.() -> Unit)? = null,

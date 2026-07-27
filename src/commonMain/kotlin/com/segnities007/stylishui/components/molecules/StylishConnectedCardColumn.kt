@@ -15,28 +15,27 @@ import com.segnities007.stylishui.foundation.connectedColumnCorners
 import com.segnities007.stylishui.foundation.connectedColumnEdges
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** 縦方向に連結したカード群。設定画面のグループ化セクションなどに使う。 */
 @Composable
-fun StylishConnectedCardColumn(
+public fun StylishConnectedCardColumn(
     items: List<StylishConnectedCardItem>,
     modifier: Modifier = Modifier,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
     Column(
         modifier,
         verticalArrangement = Arrangement.spacedBy(spacing),
     ) {
         items.forEachIndexed { index, item ->
-            StylishConnectedCard(
-                title = item.title,
-                supportingText = item.supportingText,
-                onClick = item.onClick,
-                onLongClick = item.onLongClick,
-                shape = connectedShape(connectedColumnCorners(index, items.size)),
-                outlineEdges = connectedColumnEdges(index, items.size),
-                outlineCorners = connectedColumnCorners(index, items.size),
-                trailingContent = item.trailingContent,
+            val corners = connectedColumnCorners(index, items.size)
+            card(
+                item,
+                Modifier,
+                connectedShape(corners),
+                connectedColumnEdges(index, items.size),
+                corners,
             )
         }
     }

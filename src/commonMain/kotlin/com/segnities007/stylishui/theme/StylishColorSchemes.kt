@@ -1,9 +1,11 @@
 package com.segnities007.stylishui.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
-val StylishLightColorScheme = lightColorScheme(
+/** StylishUI のライトテーマ用 [ColorScheme]。 */
+public val StylishLightColorScheme: ColorScheme = lightColorScheme(
     primary = StylishPalette.Ink,
     onPrimary = StylishPalette.PureSurface,
     primaryContainer = StylishPalette.LightPrimaryContainer,
@@ -39,7 +41,8 @@ val StylishLightColorScheme = lightColorScheme(
     scrim = StylishPalette.Scrim,
 )
 
-val StylishDarkColorScheme = darkColorScheme(
+/** StylishUI のダークテーマ用 [ColorScheme]。 */
+public val StylishDarkColorScheme: ColorScheme = darkColorScheme(
     primary = StylishPalette.DarkInk,
     onPrimary = StylishPalette.DarkPaper,
     primaryContainer = StylishPalette.DarkPrimaryContainer,

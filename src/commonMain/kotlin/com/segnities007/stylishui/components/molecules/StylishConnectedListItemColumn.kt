@@ -39,14 +39,14 @@ import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.StylishDimensions
 
+/** 縦方向に連結したリストアイテム群。設定画面のグループ化セクションなどに使う。 */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StylishConnectedListItemColumn(
+public fun StylishConnectedListItemColumn(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
-    spacing: Dp = StylishDimensions.connectedSpacing,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     headlineMaxLines: Int = Int.MAX_VALUE,
     headlineOverflow: TextOverflow = TextOverflow.Ellipsis,
     headlineStyle: TextStyle = MaterialTheme.typography.titleMedium,
@@ -103,7 +103,7 @@ fun StylishConnectedListItemColumn(
                 color = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
                 contentColor = contentColor ?: if (item.enabled) MaterialTheme.colorScheme.onSurface
                 else MaterialTheme.colorScheme.onSurfaceVariant,
-                shadowElevation = if (actionable) StylishDimensions.interactiveElevation else 0.dp,
+                shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
             ) {
                 Row(
                     Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),

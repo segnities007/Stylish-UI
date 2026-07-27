@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.theme.StylishTheme
 
+/** セクション見出しと折れ線グラフを組み合わせたパターン。 */
 @Composable
-fun LineChartSection(
+public fun LineChartSection(
     title: String,
     data: List<LineChartData>,
     contentDescriptionPrefix: String,

@@ -28,7 +28,33 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** ダイアログサーフェス。スケール・フェードアニメーション付きのダイアログ用コンテナ。 */
+/**
+ * A modal dialog container that enters with a combined scale-and-fade
+ * animation. Wraps content in a full-width [Card] inside a platform
+ * [Dialog] with [DialogProperties.usePlatformDefaultWidth] disabled,
+ * so the surface stretches to the available width minus
+ * [horizontalPadding].
+ *
+ * The entrance animation scales from 92 % to 100 % over 200 ms with
+ * a quadratic ease-in, while alpha fades from 0 to 1 over 180 ms.
+ * Set [animate] to `false` to skip the animation entirely (e.g.
+ * during UI tests or when the caller manages its own transition).
+ *
+ * @param onDismiss Called when the user taps outside the dialog or
+ *   presses the system back button.
+ * @param animate When `true` (default), the dialog plays the
+ *   scale-and-fade entrance animation. When `false`, the dialog
+ *   appears immediately with no transition.
+ * @param shape Shape of the card surface. Defaults to
+ *   `RoundedCornerShape` with
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ * @param containerColor Background color of the card. Defaults to
+ *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ * @param horizontalPadding Horizontal margin between the dialog edges
+ *   and the screen edges. Defaults to 16 dp.
+ * @param content Content rendered inside the card's [ColumnScope].
+ *   Callers are responsible for their own internal padding.
+ */
 @Composable
 public fun StylishDialogSurface(
     onDismiss: () -> Unit,

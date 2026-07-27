@@ -6,7 +6,29 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
-/** 連結コンポーネントの各角が外側（大半径）かどうかを表すデータ。 */
+/**
+ * Describes which corners of a Connected UI item are *outer* corners (large radius) versus
+ * *inner/joined* corners (small radius).
+ *
+ * In the Connected UI layout system, items are arranged edge-to-edge with a narrow gap. Corners
+ * that face the exterior of the group use [StylishDimensions.connectedCornerRadius] (default
+ * 12 dp), while corners that face an adjacent item use [StylishDimensions.joinedCornerRadius]
+ * (default 2 dp). This creates the visual "notch" effect where items interlock.
+ *
+ * The coordinate system follows Compose layout conventions: `topStart` is the top-left corner
+ * in LTR layouts (top-right in RTL), `topEnd` is top-right in LTR, and so on.
+ *
+ * Compute instances with [connectedColumnCorners], [connectedRowCorners], or
+ * [connectedGridCorners], then pass to [connectedShape] and
+ * [com.segnities007.stylishui.foundation.connectedOutline].
+ *
+ * @property topStart Whether the top-start corner is an outer (large-radius) corner.
+ * @property topEnd Whether the top-end corner is an outer (large-radius) corner.
+ * @property bottomStart Whether the bottom-start corner is an outer (large-radius) corner.
+ * @property bottomEnd Whether the bottom-end corner is an outer (large-radius) corner.
+ * @see ConnectedEdges
+ * @see connectedShape
+ */
 @Immutable
 public data class ConnectedCorners(
     public val topStart: Boolean = false,
@@ -14,14 +36,34 @@ public data class ConnectedCorners(
     public val bottomStart: Boolean = false,
     public val bottomEnd: Boolean = false,
 ) {
-    /** 単独配置時の既定角定義。 */
     public companion object {
-        /** 全角が外側角のインスタンス。 */
+        /**
+         * A [ConnectedCorners] with all four corners marked as outer corners.
+         *
+         * Use for a standalone item that has no neighbors — every corner receives the large
+         * [StylishDimensions.connectedCornerRadius].
+         */
         public val Standalone: ConnectedCorners = ConnectedCorners(true, true, true, true)
     }
 }
 
-/** 連結コンポーネントの各辺に境界線を描画するかどうかを表すデータ。 */
+/**
+ * Describes which edges of a Connected UI item should have an outline border drawn.
+ *
+ * Each boolean corresponds to one side of the item's bounding box. When an edge is `false`,
+ * [com.segnities007.stylishui.foundation.connectedOutline] skips drawing that segment, allowing
+ * adjacent items to share a seamless boundary without doubled strokes.
+ *
+ * The naming follows Compose layout direction: `start` is left in LTR (right in RTL), `end`
+ * is right in LTR.
+ *
+ * @property top Whether to draw the top edge.
+ * @property end Whether to draw the end (trailing) edge.
+ * @property bottom Whether to draw the bottom edge.
+ * @property start Whether to draw the start (leading) edge.
+ * @see ConnectedCorners
+ * @see com.segnities007.stylishui.foundation.connectedOutline
+ */
 @Immutable
 public data class ConnectedEdges(
     public val top: Boolean,
@@ -29,14 +71,35 @@ public data class ConnectedEdges(
     public val bottom: Boolean,
     public val start: Boolean,
 ) {
-    /** 全辺に境界線を描画する既定定義。 */
     public companion object {
-        /** 全辺が有効なインスタンス。 */
+        /**
+         * A [ConnectedEdges] with all four edges enabled.
+         *
+         * Use for standalone items or when every side of the item should display a border.
+         */
         public val All: ConnectedEdges = ConnectedEdges(true, true, true, true)
     }
 }
 
-/** [corners] に基づいて連結コンポーネント用の [Shape] を生成する。 */
+/**
+ * Builds a [RoundedCornerShape] for a Connected UI item based on its [corners] configuration.
+ *
+ * Each corner flagged as outer in [corners] receives [cornerRadius] (the large outer radius);
+ * all other corners receive [joinedCornerRadius] (the small junction radius). The resulting
+ * shape clips the item's background and content so that outer corners are smoothly rounded
+ * while inner corners form tight notches against neighboring items.
+ *
+ * @param corners Which corners are outer (large-radius) versus joined (small-radius).
+ * @param cornerRadius The radius for outer corners. Defaults to
+ *   [DefaultStylishDimensions.connectedCornerRadius] (12 dp).
+ * @param joinedCornerRadius The radius for inner/joined corners. Defaults to
+ *   [DefaultStylishDimensions.joinedCornerRadius] (2 dp).
+ * @return A [Shape] suitable for use with `Modifier.clip()` or `Modifier.background()`.
+ * @see ConnectedCorners
+ * @see connectedColumnCorners
+ * @see connectedRowCorners
+ * @see connectedGridCorners
+ */
 public fun connectedShape(
     corners: ConnectedCorners,
     cornerRadius: Dp = DefaultStylishDimensions.connectedCornerRadius,
@@ -48,7 +111,19 @@ public fun connectedShape(
     bottomEnd = if (corners.bottomEnd) cornerRadius else joinedCornerRadius,
 )
 
-/** 縦方向リストの [index] 番目における外側角を計算する。 */
+/**
+ * Computes the outer corners for the item at [index] in a vertical (column) Connected UI list.
+ *
+ * In a vertical arrangement, only the first item has outer top corners and only the last item
+ * has outer bottom corners; all middle items have only joined corners. A single-item list
+ * produces [ConnectedCorners.Standalone].
+ *
+ * @param index Zero-based position of the item within the list.
+ * @param size Total number of items in the list. Must be greater than zero.
+ * @return The [ConnectedCorners] describing which corners face the exterior.
+ * @see connectedShape
+ * @see connectedColumnEdges
+ */
 public fun connectedColumnCorners(index: Int, size: Int): ConnectedCorners = ConnectedCorners(
     topStart = index == 0,
     topEnd = index == 0,
@@ -56,7 +131,18 @@ public fun connectedColumnCorners(index: Int, size: Int): ConnectedCorners = Con
     bottomEnd = index == size - 1,
 )
 
-/** 横方向リストの [index] 番目における外側角を計算する。 */
+/**
+ * Computes the outer corners for the item at [index] in a horizontal (row) Connected UI list.
+ *
+ * In a horizontal arrangement, only the first item has outer start-side corners (topStart and
+ * bottomStart) and only the last item has outer end-side corners (topEnd and bottomEnd).
+ *
+ * @param index Zero-based position of the item within the row.
+ * @param size Total number of items in the row. Must be greater than zero.
+ * @return The [ConnectedCorners] describing which corners face the exterior.
+ * @see connectedShape
+ * @see connectedRowEdges
+ */
 public fun connectedRowCorners(index: Int, size: Int): ConnectedCorners = ConnectedCorners(
     topStart = index == 0,
     bottomStart = index == 0,
@@ -64,7 +150,25 @@ public fun connectedRowCorners(index: Int, size: Int): ConnectedCorners = Connec
     bottomEnd = index == size - 1,
 )
 
-/** グリッド配置の [index] 番目における外側角を隣接関係から計算する。 */
+/**
+ * Computes the outer corners for the item at [index] in a grid-based Connected UI layout.
+ *
+ * The grid is filled row-major with [columns] items per row. A corner is marked as outer only
+ * when the item has no neighbor in the two directions that meet at that corner. For example,
+ * `topStart` is outer when there is no item above *and* no item to the left. The last row may
+ * be partially filled; the function accounts for this by checking actual item existence rather
+ * than assuming a full rectangular grid.
+ *
+ * @param index Zero-based position of the item in row-major order.
+ * @param size Total number of items in the grid. Must be greater than zero.
+ * @param columns Number of columns in the grid layout.
+ * @return The [ConnectedCorners] describing which corners face the exterior.
+ * @throws IllegalArgumentException if [columns] is not greater than zero, or if [index] is
+ *   outside the range `0 until size`.
+ * @see connectedShape
+ * @see connectedColumnCorners
+ * @see connectedRowCorners
+ */
 public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedCorners {
     require(columns > 0) { "columns must be greater than zero" }
     require(index in 0 until size) { "index must reference an existing item" }
@@ -96,13 +200,39 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
     )
 }
 
-/** 横方向リストの [index] 番目における描画辺を返す。 */
+/**
+ * Returns the outline edges for the item at [index] in a horizontal (row) Connected UI list.
+ *
+ * Currently all items draw all four edges ([ConnectedEdges.All]); the [index] and [size]
+ * parameters are validated and reserved for future edge-suppression logic (e.g. hiding shared
+ * internal borders between adjacent items).
+ *
+ * @param index Zero-based position of the item within the row.
+ * @param size Total number of items in the row.
+ * @return The [ConnectedEdges] indicating which sides to outline.
+ * @throws IllegalArgumentException if [index] is outside the range `0 until size`.
+ * @see connectedRowCorners
+ * @see com.segnities007.stylishui.foundation.connectedOutline
+ */
 public fun connectedRowEdges(index: Int, size: Int): ConnectedEdges {
     require(index in 0 until size)
     return ConnectedEdges.All
 }
 
-/** 縦方向リストの [index] 番目における描画辺を返す。 */
+/**
+ * Returns the outline edges for the item at [index] in a vertical (column) Connected UI list.
+ *
+ * Currently all items draw all four edges ([ConnectedEdges.All]); the [index] and [size]
+ * parameters are validated and reserved for future edge-suppression logic (e.g. hiding shared
+ * internal borders between adjacent items).
+ *
+ * @param index Zero-based position of the item within the column.
+ * @param size Total number of items in the column.
+ * @return The [ConnectedEdges] indicating which sides to outline.
+ * @throws IllegalArgumentException if [index] is outside the range `0 until size`.
+ * @see connectedColumnCorners
+ * @see com.segnities007.stylishui.foundation.connectedOutline
+ */
 public fun connectedColumnEdges(index: Int, size: Int): ConnectedEdges {
     require(index in 0 until size)
     return ConnectedEdges.All

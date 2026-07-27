@@ -15,7 +15,28 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** セクションの見出し。プライマリカラーの中見出しテキスト。 */
+/**
+ * A section heading label rendered in the primary color. Provides
+ * consistent typography and vertical rhythm for group headers within
+ * lists, forms, and detail screens.
+ *
+ * The text is padded vertically by [verticalPadding] to create
+ * breathing room between the preceding section's content and the
+ * next section's body. When [maxLines] is reached, [overflow]
+ * controls how the excess text is handled.
+ *
+ * @param title Heading text to display.
+ * @param maxLines Maximum number of visible lines. Defaults to
+ *   [Int.MAX_VALUE] (unlimited).
+ * @param overflow Strategy applied when text exceeds [maxLines].
+ *   Defaults to [TextOverflow.Ellipsis].
+ * @param textStyle Typography for the heading. Defaults to
+ *   `MaterialTheme.typography.titleMedium`.
+ * @param color Text color. Defaults to
+ *   `MaterialTheme.colorScheme.primary`.
+ * @param verticalPadding Symmetric vertical padding applied above
+ *   and below the text. Defaults to 20 dp.
+ */
 @Composable
 public fun StylishSectionTitle(
     title: String,

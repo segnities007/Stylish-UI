@@ -24,7 +24,38 @@ import com.segnities007.stylishui.components.models.StylishSegmentedOption
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 連結型のセグメントコントロール。選択肢が少なく排他的な切り替えに使う。 */
+/**
+ * A connected segmented control for mutually exclusive selection among a
+ * small set of options.
+ *
+ * Renders a horizontally joined row of segment buttons where exactly one
+ * segment is visually highlighted at a time. Use this when the user must
+ * pick one mode or view from two-to-five alternatives (e.g. list vs. grid).
+ * Internally composes [StylishConnectedButtonRow] and maps each
+ * [StylishSegmentedOption] to a [StylishConnectedButtonItem].
+ *
+ * @param options The selectable segments. Each [StylishSegmentedOption]
+ *   carries a [value], a display [label], and an optional [leadingContent]
+ *   icon slot rendered before the label.
+ * @param selectedValue The currently selected value. The segment whose
+ *   [StylishSegmentedOption.value] equals this is rendered with
+ *   [selectedColors].
+ * @param onSelected Callback invoked with the tapped segment's value.
+ * @param labelMaxLines Maximum lines for each segment label. Defaults to 1.
+ * @param labelOverflow [TextOverflow] strategy when a label exceeds
+ *   [labelMaxLines]. Defaults to [TextOverflow.Ellipsis].
+ * @param selectedColors [ButtonColors] applied to the active segment.
+ *   Defaults to [MaterialTheme.colorScheme.primary] container with
+ *   [MaterialTheme.colorScheme.onPrimary] content.
+ * @param defaultColors [ButtonColors] applied to inactive segments.
+ *   Defaults to [MaterialTheme.stylishComponentColors.groupedContainer]
+ *   container with [MaterialTheme.colorScheme.onSurface] content.
+ * @param spacing Horizontal gap between joined segments. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (typically 3.dp).
+ *
+ * @see StylishConnectedButtonRow
+ * @see StylishSegmentedOption
+ */
 @Composable
 public fun <T> StylishConnectedSegmentedControl(
     options: List<StylishSegmentedOption<T>>,

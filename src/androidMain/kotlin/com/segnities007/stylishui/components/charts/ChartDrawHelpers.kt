@@ -5,7 +5,29 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 
 /**
- * 上部2隅のみ角丸の矩形を描画する（積み上げ棒グラフの最上段用）。
+ * Draws a rectangle whose only the top-left and top-right corners are
+ * rounded, leaving the bottom edge square.
+ *
+ * This is used by [SimpleBarChart] to cap the topmost non-zero segment of
+ * a stacked bar so the stack as a whole appears to have rounded top corners
+ * while internal segment boundaries remain flush.
+ *
+ * The effective radius is clamped to half the width and to the full height,
+ * preventing visual artifacts when the segment is very short or narrow.
+ * If either [width] or [height] is non-positive the call is a no-op.
+ *
+ * **Platform:** Android only (androidMain), though the implementation uses
+ * only Compose Multiplatform drawing APIs.
+ *
+ * @param color Fill color of the rectangle.
+ * @param left X coordinate of the rectangle's left edge in pixels.
+ * @param top Y coordinate of the rectangle's top edge in pixels.
+ * @param width Rectangle width in pixels.
+ * @param height Rectangle height in pixels.
+ * @param radius Desired corner radius in pixels; clamped internally to
+ *   `min(radius, height, width / 2)`.
+ * @see SimpleBarChart
+ * @see BarChartSegment
  */
 public fun DrawScope.drawTopRoundedRect(
     color: Color,

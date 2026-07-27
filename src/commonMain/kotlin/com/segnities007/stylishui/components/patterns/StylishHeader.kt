@@ -27,7 +27,49 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** ページ上部のフローティングヘッダー。ナビゲーション・タイトル・アクションを配置する。 */
+/**
+ * A floating page header that hosts navigation, title, and action slots.
+ *
+ * Renders a rounded, elevated [Surface] bar pinned to the top of the
+ * page with automatic status-bar inset padding. The [title] slot is
+ * centered and tagged with [heading] semantics; [navigation] aligns to
+ * the start edge and [actions] to the end edge. Typically placed inside
+ * the `header` slot of [StylishPageContent] or the `topBar` slot of
+ * [StylishScaffold].
+ *
+ * @param title Composable rendered at the horizontal center of the bar,
+ *   usually a [Text] with the page title. Wrapped in a semantics
+ *   [heading] node for accessibility.
+ * @param navigation Optional composable rendered at the start (leading)
+ *   edge, typically a [StylishIconButton] for back or drawer navigation.
+ *   When null, no leading content is shown.
+ * @param actions Optional composable rendered at the end (trailing) edge,
+ *   typically one or more [StylishIconButton]s for search, settings, etc.
+ *   When null, no trailing content is shown.
+ * @param shape Corner shape of the header surface. Defaults to
+ *   [RoundedCornerShape] with 28.dp radius, matching the floating
+ *   aesthetic.
+ * @param containerColor Background color of the header surface. Defaults
+ *   to [MaterialTheme.colorScheme.surfaceContainerHigh].
+ * @param contentColor Default content color propagated to child
+ *   composables. Defaults to [MaterialTheme.colorScheme.onSurface].
+ * @param border Optional [BorderStroke] drawn around the surface.
+ *   Defaults to a stroke of [StylishTheme.dimensions.outlineWidth]
+ *   (typically 0.4.dp) in
+ *   [MaterialTheme.colorScheme.outlineVariant]. Pass null to remove.
+ * @param tonalElevation Tonal elevation of the surface. Defaults to 4.dp.
+ * @param shadowElevation Drop-shadow elevation of the surface. Defaults
+ *   to [StylishTheme.dimensions.floatingElevation] (typically 2.dp).
+ * @param height Fixed height of the inner content area. Defaults to 56.dp
+ *   (standard app-bar height).
+ * @param topPadding Space above the surface, after status-bar insets.
+ *   Defaults to 8.dp.
+ * @param bottomPadding Space below the surface, separating it from page
+ *   content. Defaults to 16.dp.
+ *
+ * @see StylishScaffold
+ * @see StylishPageContent
+ */
 @Composable
 public fun StylishHeader(
     modifier: Modifier = Modifier,

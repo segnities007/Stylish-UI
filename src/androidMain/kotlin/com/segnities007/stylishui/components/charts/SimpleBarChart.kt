@@ -21,21 +21,89 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/** 積み上げ棒グラフの1区間。value と色。 */
+/**
+ * A single segment within a stacked bar, representing one sub-category's
+ * contribution to the bar's total height.
+ *
+ * Segments are drawn bottom-to-top in list order. Only the topmost non-zero
+ * segment receives rounded top corners; all others are drawn as plain
+ * rectangles so the stack appears seamless.
+ *
+ * @property value Numeric magnitude of this segment. Its rendered height is
+ *   proportional to `value / chartMaxValue`. Must be non-negative.
+ * @property color Fill color for this segment's rectangle. Typically
+ *   obtained from [stylishChartColor] for palette consistency.
+ * @see BarChartData
+ * @see SimpleBarChart
+ */
 public data class BarChartSegment(
     val value: Float,
     val color: Color,
 )
 
-/** 棒グラフの1カテゴリ。ラベル・合計値・任意の積み上げ内訳。 */
+/**
+ * Data for a single bar (category) in a [SimpleBarChart].
+ *
+ * When [segments] is empty the bar is drawn as a single solid rectangle
+ * using the chart-level `barColor`. When segments are provided the bar
+ * becomes a stacked bar whose total visual height still corresponds to
+ * [value]; each segment is drawn in its own color.
+ *
+ * @property label Category name rendered below the bar on the X axis and
+ *   included in the accessibility description.
+ * @property value Total magnitude that determines the bar's height relative
+ *   to the chart's maximum value.
+ * @property segments Optional stacked sub-divisions. When non-empty, each
+ *   [BarChartSegment] is drawn in order from the base upward. Defaults to
+ *   an empty list (single-color bar).
+ * @see BarChartSegment
+ * @see SimpleBarChart
+ */
 public data class BarChartData(
     val label: String,
     val value: Float,
-    /** カテゴリ別の内訳。空の場合は単色の棒として描画する。 */
     val segments: List<BarChartSegment> = emptyList(),
 )
 
-/** 積み上げ対応の棒グラフ。Canvas 描画で軽量にレンダリングする。 */
+/**
+ * A vertical bar chart with optional stacked segments, rendered on a
+ * Compose [Canvas] for lightweight, dependency-free drawing.
+ *
+ * Each [BarChartData] entry produces one bar whose height is proportional
+ * to its value relative to the dataset maximum. Horizontal grid lines with
+ * compact axis labels (via [formatCompact]) are drawn on the left. When
+ * [data] is empty, [emptyLabel] is centered in the chart area.
+ *
+ * Bars support two modes:
+ * - **Single-color** — when `BarChartData.segments` is empty, the bar is
+ *   filled with [barColor] and given rounded top corners ([topRadius]).
+ * - **Stacked** — when segments are present, each is drawn in its own
+ *   color; only the topmost non-zero segment is rounded.
+ *
+ * **Platform:** Android only (androidMain). Uses `android.graphics.Paint`
+ * for text rendering.
+ *
+ * @param data The categories to render as bars.
+ * @param contentDescriptionPrefix Leading text for the combined accessibility
+ *   description (e.g. "Monthly expenses").
+ * @param emptyLabel Text displayed at the chart center when [data] is empty.
+ * @param modifier Modifier applied to the outer [Canvas].
+ * @param barColor Fill color for single-color (non-stacked) bars. Defaults
+ *   to `MaterialTheme.colorScheme.primary`.
+ * @param gridColor Color of horizontal grid lines. Defaults to
+ *   `MaterialTheme.colorScheme.outlineVariant`.
+ * @param chartHeight Total height of the chart area. Defaults to 180 dp.
+ * @param topRadius Corner radius applied to the top of each bar (or the
+ *   topmost segment in stacked mode). Defaults to 4 dp.
+ * @param labelTextSize Text size for axis and category labels. Defaults to
+ *   10 dp.
+ * @param gridLineCount Number of horizontal grid lines including the
+ *   baseline. Defaults to 4.
+ * @see BarChartData
+ * @see BarChartSegment
+ * @see SimplePieChart
+ * @see SimpleLineChart
+ */
 @Composable
 public fun SimpleBarChart(
     data: List<BarChartData>,

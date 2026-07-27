@@ -24,7 +24,48 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** リストが空のときのプレースホルダー。アイコン・見出し・説明・任意のアクション。 */
+/**
+ * A full-size placeholder displayed when a list or content area has no data,
+ * presenting an icon, title, description, and an optional call-to-action.
+ *
+ * The component fills the available space and centers its children
+ * vertically and horizontally. By default the [icon] vector is rendered with
+ * [iconTint]; supply [iconContent] to replace it with arbitrary composable
+ * content. Similarly, the action area renders a [TextButton] with
+ * [actionLabel] when both [actionLabel] and [onAction] are non-null, or the
+ * custom [action] composable when provided. If neither action parameter is
+ * set, no action area is shown.
+ *
+ * @param icon The [ImageVector] displayed above the title. Ignored when
+ *   [iconContent] is provided.
+ * @param title The headline text describing the empty state.
+ * @param description The explanatory text shown below the title.
+ * @param actionLabel The label for the optional call-to-action button. When
+ *   `null` (or when [onAction] is `null`), no default button is rendered.
+ * @param onAction The callback invoked when the default action button is
+ *   clicked. When `null`, no default button is rendered even if [actionLabel]
+ *   is set.
+ * @param titleMaxLines Maximum number of lines for the title. Defaults to
+ *   [Int.MAX_VALUE] (unlimited).
+ * @param titleOverflow The [TextOverflow] strategy for the title. Defaults to
+ *   [TextOverflow.Ellipsis].
+ * @param titleStyle The [TextStyle] for the title. Defaults to
+ *   [MaterialTheme.typography.headlineMedium].
+ * @param descriptionMaxLines Maximum number of lines for the description.
+ *   Defaults to [Int.MAX_VALUE] (unlimited).
+ * @param descriptionOverflow The [TextOverflow] strategy for the description.
+ *   Defaults to [TextOverflow.Ellipsis].
+ * @param descriptionStyle The [TextStyle] for the description. Defaults to
+ *   [MaterialTheme.typography.bodyMedium].
+ * @param iconTint The tint color applied to the default [icon]. Defaults to
+ *   [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param contentColor The color applied to the title and description text.
+ *   Defaults to [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param iconContent An optional custom composable that replaces the default
+ *   icon. When `null`, the [icon] vector is rendered.
+ * @param action An optional custom composable that replaces the default
+ *   action button. When `null`, the default [TextButton] logic applies.
+ */
 @Composable
 public fun StylishEmptyState(
     icon: ImageVector,

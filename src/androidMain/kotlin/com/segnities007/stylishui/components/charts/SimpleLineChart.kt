@@ -20,13 +20,81 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/** 折れ線グラフの1データポイント。ラベルと値。 */
+/**
+ * A single data point in a [SimpleLineChart], pairing an X-axis label
+ * with a numeric Y value.
+ *
+ * Points are plotted in list order and connected by straight line segments.
+ * The X axis is categorical (evenly spaced), not continuous.
+ *
+ * @property label Category or time-period name displayed below the
+ *   corresponding point on the X axis. Labels are thinned automatically
+ *   when the dataset exceeds `maxLabelCount`.
+ * @property value Numeric magnitude plotted on the Y axis. The vertical
+ *   position is normalized between the dataset minimum and maximum with
+ *   10 % padding on each end.
+ * @see SimpleLineChart
+ */
 public data class LineChartData(
     val label: String,
     val value: Float,
 )
 
-/** 折れ線グラフ。領域塗りつぶし・グリッド線・ラベル付き。 */
+/**
+ * A line chart with area fill, grid lines, data-point markers, and
+ * categorical X-axis labels, rendered on a Compose [Canvas].
+ *
+ * Data points from [data] are plotted left-to-right in list order and
+ * connected with straight line segments. The area beneath the line is
+ * filled with a semi-transparent [fillColor]. Each point is marked with a
+ * two-tone circle (outer [pointColor], inner surface color) for visibility.
+ *
+ * The Y axis auto-scales to the data range with 10 % padding above and
+ * below. When all values are non-negative the axis floor is clamped to
+ * zero so no misleading negative ticks appear. Horizontal grid lines carry
+ * formatted value labels on the left margin.
+ *
+ * X-axis labels are automatically thinned to at most [maxLabelCount]
+ * visible entries (always including the last point) to avoid overlap on
+ * dense datasets.
+ *
+ * When [data] contains fewer than two points, [emptyLabel] is drawn at the
+ * chart center instead of a line.
+ *
+ * **Platform:** Android only (androidMain). Uses `android.graphics.Paint`
+ * for text rendering.
+ *
+ * @param data Ordered data points to plot.
+ * @param contentDescriptionPrefix Leading text for the combined accessibility
+ *   description (e.g. "Fuel efficiency trend").
+ * @param emptyLabel Text displayed at the chart center when [data] has
+ *   fewer than two entries.
+ * @param modifier Modifier applied to the outer [Canvas].
+ * @param lineColor Stroke color of the connecting line. Defaults to
+ *   `MaterialTheme.colorScheme.primary`.
+ * @param fillColor Semi-transparent color filling the area between the line
+ *   and the X axis. Defaults to primary at 10 % alpha.
+ * @param pointColor Outer ring color of each data-point marker. Defaults to
+ *   `MaterialTheme.colorScheme.primary`.
+ * @param gridColor Color of horizontal grid lines. Defaults to
+ *   `MaterialTheme.colorScheme.outlineVariant`.
+ * @param chartHeight Total height of the chart area. Defaults to 200 dp.
+ * @param strokeWidth Thickness of the connecting line. Defaults to 2.5 dp.
+ * @param pointRadius Outer radius of each data-point circle. Defaults to
+ *   4 dp.
+ * @param pointInnerRadius Inner (surface-colored) radius of each data-point
+ *   circle, creating a ring effect. Defaults to 2 dp.
+ * @param labelTextSize Text size for axis and category labels. Defaults to
+ *   10 dp.
+ * @param gridLineCount Number of horizontal grid lines including top and
+ *   bottom. Defaults to 5.
+ * @param maxLabelCount Maximum number of X-axis labels rendered. Labels are
+ *   evenly sampled; the last data point's label is always included.
+ *   Defaults to 6.
+ * @see LineChartData
+ * @see SimpleBarChart
+ * @see SimplePieChart
+ */
 @Composable
 public fun SimpleLineChart(
     data: List<LineChartData>,

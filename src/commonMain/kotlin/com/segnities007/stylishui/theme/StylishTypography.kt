@@ -13,7 +13,25 @@ private fun style(weight: FontWeight, size: Int, lineHeight: Int): TextStyle = T
     lineHeight = lineHeight.sp,
 )
 
-/** StylishUI 全体のタイポグラフィ定義。 */
+/**
+ * The default [Typography] scale for the Stylish UI design system.
+ *
+ * Defines all fifteen Material 3 text styles using the platform default font family
+ * ([FontFamily.Default]) so that the system font renders on each platform. The scale is
+ * tuned for mobile-first reading comfort:
+ *
+ * - **Display** (Bold, 22–28 sp): hero text, onboarding headlines.
+ * - **Headline** (SemiBold, 18–24 sp): section titles, screen headers.
+ * - **Title** (SemiBold/Medium, 14–18 sp): card titles, list headers, dialog titles.
+ * - **Body** (Normal, 12–16 sp): paragraphs, descriptions, supporting text.
+ * - **Label** (Medium, 11–14 sp): button text, captions, badges, chip labels.
+ *
+ * Line heights follow a ~1.3–1.5× ratio for comfortable vertical rhythm.
+ *
+ * Pass this to [StylishTheme]'s `typography` parameter, or use directly with [MaterialTheme].
+ *
+ * @see StylishTheme
+ */
 public val StylishTypography: Typography = Typography(
     displayLarge = style(FontWeight.Bold, 28, 36),
     displayMedium = style(FontWeight.Bold, 24, 32),

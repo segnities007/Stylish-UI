@@ -53,7 +53,9 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [StylishConnectedListItem.onLongClick] is `null`, or whose
  * [StylishConnectedListItem.enabled] is `false`, are rendered without
  * elevation and do not respond to interaction. Long-click actions trigger
- * haptic feedback before invoking the callback.
+ * haptic feedback before invoking the callback. Items with an [onClick]
+ * action are assigned `Role.Button` semantics; disabled items are marked
+ * with the `disabled()` semantic flag.
  *
  * @param items The list of [StylishConnectedListItem] data objects that
  *   describe each row's headline, supporting text, click/long-click actions,
@@ -77,8 +79,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param contentColor The content color of each item surface. When `null`,
  *   defaults to [MaterialTheme.colorScheme.onSurface] for enabled items or
  *   [MaterialTheme.colorScheme.onSurfaceVariant] for disabled items.
- * @param minHeight The minimum height of each item. Defaults to 0 dp (no
- *   minimum beyond intrinsic content height).
+ * @param minHeight Reserved for future use. Currently not applied to item
+ *   layout.
  * @param horizontalPadding The horizontal padding inside each item. Defaults
  *   to 16 dp.
  * @param verticalPadding The vertical padding inside each item. Defaults to

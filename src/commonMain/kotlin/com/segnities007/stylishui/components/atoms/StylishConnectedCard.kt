@@ -43,7 +43,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
 /**
  * A connected card that shares edges and corner radii with adjacent cards,
  * forming a visually continuous group. Supports tap and long-press
- * interactions with haptic feedback. When neither [onClick] nor
+ * interactions; long-press triggers haptic feedback. When neither [onClick] nor
  * [onLongClick] is provided, the card renders flat (zero elevation)
  * and ignores pointer input.
  *
@@ -60,7 +60,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   [HapticFeedbackType.LongPress] before invocation.
  * @param shape Shape of the card surface. Defaults to
  *   [connectedShape] with [ConnectedCorners.Standalone] (all corners
- *   use [StylishTheme.dimensions.connectedCornerRadius], 12 dp).
+ *   use [DefaultStylishDimensions.connectedCornerRadius], a static
+ *   constant of 12 dp — theme overrides do not affect this default).
  * @param outlineEdges Which edges of the hairline outline to draw.
  *   Defaults to [ConnectedEdges.All]. Layouts override this to
  *   suppress interior edges between adjacent cards.
@@ -73,15 +74,18 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param titleOverflow Overflow strategy for [title].
  * @param titleStyle Text style for [title].
  * @param supportingTextMaxLines Maximum lines for [supportingText].
+ *   Defaults to 1.
  * @param supportingTextOverflow Overflow strategy for [supportingText].
  * @param supportingTextStyle Text style for [supportingText].
  * @param containerColor Background color. Defaults to
  *   [stylishComponentColors.groupedContainer].
  * @param contentColor Default content color. Defaults to
  *   `MaterialTheme.colorScheme.onSurface`.
- * @param minHeight Minimum height of the card body.
+ * @param minHeight Minimum height of the card body. Defaults to 77.dp.
  * @param horizontalPadding Horizontal padding inside the card.
+ *   Defaults to 16.dp.
  * @param verticalPadding Vertical padding inside the card.
+ *   Defaults to 12.dp.
  * @param leadingContent Optional content before the text column
  *   (e.g. an icon or thumbnail). Always rendered; pass an empty
  *   lambda to omit.

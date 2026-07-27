@@ -128,6 +128,7 @@ public fun SimplePieChart(
  *
  * The palette wraps cyclically: if [index] exceeds the palette size the
  * lookup wraps around via modulo, so callers never need to bounds-check.
+ * Negative indices are not supported and will throw IndexOutOfBoundsException.
  * Use this to assign consistent, theme-aware colors to chart series or
  * pie slices without hard-coding hex values.
  *

@@ -23,16 +23,17 @@ import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
- * A page-content pattern that pins a header above a scrollable lazy list.
+ * A page-content pattern that renders a header as the first item of a
+ * scrollable lazy list.
  *
  * Wraps a [LazyColumn] whose first item is the [header] composable
  * (typically a [StylishHeader]) followed by a spacer and the caller's
  * list items. Use this inside [StylishScaffold]'s content slot as the
  * standard layout for list-driven screens.
  *
- * @param header Composable rendered as the first, non-scrolling-away item
- *   of the list. Typically a [StylishHeader] with the page title and
- *   navigation actions.
+ * @param header Composable rendered as the first item of the list
+ *   (scrolls with the content). Typically a [StylishHeader] with the
+ *   page title and navigation actions.
  * @param listState [LazyListState] controlling scroll position. Defaults
  *   to [rememberLazyListState]. Supply a hoisted state to observe scroll
  *   offset or programmatically scroll.

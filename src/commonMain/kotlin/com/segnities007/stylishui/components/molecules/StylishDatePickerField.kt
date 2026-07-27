@@ -61,7 +61,9 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  *   chosen.
  * @param onValueChange Callback invoked with the newly selected [LocalDate]
  *   when the user confirms a date in the dialog. Receives `null`-safe: only
- *   called when a date is actually selected.
+ *   called when a date is actually selected. If the user confirms without
+ *   selecting a date, the dialog closes silently and [onValueChange] is not
+ *   called.
  * @param label The label text displayed on the outlined text field. Ignored
  *   when [labelContent] is provided.
  * @param confirmLabel The text for the dialog's confirm button. Ignored when

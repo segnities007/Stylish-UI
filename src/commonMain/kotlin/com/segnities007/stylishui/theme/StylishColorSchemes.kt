@@ -9,7 +9,7 @@ import androidx.compose.material3.lightColorScheme
  *
  * Built on the [StylishPalette] with a paper-white background ([StylishPalette.Paper]) and
  * ink-dark foreground ([StylishPalette.Ink]), producing high-contrast surfaces with subtle
- * warm undertones. Surface-container roles use graduated tints so that nested cards, dialogs,
+ * warm undertones. Surface-container roles use distinct tints so that nested cards, dialogs,
  * and bottom sheets are visually distinguishable without relying on elevation shadows alone.
  *
  * Pass this to the [StylishTheme] composable's `colorScheme` parameter, or use it directly

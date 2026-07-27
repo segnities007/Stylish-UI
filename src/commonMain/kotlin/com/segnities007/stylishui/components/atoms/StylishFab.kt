@@ -22,8 +22,9 @@ import com.segnities007.stylishui.theme.StylishTheme
 
 /**
  * A circular floating action button that floats above content with
- * tonal and shadow elevation. Renders a single icon inside a
- * [CircleShape] surface with a hairline outline border.
+ * tonal and shadow elevation (floatingElevation, 2 dp). Renders a
+ * single icon inside a [CircleShape] surface with a hairline outline
+ * border.
  *
  * Use for the primary action of a screen (e.g. "create new item").
  * When [iconContent] is provided it replaces the default [Icon]

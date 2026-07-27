@@ -52,7 +52,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   Defaults to 48 dp.
  * @param iconContent Optional slot that replaces the default [Icon].
  *   When `null` (default), [imageVector] and [contentDescription]
- *   are used instead.
+ *   are used instead. When provided, [contentColor] is not applied
+ *   automatically — the slot is responsible for its own tinting.
  *
  * @see StylishRoundedIconButton
  * @see StylishFab

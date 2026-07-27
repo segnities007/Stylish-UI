@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
  *   3 dp) keeps items visually grouped while remaining individually distinguishable.
  * @property outlineWidth The stroke width of the hairline border drawn around Connected UI
  *   items via [com.segnities007.stylishui.foundation.connectedOutline]. The default 0.4 dp
- *   renders as a crisp 1-physical-pixel line on most densities.
+ *   renders as a sub-pixel hairline that rounds to approximately 1 physical pixel on many device densities.
  * @property interactiveElevation The tonal elevation applied to tappable cards and list items
  *   to signal interactivity. Default 1 dp produces a subtle lift without a heavy shadow.
  * @property floatingElevation The elevation for floating elements such as FABs, sticky headers,

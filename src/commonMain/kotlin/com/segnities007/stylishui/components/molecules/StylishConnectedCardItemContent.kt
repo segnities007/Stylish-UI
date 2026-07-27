@@ -7,47 +7,33 @@ import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
+import com.segnities007.stylishui.structure.ConnectedCardItemContent
 
 /**
- * A composable function type used by connected-card layout components to
- * render a single card item.
+ * The Finish-layer alias for the headless connected-card rendering contract.
  *
- * Connected-card layouts ([StylishConnectedCardRow], [StylishConnectedCardColumn],
- * [StylishConnectedCardGrid]) compute the outline edges, corners, and shape for
- * each position in the group, then pass that geometry into this lambda. Custom
- * implementations should apply the supplied [shape], [outlineEdges], and
- * [outlineCorners] to preserve the connected appearance while freely choosing
- * the card's inner UI.
+ * This is an alias of the Structure-layer [ConnectedCardItemContent], kept
+ * under its historical name so existing call sites and imports continue to
+ * compile. Connected-card layouts ([StylishConnectedCardRow],
+ * [StylishConnectedCardColumn], [StylishConnectedCardGrid]) compute the outline
+ * edges, corners, and shape for each position in the group, then pass that
+ * geometry into a lambda of this type. The default Finish rendering is
+ * [DefaultStylishConnectedCardItem].
  *
- * @param item The [StylishConnectedCardItem] data for the card being rendered.
- * @param modifier A modifier carrying layout constraints (e.g. weight,
- *   fill-max-height) determined by the parent layout. Must be applied to the
- *   card's root composable.
- * @param shape The connected [Shape] with only the appropriate outer corners
- *   rounded for this item's position in the group.
- * @param outlineEdges The [ConnectedEdges] indicating which sides of this card
- *   should draw outline borders to connect with adjacent siblings.
- * @param outlineCorners The [ConnectedCorners] indicating which corners of
- *   this card are rounded.
- *
+ * @see ConnectedCardItemContent
  * @see DefaultStylishConnectedCardItem
  */
-public typealias StylishConnectedCardItemContent = @Composable (
-    item: StylishConnectedCardItem,
-    modifier: Modifier,
-    shape: Shape,
-    outlineEdges: ConnectedEdges,
-    outlineCorners: ConnectedCorners,
-) -> Unit
+public typealias StylishConnectedCardItemContent = ConnectedCardItemContent
 
 /**
  * The default card renderer used by connected-card layouts when no custom
  * [StylishConnectedCardItemContent] is supplied.
  *
- * Delegates to the [StylishConnectedCard] atom, forwarding all connection
- * geometry (shape, outline edges, outline corners) and item data including
- * title, supporting text, click/long-click actions, enabled state, and
- * leading/trailing slot content.
+ * This is the Finish-layer rendering: it delegates to the [StylishConnectedCard]
+ * atom, forwarding all connection geometry (shape, outline edges, outline
+ * corners) and item data including title, supporting text, click/long-click
+ * actions, enabled state, and leading/trailing slot content, dressed in the
+ * Stylish look.
  *
  * @param item The [StylishConnectedCardItem] data for the card being rendered.
  * @param modifier A modifier carrying layout constraints from the parent

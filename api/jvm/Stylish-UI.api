@@ -591,6 +591,42 @@ public final class com/segnities007/stylishui/foundation/InteractionStateKt {
 	public static synthetic fun isActionable$default (ZZZILjava/lang/Object;)Z
 }
 
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardColumnKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardColumnKt;
+	public fun <init> ()V
+	public final fun getLambda$-1955157372$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1195877983$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1279291158$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardGridKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardGridKt;
+	public fun <init> ()V
+	public final fun getLambda$-1074684761$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$-1702452220$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2077082975$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardRowKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardRowKt;
+	public fun <init> ()V
+	public final fun getLambda$-1503272441$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-358603284$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$538352766$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedCardColumnKt {
+	public static final fun ConnectedCardColumn-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedCardGridKt {
+	public static final fun ConnectedCardGrid-hGBTI10 (Ljava/util/List;ILandroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedCardRowKt {
+	public static final fun ConnectedCardRow-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/segnities007/stylishui/theme/StylishChartColors {
 	public static final field $stable I
 	public fun <init> (Ljava/util/List;)V

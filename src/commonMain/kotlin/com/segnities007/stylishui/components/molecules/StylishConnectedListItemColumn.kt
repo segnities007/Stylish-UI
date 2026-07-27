@@ -79,8 +79,6 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param contentColor The content color of each item surface. When `null`,
  *   defaults to [MaterialTheme.colorScheme.onSurface] for enabled items or
  *   [MaterialTheme.colorScheme.onSurfaceVariant] for disabled items.
- * @param minHeight Reserved for future use. Currently not applied to item
- *   layout.
  * @param horizontalPadding The horizontal padding inside each item. Defaults
  *   to 16 dp.
  * @param verticalPadding The vertical padding inside each item. Defaults to
@@ -102,7 +100,6 @@ public fun StylishConnectedListItemColumn(
     supportingTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    minHeight: Dp = 0.dp,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
 ) {

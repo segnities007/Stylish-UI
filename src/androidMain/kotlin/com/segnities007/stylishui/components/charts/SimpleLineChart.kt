@@ -139,6 +139,14 @@ public fun SimpleLineChart(
             typeface = Typeface.DEFAULT
         }
 
+        val maxValue = data.maxOfOrNull { it.value } ?: 0f
+        val minValue = data.minOfOrNull { it.value } ?: 0f
+        val range = (maxValue - minValue).coerceAtLeast(1f)
+        val axisPadding = range * 0.1f
+        val axisMax = maxValue + axisPadding
+        // データが非負なら値軸の下端を 0 未満にしない（燃費・費用などでマイナス目盛りが出ないよう）
+        val axisMin = if (minValue >= 0f) (minValue - axisPadding).coerceAtLeast(0f) else minValue - axisPadding
+
         for (i in 0 until gridLineCount) {
             val y = topPadding + usableHeight * i / (gridLineCount - 1).coerceAtLeast(1)
             drawLine(
@@ -147,13 +155,6 @@ public fun SimpleLineChart(
                 end = Offset(chartWidth, y),
                 strokeWidth = 1f,
             )
-            val maxValue = data.maxOfOrNull { it.value } ?: 0f
-            val minValue = data.minOfOrNull { it.value } ?: 0f
-            val range = (maxValue - minValue).coerceAtLeast(1f)
-            val padding = range * 0.1f
-            val axisMax = maxValue + padding
-            // データが非負なら値軸の下端を 0 未満にしない（燃費・費用などでマイナス目盛りが出ないよう）
-            val axisMin = if (minValue >= 0f) (minValue - padding).coerceAtLeast(0f) else minValue - padding
             val gridValue = axisMax - (axisMax - axisMin) * i / (gridLineCount - 1).coerceAtLeast(1)
             drawContext.canvas.nativeCanvas.drawText(
                 "%.1f".format(gridValue),
@@ -173,14 +174,6 @@ public fun SimpleLineChart(
             )
         }
         else {
-            val values = data.map { it.value }
-            val minValue = values.min()
-            val maxValue = values.max()
-            val range = (maxValue - minValue).coerceAtLeast(1f)
-            val padding = range * 0.1f
-            val axisMax = maxValue + padding
-            val axisMin = if (minValue >= 0f) (minValue - padding).coerceAtLeast(0f) else minValue - padding
-
             val points = data.mapIndexed { index, d ->
                 val x = if (data.size > 1) {
                     leftPadding + usableWidth * index / (data.size - 1)

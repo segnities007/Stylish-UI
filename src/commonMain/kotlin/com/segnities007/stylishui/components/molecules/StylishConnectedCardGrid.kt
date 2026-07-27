@@ -31,8 +31,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * are drawn on all four sides of every cell; corner radii are computed
  * automatically from each item's absolute index so that only the four outer
  * corners of the entire grid are rounded. When the final row has fewer items
- * than [columns], the remaining items retain their natural width without
- * forced column alignment. The actual card
+ * than [columns], the remaining cards stretch via equal weight to fill the
+ * full row width. The actual card
  * rendering is delegated to the [card] lambda, which receives the pre-computed
  * connection geometry so that custom implementations preserve the connected
  * appearance.

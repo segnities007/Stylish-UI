@@ -46,8 +46,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * edges are drawn on all four sides of every cell; corner radii are computed
  * automatically from each item's absolute index so that only the four outer
  * corners of the entire grid are rounded. When the final row has fewer items
- * than [columns], the remaining items retain their natural width without
- * forced column alignment. Items whose
+ * than [columns], the remaining buttons stretch via equal weight to fill the
+ * full row width. Items whose
  * [StylishConnectedButtonItem.onClick] is `null` or whose
  * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
  * state and do not respond to interaction.

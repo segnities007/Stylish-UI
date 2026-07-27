@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/segnities007/Stylish-UI/compare/v0.3.0...v0.4.0) (2026-07-27)
+
+
+### Features
+
+* improve component flexibility ([#11](https://github.com/segnities007/Stylish-UI/issues/11)) ([72d4ecb](https://github.com/segnities007/Stylish-UI/commit/72d4ecba3823c2686bdced2b93e8c6b39c7ffce4))
+* improve component flexibility ([#9](https://github.com/segnities007/Stylish-UI/issues/9)) ([a3643ff](https://github.com/segnities007/Stylish-UI/commit/a3643ffaf9fc7fb48891eecfb7f933af3f5d6608))
+
 ## [0.3.0](https://github.com/segnities007/Stylish-UI/compare/v0.2.1...v0.3.0) (2026-07-25)
 
 

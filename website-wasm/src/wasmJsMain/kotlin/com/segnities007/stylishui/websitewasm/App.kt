@@ -46,8 +46,12 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
+import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
+import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
+import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.components.molecules.StylishDatePickerField
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
@@ -306,6 +310,9 @@ private fun ButtonsSection() {
 private fun ChipsSection() {
     StylishSectionTitle(title = "Connected Chips")
     Spacer(Modifier.height(12.dp))
+
+    Text("Row", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
     var selectedIndex by remember { mutableStateOf(0) }
     StylishConnectedChipRow(
         items = listOf(
@@ -315,12 +322,40 @@ private fun ChipsSection() {
             StylishConnectedChipItem("Read only"),
         ),
     )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Column", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedChipColumn(
+        items = listOf(
+            StylishConnectedChipItem("All", {}, selected = true),
+            StylishConnectedChipItem("Fuel", {}),
+            StylishConnectedChipItem("Maintenance", {}),
+        ),
+    )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Grid", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedChipGrid(
+        items = listOf(
+            StylishConnectedChipItem("All", {}, selected = true),
+            StylishConnectedChipItem("Fuel", {}),
+            StylishConnectedChipItem("Maintenance", {}),
+            StylishConnectedChipItem("Insurance", {}),
+            StylishConnectedChipItem("Other", {}),
+        ),
+        columns = 2,
+    )
 }
 
 @Composable
 private fun ListSection() {
     StylishSectionTitle(title = "Connected List Items")
     Spacer(Modifier.height(12.dp))
+
+    Text("Column", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
     StylishConnectedListItemColumn(
         items = listOf(
             StylishConnectedListItem("Actionable item", onClick = {}),
@@ -328,6 +363,28 @@ private fun ListSection() {
             StylishConnectedListItem("Read-only item"),
             StylishConnectedListItem("Disabled item", enabled = false),
         ),
+    )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Row", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedListItemRow(
+        items = listOf(
+            StylishConnectedListItem("Theme", supportingText = "System", onClick = {}),
+            StylishConnectedListItem("Notifications", supportingText = "On", onClick = {}),
+        ),
+    )
+
+    Spacer(Modifier.height(16.dp))
+    Text("Grid", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishConnectedListItemGrid(
+        items = listOf(
+            StylishConnectedListItem("Theme", supportingText = "System", onClick = {}),
+            StylishConnectedListItem("Notifications", supportingText = "On", onClick = {}),
+            StylishConnectedListItem("General", supportingText = "Language", onClick = {}),
+        ),
+        columns = 2,
     )
 }
 

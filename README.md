@@ -76,7 +76,7 @@ patterns → organisms → molecules → atoms → foundation / theme / tokens
 ### 公開コンポーネント
 
 - **atoms** — `StylishFab`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishSectionTitle`, `StylishConnectedCard`, `StylishDialogSurface`, `StylishFormTextField`
-- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), `StylishConnectedChipRow`, `StylishConnectedListItemColumn`, `StylishDatePickerField`, `StylishEmptyState`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid), `StylishDatePickerField`, `StylishEmptyState`
 - **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`
 - **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`
 - **charts** — `SimplePieChart` (common), `SimpleBarChart`, `SimpleLineChart` (Android)

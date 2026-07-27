@@ -16,8 +16,12 @@ import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
+import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
+import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.theme.StylishTheme
 
 @Composable
@@ -53,12 +57,40 @@ private fun ComponentCatalog() {
                     StylishConnectedChipItem("Read only"),
                 ),
             )
+            StylishConnectedChipColumn(
+                items = listOf(
+                    StylishConnectedChipItem("Selected", {}, selected = true),
+                    StylishConnectedChipItem("Read only"),
+                ),
+            )
+            StylishConnectedChipGrid(
+                items = listOf(
+                    StylishConnectedChipItem("A", {}, selected = true),
+                    StylishConnectedChipItem("B", {}),
+                    StylishConnectedChipItem("C", {}),
+                ),
+                columns = 2,
+            )
             StylishConnectedListItemColumn(
                 items = listOf(
                     StylishConnectedListItem("Actionable item", onClick = {}),
                     StylishConnectedListItem("Read-only item"),
                     StylishConnectedListItem("Disabled item", enabled = false),
                 ),
+            )
+            StylishConnectedListItemRow(
+                items = listOf(
+                    StylishConnectedListItem("Item A", onClick = {}),
+                    StylishConnectedListItem("Item B", onClick = {}),
+                ),
+            )
+            StylishConnectedListItemGrid(
+                items = listOf(
+                    StylishConnectedListItem("Item A", onClick = {}),
+                    StylishConnectedListItem("Item B", onClick = {}),
+                    StylishConnectedListItem("Item C", onClick = {}),
+                ),
+                columns = 2,
             )
         }
     }

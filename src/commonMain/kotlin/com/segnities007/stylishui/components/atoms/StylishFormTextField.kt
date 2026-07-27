@@ -64,7 +64,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param supportingContent Optional slot rendered below the field,
  *   replacing [errorMessage] when provided.
  * @param fieldModifier Modifier applied to the inner
- *   [OutlinedTextField], after `fillMaxWidth`. Use this to add
+ *   [OutlinedTextField], before `fillMaxWidth` in the modifier chain
+ *   (i.e. `fieldModifier.fillMaxWidth()`). Use this to add
  *   test tags or input-specific modifiers without affecting the
  *   outer [Column].
  */

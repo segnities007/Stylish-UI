@@ -45,9 +45,10 @@ public data class BarChartSegment(
  * Data for a single bar (category) in a [SimpleBarChart].
  *
  * When [segments] is empty the bar is drawn as a single solid rectangle
- * using the chart-level `barColor`. When segments are provided the bar
- * becomes a stacked bar whose total visual height still corresponds to
- * [value]; each segment is drawn in its own color.
+ * using the chart-level `barColor`. When segments are provided, each segment
+ * is drawn in its own color; the total visual height equals the sum of
+ * segment values. Callers should ensure segments sum to [value] for
+ * consistent scaling with non-stacked bars.
  *
  * @property label Category name rendered below the bar on the X axis and
  *   included in the accessibility description.
@@ -76,7 +77,7 @@ public data class BarChartData(
  *
  * Bars support two modes:
  * - **Single-color** — when `BarChartData.segments` is empty, the bar is
- *   filled with [barColor] and given rounded top corners ([topRadius]).
+ *   filled with [barColor] and given rounded corners ([topRadius]) on all four sides.
  * - **Stacked** — when segments are present, each is drawn in its own
  *   color; only the topmost non-zero segment is rounded.
  *

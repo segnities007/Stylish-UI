@@ -42,7 +42,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * Each button fills the full available width. Outline edges and corner radii
  * are computed automatically from each item's index: the first button rounds
  * only its top corners, the last button rounds only its bottom corners, and
- * middle buttons have square corners with shared horizontal outlines. Leading
+ * middle buttons have square corners with all four outlines drawn on every
+ * button. Leading
  * and trailing slots are given a minimum width of 40 dp so that icons align
  * consistently across rows. Items whose [StylishConnectedButtonItem.onClick]
  * is `null` or whose [StylishConnectedButtonItem.enabled] is `false` are
@@ -59,7 +60,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param defaultColors The [ButtonColors] used for every item whose
  *   [StylishConnectedButtonItem.colors] is `null`. Defaults to a grouped
  *   container background ([MaterialTheme.stylishComponentColors.groupedContainer])
- *   with [MaterialTheme.colorScheme.onSurface] content.
+ *   with [MaterialTheme.colorScheme.onSurface] content,
+ *   [MaterialTheme.colorScheme.surfaceVariant] disabled container, and
+ *   [MaterialTheme.colorScheme.onSurfaceVariant] disabled content.
+ *
+ * Buttons use [StylishTheme.dimensions.interactiveElevation] (1 dp) by
+ * default, 0 dp when pressed or disabled.
  *
  * @see StylishConnectedButtonRow
  * @see StylishConnectedButtonGrid

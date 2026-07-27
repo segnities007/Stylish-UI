@@ -22,7 +22,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * full-screen structural skeleton for a page.
  *
  * Supplies slots for a top bar, bottom bar, and floating action button
- * around a scrollable content area. Use this as the outermost layout of
+ * around a content area. Use this as the outermost layout of
  * every screen; pass a [StylishHeader] as [topBar] and a
  * [StylishPageContent] as [content] for the standard page composition.
  *

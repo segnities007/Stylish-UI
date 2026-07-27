@@ -26,10 +26,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   above the chart.
  * @param data List of [LineChartData] points to plot. Each entry carries
  *   a label and a numeric value.
- * @param contentDescriptionPrefix Accessibility prefix prepended to each
- *   point's content description, e.g. "Line chart".
- * @param emptyLabel Text displayed when [data] is empty, informing the
- *   user that no data is available.
+ * @param contentDescriptionPrefix Leading text for the chart's combined
+ *   accessibility description.
+ * @param emptyLabel Text displayed when [data] has fewer than two points,
+ *   informing the user that no data is available.
  *
  * @see BarChartSection
  * @see SimpleLineChart

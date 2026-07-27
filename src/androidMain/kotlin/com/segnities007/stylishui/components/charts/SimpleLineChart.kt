@@ -54,7 +54,7 @@ public data class LineChartData(
  * zero so no misleading negative ticks appear. Horizontal grid lines carry
  * formatted value labels on the left margin.
  *
- * X-axis labels are automatically thinned to at most [maxLabelCount]
+ * X-axis labels are automatically thinned to approximately [maxLabelCount]
  * visible entries (always including the last point) to avoid overlap on
  * dense datasets.
  *

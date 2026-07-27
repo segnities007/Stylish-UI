@@ -25,9 +25,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param title Section heading text rendered by [StylishSectionTitle]
  *   above the chart.
  * @param data List of [BarChartData] points to plot. Each entry carries
- *   a label and a numeric value.
- * @param contentDescriptionPrefix Accessibility prefix prepended to each
- *   bar's content description, e.g. "Bar chart".
+ *   a label, a numeric value, and an optional `segments` list for
+ *   stacked bars.
+ * @param contentDescriptionPrefix Leading text for the chart's combined
+ *   accessibility description.
  * @param emptyLabel Text displayed when [data] is empty, informing the
  *   user that no data is available.
  *

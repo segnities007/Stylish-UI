@@ -62,7 +62,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param contentColor The color applied to the title and description text.
  *   Defaults to [MaterialTheme.colorScheme.onSurfaceVariant].
  * @param iconContent An optional custom composable that replaces the default
- *   icon. When `null`, the [icon] vector is rendered.
+ *   icon. When `null`, the [icon] vector is rendered. Note: the default icon
+ *   includes 16 dp bottom padding; custom slots do not inherit this spacing.
  * @param action An optional custom composable that replaces the default
  *   action button. When `null`, the default [TextButton] logic applies.
  */

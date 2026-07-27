@@ -26,7 +26,7 @@ private fun style(weight: FontWeight, size: Int, lineHeight: Int): TextStyle = T
  * - **Body** (Normal, 12–16 sp): paragraphs, descriptions, supporting text.
  * - **Label** (Medium, 11–14 sp): button text, captions, badges, chip labels.
  *
- * Line heights follow a ~1.3–1.5× ratio for comfortable vertical rhythm.
+ * Line heights follow a ~1.27–1.5× ratio for comfortable vertical rhythm.
  *
  * Pass this to [StylishTheme]'s `typography` parameter, or use directly with [MaterialTheme].
  *

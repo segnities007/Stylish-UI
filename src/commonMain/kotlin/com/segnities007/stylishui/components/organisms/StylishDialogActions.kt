@@ -23,7 +23,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * on the right — using [StylishConnectedButtonRow]. The cancel button
  * uses a subdued [MaterialTheme.colorScheme.surfaceVariant] container
  * while the confirm button uses the default prominent style. Place this
- * inside a [StylishDialogSurface] or any dialog-like container.
+ * inside a [com.segnities007.stylishui.components.atoms.StylishDialogSurface]
+ * or any dialog-like container.
  *
  * @param confirmLabel Text displayed on the confirm button when
  *   [confirmContent] is null.
@@ -42,7 +43,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   default), a [Text] with [confirmLabel] is rendered.
  *
  * @see StylishDeleteConfirmDialog
- * @see StylishDialogSurface
+ * @see com.segnities007.stylishui.components.atoms.StylishDialogSurface
  * @see StylishConnectedButtonRow
  */
 @Composable

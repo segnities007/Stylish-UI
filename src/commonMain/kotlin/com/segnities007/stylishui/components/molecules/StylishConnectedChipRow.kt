@@ -52,8 +52,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * rounds only its trailing corners, and middle chips have square corners with
  * shared vertical outlines. When [fillWidth] is `false` (the default) the row
  * scrolls horizontally; when `true`, every chip receives equal weight and the
- * row fills the available width. Selecting a chip triggers a haptic feedback
- * pulse and animates the container/content colors over 180 ms. Items whose
+ * row fills the available width. Tapping an actionable chip triggers a haptic
+ * feedback pulse and animates the container/content colors over 180 ms. Chips
+ * are assigned `Role.Tab` semantics with the `selected` state reflected from
+ * [StylishConnectedChipItem.selected]. Items whose
  * [StylishConnectedChipItem.onClick] is `null` or whose
  * [StylishConnectedChipItem.enabled] is `false` are non-interactive and lose
  * their elevation.

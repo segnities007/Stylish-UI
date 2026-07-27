@@ -43,7 +43,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * tallest sibling via [IntrinsicSize.Min]. Outline edges and corner radii are
  * computed automatically from each item's index: the first button rounds only
  * its leading corners, the last button rounds only its trailing corners, and
- * middle buttons have square corners with shared vertical outlines. Items
+ * middle buttons have square corners with all four outlines drawn on every
+ * button. Items
  * whose [StylishConnectedButtonItem.onClick] is `null` or whose
  * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
  * state and do not respond to interaction.
@@ -59,7 +60,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param defaultColors The [ButtonColors] used for every item whose
  *   [StylishConnectedButtonItem.colors] is `null`. Defaults to a grouped
  *   container background ([MaterialTheme.stylishComponentColors.groupedContainer])
- *   with [MaterialTheme.colorScheme.onSurface] content.
+ *   with [MaterialTheme.colorScheme.onSurface] content,
+ *   [MaterialTheme.colorScheme.surfaceVariant] disabled container, and
+ *   [MaterialTheme.colorScheme.onSurfaceVariant] disabled content.
+ *
+ * Buttons use [StylishTheme.dimensions.interactiveElevation] (1 dp) by
+ * default, 0 dp when pressed or disabled.
  *
  * @see StylishConnectedButtonColumn
  * @see StylishConnectedButtonGrid

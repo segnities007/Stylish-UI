@@ -1,0 +1,12 @@
+{
+  "name": "stylishUiWebsite-test",
+  "version": "0.0.0-unspecified",
+  "main": "stylishUiWebsite-test.mjs",
+  "devDependencies": {},
+  "dependencies": {
+    "@js-joda/core": "3.2.0"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}

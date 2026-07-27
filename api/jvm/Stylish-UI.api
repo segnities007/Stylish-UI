@@ -336,6 +336,17 @@ public final class com/segnities007/stylishui/components/molecules/ComposableSin
 	public final fun getLambda$1540781626$Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishFormTextFieldKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishFormTextFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$-1647111582$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2022687655$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2059110019$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2074985273$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-472523692$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$517643874$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedButtonColumnKt {
 	public static final fun StylishConnectedButtonColumn-1yyLQnY (Ljava/util/List;Landroidx/compose/ui/Modifier;FFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/material3/ButtonColors;Landroidx/compose/runtime/Composer;II)V
 }
@@ -378,6 +389,10 @@ public final class com/segnities007/stylishui/components/molecules/StylishDatePi
 
 public final class com/segnities007/stylishui/components/molecules/StylishEmptyStateKt {
 	public static final fun StylishEmptyState-1-Y7Z1o (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;IILandroidx/compose/ui/text/TextStyle;IILandroidx/compose/ui/text/TextStyle;JJLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/segnities007/stylishui/components/molecules/StylishFormTextFieldKt {
+	public static final fun StylishFormTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;IIZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/TextFieldColors;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishConnectedSegmentedControlKt {

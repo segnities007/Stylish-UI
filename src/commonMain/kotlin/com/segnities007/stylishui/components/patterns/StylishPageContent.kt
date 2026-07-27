@@ -22,7 +22,32 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** ヘッダー固定＋スクロール可能なリストのページ構成パターン。一覧画面の基本レイアウトとして使う。 */
+/**
+ * A page-content pattern that pins a header above a scrollable lazy list.
+ *
+ * Wraps a [LazyColumn] whose first item is the [header] composable
+ * (typically a [StylishHeader]) followed by a spacer and the caller's
+ * list items. Use this inside [StylishScaffold]'s content slot as the
+ * standard layout for list-driven screens.
+ *
+ * @param header Composable rendered as the first, non-scrolling-away item
+ *   of the list. Typically a [StylishHeader] with the page title and
+ *   navigation actions.
+ * @param listState [LazyListState] controlling scroll position. Defaults
+ *   to [rememberLazyListState]. Supply a hoisted state to observe scroll
+ *   offset or programmatically scroll.
+ * @param contentPadding [PaddingValues] applied around the entire lazy
+ *   list. Defaults to 20.dp horizontal padding.
+ * @param headerSpacing Vertical gap between the [header] and the first
+ *   list item. Defaults to 8.dp.
+ * @param verticalArrangement [Arrangement.Vertical] governing spacing and
+ *   alignment of list items. Defaults to [Arrangement.Top].
+ * @param content [LazyListScope] receiver where the caller emits list
+ *   items via `item {}` / `items {}` builders.
+ *
+ * @see StylishHeader
+ * @see StylishScaffold
+ */
 @Composable
 public fun StylishPageContent(
     header: @Composable () -> Unit,

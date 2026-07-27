@@ -20,7 +20,40 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** フローティングアクションボタン。円形の浮き上がりアイコンボタン。 */
+/**
+ * A circular floating action button that floats above content with
+ * tonal and shadow elevation. Renders a single icon inside a
+ * [CircleShape] surface with a hairline outline border.
+ *
+ * Use for the primary action of a screen (e.g. "create new item").
+ * When [iconContent] is provided it replaces the default [Icon]
+ * rendered from [imageVector] and [contentDescription], allowing
+ * arbitrary composable content such as an animated icon or a badge.
+ * When [enabled] is `false`, the inner [IconButton] rejects clicks
+ * and Material applies its disabled alpha.
+ *
+ * @param imageVector Icon drawn inside the button when [iconContent]
+ *   is `null`.
+ * @param contentDescription Accessibility label for [imageVector].
+ * @param onClick Called when the button is tapped.
+ * @param enabled When `false`, the button ignores pointer input and
+ *   renders with Material's disabled treatment.
+ * @param containerColor Background color of the surface. Defaults to
+ *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ * @param contentColor Default tint for content inside the surface.
+ *   Defaults to `MaterialTheme.colorScheme.onSurface`.
+ * @param shape Shape of the surface. Defaults to [CircleShape].
+ * @param size Diameter of the circular surface. Defaults to 56 dp.
+ * @param border Border stroke around the surface. Defaults to a
+ *   hairline of [StylishTheme.dimensions.outlineWidth] (0.4 dp)
+ *   using `MaterialTheme.colorScheme.outlineVariant`.
+ * @param iconContent Optional slot that replaces the default [Icon].
+ *   When `null` (default), [imageVector] and [contentDescription]
+ *   are used instead.
+ *
+ * @see StylishIconButton
+ * @see StylishRoundedIconButton
+ */
 @Composable
 public fun StylishFab(
     imageVector: ImageVector,

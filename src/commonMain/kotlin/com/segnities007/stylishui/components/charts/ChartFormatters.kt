@@ -3,7 +3,18 @@ package com.segnities007.stylishui.components.charts
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-/** 整数を 3 桁区切りのカンマ付き文字列にフォーマットする。 */
+/**
+ * Formats an integer with comma-separated thousands grouping.
+ *
+ * Negative values are prefixed with a minus sign. The grouping uses
+ * three-digit chunks (e.g. `1234567` → `"1,234,567"`). Used internally
+ * by chart composables to build accessibility descriptions and axis labels.
+ *
+ * @param value The integer to format. May be negative.
+ * @return A locale-independent string with comma grouping and no decimal
+ *   places.
+ * @see formatCompact
+ */
 internal fun formatInteger(value: Int): String {
     val absValue = kotlin.math.abs(value)
     val sign = if (value < 0) "-" else ""
@@ -12,7 +23,22 @@ internal fun formatInteger(value: Int): String {
     return "$sign$grouped"
 }
 
-/** 浮動小数点数を万/k 単位のコンパクトな文字列にフォーマットする。 */
+/**
+ * Formats a floating-point value into a compact, human-readable string
+ * using magnitude-based unit suffixes.
+ *
+ * The output tier is selected by absolute value:
+ * - `≥ 10 000` → divided by 10 000, suffixed with "万" (one decimal place).
+ * - `≥ 1 000` → divided by 1 000, suffixed with "k" (one decimal place).
+ * - Otherwise → rounded to a whole number with no suffix.
+ *
+ * This keeps axis labels short regardless of the data magnitude. Used by
+ * [SimpleBarChart] grid-line labels.
+ *
+ * @param value The numeric value to format. May be negative.
+ * @return A compact string such as `"3.5万"`, `"12.0k"`, or `"850"`.
+ * @see formatInteger
+ */
 internal fun formatCompact(value: Float): String {
     val absValue = kotlin.math.abs(value)
     return when {

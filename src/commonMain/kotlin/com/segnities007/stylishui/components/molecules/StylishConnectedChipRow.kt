@@ -42,7 +42,50 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 横方向に連結したチップ群。選択状態のアニメーション付きで、カテゴリフィルタなどに使う。 */
+/**
+ * A horizontally connected row of selectable chips with animated
+ * selection-state color transitions, suited for category filters or
+ * tab-like selectors.
+ *
+ * Outline edges and corner radii are computed automatically from each item's
+ * index so that the first chip rounds only its leading corners, the last chip
+ * rounds only its trailing corners, and middle chips have square corners with
+ * shared vertical outlines. When [fillWidth] is `false` (the default) the row
+ * scrolls horizontally; when `true`, every chip receives equal weight and the
+ * row fills the available width. Selecting a chip triggers a haptic feedback
+ * pulse and animates the container/content colors over 180 ms. Items whose
+ * [StylishConnectedChipItem.onClick] is `null` or whose
+ * [StylishConnectedChipItem.enabled] is `false` are non-interactive and lose
+ * their elevation.
+ *
+ * @param items The list of [StylishConnectedChipItem] data objects that
+ *   describe each chip's label, selection state, click action, and optional
+ *   leading/trailing slot content.
+ * @param spacing The horizontal gap between adjacent chips. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param fillWidth When `true`, chips share the available width equally
+ *   instead of scrolling. Defaults to `false`.
+ * @param labelMaxLines Maximum number of lines for the chip label text.
+ *   Defaults to 1.
+ * @param labelOverflow The [TextOverflow] strategy for the chip label when it
+ *   exceeds [labelMaxLines]. Defaults to [TextOverflow.Ellipsis].
+ * @param labelStyle The [TextStyle] applied to each chip's label. Defaults to
+ *   [MaterialTheme.typography.labelLarge].
+ * @param selectedContainerColor The background color of a selected chip.
+ *   Defaults to [MaterialTheme.colorScheme.primary].
+ * @param selectedContentColor The content color of a selected chip. Defaults
+ *   to [MaterialTheme.colorScheme.onPrimary].
+ * @param unselectedContainerColor The background color of an unselected chip.
+ *   Defaults to [MaterialTheme.stylishComponentColors.groupedContainer].
+ * @param unselectedContentColor The content color of an unselected chip.
+ *   Defaults to [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param contentPadding The inner padding of each chip. Defaults to 14 dp
+ *   horizontal and 10 dp vertical.
+ * @param contentSpacing The horizontal gap between the leading slot, label,
+ *   and trailing slot inside each chip. Defaults to 6 dp.
+ *
+ * @see StylishConnectedButtonRow
+ */
 @Composable
 public fun StylishConnectedChipRow(
     items: List<StylishConnectedChipItem>,

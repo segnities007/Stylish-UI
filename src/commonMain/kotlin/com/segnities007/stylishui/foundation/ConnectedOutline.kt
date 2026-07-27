@@ -9,7 +9,31 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.theme.StylishTheme
 
-/** 連結コンポーネントの [edges] と [corners] に基づいて輪郭線を描画する Modifier。 */
+/**
+ * Draws a hairline outline around a Connected UI item, respecting its [edges] and [corners].
+ *
+ * The outline is rendered *after* the content (`drawContent()` first) so that it overlays
+ * the item's background. Each enabled edge is drawn as a straight line segment; where two
+ * adjacent enabled edges meet at an outer corner, a quadratic Bézier curve with the specified
+ * [cornerRadius] smoothly connects them. Joined (inner) corners are drawn as sharp right angles
+ * because the small [StylishDimensions.joinedCornerRadius] is handled by the clip shape rather
+ * than the outline path.
+ *
+ * The stroke color is taken from [MaterialTheme.colorScheme.outlineVariant] and the stroke
+ * width from [StylishTheme.dimensions.outlineWidth] (default 0.4 dp). The path is inset by
+ * half the stroke width so that the stroke sits fully inside the item bounds.
+ *
+ * @param edges Which sides of the item to outline. Compute with [connectedRowEdges] or
+ *   [connectedColumnEdges].
+ * @param corners Which corners are outer (rounded) versus joined (sharp). Compute with
+ *   [connectedColumnCorners], [connectedRowCorners], or [connectedGridCorners].
+ * @param cornerRadius The radius used for outer-corner arcs. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius].
+ * @return A [Modifier] that draws the outline after the decorated content.
+ * @see ConnectedEdges
+ * @see ConnectedCorners
+ * @see connectedShape
+ */
 @Composable
 public fun Modifier.connectedOutline(
     edges: ConnectedEdges,

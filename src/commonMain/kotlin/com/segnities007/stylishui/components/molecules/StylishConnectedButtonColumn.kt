@@ -35,7 +35,35 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
-/** 縦方向に連結したボタン群。角丸・境界線を共有し、セグメントコントロールとして使う。 */
+/**
+ * A vertically connected group of buttons that share outlines and corner
+ * radii to form a segmented-control appearance.
+ *
+ * Each button fills the full available width. Outline edges and corner radii
+ * are computed automatically from each item's index: the first button rounds
+ * only its top corners, the last button rounds only its bottom corners, and
+ * middle buttons have square corners with shared horizontal outlines. Leading
+ * and trailing slots are given a minimum width of 40 dp so that icons align
+ * consistently across rows. Items whose [StylishConnectedButtonItem.onClick]
+ * is `null` or whose [StylishConnectedButtonItem.enabled] is `false` are
+ * rendered in a disabled state and do not respond to interaction.
+ *
+ * @param items The list of [StylishConnectedButtonItem] data objects that
+ *   describe each button's content, click action, colors, and enabled state.
+ * @param cornerRadius The radius applied to the outer corners of the first and
+ *   last buttons. Defaults to 12 dp.
+ * @param spacing The vertical gap between adjacent buttons. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param contentPadding The inner padding of each button. Defaults to
+ *   16 dp horizontal and 12 dp vertical.
+ * @param defaultColors The [ButtonColors] used for every item whose
+ *   [StylishConnectedButtonItem.colors] is `null`. Defaults to a grouped
+ *   container background ([MaterialTheme.stylishComponentColors.groupedContainer])
+ *   with [MaterialTheme.colorScheme.onSurface] content.
+ *
+ * @see StylishConnectedButtonRow
+ * @see StylishConnectedButtonGrid
+ */
 @Composable
 public fun StylishConnectedButtonColumn(
     items: List<StylishConnectedButtonItem>,

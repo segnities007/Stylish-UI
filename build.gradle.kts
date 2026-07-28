@@ -10,7 +10,6 @@ plugins {
 
 group = "io.github.segnities007"
 
-// x-release-please-version
 version = providers.fileContents(
     rootProject.layout.projectDirectory.file("version.properties")
 ).asText.map { text ->

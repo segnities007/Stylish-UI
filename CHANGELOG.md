@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/segnities007/Stylish-UI/compare/v0.5.0...v0.5.1) (2026-07-28)
+
+
+### Bug Fixes
+
+* **ci:** pin publish version to release tag and fix Release Please extra-files ([#17](https://github.com/segnities007/Stylish-UI/issues/17)) ([490e382](https://github.com/segnities007/Stylish-UI/commit/490e3823fc8b9ddfeae3834969f5791389e267c9))
+
 ## [0.5.0](https://github.com/segnities007/Stylish-UI/compare/v0.4.0...v0.5.0) (2026-07-28)
 
 

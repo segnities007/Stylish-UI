@@ -35,6 +35,14 @@ import androidx.compose.ui.unit.dp
  * @property floatingCornerRadius The corner radius for floating elements such as FABs and
  *   pill-shaped headers. Default 28 dp produces the fully-rounded capsule look typical of
  *   Material 3 extended FABs.
+ * @property inlineSpacing The smallest spacing step (4 dp): gap between tightly related inline
+ *   elements such as an icon and its label. Part of the Rhythm spacing scale (S6).
+ * @property itemSpacing The small spacing step (8 dp): gap between items within a group or list.
+ *   Part of the Rhythm spacing scale (S6).
+ * @property contentSpacing The medium spacing step (16 dp): gap between distinct content blocks
+ *   within a section. Part of the Rhythm spacing scale (S6).
+ * @property sectionSpacing The large spacing step (32 dp): gap between top-level sections of a
+ *   page. Part of the Rhythm spacing scale (S6).
  * @see DefaultStylishDimensions
  * @see com.segnities007.stylishui.theme.StylishTheme
  */
@@ -47,6 +55,10 @@ public data class StylishDimensions(
     public val connectedCornerRadius: Dp = 12.dp,
     public val joinedCornerRadius: Dp = 2.dp,
     public val floatingCornerRadius: Dp = 28.dp,
+    public val inlineSpacing: Dp = 4.dp,
+    public val itemSpacing: Dp = 8.dp,
+    public val contentSpacing: Dp = 16.dp,
+    public val sectionSpacing: Dp = 32.dp,
 )
 
 /**

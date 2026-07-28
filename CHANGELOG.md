@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/segnities007/Stylish-UI/compare/v0.4.0...v0.5.0) (2026-07-28)
+
+
+### Features
+
+* introduce Foundation/Structure/Finish ([#15](https://github.com/segnities007/Stylish-UI/issues/15)) ([00fbc34](https://github.com/segnities007/Stylish-UI/commit/00fbc34e3fefbf55ddb3bd93b50aea5cb73cc702))
+
 ## [0.4.0](https://github.com/segnities007/Stylish-UI/compare/v0.3.0...v0.4.0) (2026-07-27)
 
 

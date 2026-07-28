@@ -404,6 +404,14 @@ public final class com/segnities007/stylishui/components/molecules/ComposableSin
 	public final fun getLambda$517643874$Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishSectionKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishSectionKt;
+	public fun <init> ()V
+	public final fun getLambda$-1202486700$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1563061815$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1990328793$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedButtonColumnKt {
 	public static final fun StylishConnectedButtonColumn-1yyLQnY (Ljava/util/List;Landroidx/compose/ui/Modifier;FFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/material3/ButtonColors;Landroidx/compose/runtime/Composer;II)V
 }
@@ -478,6 +486,10 @@ public final class com/segnities007/stylishui/components/molecules/StylishEmptyS
 
 public final class com/segnities007/stylishui/components/molecules/StylishFormTextFieldKt {
 	public static final fun StylishFormTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;IIZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/TextFieldColors;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/segnities007/stylishui/components/molecules/StylishSectionKt {
+	public static final fun StylishSection-j-zsiCA (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;FLandroidx/compose/ui/text/TextStyle;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishConnectedSegmentedControlKt {

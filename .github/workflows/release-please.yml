@@ -134,6 +134,29 @@ jobs:
           ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --no-daemon
 
       # ----------------------------------------------------------------------
+      # Confirm the artifact is publicly resolvable on Maven Central.
+      # publishAndReleaseToMavenCentral already validates the Central Portal
+      # deployment (authoritative), so this only confirms public propagation.
+      # A timeout is reported as a warning, not a failure, to avoid false alarms
+      # from slow propagation after an already-validated release.
+      # ----------------------------------------------------------------------
+      - name: Verify publication on Maven Central
+        run: |
+          set -euo pipefail
+          VERSION="$(grep '^version=' version.properties | cut -d= -f2 | tr -d '[:space:]')"
+          URL="https://repo1.maven.org/maven2/io/github/segnities007/stylish-ui/${VERSION}/stylish-ui-${VERSION}.pom"
+          echo "Checking $URL"
+          for attempt in $(seq 1 10); do
+            if curl -fsSL -o /dev/null "$URL"; then
+              echo "OK: stylish-ui:${VERSION} is live on Maven Central."
+              exit 0
+            fi
+            echo "Attempt ${attempt}/10: not resolvable yet; retrying in 30s..."
+            sleep 30
+          done
+          echo "::warning::stylish-ui:${VERSION} is not yet resolvable on Maven Central (it may still be propagating). The Central Portal release already validated; verify manually at $URL"
+
+      # ----------------------------------------------------------------------
       # Upload artifacts for debugging / record keeping.
       # ----------------------------------------------------------------------
       - name: Upload publication artifacts

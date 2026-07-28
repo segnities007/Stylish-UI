@@ -2,14 +2,6 @@ package com.segnities007.stylishui.components.molecules
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -18,50 +10,35 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.disabled
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
-import com.segnities007.stylishui.foundation.ConnectedEdges
-import com.segnities007.stylishui.foundation.connectedGridCorners
-import com.segnities007.stylishui.foundation.connectedOutline
-import com.segnities007.stylishui.foundation.connectedShape
-import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.structure.ConnectedListItemGrid
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
  * A grid of connected list items laid out in equal-width cells across a fixed
  * number of columns, with shared outlines and corner radii — suited for
  * settings dashboards or grouped navigation tiles.
  *
- * Items are chunked into rows of [columns] items. Within each row every item
- * receives equal weight and stretches to the tallest sibling. Outline edges
- * are drawn on all four sides of every cell; corner radii are computed
- * automatically from each item's absolute index so that only the four outer
- * corners of the entire grid are rounded. When the final row has fewer items
- * than [columns], the remaining items stretch via equal weight to fill the
- * full row width. Each item displays a headline, an optional supporting text
- * line, additional supporting lines, and optional leading/trailing slot
- * content. Items whose [StylishConnectedListItem.onClick] is `null` and whose
- * [StylishConnectedListItem.onLongClick] is `null`, or whose
- * [StylishConnectedListItem.enabled] is `false`, are rendered without
- * elevation and do not respond to interaction. Long-click actions trigger
- * haptic feedback before invoking the callback. Items with an [onClick]
- * action are assigned `Role.Button` semantics; disabled items are marked
- * with the `disabled()` semantic flag.
+ * This is the Finish-layer component: it supplies the Stylish list-item
+ * rendering ([DefaultStylishConnectedListItem]) to the headless Structure
+ * layout [ConnectedListItemGrid], which owns arrangement and connection
+ * geometry. Items are chunked into rows of [columns] items; within each row
+ * every item receives equal weight and stretches to the tallest sibling.
+ * Outline edges are drawn on all four sides of every cell; corner radii are
+ * computed automatically from each item's absolute index so that only the four
+ * outer corners of the entire grid are rounded. Each item displays a headline,
+ * optional supporting text, additional supporting lines, and optional
+ * leading/trailing slot content. Items whose [StylishConnectedListItem.onClick]
+ * and [StylishConnectedListItem.onLongClick] are both `null`, or whose
+ * [StylishConnectedListItem.enabled] is `false`, are rendered without elevation
+ * and do not respond to interaction.
  *
  * @param items The list of [StylishConnectedListItem] data objects that
  *   describe each cell's headline, supporting text, click/long-click actions,
@@ -86,17 +63,17 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param containerColor The background color of each item surface. When
  *   `null`, defaults to [MaterialTheme.stylishComponentColors.groupedContainer].
  * @param contentColor The content color of each item surface. When `null`,
- *   defaults to [MaterialTheme.colorScheme.onSurface] for enabled items or
- *   [MaterialTheme.colorScheme.onSurfaceVariant] for disabled items.
+ *   defaults to an enabled/disabled-aware color.
  * @param horizontalPadding The horizontal padding inside each item. Defaults
  *   to 16 dp.
  * @param verticalPadding The vertical padding inside each item. Defaults to
  *   14 dp.
  *
+ * @see ConnectedListItemGrid
  * @see StylishConnectedListItemRow
  * @see StylishConnectedListItemColumn
+ * @see DefaultStylishConnectedListItem
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun StylishConnectedListItemGrid(
     items: List<StylishConnectedListItem>,
@@ -114,100 +91,12 @@ public fun StylishConnectedListItemGrid(
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
 ) {
-    require(columns > 0) { "columns must be greater than zero" }
-    val haptic = LocalHapticFeedback.current
-    Column(
-        modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing),
-    ) {
-        items.chunked(columns)
-            .forEachIndexed { rowIndex, rowItems ->
-                Row(
-                    Modifier.height(IntrinsicSize.Min),
-                    horizontalArrangement = Arrangement.spacedBy(spacing),
-                ) {
-                    rowItems.forEachIndexed { columnIndex, item ->
-                        val index = rowIndex * columns + columnIndex
-                        val corners = connectedGridCorners(index, items.size, columns)
-                        val actionable = isActionable(
-                            enabled = item.enabled,
-                            hasClickAction = item.onClick != null,
-                            hasLongClickAction = item.onLongClick != null,
-                        )
-                        Surface(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .then(
-                                    if (actionable) {
-                                        Modifier
-                                            .combinedClickable(
-                                                onClick = { item.onClick?.invoke() },
-                                                onLongClick = item.onLongClick?.let {
-                                                    {
-                                                        haptic.performHapticFeedback(
-                                                            HapticFeedbackType.LongPress,
-                                                        )
-                                                        it()
-                                                    }
-                                                },
-                                            )
-                                            .semantics { role = Role.Button }
-                                    } else {
-                                        Modifier
-                                    },
-                                )
-                                .semantics {
-                                    if (!item.enabled) disabled()
-                                }
-                                .connectedOutline(
-                                    edges = ConnectedEdges.All,
-                                    corners = corners,
-                                ),
-                            shape = connectedShape(corners),
-                            color = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
-                            contentColor = contentColor ?: if (item.enabled) MaterialTheme.colorScheme.onSurface
-                            else MaterialTheme.colorScheme.onSurfaceVariant,
-                            shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
-                        ) {
-                            Row(
-                                Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            ) {
-                                item.leadingContent?.invoke(this)
-                                Column(Modifier.weight(1f)) {
-                                    Text(
-                                        item.headline,
-                                        style = headlineStyle,
-                                        maxLines = headlineMaxLines,
-                                        overflow = headlineOverflow,
-                                    )
-                                    item.supportingText?.let {
-                                        Text(
-                                            it,
-                                            style = supportingTextStyle,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            maxLines = supportingTextMaxLines,
-                                            overflow = supportingTextOverflow,
-                                        )
-                                    }
-                                    item.supportingLines.forEach { line ->
-                                        Text(
-                                            line,
-                                            style = supportingTextStyle,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            maxLines = supportingTextMaxLines,
-                                            overflow = supportingTextOverflow,
-                                        )
-                                    }
-                                }
-                                item.trailingContent?.invoke(this)
-                            }
-                        }
-                    }
-                }
-            }
+    ConnectedListItemGrid(items, columns, modifier, spacing) { item, itemModifier, shape, edges, corners ->
+        DefaultStylishConnectedListItem(
+            item, itemModifier, shape, edges, corners, headlineMaxLines, headlineOverflow,
+            headlineStyle, supportingTextMaxLines, supportingTextOverflow, supportingTextStyle,
+            containerColor, contentColor, horizontalPadding, verticalPadding,
+        )
     }
 }
 

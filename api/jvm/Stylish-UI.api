@@ -271,6 +271,14 @@ public final class com/segnities007/stylishui/components/molecules/ComposableSin
 	public final fun getLambda$839123787$Stylish_UI ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedButtonKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedButtonKt;
+	public fun <init> ()V
+	public final fun getLambda$-1016189575$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2146432940$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1628071444$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedButtonRowKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedButtonRowKt;
 	public fun <init> ()V
@@ -319,6 +327,13 @@ public final class com/segnities007/stylishui/components/molecules/ComposableSin
 	public final fun getLambda$1879687752$Stylish_UI ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedChipKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedChipKt;
+	public fun <init> ()V
+	public final fun getLambda$-840258759$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1095379860$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedChipRowKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedChipRowKt;
 	public fun <init> ()V
@@ -346,6 +361,13 @@ public final class com/segnities007/stylishui/components/molecules/ComposableSin
 	public final fun getLambda$1641461677$Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1775048588$Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1908635499$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedListItemKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedListItemKt;
+	public fun <init> ()V
+	public final fun getLambda$-1763455015$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$655803700$Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/segnities007/stylishui/components/molecules/ComposableSingletons$StylishConnectedListItemRowKt {
@@ -390,6 +412,10 @@ public final class com/segnities007/stylishui/components/molecules/StylishConnec
 	public static final fun StylishConnectedButtonGrid-YlGCr2M (Ljava/util/List;ILandroidx/compose/ui/Modifier;FFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/material3/ButtonColors;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/segnities007/stylishui/components/molecules/StylishConnectedButtonKt {
+	public static final fun DefaultStylishConnectedButton-fJ7uLeM (Lcom/segnities007/stylishui/components/models/StylishConnectedButtonItem;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/foundation/ConnectedEdges;Lcom/segnities007/stylishui/foundation/ConnectedCorners;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/material3/ButtonColors;FLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedButtonRowKt {
 	public static final fun StylishConnectedButtonRow-1yyLQnY (Ljava/util/List;Landroidx/compose/ui/Modifier;FFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/material3/ButtonColors;Landroidx/compose/runtime/Composer;II)V
 }
@@ -418,6 +444,10 @@ public final class com/segnities007/stylishui/components/molecules/StylishConnec
 	public static final fun StylishConnectedChipGrid-tBsVY8U (Ljava/util/List;ILandroidx/compose/ui/Modifier;FIILandroidx/compose/ui/text/TextStyle;JJJJLandroidx/compose/foundation/layout/PaddingValues;FLandroidx/compose/runtime/Composer;III)V
 }
 
+public final class com/segnities007/stylishui/components/molecules/StylishConnectedChipKt {
+	public static final fun DefaultStylishConnectedChip-nlKVxfo (Lcom/segnities007/stylishui/components/models/StylishConnectedChipItem;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/foundation/ConnectedEdges;Lcom/segnities007/stylishui/foundation/ConnectedCorners;IILandroidx/compose/ui/text/TextStyle;JJJJLandroidx/compose/foundation/layout/PaddingValues;FLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedChipRowKt {
 	public static final fun StylishConnectedChipRow-llMrCqU (Ljava/util/List;Landroidx/compose/ui/Modifier;FZIILandroidx/compose/ui/text/TextStyle;JJJJLandroidx/compose/foundation/layout/PaddingValues;FLandroidx/compose/runtime/Composer;III)V
 }
@@ -428,6 +458,10 @@ public final class com/segnities007/stylishui/components/molecules/StylishConnec
 
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedListItemGridKt {
 	public static final fun StylishConnectedListItemGrid-EreZvO8 (Ljava/util/List;ILandroidx/compose/ui/Modifier;FIILandroidx/compose/ui/text/TextStyle;IILandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;FFLandroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/segnities007/stylishui/components/molecules/StylishConnectedListItemKt {
+	public static final fun DefaultStylishConnectedListItem-B36VD1Q (Lcom/segnities007/stylishui/components/models/StylishConnectedListItem;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/foundation/ConnectedEdges;Lcom/segnities007/stylishui/foundation/ConnectedCorners;IILandroidx/compose/ui/text/TextStyle;IILandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;FFLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/segnities007/stylishui/components/molecules/StylishConnectedListItemRowKt {
@@ -591,6 +625,35 @@ public final class com/segnities007/stylishui/foundation/InteractionStateKt {
 	public static synthetic fun isActionable$default (ZZZILjava/lang/Object;)Z
 }
 
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonColumnKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonColumnKt;
+	public fun <init> ()V
+	public final fun getLambda$-1729446614$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1942083689$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$-700679484$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$119935263$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1998608649$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonGridKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonGridKt;
+	public fun <init> ()V
+	public final fun getLambda$-586611553$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$134054312$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$1494501615$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$557320388$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonRowKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedButtonRowKt;
+	public fun <init> ()V
+	public final fun getLambda$-148757200$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1557767221$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-688855967$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$1027681646$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1085663919$Stylish_UI ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardColumnKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedCardColumnKt;
 	public fun <init> ()V
@@ -615,6 +678,66 @@ public final class com/segnities007/stylishui/structure/ComposableSingletons$Con
 	public final fun getLambda$538352766$Stylish_UI ()Lkotlin/jvm/functions/Function7;
 }
 
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipColumnKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipColumnKt;
+	public fun <init> ()V
+	public final fun getLambda$1098764054$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$1489533444$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$345601503$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipGridKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipGridKt;
+	public fun <init> ()V
+	public final fun getLambda$1781996455$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$583676548$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$68244447$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipRowKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedChipRowKt;
+	public fun <init> ()V
+	public final fun getLambda$-511109995$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+	public final fun getLambda$-512753537$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$631915620$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemColumnKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemColumnKt;
+	public fun <init> ()V
+	public final fun getLambda$-289582812$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-907132417$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$67857251$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemGridKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemGridKt;
+	public fun <init> ()V
+	public final fun getLambda$-2046722753$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1427629796$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$180941172$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+}
+
+public final class com/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemRowKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/structure/ComposableSingletons$ConnectedListItemRowKt;
+	public fun <init> ()V
+	public final fun getLambda$-161183223$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-354215698$Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$420155187$Stylish_UI ()Lkotlin/jvm/functions/Function7;
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedButtonColumnKt {
+	public static final fun ConnectedButtonColumn-vz2T9sI (Ljava/util/List;Landroidx/compose/ui/Modifier;FFLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedButtonGridKt {
+	public static final fun ConnectedButtonGrid-nSlTg7c (Ljava/util/List;ILandroidx/compose/ui/Modifier;FFLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedButtonRowKt {
+	public static final fun ConnectedButtonRow-vz2T9sI (Ljava/util/List;Landroidx/compose/ui/Modifier;FFLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/segnities007/stylishui/structure/ConnectedCardColumnKt {
 	public static final fun ConnectedCardColumn-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
 }
@@ -625,6 +748,30 @@ public final class com/segnities007/stylishui/structure/ConnectedCardGridKt {
 
 public final class com/segnities007/stylishui/structure/ConnectedCardRowKt {
 	public static final fun ConnectedCardRow-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedChipColumnKt {
+	public static final fun ConnectedChipColumn-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedChipGridKt {
+	public static final fun ConnectedChipGrid-hGBTI10 (Ljava/util/List;ILandroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedChipRowKt {
+	public static final fun ConnectedChipRow-TN_CM5M (Ljava/util/List;Landroidx/compose/ui/Modifier;FZLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedListItemColumnKt {
+	public static final fun ConnectedListItemColumn-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedListItemGridKt {
+	public static final fun ConnectedListItemGrid-hGBTI10 (Ljava/util/List;ILandroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/segnities007/stylishui/structure/ConnectedListItemRowKt {
+	public static final fun ConnectedListItemRow-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function7;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/segnities007/stylishui/theme/StylishChartColors {

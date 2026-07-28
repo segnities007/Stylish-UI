@@ -17,33 +17,35 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.structure.ConnectedChipRow
+import com.segnities007.stylishui.structure.ConnectedChipGrid
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
- * A horizontally connected row of selectable chips with animated
- * selection-state color transitions, suited for category filters or
- * tab-like selectors.
+ * A grid of connected selectable chips laid out in equal-width cells across a
+ * fixed number of columns, with animated selection-state color transitions —
+ * suited for tag clouds, category pickers, or multi-select filter grids.
  *
  * This is the Finish-layer component: it supplies the Stylish chip rendering
  * ([DefaultStylishConnectedChip]) to the headless Structure layout
- * [ConnectedChipRow], which owns arrangement and connection geometry. Outline
- * edges and corner radii are computed automatically from each item's index.
- * When [fillWidth] is `false` (the default) the row scrolls horizontally; when
- * `true`, every chip receives equal weight and the row fills the available
- * width. Tapping an actionable chip triggers a haptic feedback pulse and
- * animates the container/content colors over 180 ms. Chips are assigned
+ * [ConnectedChipGrid], which owns arrangement and connection geometry. Items
+ * are chunked into rows of [columns] chips; within each row every chip receives
+ * equal weight and stretches to the tallest sibling. Outline edges are drawn on
+ * all four sides of every cell; corner radii are computed automatically from
+ * each item's absolute index so that only the four outer corners of the entire
+ * grid are rounded. Tapping an actionable chip triggers a haptic feedback pulse
+ * and animates the container/content colors over 180 ms. Chips are assigned
  * `Role.Tab` semantics with the `selected` state reflected from
  * [StylishConnectedChipItem.selected].
  *
  * @param items The list of [StylishConnectedChipItem] data objects that
  *   describe each chip's label, selection state, click action, and optional
  *   leading/trailing slot content.
- * @param spacing The horizontal gap between adjacent chips. Defaults to
- *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
- * @param fillWidth When `true`, chips share the available width equally
- *   instead of scrolling. Defaults to `false`.
+ * @param columns The number of equal-width columns in the grid. Must be
+ *   greater than zero.
+ * @param spacing The gap between adjacent chips both horizontally and
+ *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing]
+ *   (3 dp).
  * @param labelMaxLines Maximum number of lines for the chip label text.
  *   Defaults to 1.
  * @param labelOverflow The [TextOverflow] strategy for the chip label when it
@@ -63,17 +65,17 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param contentSpacing The horizontal gap between the leading slot, label,
  *   and trailing slot inside each chip. Defaults to 6 dp.
  *
- * @see ConnectedChipRow
+ * @see ConnectedChipGrid
+ * @see StylishConnectedChipRow
  * @see StylishConnectedChipColumn
- * @see StylishConnectedChipGrid
  * @see DefaultStylishConnectedChip
  */
 @Composable
-public fun StylishConnectedChipRow(
+public fun StylishConnectedChipGrid(
     items: List<StylishConnectedChipItem>,
+    columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    fillWidth: Boolean = false,
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
     labelStyle: TextStyle = MaterialTheme.typography.labelLarge,
@@ -84,7 +86,7 @@ public fun StylishConnectedChipRow(
     contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
     contentSpacing: Dp = 6.dp,
 ) {
-    ConnectedChipRow(items, modifier, spacing, fillWidth) { item, itemModifier, shape, edges, corners ->
+    ConnectedChipGrid(items, columns, modifier, spacing) { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedChip(
             item, itemModifier, shape, edges, corners, labelMaxLines, labelOverflow, labelStyle,
             selectedContainerColor, selectedContentColor, unselectedContainerColor,
@@ -93,20 +95,22 @@ public fun StylishConnectedChipRow(
     }
 }
 
-@Preview(name = "Connected chip row", showBackground = true, widthDp = 393)
+@Preview(name = "Connected chip grid", showBackground = true, widthDp = 393)
 @Composable
-private fun StylishConnectedChipRowPreview() {
+private fun StylishConnectedChipGridPreview() {
     StylishTheme(darkTheme = false) {
         Surface(Modifier.padding(20.dp)) {
-            StylishConnectedChipRow(
-                listOf(
+            StylishConnectedChipGrid(
+                items = listOf(
                     StylishConnectedChipItem("すべて", {}, selected = true) {
                         Icon(Icons.Default.Check, null)
                     },
                     StylishConnectedChipItem("仕事", {}),
                     StylishConnectedChipItem("個人", {}),
                     StylishConnectedChipItem("アイデア", {}),
+                    StylishConnectedChipItem("旅行", {}),
                 ),
+                columns = 2,
             )
         }
     }

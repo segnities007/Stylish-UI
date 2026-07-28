@@ -44,6 +44,64 @@ Supporting layers (not components):
 
 Every component must satisfy the design checklist in [DESIGN.md](DESIGN.md) — **Clear, Simple, Modern**. Review it before creating or modifying any UI component.
 
+## Architecture: The Three Layers (Visual Completeness)
+
+Orthogonal to Atomic Design (which measures **composition** complexity), every
+piece of Stylish UI sits on a second axis: **visual completeness** — how much
+of the look has been decided. This axis has three layers, and dependency flows
+**one way** (`Finish → Structure → Foundation`); a layer may import only the
+layers to its right.
+
+```
+Finish  →  Structure  →  Foundation
+(styled)   (headless)    (material)
+```
+
+| Layer | Package | Definition | Decides visuals? |
+|---|---|---|---|
+| **Foundation** (基礎) | `foundation/`, `tokens/`, `theme/` | Primitive material and rules: geometry computation, dimension tokens, color/typography, interaction logic. Contains **no `@Composable` that renders UI**. | — (no UI) |
+| **Structure** (構造) | `structure/` | Headless components: layout, slots, semantics, and behavior, but **no visual styling** — no colors, elevation, corner-radius values, or animation. Computes connection geometry and delegates each item's rendering to a slot lambda. | ❌ |
+| **Finish** (仕上げ) | `components/` (atoms~patterns) | Styled components wearing the Stylish look (color, elevation, corner radius, animation, haptics). Consumes a Structure component (or Foundation directly, for atoms). | ✅ |
+
+### How the two axes combine
+
+Atomic Design (atom / molecule / organism / pattern) organizes the **Finish**
+layer inside `components/`. The three-layer axis is independent of it: a
+composable is simultaneously a molecule (composition axis) **and** Finish
+(visual-completeness axis). The Structure layer mirrors the same compositions
+but headless. `components/models/` holds immutable data classes consumed by any
+layer.
+
+### Layer judgment rules
+
+Use these mechanical rules to decide where new code belongs:
+
+1. **Foundation** — it computes, holds values, or decides logic, and renders
+   no pixels. A function that takes positions or values and returns geometry,
+   colors, or booleans (e.g. `connectedShape`, `connectedOutline`,
+   `isActionable`, `StylishDimensions`) is Foundation.
+   *Test: does it render pixels or make a visual decision? No → Foundation.*
+2. **Structure** — it is a `@Composable` that lays out children, provides
+   slots, and sets semantics/behavior, but makes **no** visual decision (no
+   color, elevation, corner-radius value, or animation). It delegates each
+   item's rendering to a slot lambda, passing the computed connection
+   geometry.
+   *Test: does it decide any visual property? No — but it lays out and has
+   slots → Structure.*
+3. **Finish** — it applies the Stylish look (color, elevation, corner radius,
+   animation, haptics), typically by consuming a Structure component and
+   supplying a styled item renderer.
+   *Test: does it apply the Stylish look? Yes → Finish.*
+
+### The Connected exemplar
+
+The Card family is the reference implementation of the Structure/Finish split:
+a layout computes connection geometry per index and delegates rendering through
+the `StylishConnectedCardItemContent` slot, whose default
+(`DefaultStylishConnectedCardItem`) is the Finish renderer. **New Structure
+components must follow this delegation pattern; new Finish components must
+consume a Structure component rather than re-implementing layout.**
+
 ## Component Conventions
 
 ### One file, one concern
@@ -124,6 +182,7 @@ Allowed types:
 Example scopes:
 
 - `components`
+- `structure`
 - `foundation`
 - `theme`
 - `tokens`

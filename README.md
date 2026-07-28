@@ -73,15 +73,33 @@ patterns → organisms → molecules → atoms → foundation / theme / tokens
 | **organisms** | `components.organisms` | 複数の molecules の合成 |
 | **patterns** | `components.patterns` | ページレベルのレイアウト |
 
+### 3層アーキテクチャ（視覚的完成度）
+
+Atomic Design（**合成**の複雑さ）とは独立に、すべてのコードは「見た目がどれだけ決まっているか」という第2の軸に乗ります。依存は一方向（`Finish → Structure → Foundation`）です。
+
+```
+Finish  →  Structure  →  Foundation
+(仕上げ)    (骨格)        (素材)
+```
+
+| 層 | パッケージ | 定義 |
+|---|---|---|
+| **Foundation**（基礎） | `foundation/`, `tokens/`, `theme/` | 素材と規則。ジオメトリ計算・トークン・色/書体・判定ロジック。**UIを描画しない** |
+| **Structure**（構造） | `structure/` | headlessコンポーネント。レイアウト・スロット・セマンティクスを持つが、**視覚スタイル（色/elevation/角丸/アニメーション）を持たない**。ジオメトリを計算し、描画をスロットに委譲 |
+| **Finish**（仕上げ） | `components/` | Stylishの見た目をまとった完成品。Structure（またはatomsはFoundation直接）を消費 |
+
+`Stylish` 接頭辞はスタイル済みFinish（`StylishConnectedCardRow`）、裸名はheadless Structure（`ConnectedCardRow`）を示します。Structureに自前のレンダラーを渡せば、同じ連結ジオメトリで独自スキンを組めます。
+
 ### 公開コンポーネント
 
 - **atoms** — `StylishFab`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishSectionTitle`, `StylishConnectedCard`, `StylishDialogSurface`, `StylishFormTextField`
-- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), `StylishConnectedChipRow`, `StylishConnectedListItemColumn`, `StylishDatePickerField`, `StylishEmptyState`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid), `StylishSection`, `StylishDatePickerField`, `StylishEmptyState`
 - **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`
 - **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`
+- **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + 各 `Connected*ItemContent` スロット契約
 - **charts** — `SimplePieChart` (common), `SimpleBarChart`, `SimpleLineChart` (Android)
 - **theme** — `StylishTheme`, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`
-- **tokens** — `StylishDimensions`（テーマ経由でカスタマイズ可能）
+- **tokens** — `StylishDimensions`（Connectedジオメトリ + Rhythm間隔スケール `inlineSpacing`/`itemSpacing`/`contentSpacing`/`sectionSpacing`。テーマ経由でカスタマイズ可能）
 
 ## 開発
 

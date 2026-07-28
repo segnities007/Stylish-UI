@@ -4,13 +4,11 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,29 +17,30 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
-import com.segnities007.stylishui.structure.ConnectedListItemColumn
+import com.segnities007.stylishui.structure.ConnectedListItemRow
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
- * A vertically connected group of list items that share outlines and corner
- * radii, typically used for grouped settings sections or navigation menus.
+ * A horizontally connected group of list items that share outlines and corner
+ * radii, typically used for side-by-side summary tiles or horizontal
+ * navigation sections.
  *
  * This is the Finish-layer component: it supplies the Stylish list-item
  * rendering ([DefaultStylishConnectedListItem]) to the headless Structure
- * layout [ConnectedListItemColumn], which owns arrangement and connection
- * geometry. Outline edges and corner radii are computed automatically from each
- * item's index: the first item rounds only its top corners, the last item
- * rounds only its bottom corners, and middle items have square corners. Each
- * item displays a headline, optional supporting text, additional supporting
- * lines, and optional leading/trailing slot content. Items whose
- * [StylishConnectedListItem.onClick] and [StylishConnectedListItem.onLongClick]
- * are both `null`, or whose [StylishConnectedListItem.enabled] is `false`, are
- * rendered without elevation and do not respond to interaction.
+ * layout [ConnectedListItemRow], which owns arrangement and connection
+ * geometry. Each item receives equal weight within the row and stretches to the
+ * tallest sibling. Outline edges and corner radii are computed automatically
+ * from each item's index. Each item displays a headline, optional supporting
+ * text, additional supporting lines, and optional leading/trailing slot
+ * content. Items whose [StylishConnectedListItem.onClick] and
+ * [StylishConnectedListItem.onLongClick] are both `null`, or whose
+ * [StylishConnectedListItem.enabled] is `false`, are rendered without elevation
+ * and do not respond to interaction.
  *
  * @param items The list of [StylishConnectedListItem] data objects that
  *   describe each row's headline, supporting text, click/long-click actions,
  *   enabled state, and slot content.
- * @param spacing The vertical gap between adjacent items. Defaults to
+ * @param spacing The horizontal gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param headlineMaxLines Maximum number of lines for the headline text.
  *   Defaults to [Int.MAX_VALUE] (unlimited).
@@ -64,13 +63,13 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param verticalPadding The vertical padding inside each item. Defaults to
  *   14 dp.
  *
- * @see ConnectedListItemColumn
- * @see StylishConnectedListItemRow
+ * @see ConnectedListItemRow
+ * @see StylishConnectedListItemColumn
  * @see StylishConnectedListItemGrid
  * @see DefaultStylishConnectedListItem
  */
 @Composable
-public fun StylishConnectedListItemColumn(
+public fun StylishConnectedListItemRow(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
@@ -85,7 +84,7 @@ public fun StylishConnectedListItemColumn(
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
 ) {
-    ConnectedListItemColumn(items, modifier, spacing) { item, itemModifier, shape, edges, corners ->
+    ConnectedListItemRow(items, modifier, spacing) { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedListItem(
             item, itemModifier, shape, edges, corners, headlineMaxLines, headlineOverflow,
             headlineStyle, supportingTextMaxLines, supportingTextOverflow, supportingTextStyle,
@@ -94,27 +93,24 @@ public fun StylishConnectedListItemColumn(
     }
 }
 
-@Preview(name = "Connected list items", showBackground = true, widthDp = 393)
+@Preview(name = "Connected list item row", showBackground = true, widthDp = 393)
 @Composable
-private fun StylishConnectedListItemColumnPreview() {
+private fun StylishConnectedListItemRowPreview() {
     StylishTheme(darkTheme = false) {
         Surface(Modifier.padding(20.dp)) {
-            StylishConnectedListItemColumn(
+            StylishConnectedListItemRow(
                 listOf(
                     StylishConnectedListItem(
                         headline = "テーマ",
-                        supportingText = "システム設定を使用",
+                        supportingText = "システム",
                         onClick = {},
                         leadingContent = { Icon(Icons.Default.Palette, null) },
-                        trailingContent = {
-                            Icon(Icons.AutoMirrored.Filled.ArrowForward, null)
-                        },
                     ),
                     StylishConnectedListItem(
                         headline = "通知",
+                        supportingText = "オン",
                         onClick = {},
                         leadingContent = { Icon(Icons.Default.Notifications, null) },
-                        trailingContent = { Switch(true, {}) },
                     ),
                 ),
             )

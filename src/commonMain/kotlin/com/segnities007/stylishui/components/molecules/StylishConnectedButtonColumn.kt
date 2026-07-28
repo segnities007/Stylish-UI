@@ -2,18 +2,12 @@ package com.segnities007.stylishui.components.molecules
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FileDownload
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -21,16 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
-import com.segnities007.stylishui.foundation.connectedColumnCorners
-import com.segnities007.stylishui.foundation.connectedColumnEdges
-import com.segnities007.stylishui.foundation.connectedOutline
-import com.segnities007.stylishui.foundation.connectedShape
-import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.structure.ConnectedButtonColumn
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -38,15 +27,15 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * A vertically connected group of buttons that share outlines and corner
  * radii to form a segmented-control appearance.
  *
- * Each button fills the full available width. Outline edges and corner radii
- * are computed automatically from each item's index: the first button rounds
- * only its top corners, the last button rounds only its bottom corners, and
- * middle buttons have square corners with all four outlines drawn on every
- * button. Leading
- * and trailing slots are given a minimum width of 40 dp so that icons align
- * consistently across rows. Items whose [StylishConnectedButtonItem.onClick]
- * is `null` or whose [StylishConnectedButtonItem.enabled] is `false` are
- * rendered in a disabled state and do not respond to interaction.
+ * This is the Finish-layer component: it supplies the Stylish button rendering
+ * ([DefaultStylishConnectedButton]) to the headless Structure layout
+ * [ConnectedButtonColumn], which owns arrangement and connection geometry. Each
+ * button fills the full available width. Outline edges and corner radii are
+ * computed automatically from each item's index. Leading and trailing slots are
+ * given a minimum width of 40 dp so that icons align consistently across rows.
+ * Items whose [StylishConnectedButtonItem.onClick] is `null` or whose
+ * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
+ * state and do not respond to interaction.
  *
  * @param items The list of [StylishConnectedButtonItem] data objects that
  *   describe each button's content, click action, colors, and enabled state.
@@ -57,17 +46,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param contentPadding The inner padding of each button. Defaults to
  *   16 dp horizontal and 12 dp vertical.
  * @param defaultColors The [ButtonColors] used for every item whose
- *   [StylishConnectedButtonItem.colors] is `null`. Defaults to a grouped
- *   container background ([MaterialTheme.stylishComponentColors.groupedContainer])
- *   with [MaterialTheme.colorScheme.onSurface] content,
- *   [MaterialTheme.colorScheme.surfaceVariant] disabled container, and
- *   [MaterialTheme.colorScheme.onSurfaceVariant] disabled content.
+ *   [StylishConnectedButtonItem.colors] is `null`.
  *
- * Buttons use [StylishTheme.dimensions.interactiveElevation] (1 dp) by
- * default, 0 dp when pressed or disabled.
- *
+ * @see ConnectedButtonColumn
  * @see StylishConnectedButtonRow
  * @see StylishConnectedButtonGrid
+ * @see DefaultStylishConnectedButton
  */
 @Composable
 public fun StylishConnectedButtonColumn(
@@ -83,57 +67,11 @@ public fun StylishConnectedButtonColumn(
         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ),
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing),
-    ) {
-        items.forEachIndexed { index, item ->
-            val corners = connectedColumnCorners(index, items.size)
-            val actionable = isActionable(
-                enabled = item.enabled,
-                hasClickAction = item.onClick != null,
-            )
-            Button(
-                onClick = { item.onClick?.invoke() },
-                enabled = actionable,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 52.dp)
-                    .connectedOutline(
-                        edges = connectedColumnEdges(index, items.size),
-                        corners = corners,
-                        cornerRadius = cornerRadius,
-                    ),
-                shape = connectedShape(
-                    corners,
-                    cornerRadius = cornerRadius,
-                ),
-                colors = item.colors ?: defaultColors,
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = StylishTheme.dimensions.interactiveElevation,
-                    pressedElevation = 0.dp,
-                    disabledElevation = 0.dp,
-                ),
-                contentPadding = contentPadding,
-            ) {
-                StylishButtonSlot(
-                    content = item.leadingContent,
-                    alignment = Alignment.CenterStart,
-                    minWidth = 40.dp,
-                )
-                Row(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    content = item.content,
-                )
-                StylishButtonSlot(
-                    content = item.trailingContent,
-                    alignment = Alignment.CenterEnd,
-                    minWidth = 40.dp,
-                )
-            }
-        }
+    ConnectedButtonColumn(items, modifier, cornerRadius, spacing) { item, itemModifier, shape, edges, corners ->
+        DefaultStylishConnectedButton(
+            item, itemModifier, shape, edges, corners, cornerRadius, contentPadding, defaultColors,
+            slotMinWidth = 40.dp,
+        )
     }
 }
 

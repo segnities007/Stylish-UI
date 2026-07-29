@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,6 +53,7 @@ import com.segnities007.stylishui.components.molecules.StylishEmptyState
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.organisms.StylishDeleteConfirmDialog
 import com.segnities007.stylishui.components.organisms.StylishDialogActions
+import com.segnities007.stylishui.components.patterns.StylishFooter
 import com.segnities007.stylishui.components.patterns.StylishHeader
 import com.segnities007.stylishui.components.patterns.StylishPageContent
 import com.segnities007.stylishui.theme.StylishTheme
@@ -396,23 +396,25 @@ private fun EmptyStateSection() {
 
 @Composable
 private fun FooterSection() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        HorizontalDivider()
-        Text(
-            text = "Apache License 2.0",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = "github.com/segnities007/Stylish-UI",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
-        )
-    }
+    StylishFooter(
+        content = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = "Apache License 2.0",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = "github.com/segnities007/Stylish-UI",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        },
+    )
 }
 
 @Preview

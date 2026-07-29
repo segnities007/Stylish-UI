@@ -23,9 +23,11 @@ import androidx.compose.runtime.Immutable
  * @property enabled Whether the card is enabled. When `false`, the card is visually dimmed
  *   and non-interactive regardless of click handlers.
  * @property leadingContent Composable slot rendered at the start of the card (e.g. an icon or
- *   thumbnail). Defaults to an empty composable (no leading content).
+ *   thumbnail). When `null` (the default), no leading content is rendered and no spacing
+ *   is reserved.
  * @property trailingContent Composable slot rendered at the end of the card (e.g. a chevron,
- *   switch, or overflow menu). Defaults to an empty composable (no trailing content).
+ *   switch, or overflow menu). When `null` (the default), no trailing content is rendered
+ *   and no spacing is reserved.
  * @see com.segnities007.stylishui.foundation.isActionable
  * @see com.segnities007.stylishui.foundation.ConnectedCorners
  */
@@ -36,6 +38,6 @@ public data class StylishConnectedCardItem(
     val onClick: (() -> Unit)? = null,
     val onLongClick: (() -> Unit)? = null,
     val enabled: Boolean = true,
-    val leadingContent: @Composable () -> Unit = {},
-    val trailingContent: @Composable () -> Unit = {},
+    val leadingContent: (@Composable () -> Unit)? = null,
+    val trailingContent: (@Composable () -> Unit)? = null,
 )

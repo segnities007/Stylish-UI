@@ -61,8 +61,6 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   When `null` (default), [imageVector] and [contentDescription]
  *   are used instead. When provided, [contentColor] is not applied
  *   automatically — the slot is responsible for its own tinting.
- *   Ignored when [enabled] is `false` — the disabled state always
- *   renders the default [Icon].
  *
  * @see StylishIconButton
  * @see StylishFab
@@ -109,7 +107,7 @@ public fun StylishRoundedIconButton(
             }
         } else {
             Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
-                Icon(imageVector, contentDescription, tint = resolvedContentColor)
+                iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         }
     }

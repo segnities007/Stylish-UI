@@ -70,14 +70,14 @@ public fun StylishDeleteConfirmDialog(
     messageStyle: TextStyle = MaterialTheme.typography.bodyMedium,
 ) {
     StylishDialogSurface(onDismiss = onDismiss) {
-        Column(Modifier.padding(24.dp)) {
+        Column(Modifier.padding(StylishTheme.dimensions.sectionSpacing - StylishTheme.dimensions.itemSpacing)) {
             Text(
                 title,
                 style = titleStyle,
                 maxLines = titleMaxLines,
                 overflow = titleOverflow,
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(StylishTheme.dimensions.itemSpacing + StylishTheme.dimensions.inlineSpacing))
             Text(
                 message,
                 style = messageStyle,
@@ -85,7 +85,7 @@ public fun StylishDeleteConfirmDialog(
                 maxLines = messageMaxLines,
                 overflow = messageOverflow,
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(StylishTheme.dimensions.contentSpacing + StylishTheme.dimensions.itemSpacing))
             StylishDialogActions(
                 confirmLabel = confirmLabel,
                 cancelLabel = cancelLabel,

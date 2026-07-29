@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,10 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishButton
+import com.segnities007.stylishui.components.atoms.StylishChip
+import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndicator
 import com.segnities007.stylishui.components.atoms.StylishDialogSurface
 import com.segnities007.stylishui.components.atoms.StylishFab
 import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.atoms.StylishIconButton
+import com.segnities007.stylishui.components.atoms.StylishLinearProgressIndicator
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.charts.PieChartData
@@ -39,6 +43,7 @@ import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonGrid
@@ -54,9 +59,13 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedListItemG
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.components.molecules.StylishDatePickerField
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
+import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.organisms.StylishDeleteConfirmDialog
 import com.segnities007.stylishui.components.organisms.StylishDialogActions
+import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishTabBar
+import com.segnities007.stylishui.components.patterns.StylishFooter
 import com.segnities007.stylishui.components.patterns.StylishHeader
 import com.segnities007.stylishui.components.patterns.StylishPageContent
 import com.segnities007.stylishui.theme.StylishTheme
@@ -115,6 +124,8 @@ private fun WebsiteContent(
         item { Spacer(Modifier.height(24.dp)) }
         item { GettingStartedSection() }
         item { Spacer(Modifier.height(24.dp)) }
+        item { StandaloneAtomsSection() }
+        item { Spacer(Modifier.height(24.dp)) }
         item { SegmentedSection() }
         item { Spacer(Modifier.height(24.dp)) }
         item { CardsSection() }
@@ -125,6 +136,10 @@ private fun WebsiteContent(
         item { Spacer(Modifier.height(24.dp)) }
         item { ListSection() }
         item { Spacer(Modifier.height(24.dp)) }
+        item { TabBarSection() }
+        item { Spacer(Modifier.height(24.dp)) }
+        item { NavigationBarSection() }
+        item { Spacer(Modifier.height(24.dp)) }
         item { ChartSection() }
         item { Spacer(Modifier.height(24.dp)) }
         item { FormSection() }
@@ -132,6 +147,10 @@ private fun WebsiteContent(
         item { DialogSection() }
         item { Spacer(Modifier.height(24.dp)) }
         item { IconsSection() }
+        item { Spacer(Modifier.height(24.dp)) }
+        item { ProgressSection() }
+        item { Spacer(Modifier.height(24.dp)) }
+        item { SkeletonSection() }
         item { Spacer(Modifier.height(32.dp)) }
         item { EmptyStateSection() }
         item { Spacer(Modifier.height(32.dp)) }
@@ -204,6 +223,27 @@ private fun GettingStartedSection() {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+@Composable
+private fun StandaloneAtomsSection() {
+    StylishSectionTitle(title = "Standalone Atoms")
+    Spacer(Modifier.height(12.dp))
+
+    Text("StylishButton", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        StylishButton(onClick = {}) { Text("Save") }
+        StylishButton(onClick = {}, enabled = false) { Text("Disabled") }
+    }
+
+    Spacer(Modifier.height(16.dp))
+    Text("StylishChip", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishChip(label = "Default", onClick = {})
+        StylishChip(label = "Selected", onClick = {}, selected = true)
     }
 }
 
@@ -389,6 +429,31 @@ private fun ListSection() {
 }
 
 @Composable
+private fun TabBarSection() {
+    StylishSectionTitle(title = "Tab Bar")
+    Spacer(Modifier.height(12.dp))
+    var selectedTab by remember { mutableStateOf(0) }
+    StylishTabBar(
+        tabs = listOf("Overview", "Records", "Maintenance", "Statistics"),
+        selectedIndex = selectedTab,
+        onSelectedChange = { selectedTab = it },
+    )
+}
+
+@Composable
+private fun NavigationBarSection() {
+    StylishSectionTitle(title = "Navigation Bar")
+    Spacer(Modifier.height(12.dp))
+    StylishNavigationBar(
+        items = listOf(
+            StylishNavigationItem(Icons.Default.Search, "Home", selected = true),
+            StylishNavigationItem(Icons.Default.Add, "Add"),
+            StylishNavigationItem(Icons.Default.DarkMode, "Settings"),
+        ),
+    )
+}
+
+@Composable
 private fun ChartSection() {
     StylishSectionTitle(title = "Charts")
     Spacer(Modifier.height(12.dp))
@@ -534,6 +599,39 @@ private fun IconsSection() {
 }
 
 @Composable
+private fun ProgressSection() {
+    StylishSectionTitle(title = "Progress Indicators")
+    Spacer(Modifier.height(12.dp))
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        StylishCircularProgressIndicator(Modifier.size(48.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Circular", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Indeterminate circular progress with theme colors.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+    Spacer(Modifier.height(16.dp))
+    Text("Linear", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(Modifier.height(8.dp))
+    StylishLinearProgressIndicator(Modifier.fillMaxWidth())
+}
+
+@Composable
+private fun SkeletonSection() {
+    StylishSectionTitle(title = "Skeleton Loading")
+    Spacer(Modifier.height(12.dp))
+    StylishSkeletonCard(Modifier.fillMaxWidth())
+    Spacer(Modifier.height(8.dp))
+    StylishSkeletonCard(Modifier.fillMaxWidth())
+}
+
+@Composable
 private fun EmptyStateSection() {
     StylishSectionTitle(title = "Empty State")
     Spacer(Modifier.height(12.dp))
@@ -548,21 +646,23 @@ private fun EmptyStateSection() {
 
 @Composable
 private fun FooterSection() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        HorizontalDivider()
-        Text(
-            text = "Apache License 2.0",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = "github.com/segnities007/Stylish-UI",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
-        )
-    }
+    StylishFooter(
+        content = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = "Apache License 2.0",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = "github.com/segnities007/Stylish-UI",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        },
+    )
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/segnities007/Stylish-UI/compare/v0.6.0...v0.6.1) (2026-07-29)
+
+
+### Bug Fixes
+
+* /navigation bar and content mode ([#24](https://github.com/segnities007/Stylish-UI/issues/24)) ([b339938](https://github.com/segnities007/Stylish-UI/commit/b339938b7c7f7814c81d4ccc204f1d41c76e826b))
+
 ## [0.6.0](https://github.com/segnities007/Stylish-UI/compare/v0.5.1...v0.6.0) (2026-07-29)
 
 

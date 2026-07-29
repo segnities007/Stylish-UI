@@ -116,7 +116,7 @@ public fun StylishRoundedIconButton(
 @Preview(name = "Rounded icon button default", showBackground = true)
 @Composable
 private fun StylishRoundedIconButtonPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishRoundedIconButton(Icons.Default.Add, "追加", {})
     }
 }
@@ -124,7 +124,7 @@ private fun StylishRoundedIconButtonPreview() {
 @Preview(name = "Rounded icon button active", showBackground = true)
 @Composable
 private fun StylishRoundedIconButtonActivePreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishRoundedIconButton(
             imageVector = Icons.Default.Add,
             contentDescription = "追加",
@@ -137,7 +137,7 @@ private fun StylishRoundedIconButtonActivePreview() {
 @Preview(name = "Rounded icon button disabled", showBackground = true)
 @Composable
 private fun StylishRoundedIconButtonDisabledPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishRoundedIconButton(
             imageVector = Icons.Default.Add,
             contentDescription = "追加",

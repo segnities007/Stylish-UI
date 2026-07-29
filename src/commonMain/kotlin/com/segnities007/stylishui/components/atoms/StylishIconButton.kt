@@ -103,7 +103,7 @@ public fun StylishIconButton(
 @Preview(name = "Icon button default", showBackground = true)
 @Composable
 private fun StylishIconButtonPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishIconButton(Icons.Default.Search, "検索", {})
     }
 }
@@ -111,7 +111,7 @@ private fun StylishIconButtonPreview() {
 @Preview(name = "Icon button active", showBackground = true)
 @Composable
 private fun StylishIconButtonActivePreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishIconButton(
             imageVector = Icons.Default.Search,
             contentDescription = "検索",
@@ -124,7 +124,7 @@ private fun StylishIconButtonActivePreview() {
 @Preview(name = "Icon button disabled", showBackground = true)
 @Composable
 private fun StylishIconButtonDisabledPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishIconButton(
             imageVector = Icons.Default.Search,
             contentDescription = "検索",

@@ -90,7 +90,7 @@ public fun StylishFab(
 @Preview(name = "FAB default", showBackground = true)
 @Composable
 private fun StylishFabPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishFab(Icons.Default.Add, "追加", {})
     }
 }
@@ -98,7 +98,7 @@ private fun StylishFabPreview() {
 @Preview(name = "FAB disabled", showBackground = true)
 @Composable
 private fun StylishFabDisabledPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishFab(
             imageVector = Icons.Default.Add,
             contentDescription = "追加",

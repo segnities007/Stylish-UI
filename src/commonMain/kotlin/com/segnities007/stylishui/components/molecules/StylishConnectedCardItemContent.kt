@@ -69,5 +69,6 @@ public fun DefaultStylishConnectedCardItem(
         outlineCorners = outlineCorners,
         leadingContent = item.leadingContent,
         trailingContent = item.trailingContent,
+        content = item.content,
     )
 }

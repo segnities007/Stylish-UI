@@ -42,7 +42,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * is needed outside a [StylishConnectedChipRow],
  * [StylishConnectedChipColumn], or [StylishConnectedChipGrid].
  *
- * @param label Text displayed on the chip.
+ * @param label Text displayed on the chip in structured mode. Ignored
+ *   in content mode. Defaults to `""`.
  * @param onClick Called when the chip is tapped. `null` makes the chip
  *   display-only.
  * @param modifier Modifier applied to the [Surface] root.
@@ -52,18 +53,25 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   renders at zero elevation.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius].
- * @param labelMaxLines Maximum lines for [label]. Defaults to 1.
- * @param labelOverflow Overflow strategy for [label].
- * @param labelStyle Text style for [label].
+ * @param labelMaxLines Maximum lines for [label] in structured mode.
+ * @param labelOverflow Overflow strategy for [label] in structured mode.
+ * @param labelStyle Text style for [label] in structured mode.
  * @param selectedContainerColor Background color when selected.
  * @param selectedContentColor Content color when selected.
  * @param unselectedContainerColor Background color when unselected.
  * @param unselectedContentColor Content color when unselected.
  * @param contentPadding Inner padding of the chip.
  * @param contentSpacing Gap between leading slot, label, and trailing
- *   slot. Defaults to [StylishTheme.dimensions.inlineSpacing].
- * @param leadingContent Optional content before the label.
- * @param trailingContent Optional content after the label.
+ *   slot in structured mode. Defaults to
+ *   [StylishTheme.dimensions.inlineSpacing].
+ * @param leadingContent Optional content before the label in structured
+ *   mode. Ignored in content mode.
+ * @param trailingContent Optional content after the label in structured
+ *   mode. Ignored in content mode.
+ * @param content When non-null, replaces the entire structured row
+ *   (leading + label + trailing) with caller-supplied content. Receives
+ *   [RowScope] for weight/alignment control. When `null` (default), the
+ *   structured row is rendered.
  *
  * @see StylishConnectedChipRow
  * @see StylishConnectedChipColumn
@@ -71,7 +79,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  */
 @Composable
 public fun StylishChip(
-    label: String,
+    label: String = "",
     onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
@@ -88,6 +96,7 @@ public fun StylishChip(
     contentSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
     leadingContent: (@Composable RowScope.() -> Unit)? = null,
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
+    content: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val haptic = LocalHapticFeedback.current
     val actionable = isActionable(enabled = enabled, hasClickAction = onClick != null)
@@ -127,14 +136,18 @@ public fun StylishChip(
             horizontalArrangement = Arrangement.spacedBy(contentSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            leadingContent?.invoke(this)
-            Text(
-                label,
-                style = labelStyle,
-                maxLines = labelMaxLines,
-                overflow = labelOverflow,
-            )
-            trailingContent?.invoke(this)
+            if (content != null) {
+                content(this)
+            } else {
+                leadingContent?.invoke(this)
+                Text(
+                    label,
+                    style = labelStyle,
+                    maxLines = labelMaxLines,
+                    overflow = labelOverflow,
+                )
+                trailingContent?.invoke(this)
+            }
         }
     }
 }

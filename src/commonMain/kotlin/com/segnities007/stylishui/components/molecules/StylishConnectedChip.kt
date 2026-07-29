@@ -129,14 +129,18 @@ public fun DefaultStylishConnectedChip(
             horizontalArrangement = Arrangement.spacedBy(contentSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            item.leadingContent?.invoke(this)
-            Text(
-                item.label,
-                style = labelStyle,
-                maxLines = labelMaxLines,
-                overflow = labelOverflow,
-            )
-            item.trailingContent?.invoke(this)
+            if (item.content != null) {
+                item.content(this)
+            } else {
+                item.leadingContent?.invoke(this)
+                Text(
+                    item.label,
+                    style = labelStyle,
+                    maxLines = labelMaxLines,
+                    overflow = labelOverflow,
+                )
+                item.trailingContent?.invoke(this)
+            }
         }
     }
 }

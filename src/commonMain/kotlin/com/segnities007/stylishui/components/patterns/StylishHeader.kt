@@ -3,8 +3,10 @@ package com.segnities007.stylishui.components.patterns
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,8 +49,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   typically one or more [StylishIconButton]s for search, settings, etc.
  *   When null, no trailing content is shown.
  * @param shape Corner shape of the header surface. Defaults to
- *   [RoundedCornerShape] with 28.dp radius, matching the floating
- *   aesthetic.
+ *   [RoundedCornerShape] with [StylishTheme.dimensions.floatingCornerRadius]
+ *   radius, matching the floating aesthetic.
  * @param containerColor Background color of the header surface. Defaults
  *   to [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param contentColor Default content color propagated to child
@@ -63,9 +65,11 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param height Fixed height of the inner content area. Defaults to 56.dp
  *   (standard app-bar height).
  * @param topPadding Space above the surface, after status-bar insets.
- *   Defaults to 8.dp.
+ *   Defaults to [StylishTheme.dimensions.itemSpacing].
  * @param bottomPadding Space below the surface, separating it from page
- *   content. Defaults to 16.dp.
+ *   content. Defaults to [StylishTheme.dimensions.contentSpacing].
+ * @param actionsSpacing Horizontal gap between items inside the [actions]
+ *   slot. Defaults to [StylishTheme.dimensions.inlineSpacing].
  *
  * @see StylishScaffold
  * @see StylishPageContent
@@ -76,7 +80,7 @@ public fun StylishHeader(
     title: @Composable () -> Unit,
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
-    shape: Shape = RoundedCornerShape(28.dp),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     border: BorderStroke? = BorderStroke(
@@ -86,8 +90,9 @@ public fun StylishHeader(
     tonalElevation: Dp = 4.dp,
     shadowElevation: Dp = StylishTheme.dimensions.floatingElevation,
     height: Dp = 56.dp,
-    topPadding: Dp = 8.dp,
-    bottomPadding: Dp = 16.dp,
+    topPadding: Dp = StylishTheme.dimensions.itemSpacing,
+    bottomPadding: Dp = StylishTheme.dimensions.contentSpacing,
+    actionsSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
 ) {
     Column(
         modifier
@@ -115,14 +120,15 @@ public fun StylishHeader(
                     Box(
                         Modifier
                             .align(Alignment.CenterStart)
-                            .padding(start = 4.dp)
+                            .padding(start = StylishTheme.dimensions.inlineSpacing)
                     ) { it() }
                 }
                 actions?.let {
-                    Box(
+                    Row(
                         Modifier
                             .align(Alignment.CenterEnd)
-                            .padding(end = 4.dp)
+                            .padding(end = StylishTheme.dimensions.inlineSpacing),
+                        horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
                     ) { it() }
                 }
             }

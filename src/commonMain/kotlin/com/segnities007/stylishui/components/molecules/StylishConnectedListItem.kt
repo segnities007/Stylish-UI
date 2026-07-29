@@ -5,8 +5,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -129,39 +131,49 @@ public fun DefaultStylishConnectedListItem(
         else MaterialTheme.colorScheme.onSurfaceVariant,
         shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
-        Row(
-            Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            item.leadingContent?.invoke(this)
-            Column(Modifier.weight(1f)) {
-                Text(
-                    item.headline,
-                    style = headlineStyle,
-                    maxLines = headlineMaxLines,
-                    overflow = headlineOverflow,
-                )
-                item.supportingText?.let {
-                    Text(
-                        it,
-                        style = supportingTextStyle,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = supportingTextMaxLines,
-                        overflow = supportingTextOverflow,
-                    )
-                }
-                item.supportingLines.forEach { line ->
-                    Text(
-                        line,
-                        style = supportingTextStyle,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = supportingTextMaxLines,
-                        overflow = supportingTextOverflow,
-                    )
-                }
+        if (item.content != null) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+            ) {
+                item.content()
             }
-            item.trailingContent?.invoke(this)
+        } else {
+            Row(
+                Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                item.leadingContent?.invoke(this)
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        item.headline,
+                        style = headlineStyle,
+                        maxLines = headlineMaxLines,
+                        overflow = headlineOverflow,
+                    )
+                    item.supportingText?.let {
+                        Text(
+                            it,
+                            style = supportingTextStyle,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = supportingTextMaxLines,
+                            overflow = supportingTextOverflow,
+                        )
+                    }
+                    item.supportingLines.forEach { line ->
+                        Text(
+                            line,
+                            style = supportingTextStyle,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = supportingTextMaxLines,
+                            overflow = supportingTextOverflow,
+                        )
+                    }
+                }
+                item.trailingContent?.invoke(this)
+            }
         }
     }
 }

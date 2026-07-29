@@ -93,7 +93,7 @@ public fun StylishEmptyState(
     ) {
         if (iconContent != null) iconContent() else Icon(
             icon, contentDescription = null, tint = iconTint,
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = StylishTheme.dimensions.contentSpacing),
         )
         Text(
             title,
@@ -108,14 +108,14 @@ public fun StylishEmptyState(
             color = contentColor,
             maxLines = descriptionMaxLines,
             overflow = descriptionOverflow,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = StylishTheme.dimensions.itemSpacing),
         )
         if (action != null) {
             action()
         } else if (actionLabel != null && onAction != null) {
             TextButton(
                 onClick = onAction,
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier.padding(top = StylishTheme.dimensions.contentSpacing),
             ) {
                 Text(actionLabel)
             }

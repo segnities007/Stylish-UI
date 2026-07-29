@@ -7,12 +7,9 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -86,12 +83,17 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   Defaults to 16.dp.
  * @param verticalPadding Vertical padding inside the card.
  *   Defaults to 12.dp.
+ * @param contentSpacing Horizontal gap between leading content, the text
+ *   column, and trailing content. Defaults to
+ *   [StylishTheme.dimensions.itemSpacing].
+ * @param titleSpacing Vertical gap between [title] and [supportingText].
+ *   Defaults to [StylishTheme.dimensions.inlineSpacing].
  * @param leadingContent Optional content before the text column
- *   (e.g. an icon or thumbnail). Always rendered; pass an empty
- *   lambda to omit.
+ *   (e.g. an icon or thumbnail). When `null` (default), no leading
+ *   content is rendered and no spacing is reserved.
  * @param trailingContent Optional content after the text column
- *   (e.g. a chevron or badge). Always rendered; pass an empty
- *   lambda to omit.
+ *   (e.g. a chevron or badge). When `null` (default), no trailing
+ *   content is rendered and no spacing is reserved.
  *
  * @see StylishConnectedCardRow
  * @see StylishConnectedCardColumn
@@ -122,8 +124,10 @@ public fun StylishConnectedCard(
     minHeight: Dp = 77.dp,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 12.dp,
-    leadingContent: @Composable () -> Unit = {},
-    trailingContent: @Composable () -> Unit = {},
+    contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    leadingContent: (@Composable () -> Unit)? = null,
+    trailingContent: (@Composable () -> Unit)? = null,
 ) {
     val haptic = LocalHapticFeedback.current
     val actionable = isActionable(
@@ -166,12 +170,12 @@ public fun StylishConnectedCard(
                 .sizeIn(minHeight = minHeight)
                 .padding(horizontal = horizontalPadding, vertical = verticalPadding),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(contentSpacing),
         ) {
-            leadingContent()
-            Spacer(Modifier.width(12.dp))
+            leadingContent?.invoke()
             Column(
                 Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.spacedBy(titleSpacing, Alignment.CenterVertically),
             ) {
                 Text(
                     title,
@@ -180,7 +184,6 @@ public fun StylishConnectedCard(
                     overflow = titleOverflow,
                 )
                 if (supportingText.isNotBlank()) {
-                    Spacer(Modifier.height(4.dp))
                     Text(
                         supportingText,
                         style = supportingTextStyle,
@@ -190,8 +193,7 @@ public fun StylishConnectedCard(
                     )
                 }
             }
-            Spacer(Modifier.width(12.dp))
-            trailingContent()
+            trailingContent?.invoke()
         }
     }
 }
@@ -206,7 +208,8 @@ private fun StylishConnectedCardPreview() {
                 supportingText = "補足テキスト",
                 onClick = {},
                 onLongClick = {},
-            ) { Text("詳細", style = MaterialTheme.typography.labelSmall) }
+                trailingContent = { Text("詳細", style = MaterialTheme.typography.labelSmall) },
+            )
         }
     }
 }

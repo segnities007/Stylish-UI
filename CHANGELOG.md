@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/segnities007/Stylish-UI/compare/v0.5.1...v0.6.0) (2026-07-29)
+
+
+### Features
+
+* **components:** add missing components and refactor token-based spacing ([#22](https://github.com/segnities007/Stylish-UI/issues/22)) ([fdaaa09](https://github.com/segnities007/Stylish-UI/commit/fdaaa0978c2c8d10abe10686f806b3edf11d72d9))
+
 ## [0.5.1](https://github.com/segnities007/Stylish-UI/compare/v0.5.0...v0.5.1) (2026-07-28)
 
 

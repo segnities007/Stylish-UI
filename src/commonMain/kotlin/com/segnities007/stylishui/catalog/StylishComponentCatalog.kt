@@ -3,6 +3,7 @@ package com.segnities007.stylishui.catalog
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,21 +29,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishAvatar
 import com.segnities007.stylishui.components.atoms.StylishBadge
 import com.segnities007.stylishui.components.atoms.StylishButton
+import com.segnities007.stylishui.components.atoms.StylishButtonVariant
 import com.segnities007.stylishui.components.atoms.StylishCard
 import com.segnities007.stylishui.components.atoms.StylishCheckbox
 import com.segnities007.stylishui.components.atoms.StylishChip
+import com.segnities007.stylishui.components.atoms.StylishChipVariant
 import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndicator
+import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
+import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
 import com.segnities007.stylishui.components.atoms.StylishFab
 import com.segnities007.stylishui.components.atoms.StylishHorizontalDivider
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishLinearProgressIndicator
 import com.segnities007.stylishui.components.atoms.StylishRadioButton
+import com.segnities007.stylishui.components.atoms.StylishRangeSlider
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
+import com.segnities007.stylishui.components.atoms.StylishSlider
 import com.segnities007.stylishui.components.atoms.StylishSwitch
+import com.segnities007.stylishui.components.charts.BarChartData
+import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.PieChartData
+import com.segnities007.stylishui.components.charts.SimpleBarChart
+import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
@@ -53,6 +66,7 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedButtonCol
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
@@ -60,11 +74,16 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
+import com.segnities007.stylishui.components.molecules.StylishListItem
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
+import com.segnities007.stylishui.components.organisms.StylishAlertDialog
 import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishSearchBar
 import com.segnities007.stylishui.components.organisms.StylishTabBar
+import com.segnities007.stylishui.components.patterns.StylishTopAppBar
 import com.segnities007.stylishui.theme.StylishTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ComponentCatalog() {
     Surface {
@@ -80,11 +99,54 @@ private fun ComponentCatalog() {
             StylishSectionTitle("StylishButton", textStyle = MaterialTheme.typography.titleSmall)
             StylishButton(onClick = {}) { Text("保存する") }
             StylishButton(onClick = {}, enabled = false) { Text("無効") }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StylishButton(onClick = {}, variant = StylishButtonVariant.Tonal) { Text("Tonal") }
+                StylishButton(onClick = {}, variant = StylishButtonVariant.Outlined) { Text("Outlined") }
+                StylishButton(onClick = {}, variant = StylishButtonVariant.Text) { Text("Text") }
+                StylishButton(onClick = {}, variant = StylishButtonVariant.Elevated) { Text("Elevated") }
+            }
+            var loading by remember { mutableStateOf(false) }
+            StylishButton(onClick = { loading = !loading }, isLoading = loading) {
+                Text(if (loading) "処理中…" else "非同期処理")
+            }
 
             StylishSectionTitle("StylishChip", textStyle = MaterialTheme.typography.titleSmall)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 StylishChip(label = "通常", onClick = {})
                 StylishChip(label = "選択中", onClick = {}, selected = true)
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StylishChip(label = "Filter", onClick = {}, variant = StylishChipVariant.Filter, selected = true)
+                StylishChip(label = "Input", onClick = {}, variant = StylishChipVariant.Input)
+                StylishChip(label = "Suggestion", onClick = {}, variant = StylishChipVariant.Suggestion)
+            }
+
+            StylishSectionTitle("StylishSlider / StylishRangeSlider", textStyle = MaterialTheme.typography.titleSmall)
+            var sliderValue by remember { mutableStateOf(0.5f) }
+            StylishSlider(value = sliderValue, onValueChange = { sliderValue = it })
+            var rangeValue by remember { mutableStateOf(0.2f..0.8f) }
+            StylishRangeSlider(value = rangeValue, onValueChange = { rangeValue = it })
+
+            StylishSectionTitle("StylishAvatar", textStyle = MaterialTheme.typography.titleSmall)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                StylishAvatar(initials = "SM")
+                StylishAvatar(initials = "SM", size = 56.dp)
+            }
+
+            StylishSectionTitle("StylishDropdownMenu", textStyle = MaterialTheme.typography.titleSmall)
+            var menuExpanded by remember { mutableStateOf(false) }
+            Box {
+                StylishButton(onClick = { menuExpanded = true }, variant = StylishButtonVariant.Outlined) {
+                    Text("メニューを開く")
+                }
+                StylishDropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
+                    StylishDropdownMenuItem(text = { Text("編集") }, onClick = { menuExpanded = false })
+                    StylishDropdownMenuItem(text = { Text("削除") }, onClick = { menuExpanded = false })
+                    StylishDropdownMenuItem(text = { Text("無効") }, onClick = {}, enabled = false)
+                }
             }
 
             StylishSectionTitle("StylishCard", textStyle = MaterialTheme.typography.titleSmall)
@@ -286,6 +348,76 @@ private fun ComponentCatalog() {
                 ),
             )
 
+            StylishSectionTitle("StylishListItem", textStyle = MaterialTheme.typography.titleSmall)
+            StylishListItem(
+                headline = "プレーンなリスト項目",
+                supportingText = "Connected ではない単体の行",
+                onClick = {},
+            )
+
+            StylishSectionTitle("StylishAlertDialog", textStyle = MaterialTheme.typography.titleSmall)
+            var showDialog by remember { mutableStateOf(false) }
+            StylishButton(onClick = { showDialog = true }, variant = StylishButtonVariant.Outlined) {
+                Text("ダイアログを開く")
+            }
+            if (showDialog) {
+                StylishAlertDialog(
+                    onDismissRequest = { showDialog = false },
+                    title = { Text("車両を削除") },
+                    text = { Text("この操作は取り消せません。") },
+                    confirmButton = {
+                        StylishButton(onClick = { showDialog = false }) { Text("削除") }
+                    },
+                    dismissButton = {
+                        StylishButton(
+                            onClick = { showDialog = false },
+                            variant = StylishButtonVariant.Text,
+                        ) { Text("キャンセル") }
+                    },
+                )
+            }
+
+            StylishSectionTitle("StylishSearchBar", textStyle = MaterialTheme.typography.titleSmall)
+            var query by remember { mutableStateOf("") }
+            var searchActive by remember { mutableStateOf(false) }
+            StylishSearchBar(
+                query = query,
+                onQueryChange = { query = it },
+                onSearch = { searchActive = false },
+                active = searchActive,
+                onActiveChange = { searchActive = it },
+                placeholder = { Text("検索") },
+                leadingIcon = {
+                    androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = null)
+                },
+            ) {
+                Column {
+                    Text("Stylish UI")
+                    Text("Compose Multiplatform")
+                }
+            }
+
+            StylishSectionTitle("StylishTopAppBar", textStyle = MaterialTheme.typography.titleSmall)
+            StylishTopAppBar(
+                title = { Text("設定") },
+                navigationIcon = {
+                    androidx.compose.material3.IconButton(onClick = {}) {
+                        androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "戻る")
+                    }
+                },
+            )
+
+            StylishSectionTitle("Lazy Connected List", textStyle = MaterialTheme.typography.titleSmall)
+            StylishConnectedCardLazyColumn(
+                items = List(20) { index ->
+                    StylishConnectedCardItem(
+                        title = "項目 $index",
+                        supportingText = "遅延描画される Connected カード",
+                        onClick = {},
+                    )
+                },
+            )
+
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 
             // ── Charts ──
@@ -296,6 +428,25 @@ private fun ComponentCatalog() {
                     PieChartData("燃料費", 35000f, stylishChartColor(0)),
                     PieChartData("保険", 15000f, stylishChartColor(1)),
                     PieChartData("メンテナンス", 8000f, stylishChartColor(2)),
+                ),
+            )
+            SimpleBarChart(
+                contentDescriptionPrefix = "棒グラフ",
+                emptyLabel = "データがありません",
+                data = listOf(
+                    BarChartData("1月", 30000f),
+                    BarChartData("2月", 45000f),
+                    BarChartData("3月", 28000f),
+                ),
+            )
+            SimpleLineChart(
+                contentDescriptionPrefix = "折れ線グラフ",
+                emptyLabel = "データがありません",
+                data = listOf(
+                    LineChartData("1月", 30000f),
+                    LineChartData("2月", 45000f),
+                    LineChartData("3月", 28000f),
+                    LineChartData("4月", 52000f),
                 ),
             )
 

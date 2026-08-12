@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,9 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A pill-shaped icon button rendered on a wide rounded-rectangle
@@ -32,16 +37,19 @@ import com.segnities007.stylishui.theme.StylishTheme
  * [StylishIconButton]: active inverts to primary/onPrimary, and
  * disabling removes the shadow. When [enabled] is `false`, the icon
  * is rendered inside a plain [Box] instead of an [IconButton], so
- * no ripple or click handling is attached.
+ * no ripple or click handling is attached; the box is announced as
+ * disabled and carries the [contentDescription] via semantics.
  *
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
  * @param contentDescription Accessibility label for [imageVector].
+ *   Defaults to `null` (no label); provide one whenever the action is
+ *   not otherwise described on screen.
  * @param onClick Called when the button is tapped. Ignored when
  *   [enabled] is `false`.
  * @param enabled When `false`, the button ignores pointer input,
- *   the shadow elevation is removed, and the icon is rendered in a
- *   non-interactive [Box].
+ *   the shadow elevation is removed, the icon is rendered in a
+ *   non-interactive [Box], and the button is announced as disabled.
  * @param active When `true`, the button renders in the primary color
  *   scheme to indicate a selected/toggled state.
  * @param containerColor Background color override. When `null`,
@@ -51,15 +59,19 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   from [active]: `onPrimary` if active, otherwise
  *   `onSurfaceVariant`.
  * @param shape Shape of the surface. Defaults to
- *   `RoundedCornerShape(24.dp)`.
+ *   `RoundedCornerShape` with
+ *   [DefaultStylishDimensions.floatingCornerRadius].
  * @param border Border stroke drawn around the surface. Defaults to a
  *   hairline of [StylishTheme.dimensions.outlineWidth] using
  *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
  *   border.
  * @param minWidth Minimum width of the tappable surface.
- *   Defaults to 80 dp.
+ *   Defaults to [DefaultStylishDimensions.roundedIconButtonMinWidth].
  * @param minHeight Minimum height of the tappable surface.
  *   Defaults to 48 dp.
+ * @param interactionSource The [MutableInteractionSource] for the
+ *   button, used to observe press/focus/hover interactions. When
+ *   `null`, an internal one is remembered.
  * @param iconContent Optional slot that replaces the default [Icon].
  *   When `null` (default), [imageVector] and [contentDescription]
  *   are used instead. When provided, [contentColor] is not applied
@@ -71,20 +83,21 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishRoundedIconButton(
     imageVector: ImageVector,
-    contentDescription: String,
+    contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     active: Boolean = false,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.floatingCornerRadius),
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,
     ),
-    minWidth: Dp = 80.dp,
+    minWidth: Dp = DefaultStylishDimensions.roundedIconButtonMinWidth,
     minHeight: Dp = 48.dp,
+    interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
 ) {
     val resolvedContainerColor = containerColor ?: if (active) {
@@ -106,12 +119,19 @@ public fun StylishRoundedIconButton(
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         if (enabled) {
-            IconButton(onClick = onClick) {
+            IconButton(onClick = onClick, interactionSource = interactionSource) {
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         } else {
             Box(
-                Modifier.sizeIn(minWidth = minWidth, minHeight = minHeight),
+                Modifier
+                    .sizeIn(minWidth = minWidth, minHeight = minHeight)
+                    .semantics {
+                        disabled()
+                        if (contentDescription != null) {
+                            this.contentDescription = contentDescription
+                        }
+                    },
                 contentAlignment = Alignment.Center,
             ) {
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)

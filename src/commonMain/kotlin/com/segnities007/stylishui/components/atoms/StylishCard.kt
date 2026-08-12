@@ -2,8 +2,11 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +28,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -34,6 +38,27 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
+
+/**
+ * The visual style of a [StylishCard] (and the connected card family).
+ *
+ * [Filled] renders flat with no elevation, [Elevated] lifts the card
+ * with the interactive elevation, and [Outlined] renders flat with a
+ * hairline border.
+ *
+ * @see StylishCard
+ * @see StylishConnectedCard
+ */
+public enum class StylishCardVariant {
+    /** Flat card with no elevation and no border. */
+    Filled,
+
+    /** Card lifted with the interactive elevation (the classic Stylish look). */
+    Elevated,
+
+    /** Flat card outlined with a hairline border. */
+    Outlined,
+}
 
 /**
  * A standalone card for presenting a single piece of grouped content.
@@ -69,8 +94,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   the card display-only.
  * @param onLongClick Called when the card is long-pressed. Triggers
  *   [HapticFeedbackType.LongPress] before invocation.
- * @param enabled When `false`, the card ignores pointer input and
- *   renders at zero elevation regardless of [onClick].
+ * @param enabled When `false`, the card ignores pointer input, renders
+ *   at zero elevation regardless of [onClick], and is announced as
+ *   disabled via semantics.
+ * @param variant The visual style of the card (see [StylishCardVariant]).
+ *   Defaults to [StylishCardVariant.Elevated], preserving the classic
+ *   Stylish look.
  * @param shape Shape of the card surface. Defaults to
  *   [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius].
@@ -101,6 +130,15 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   mode. Ignored in content mode.
  * @param titleSpacing Vertical gap between [title] and [supportingText]
  *   in structured mode. Ignored in content mode.
+ * @param border Border stroke drawn around the card. When `null`
+ *   (default), resolved from [variant]: a hairline of
+ *   [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant` for
+ *   [StylishCardVariant.Outlined], and no border otherwise. Pass an
+ *   explicit [BorderStroke] to override.
+ * @param interactionSource The [MutableInteractionSource] for the
+ *   card, used to observe press/focus/hover interactions. When
+ *   `null`, an internal one is remembered.
  * @param leadingContent Content before the title column in structured
  *   mode. Ignored in content mode.
  * @param trailingContent Content after the title column in structured
@@ -115,6 +153,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @see StylishConnectedCardRow
  * @see StylishConnectedCardColumn
  * @see StylishConnectedCardGrid
+ * @see StylishCardVariant
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -139,6 +178,9 @@ public fun StylishCard(
     supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
     titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    variant: StylishCardVariant = StylishCardVariant.Elevated,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource? = null,
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
     content: (@Composable () -> Unit)? = null,
@@ -149,13 +191,31 @@ public fun StylishCard(
         hasClickAction = onClick != null,
         hasLongClickAction = onLongClick != null,
     )
+    val resolvedBorder = border ?: if (variant == StylishCardVariant.Outlined) {
+        BorderStroke(
+            StylishTheme.dimensions.outlineWidth,
+            MaterialTheme.colorScheme.outlineVariant,
+        )
+    } else {
+        null
+    }
+    val resolvedElevation = if (variant == StylishCardVariant.Elevated) {
+        if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp
+    } else {
+        0.dp
+    }
     Card(
         modifier = modifier
+            .semantics {
+                if (!enabled) disabled()
+            }
             .then(
                 if (actionable) {
                     Modifier
                         .semantics(mergeDescendants = true) { role = Role.Button }
                         .combinedClickable(
+                            interactionSource = interactionSource,
+                            indication = LocalIndication.current,
                             onClick = { onClick?.invoke() },
                             onLongClick = onLongClick?.let {
                                 {
@@ -174,8 +234,9 @@ public fun StylishCard(
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+            defaultElevation = resolvedElevation,
         ),
+        border = resolvedBorder,
     ) {
         if (content != null) {
             Box(
@@ -261,6 +322,18 @@ private fun StylishCardContentModePreview() {
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(name = "Stylish card variants", showBackground = true, widthDp = 393)
+@Composable
+private fun StylishCardVariantsPreview() {
+    StylishTheme(darkTheme = false) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            StylishCard(title = "Filled", variant = StylishCardVariant.Filled)
+            StylishCard(title = "Elevated", variant = StylishCardVariant.Elevated)
+            StylishCard(title = "Outlined", variant = StylishCardVariant.Outlined)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   renders in the disabled color scheme.
  * @param colors Colors used in each state. Defaults to
  *   [SwitchDefaults.colors].
+ * @param interactionSource The [MutableInteractionSource] for the
+ *   switch, used to observe press/focus/hover interactions. When
+ *   `null`, an internal one is remembered.
  *
  * @see StylishCheckbox
  * @see StylishRadioButton
@@ -41,6 +45,7 @@ public fun StylishSwitch(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: SwitchColors = SwitchDefaults.colors(),
+    interactionSource: MutableInteractionSource? = null,
 ) {
     Switch(
         checked = checked,
@@ -48,6 +53,7 @@ public fun StylishSwitch(
         modifier = modifier,
         enabled = enabled,
         colors = colors,
+        interactionSource = interactionSource,
     )
 }
 

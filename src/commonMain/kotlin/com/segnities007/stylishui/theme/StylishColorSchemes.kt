@@ -51,6 +51,8 @@ public val StylishLightColorScheme: ColorScheme = lightColorScheme(
     surfaceContainer = StylishPalette.SoftSurface,
     surfaceContainerHigh = StylishPalette.LightSurfaceContainerHigh,
     surfaceContainerHighest = StylishPalette.LightSurfaceContainerHighest,
+    surfaceBright = StylishPalette.LightSurfaceBright,
+    surfaceDim = StylishPalette.LightSurfaceDim,
     scrim = StylishPalette.Scrim,
 )
 
@@ -101,5 +103,7 @@ public val StylishDarkColorScheme: ColorScheme = darkColorScheme(
     surfaceContainer = StylishPalette.DarkSoftSurface,
     surfaceContainerHigh = StylishPalette.DarkSurfaceContainerHigh,
     surfaceContainerHighest = StylishPalette.DarkSurfaceContainerHighest,
+    surfaceBright = StylishPalette.DarkSurfaceBright,
+    surfaceDim = StylishPalette.DarkSurfaceDim,
     scrim = StylishPalette.Scrim,
 )

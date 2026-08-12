@@ -27,6 +27,8 @@ internal object StylishPalette {
     val LightSurfaceContainerHigh = Color(0xFFFAFAF8)
     val LightSurfaceContainerHighest = Color(0xFFF5F5F2)
     val LightSurfaceContainerLow = Color(0xFFFCFCFA)
+    val LightSurfaceBright = Color(0xFFFFFFFF)
+    val LightSurfaceDim = Color(0xFFF0F0ED)
     val Scrim = Color(0xFF000000)
 
     val DarkInk = Color(0xFFE7E7E4)
@@ -54,4 +56,6 @@ internal object StylishPalette {
     val DarkSurfaceContainerHighest = Color(0xFF333432)
     val DarkSurfaceContainerLow = Color(0xFF1D1E1C)
     val DarkSurfaceContainerLowest = Color(0xFF0E0F0D)
+    val DarkSurfaceBright = Color(0xFF2F302D)
+    val DarkSurfaceDim = Color(0xFF151614)
 }

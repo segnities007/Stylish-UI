@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -66,6 +67,14 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param confirmEnabled Whether the confirm button is interactive.
  *   Defaults to true. Set to false to block confirmation until
  *   preconditions are met.
+ * @param cancelEnabled Whether the cancel button is interactive.
+ *   Defaults to true.
+ * @param animate When `true` (the default), the dialog plays the
+ *   scale-and-fade entrance animation of [StylishDialogSurface]. When
+ *   `false`, the dialog appears immediately.
+ * @param properties [DialogProperties] forwarded to [StylishDialogSurface],
+ *   e.g. to disable dismissal on back press or on tapping outside.
+ *   Defaults to [DialogProperties] with `usePlatformDefaultWidth = false`.
  *
  * @see StylishDialogActions
  * @see StylishDialogSurface
@@ -89,8 +98,16 @@ public fun StylishDeleteConfirmDialog(
     cancelColors: ButtonColors? = null,
     confirmColors: ButtonColors? = null,
     confirmEnabled: Boolean = true,
+    cancelEnabled: Boolean = true,
+    animate: Boolean = true,
+    properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
 ) {
-    StylishDialogSurface(onDismiss = onDismiss, modifier = modifier) {
+    StylishDialogSurface(
+        onDismiss = onDismiss,
+        modifier = modifier,
+        animate = animate,
+        properties = properties,
+    ) {
         Column(Modifier.padding(StylishTheme.dimensions.sectionSpacing - StylishTheme.dimensions.itemSpacing)) {
             Text(
                 title,
@@ -109,13 +126,14 @@ public fun StylishDeleteConfirmDialog(
             Spacer(Modifier.height(StylishTheme.dimensions.contentSpacing + StylishTheme.dimensions.itemSpacing))
             StylishDialogActions(
                 confirmLabel = confirmLabel,
-                modifier = Modifier.fillMaxWidth(),
                 cancelLabel = cancelLabel,
                 onConfirm = onConfirm,
                 onCancel = onDismiss,
+                modifier = Modifier.fillMaxWidth(),
                 cancelColors = cancelColors,
                 confirmColors = confirmColors,
                 confirmEnabled = confirmEnabled,
+                cancelEnabled = cancelEnabled,
             )
         }
     }

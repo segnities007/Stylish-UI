@@ -65,6 +65,8 @@ import kotlin.math.roundToInt
  * @param labelStyle [TextStyle] for each tab label, forwarded to
  *   [StylishChip]. Defaults to
  *   [MaterialTheme.typography.labelLarge].
+ * @param containerColor Background color of the tab bar surface.
+ *   Defaults to [MaterialTheme.colorScheme.surfaceContainer].
  * @param selectedContainerColor Container color of the selected tab.
  *   When `null`, [StylishChip]'s default is used.
  * @param selectedContentColor Content color of the selected tab.
@@ -73,9 +75,18 @@ import kotlin.math.roundToInt
  *   When `null`, [StylishChip]'s default is used.
  * @param unselectedContentColor Content color of unselected tabs.
  *   When `null`, [StylishChip]'s default is used.
+ * @param enabled When `false`, every tab is disabled: chips ignore
+ *   pointer input and render in their disabled colors. Defaults to
+ *   `true`.
  * @param scrollState The [ScrollState] of the tab row. When
  *   [selectedIndex] changes, the row animates to scroll the selected
  *   tab into view.
+ *
+ * Selection feedback relies on the [StylishChip] color animation —
+ * there is deliberately no sliding indicator, since each chip already
+ * animates its container/content colors (see
+ * [com.segnities007.stylishui.components.atoms.StylishChip]).
+ * Tab icons are decorative and carry no content description.
  *
  * @see StylishChip
  * @see StylishConnectedSegmentedControl
@@ -89,10 +100,12 @@ public fun StylishTabBar(
     tabIcons: List<ImageVector>? = null,
     leadingContents: List<(@Composable () -> Unit)?>? = null,
     labelStyle: TextStyle = MaterialTheme.typography.labelLarge,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     selectedContainerColor: Color? = null,
     selectedContentColor: Color? = null,
     unselectedContainerColor: Color? = null,
     unselectedContentColor: Color? = null,
+    enabled: Boolean = true,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val tabPositions = remember { mutableStateMapOf<Int, Float>() }
@@ -101,39 +114,45 @@ public fun StylishTabBar(
             scrollState.animateScrollTo(x.roundToInt())
         }
     }
-    Row(
-        modifier = modifier.horizontalScroll(scrollState),
-        horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.itemSpacing),
-        verticalAlignment = Alignment.CenterVertically,
+    Surface(
+        modifier = modifier,
+        color = containerColor,
     ) {
-        tabs.forEachIndexed { index, label ->
-            val leading: (@Composable () -> Unit)? = leadingContents?.getOrNull(index)
-                ?: tabIcons?.getOrNull(index)?.let { icon ->
-                    {
-                        Icon(
-                            icon,
-                            contentDescription = null,
-                        )
+        Row(
+            modifier = Modifier.horizontalScroll(scrollState),
+            horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.itemSpacing),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            tabs.forEachIndexed { index, label ->
+                val leading: (@Composable () -> Unit)? = leadingContents?.getOrNull(index)
+                    ?: tabIcons?.getOrNull(index)?.let { icon ->
+                        {
+                            Icon(
+                                icon,
+                                contentDescription = null,
+                            )
+                        }
                     }
+                Box(
+                    Modifier.onGloballyPositioned { coordinates ->
+                        tabPositions[index] = coordinates.positionInParent().x
+                    },
+                ) {
+                    StylishChip(
+                        label = label,
+                        onClick = { onSelectedChange(index) },
+                        selected = index == selectedIndex,
+                        enabled = enabled,
+                        labelStyle = labelStyle,
+                        selectedContainerColor = selectedContainerColor ?: MaterialTheme.colorScheme.primary,
+                        selectedContentColor = selectedContentColor ?: MaterialTheme.colorScheme.onPrimary,
+                        unselectedContainerColor = unselectedContainerColor
+                            ?: MaterialTheme.stylishComponentColors.groupedContainer,
+                        unselectedContentColor = unselectedContentColor
+                            ?: MaterialTheme.colorScheme.onSurfaceVariant,
+                        leadingContent = leading?.let { content -> { content() } },
+                    )
                 }
-            Box(
-                Modifier.onGloballyPositioned { coordinates ->
-                    tabPositions[index] = coordinates.positionInParent().x
-                },
-            ) {
-                StylishChip(
-                    label = label,
-                    onClick = { onSelectedChange(index) },
-                    selected = index == selectedIndex,
-                    labelStyle = labelStyle,
-                    selectedContainerColor = selectedContainerColor ?: MaterialTheme.colorScheme.primary,
-                    selectedContentColor = selectedContentColor ?: MaterialTheme.colorScheme.onPrimary,
-                    unselectedContainerColor = unselectedContainerColor
-                        ?: MaterialTheme.stylishComponentColors.groupedContainer,
-                    unselectedContentColor = unselectedContentColor
-                        ?: MaterialTheme.colorScheme.onSurfaceVariant,
-                    leadingContent = leading?.let { content -> { content() } },
-                )
             }
         }
     }

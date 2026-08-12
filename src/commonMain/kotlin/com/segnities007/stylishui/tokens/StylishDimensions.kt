@@ -43,6 +43,25 @@ import androidx.compose.ui.unit.dp
  *   within a section. Part of the Rhythm spacing scale (S6).
  * @property sectionSpacing The large spacing step (32 dp): gap between top-level sections of a
  *   page. Part of the Rhythm spacing scale (S6).
+ * @property buttonMinHeight The minimum height of primary buttons (including the connected
+ *   button family). Default 52 dp matches the standard 44–56 dp touch-target guidance.
+ * @property cardMinHeight The minimum height of cards and connected card items. Default 77 dp
+ *   gives the compact card silhouette used across the design system.
+ * @property iconButtonMinSize The minimum touch-target size for icon buttons. Default 48 dp
+ *   matches Material touch-target guidance.
+ * @property roundedIconButtonMinWidth The minimum width of rounded (label-carrying) icon
+ *   buttons. Default 80 dp.
+ * @property fabSize The size of the regular floating action button. Default 56 dp.
+ * @property fabSmallSize The size of the small floating action button. Default 40 dp.
+ * @property fabLargeSize The size of the large floating action button. Default 96 dp.
+ * @property screenPadding The standard horizontal screen-edge padding for page-level layouts.
+ *   Default 20 dp.
+ * @property controlPadding The standard horizontal padding inside controls (buttons, fields,
+ *   cards). Default 16 dp.
+ * @property controlVerticalPadding The standard vertical padding inside controls. Default 12 dp.
+ * @property pieChartSize The default edge length of [com.segnities007.stylishui.components.charts.SimplePieChart].
+ * @property barChartHeight The default height of [com.segnities007.stylishui.components.charts.SimpleBarChart].
+ * @property lineChartHeight The default height of [com.segnities007.stylishui.components.charts.SimpleLineChart].
  * @see DefaultStylishDimensions
  * @see com.segnities007.stylishui.theme.StylishTheme
  */
@@ -59,6 +78,19 @@ public data class StylishDimensions(
     public val itemSpacing: Dp = 8.dp,
     public val contentSpacing: Dp = 16.dp,
     public val sectionSpacing: Dp = 32.dp,
+    public val buttonMinHeight: Dp = 52.dp,
+    public val cardMinHeight: Dp = 77.dp,
+    public val iconButtonMinSize: Dp = 48.dp,
+    public val roundedIconButtonMinWidth: Dp = 80.dp,
+    public val fabSize: Dp = 56.dp,
+    public val fabSmallSize: Dp = 40.dp,
+    public val fabLargeSize: Dp = 96.dp,
+    public val screenPadding: Dp = 20.dp,
+    public val controlPadding: Dp = 16.dp,
+    public val controlVerticalPadding: Dp = 12.dp,
+    public val pieChartSize: Dp = 160.dp,
+    public val barChartHeight: Dp = 180.dp,
+    public val lineChartHeight: Dp = 200.dp,
 )
 
 /**

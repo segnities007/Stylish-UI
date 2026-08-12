@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -67,6 +69,12 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [MaterialTheme.colorScheme.onSurfaceVariant].
  * @param contentColor The color applied to the title and description text.
  *   Defaults to [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param iconContentDescription An optional content description for the
+ *   default [icon], announced by screen readers. When `null` (the default),
+ *   the icon stays decorative and is skipped by accessibility services.
+ * @param enabled Whether the default action button is interactive. When
+ *   `false`, [onAction] is not invoked and the button renders disabled.
+ *   Defaults to `true`. Custom [action] slots are not affected.
  * @param iconContent An optional custom composable that replaces the default
  *   icon. When `null`, the [icon] vector is rendered (if non-null). Note: the
  *   default icon includes bottom spacing from
@@ -98,6 +106,8 @@ public fun StylishEmptyState(
     descriptionStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    iconContentDescription: String? = null,
+    enabled: Boolean = true,
     iconContent: (@Composable () -> Unit)? = null,
     titleContent: (@Composable () -> Unit)? = null,
     descriptionContent: (@Composable () -> Unit)? = null,
@@ -113,7 +123,17 @@ public fun StylishEmptyState(
         } else if (icon != null) {
             Icon(
                 icon, contentDescription = null, tint = iconTint,
-                modifier = Modifier.padding(bottom = StylishTheme.dimensions.contentSpacing),
+                modifier = Modifier
+                    .padding(bottom = StylishTheme.dimensions.contentSpacing)
+                    .then(
+                        if (iconContentDescription != null) {
+                            Modifier.semantics {
+                                this.contentDescription = iconContentDescription
+                            }
+                        } else {
+                            Modifier
+                        },
+                    ),
             )
         }
         if (titleContent != null || title.isNotBlank()) {
@@ -144,6 +164,7 @@ public fun StylishEmptyState(
         } else if (actionLabel != null && onAction != null) {
             TextButton(
                 onClick = onAction,
+                enabled = enabled,
                 modifier = Modifier.padding(top = StylishTheme.dimensions.contentSpacing),
             ) {
                 Text(actionLabel)

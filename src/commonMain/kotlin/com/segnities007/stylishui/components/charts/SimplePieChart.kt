@@ -2,17 +2,22 @@ package com.segnities007.stylishui.components.charts
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishChartColors
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A single slice of a pie or donut chart, pairing a categorical label with
@@ -50,6 +55,11 @@ public data class PieChartData(
  * services, built from [contentDescriptionPrefix] followed by each
  * label–value pair.
  *
+ * On first composition the slices animate their sweep angles from zero to
+ * their final proportions (see [animate]). The animation is drawn with
+ * Compose's [Animatable] and reads the animated value inside the draw
+ * scope, so no platform-specific rendering APIs are involved.
+ *
  * This composable is available on all platforms (commonMain).
  *
  * @param data The slices to render. Colors are typically sourced via
@@ -57,7 +67,8 @@ public data class PieChartData(
  * @param contentDescriptionPrefix Leading text for the accessibility
  *   description (e.g. "Expense breakdown").
  * @param modifier Modifier applied to the outer [Canvas].
- * @param chartSize Diameter of the chart. Defaults to 160 dp.
+ * @param chartSize Diameter of the chart. Defaults to
+ *   [DefaultStylishDimensions.pieChartSize] (160 dp).
  * @param holeRatio Radius of the center hole as a fraction of [chartSize].
  *   Defaults to 0.3.
  * @param skeletonRatio Radius of the skeleton ring shown when data is empty,
@@ -66,6 +77,11 @@ public data class PieChartData(
  *   `MaterialTheme.colorScheme.surface`.
  * @param skeletonColor Fill color of the skeleton ring displayed in the
  *   empty state. Defaults to `MaterialTheme.colorScheme.outlineVariant`.
+ * @param startAngle Angle in degrees where the first slice begins, measured
+ *   clockwise from 3 o'clock. Defaults to -90 (top of the chart).
+ * @param animate When `true`, slices animate their sweep angles from zero
+ *   on first composition using `tween(StylishTheme.animation.durationMedium)`.
+ *   When `false`, the chart appears instantly. Defaults to `true`.
  * @see PieChartData
  * @see stylishChartColor
  * @see SimpleBarChart
@@ -76,16 +92,31 @@ public fun SimplePieChart(
     data: List<PieChartData>,
     contentDescriptionPrefix: String,
     modifier: Modifier = Modifier,
-    chartSize: Dp = 160.dp,
+    chartSize: Dp = DefaultStylishDimensions.pieChartSize,
     holeRatio: Float = 0.3f,
     skeletonRatio: Float = 0.4f,
     holeColor: Color = MaterialTheme.colorScheme.surface,
     skeletonColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    startAngle: Float = -90f,
+    animate: Boolean = true,
 ) {
     val total = data.sumOf { it.value.toDouble() }
         .toFloat()
     val description = data.joinToString(", ") {
         "${it.label}: ${formatInteger(it.value.toInt())}"
+    }
+    val progress = remember { Animatable(0f) }
+    val animationDuration = StylishTheme.animation.durationMedium
+    LaunchedEffect(Unit) {
+        if (animate) {
+            progress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(animationDuration),
+            )
+        }
+        else {
+            progress.snapTo(1f)
+        }
     }
 
     Canvas(
@@ -93,6 +124,7 @@ public fun SimplePieChart(
             .size(chartSize)
             .semantics { contentDescription = "$contentDescriptionPrefix: $description" },
     ) {
+        val animationProgress = progress.value
         if (total <= 0f || data.isEmpty()) {
             drawCircle(
                 color = skeletonColor,
@@ -104,16 +136,16 @@ public fun SimplePieChart(
             )
         }
         else {
-            var startAngle = -90f
+            var currentAngle = startAngle
             data.forEach { slice ->
-                val sweep = (slice.value / total) * 360f
+                val sweep = (slice.value / total) * 360f * animationProgress
                 drawArc(
                     color = slice.color,
-                    startAngle = startAngle,
+                    startAngle = currentAngle,
                     sweepAngle = sweep,
                     useCenter = true,
                 )
-                startAngle += sweep
+                currentAngle += sweep
             }
             drawCircle(
                 color = holeColor,

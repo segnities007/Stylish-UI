@@ -92,14 +92,14 @@ Finish  →  Structure  →  Foundation
 
 ### 公開コンポーネント
 
-- **atoms** — `StylishButton`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishFab`, `StylishChip`, `StylishCard`, `StylishConnectedCard`, `StylishSwitch`, `StylishCheckbox`, `StylishRadioButton`, `StylishBadge`, `StylishSectionTitle`, `StylishHorizontalDivider`, `StylishVerticalDivider`, `StylishCircularProgressIndicator`, `StylishLinearProgressIndicator`, `StylishSpacer`, `StylishDialogSurface`, `StylishFormTextField`
-- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid), `StylishSection`, `StylishDatePickerField`, `StylishEmptyState`, `StylishSnackbar`, `StylishSnackbarHost`, `StylishSkeletonLine`, `StylishSkeletonAvatar`, `StylishSkeletonCard`
-- **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`, `StylishNavigationBar`, `StylishTabBar`, `StylishBottomSheet`
-- **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`, `StylishFooter`
-- **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + 各 `Connected*ItemContent` スロット契約
-- **charts** — `SimplePieChart` (common), `SimpleBarChart`, `SimpleLineChart` (Android)
-- **theme** — `StylishTheme`, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`
-- **tokens** — `StylishDimensions`（Connectedジオメトリ + Rhythm間隔スケール `inlineSpacing`/`itemSpacing`/`contentSpacing`/`sectionSpacing`。テーマ経由でカスタマイズ可能）
+- **atoms** — `StylishButton`（Filled/Tonal/Outlined/Text/Elevated の variant・ローディング対応）, `StylishIconButton`, `StylishRoundedIconButton`, `StylishFab`（Regular/Small/Large）, `StylishChip`（Assist/Filter/Input/Suggestion）, `StylishCard`（Filled/Elevated/Outlined）, `StylishConnectedCard`, `StylishSwitch`, `StylishCheckbox`, `StylishRadioButton`, `StylishSlider`, `StylishRangeSlider`, `StylishAvatar`, `StylishBadge`, `StylishSectionTitle`, `StylishHorizontalDivider`, `StylishVerticalDivider`, `StylishCircularProgressIndicator`, `StylishLinearProgressIndicator`, `StylishSpacer`, `StylishDialogSurface`, `StylishFormTextField`, `StylishDropdownMenu` / `StylishDropdownMenuItem`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid + LazyColumn/LazyGrid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid + LazyColumn/LazyGrid), `StylishListItem`, `StylishSection`, `StylishDatePickerField`, `StylishEmptyState`, `StylishSnackbar`, `StylishSnackbarHost`, `StylishSkeletonLine`, `StylishSkeletonAvatar`, `StylishSkeletonCard`
+- **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`, `StylishAlertDialog`, `StylishNavigationBar`, `StylishTabBar`, `StylishSearchBar`, `StylishBottomSheet`
+- **patterns** — `StylishTopAppBar`, `StylishHeader`, `StylishScaffold`, `StylishPageContent`, `StylishFooter`
+- **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + LazyColumn/LazyGrid + 各 `Connected*ItemContent` スロット契約
+- **charts** — `SimplePieChart`, `SimpleBarChart`, `SimpleLineChart`（すべて common で全プラットフォーム対応）
+- **theme** — `StylishTheme`（`dynamicColor` / `shapes` 対応）, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`
+- **tokens** — `StylishDimensions`（Connectedジオメトリ + Rhythm間隔スケール + コンポーネントサイズ。テーマ経由でカスタマイズ可能）, `StylishAnimationTokens`（モーション）
 
 ## 開発
 

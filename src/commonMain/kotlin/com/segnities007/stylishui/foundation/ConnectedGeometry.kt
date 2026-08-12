@@ -223,9 +223,10 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
 /**
  * Returns the outline edges for the item at [index] in a horizontal (row) Connected UI list.
  *
- * Currently all items draw all four edges ([ConnectedEdges.All]); the [index] and [size]
- * parameters are validated and reserved for future edge-suppression logic (e.g. hiding shared
- * internal borders between adjacent items).
+ * Edges shared with an adjacent item are suppressed so that neighbors share a single seamless
+ * boundary: the `start` edge is suppressed when a left neighbor exists (index > 0) and the
+ * `end` edge is suppressed when a right neighbor exists (index < size - 1). The `top` and
+ * `bottom` edges always stay enabled because the row is open on those sides.
  *
  * @param index Zero-based position of the item within the row.
  * @param size Total number of items in the row.
@@ -236,15 +237,21 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
  */
 public fun connectedRowEdges(index: Int, size: Int): ConnectedEdges {
     require(index in 0 until size) { "index must reference an existing item" }
-    return ConnectedEdges.All
+    return ConnectedEdges(
+        top = true,
+        end = index == size - 1,
+        bottom = true,
+        start = index == 0,
+    )
 }
 
 /**
  * Returns the outline edges for the item at [index] in a vertical (column) Connected UI list.
  *
- * Currently all items draw all four edges ([ConnectedEdges.All]); the [index] and [size]
- * parameters are validated and reserved for future edge-suppression logic (e.g. hiding shared
- * internal borders between adjacent items).
+ * Edges shared with an adjacent item are suppressed so that neighbors share a single seamless
+ * boundary: the `top` edge is suppressed when an item above exists (index > 0) and the
+ * `bottom` edge is suppressed when an item below exists (index < size - 1). The `start` and
+ * `end` edges always stay enabled because the column is open on those sides.
  *
  * @param index Zero-based position of the item within the column.
  * @param size Total number of items in the column.
@@ -255,16 +262,24 @@ public fun connectedRowEdges(index: Int, size: Int): ConnectedEdges {
  */
 public fun connectedColumnEdges(index: Int, size: Int): ConnectedEdges {
     require(index in 0 until size) { "index must reference an existing item" }
-    return ConnectedEdges.All
+    return ConnectedEdges(
+        top = index == 0,
+        end = true,
+        bottom = index == size - 1,
+        start = true,
+    )
 }
 
 /**
  * Returns the outline edges for the item at [index] in a grid-based Connected UI layout.
  *
- * Currently all items draw all four edges ([ConnectedEdges.All]); the parameters are validated
- * and reserved for future edge-suppression logic (e.g. hiding shared internal borders between
- * adjacent items). Provided for symmetry with [connectedRowEdges] and [connectedColumnEdges]
- * so grid layouts source their edges from the Foundation layer.
+ * An edge is suppressed when a neighbor exists on that side: the `start` edge when there is
+ * an item to the left, the `end` edge when there is an item to the right, the `top` edge when
+ * there is an item above, and the `bottom` edge when there is an item below. Neighbor checks
+ * follow the same rules as [connectedGridCorners]: they account for actual item existence
+ * rather than assuming a full rectangular grid. A partially filled final row is stretched to
+ * the full grid width by the Connected grid layouts, so every column of the row directly above
+ * it is treated as having a neighbor below.
  *
  * @param index Zero-based position of the item in row-major order.
  * @param size Total number of items in the grid. Must be greater than zero.
@@ -278,5 +293,39 @@ public fun connectedColumnEdges(index: Int, size: Int): ConnectedEdges {
 public fun connectedGridEdges(index: Int, size: Int, columns: Int): ConnectedEdges {
     require(columns > 0) { "columns must be greater than zero" }
     require(index in 0 until size) { "index must reference an existing item" }
-    return ConnectedEdges.All
+
+    val column = index % columns
+    val row = index / columns
+    val lastRow = (size - 1) / columns
+    val finalRowStretched = size % columns != 0
+
+    // Left/right neighbours within the same row are checked against actual item existence.
+    fun hasHorizontalNeighbor(targetColumn: Int): Boolean {
+        if (targetColumn !in 0 until columns) return false
+        return row * columns + targetColumn in 0 until size
+    }
+
+    // Above/below neighbours count only when an item actually exists in the same column.
+    fun hasVerticalNeighbor(targetRow: Int): Boolean {
+        if (targetRow < 0) return false
+        return targetRow * columns + column in 0 until size
+    }
+
+    val hasAbove = hasVerticalNeighbor(row - 1)
+    // A partially filled final row is stretched to the full grid width by the layouts, so
+    // every column of the row directly above it has a neighbor below.
+    val hasBelow = if (finalRowStretched && row == lastRow - 1) {
+        true
+    } else {
+        hasVerticalNeighbor(row + 1)
+    }
+    val hasLeft = hasHorizontalNeighbor(column - 1)
+    val hasRight = hasHorizontalNeighbor(column + 1)
+
+    return ConnectedEdges(
+        top = !hasAbove,
+        end = !hasRight,
+        bottom = !hasBelow,
+        start = !hasLeft,
+    )
 }

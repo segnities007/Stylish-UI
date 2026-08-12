@@ -1,0 +1,182 @@
+package com.segnities007.stylishui.components.molecules
+
+import androidx.compose.ui.tooling.preview.Preview
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.structure.ConnectedListItemContent
+import com.segnities007.stylishui.structure.ConnectedListItemLazyColumn
+import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+
+/**
+ * A lazily-composed vertical group of connected list items that share outlines and corner
+ * radii, typically used for long grouped settings sections or navigation menus.
+ *
+ * This is the Finish-layer component: it supplies the Stylish list-item rendering
+ * ([DefaultStylishConnectedListItem]) to the headless Structure layout
+ * [ConnectedListItemLazyColumn], which owns arrangement and connection geometry. Only the
+ * visible rows are composed, while the connection geometry is computed exactly as in the eager
+ * [StylishConnectedListItemColumn]: the first item rounds only its top corners, the last item
+ * rounds only its bottom corners, and middle items have square corners. Each item displays a
+ * headline, optional supporting text, additional supporting lines, and optional
+ * leading/trailing slot content. Items whose [StylishConnectedListItem.onClick] and
+ * [StylishConnectedListItem.onLongClick] are both `null`, or whose
+ * [StylishConnectedListItem.enabled] is `false`, are rendered without elevation and do not
+ * respond to interaction. Pass a custom [listItem] to override the Stylish rendering while
+ * keeping the connected geometry.
+ *
+ * @param items The list of [StylishConnectedListItem] data objects that describe each row's
+ *   headline, supporting text, click/long-click actions, enabled state, and slot content.
+ * @param spacing The vertical gap between adjacent items. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param contentPadding [PaddingValues] applied around the entire lazy list. Defaults to
+ *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ * @param listState [LazyListState] controlling scroll position. Defaults to
+ *   [rememberLazyListState]. Supply a hoisted state to observe scroll offset or
+ *   programmatically scroll.
+ * @param headlineMaxLines Maximum number of lines for the headline text. Defaults to
+ *   [Int.MAX_VALUE] (unlimited).
+ * @param headlineOverflow The [TextOverflow] strategy for the headline when it exceeds
+ *   [headlineMaxLines]. Defaults to [TextOverflow.Ellipsis].
+ * @param headlineStyle The [TextStyle] applied to each item's headline. Defaults to
+ *   [MaterialTheme.typography.titleMedium].
+ * @param supportingTextMaxLines Maximum number of lines for supporting text and supporting
+ *   lines. Defaults to [Int.MAX_VALUE] (unlimited).
+ * @param supportingTextOverflow The [TextOverflow] strategy for supporting text. Defaults to
+ *   [TextOverflow.Ellipsis].
+ * @param supportingTextStyle The [TextStyle] applied to supporting text and supporting lines.
+ *   Defaults to [MaterialTheme.typography.bodyMedium].
+ * @param containerColor The background color of each item surface. When `null`, defaults to
+ *   [MaterialTheme.stylishComponentColors.groupedContainer].
+ * @param contentColor The content color of each item surface. When `null`, defaults to an
+ *   enabled/disabled-aware color.
+ * @param horizontalPadding The horizontal padding inside each item. Defaults to 16 dp.
+ * @param verticalPadding The vertical padding inside each item. Defaults to 14 dp.
+ * @param contentSpacing The horizontal gap between the leading slot, text block, and trailing
+ *   slot inside each item. Defaults to [StylishTheme.dimensions.itemSpacing] (8 dp).
+ * @param listItem A composable lambda that renders a single item. Receives the item data, a
+ *   modifier (fill-max-width), the connected [Shape], the outline [ConnectedEdges], and the
+ *   outline [ConnectedCorners]. Defaults to [DefaultStylishConnectedListItem], dressed in the
+ *   Stylish look with the text, color, padding, and spacing parameters above.
+ *
+ * @see ConnectedListItemLazyColumn
+ * @see StylishConnectedListItemColumn
+ * @see StylishConnectedListItemLazyGrid
+ * @see DefaultStylishConnectedListItem
+ */
+@Composable
+public fun StylishConnectedListItemLazyColumn(
+    items: List<StylishConnectedListItem>,
+    modifier: Modifier = Modifier,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    listState: LazyListState = rememberLazyListState(),
+    headlineMaxLines: Int = Int.MAX_VALUE,
+    headlineOverflow: TextOverflow = TextOverflow.Ellipsis,
+    headlineStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    supportingTextMaxLines: Int = Int.MAX_VALUE,
+    supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    supportingTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    containerColor: Color? = null,
+    contentColor: Color? = null,
+    horizontalPadding: Dp = 16.dp,
+    verticalPadding: Dp = 14.dp,
+    contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    listItem: ConnectedListItemContent = { item, itemModifier, shape, edges, corners ->
+        DefaultStylishConnectedListItem(
+            item, itemModifier, shape, edges, corners, headlineMaxLines, headlineOverflow,
+            headlineStyle, supportingTextMaxLines, supportingTextOverflow, supportingTextStyle,
+            containerColor, contentColor, horizontalPadding, verticalPadding, contentSpacing,
+        )
+    },
+) {
+    ConnectedListItemLazyColumn(items, modifier, spacing, contentPadding, listState, listItem = listItem)
+}
+
+@Preview(name = "Connected list items lazy column", showBackground = true, widthDp = 393, heightDp = 500)
+@Composable
+private fun StylishConnectedListItemLazyColumnPreview() {
+    StylishTheme(darkTheme = false) {
+        Surface(Modifier.padding(20.dp)) {
+            StylishConnectedListItemLazyColumn(
+                items = listOf(
+                    StylishConnectedListItem(
+                        headline = "Civic",
+                        supportingText = "セダン",
+                        onClick = {},
+                        leadingContent = { Icon(Icons.Default.Palette, null) },
+                        trailingContent = {
+                            Icon(Icons.AutoMirrored.Filled.ArrowForward, null)
+                        },
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Accord",
+                        supportingText = "セダン",
+                        onClick = {},
+                        leadingContent = { Icon(Icons.Default.Notifications, null) },
+                        trailingContent = { Switch(true, {}) },
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Prius",
+                        supportingText = "ハイブリッド",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Model 3",
+                        supportingText = "EV",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Leaf",
+                        supportingText = "EV",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Golf",
+                        supportingText = "ハッチバック",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Passat",
+                        supportingText = "セダン",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Corolla",
+                        supportingText = "セダン",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Outback",
+                        supportingText = "SUV",
+                        onClick = {},
+                    ),
+                    StylishConnectedListItem(
+                        headline = "Fit",
+                        supportingText = "コンパクト",
+                        onClick = {},
+                    ),
+                ),
+            )
+        }
+    }
+}

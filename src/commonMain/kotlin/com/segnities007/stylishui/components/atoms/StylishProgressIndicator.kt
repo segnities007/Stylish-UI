@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
@@ -74,7 +76,9 @@ public fun StylishCircularProgressIndicator(
  *
  * When [progress] is `null` (default) the indicator animates
  * indeterminately; when non-null, the determinate variant is shown
- * with the bar filled up to the reported progress.
+ * with the bar filled up to the reported progress. The default
+ * [strokeCap] is [StrokeCap.Butt] and the default [gapSize] is 0 dp,
+ * producing a continuous bar without a track gap.
  *
  * @param modifier Modifier applied to the indicator.
  * @param color Color of the progress bar. Defaults to
@@ -84,28 +88,56 @@ public fun StylishCircularProgressIndicator(
  * @param progress Current progress in `0f..1f`, or `null` (default)
  *   for an indeterminate indicator. Values outside the range are
  *   coerced into it by Material.
+ * @param strokeCap Cap style for the bar endpoints. Defaults to
+ *   [StrokeCap.Butt].
+ * @param gapSize Size of the gap between the progress bar and the
+ *   track. Defaults to 0 dp (no gap).
+ * @param drawStopIndicator Custom drawing of the stop indicator at
+ *   the end of the determinate bar, receiving the [DrawScope] of the
+ *   indicator. When `null` (default), Material's default stop
+ *   indicator is drawn.
  *
  * @see StylishCircularProgressIndicator
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun StylishLinearProgressIndicator(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     trackColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     progress: (() -> Float)? = null,
+    strokeCap: StrokeCap = StrokeCap.Butt,
+    gapSize: Dp = 0.dp,
+    drawStopIndicator: (DrawScope.() -> Unit)? = null,
 ) {
     if (progress != null) {
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = modifier,
-            color = color,
-            trackColor = trackColor,
-        )
+        if (drawStopIndicator != null) {
+            LinearProgressIndicator(
+                progress = progress,
+                modifier = modifier,
+                color = color,
+                trackColor = trackColor,
+                strokeCap = strokeCap,
+                gapSize = gapSize,
+                drawStopIndicator = drawStopIndicator,
+            )
+        } else {
+            LinearProgressIndicator(
+                progress = progress,
+                modifier = modifier,
+                color = color,
+                trackColor = trackColor,
+                strokeCap = strokeCap,
+                gapSize = gapSize,
+            )
+        }
     } else {
         LinearProgressIndicator(
             modifier = modifier,
             color = color,
             trackColor = trackColor,
+            strokeCap = strokeCap,
+            gapSize = gapSize,
         )
     }
 }

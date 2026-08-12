@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -18,7 +20,8 @@ import com.segnities007.stylishui.theme.StylishTheme
 /**
  * A section heading label rendered in the primary color. Provides
  * consistent typography and vertical rhythm for group headers within
- * lists, forms, and detail screens.
+ * lists, forms, and detail screens. The text is announced as a
+ * heading by accessibility services.
  *
  * The text is padded vertically by [verticalPadding] to create
  * breathing room between the preceding section's content and the
@@ -53,7 +56,11 @@ public fun StylishSectionTitle(
         color = color,
         maxLines = maxLines,
         overflow = overflow,
-        modifier = modifier.padding(vertical = verticalPadding),
+        modifier = modifier
+            .semantics(mergeDescendants = false) {
+                heading()
+            }
+            .padding(vertical = verticalPadding),
     )
 }
 

@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -64,6 +66,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param actionsSpacing Horizontal gap between items inside
  *   [leadingContent] and [trailingContent] when they contain multiple
  *   children. Defaults to [StylishTheme.dimensions.inlineSpacing].
+ * @param windowInsets [WindowInsets] consumed below the surface via
+ *   [Modifier.windowInsetsPadding], typically the navigation-bar
+ *   insets. Defaults to [WindowInsets.navigationBars] so the bar
+ *   clears the system gesture/navigation area.
  *
  * @see StylishHeader
  * @see StylishScaffold
@@ -87,12 +93,13 @@ public fun StylishFooter(
     topPadding: Dp = StylishTheme.dimensions.contentSpacing,
     bottomPadding: Dp = StylishTheme.dimensions.itemSpacing,
     actionsSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    windowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
     Column(
         modifier
             .fillMaxWidth()
             .padding(top = topPadding, bottom = bottomPadding)
-            .navigationBarsPadding(),
+            .windowInsetsPadding(windowInsets),
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),

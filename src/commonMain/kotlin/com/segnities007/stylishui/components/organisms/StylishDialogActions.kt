@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.theme.StylishTheme
@@ -30,13 +31,13 @@ import com.segnities007.stylishui.theme.StylishTheme
  *
  * @param confirmLabel Text displayed on the confirm button when
  *   [confirmContent] is null.
- * @param modifier Modifier applied to the underlying
- *   [StylishConnectedButtonRow]. Callers control the row's width —
- *   pass [Modifier.fillMaxWidth] to stretch it to the container.
  * @param cancelLabel Text displayed on the cancel button when
  *   [cancelContent] is null.
  * @param onConfirm Callback invoked when the confirm button is tapped.
  * @param onCancel Callback invoked when the cancel button is tapped.
+ * @param modifier Modifier applied to the underlying
+ *   [StylishConnectedButtonRow]. Callers control the row's width —
+ *   pass [Modifier.fillMaxWidth] to stretch it to the container.
  * @param cancelColors Optional [ButtonColors] for the cancel button.
  *   When null (the default), the subdued
  *   [MaterialTheme.colorScheme.surfaceVariant] container with
@@ -44,6 +45,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param confirmColors Optional [ButtonColors] for the confirm button.
  *   When null (the default), the prominent [StylishConnectedButtonRow]
  *   default colors are used.
+ * @param spacing Horizontal gap between the two buttons. Defaults to
+ *   [StylishTheme.dimensions.connectedSpacing].
  * @param confirmEnabled Whether the confirm button is interactive.
  *   Defaults to true. Set to false to block confirmation until
  *   preconditions are met (e.g. a required field is filled).
@@ -63,12 +66,13 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishDialogActions(
     confirmLabel: String,
-    modifier: Modifier = Modifier,
     cancelLabel: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
     cancelColors: ButtonColors? = null,
     confirmColors: ButtonColors? = null,
+    spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     confirmEnabled: Boolean = true,
     cancelEnabled: Boolean = true,
     cancelContent: @Composable (() -> Unit)? = null,
@@ -91,6 +95,7 @@ public fun StylishDialogActions(
             ) { confirmContent?.invoke() ?: Text(confirmLabel) },
         ),
         modifier = modifier,
+        spacing = spacing,
         defaultColors = ButtonDefaults.buttonColors(),
     )
 }

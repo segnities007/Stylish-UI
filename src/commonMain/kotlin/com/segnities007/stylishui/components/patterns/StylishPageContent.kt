@@ -41,10 +41,12 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   offset or programmatically scroll.
  * @param modifier Modifier applied to the underlying [LazyColumn].
  * @param contentPadding [PaddingValues] applied around the entire lazy
- *   list. Defaults to 20.dp horizontal padding.
+ *   list. Defaults to [DefaultStylishDimensions.screenPadding] horizontal
+ *   padding (20.dp).
  * @param headerSpacing Vertical gap between the [header] and the first
- *   list item. Defaults to [DefaultStylishDimensions.itemSpacing]
- *   (typically 8.dp).
+ *   list item. Defaults to [Dp.Unspecified], which resolves to the active
+ *   theme's [StylishTheme.dimensions.itemSpacing] so global theme
+ *   overrides apply. Pass an explicit value to override.
  * @param verticalArrangement [Arrangement.Vertical] governing spacing and
  *   alignment of list items. Defaults to [Arrangement.Top].
  * @param horizontalAlignment Horizontal alignment of the list items
@@ -64,14 +66,19 @@ public fun StylishPageContent(
     header: @Composable () -> Unit,
     listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp),
-    headerSpacing: Dp = DefaultStylishDimensions.itemSpacing,
+    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.screenPadding),
+    headerSpacing: Dp = Dp.Unspecified,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     reverseLayout: Boolean = false,
     userScrollEnabled: Boolean = true,
     content: LazyListScope.() -> Unit,
 ) {
+    val resolvedHeaderSpacing = if (headerSpacing == Dp.Unspecified) {
+        StylishTheme.dimensions.itemSpacing
+    } else {
+        headerSpacing
+    }
     LazyColumn(
         modifier.fillMaxSize(),
         contentPadding = contentPadding,
@@ -83,7 +90,7 @@ public fun StylishPageContent(
     ) {
         item {
             header()
-            Spacer(Modifier.height(headerSpacing))
+            Spacer(Modifier.height(resolvedHeaderSpacing))
         }
         content()
     }

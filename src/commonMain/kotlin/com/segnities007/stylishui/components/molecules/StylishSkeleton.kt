@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.tokens.DefaultStylishAnimationTokens
 
 /**
  * A shimmering placeholder line used to indicate loading content.
@@ -44,6 +45,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [RoundedCornerShape] with 4.dp.
  * @param minAlpha Minimum opacity during the shimmer cycle.
  * @param maxAlpha Maximum opacity during the shimmer cycle.
+ * @param durationMillis Duration in milliseconds of one full shimmer
+ *   half-cycle (fade up or down). Defaults to
+ *   [DefaultStylishAnimationTokens.durationLong] (500 ms).
  * @param animate When `true` (the default) the opacity oscillates to produce
  *   the shimmer. When `false` the line renders statically at the midpoint of
  *   [minAlpha] and [maxAlpha], for reduced-motion contexts.
@@ -58,6 +62,7 @@ public fun StylishSkeletonLine(
     shape: Shape = RoundedCornerShape(4.dp),
     minAlpha: Float = 0.3f,
     maxAlpha: Float = 0.7f,
+    durationMillis: Int = DefaultStylishAnimationTokens.durationLong,
     animate: Boolean = true,
 ) {
     val alpha = if (animate) {
@@ -66,7 +71,7 @@ public fun StylishSkeletonLine(
             initialValue = minAlpha,
             targetValue = maxAlpha,
             animationSpec = infiniteRepeatable(
-                animation = tween(800),
+                animation = tween(durationMillis),
                 repeatMode = RepeatMode.Reverse,
             ),
             label = "skeletonAlpha",

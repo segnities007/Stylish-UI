@@ -31,17 +31,24 @@ import com.segnities007.stylishui.theme.StylishTheme
 /**
  * A modal dialog container that enters with a combined scale-and-fade
  * animation. Wraps content in a full-width [Card] inside a platform
- * [Dialog] with [DialogProperties.usePlatformDefaultWidth] disabled,
- * so the surface stretches to the available width minus
- * [horizontalPadding].
+ * [Dialog] whose properties default to
+ * `DialogProperties(usePlatformDefaultWidth = false)`, so the surface
+ * stretches to the available width minus [horizontalPadding].
  *
- * The entrance animation scales from 92 % to 100 % over 200 ms with
- * a quadratic ease-in, while alpha fades from 0 to 1 over 180 ms.
- * Set [animate] to `false` to skip the animation entirely (e.g.
- * during UI tests or when the caller manages its own transition).
+ * The entrance animation scales from 92 % to 100 % over
+ * [StylishTheme.animation.durationShort] with a quadratic ease-in,
+ * while alpha fades from 0 to 1 over the same duration. Set
+ * [animate] to `false` to skip the animation entirely (e.g. during
+ * UI tests or when the caller manages its own transition).
+ *
+ * Dismiss behaviour (back press, tap outside) is controlled through
+ * [properties]: pass `DialogProperties(dismissOnBackPress = false)`
+ * or `DialogProperties(dismissOnClickOutside = false)` to opt out of
+ * either dismissal path. [onDismiss] is invoked for whichever
+ * dismissals remain enabled.
  *
  * @param onDismiss Called when the user taps outside the dialog or
- *   presses the system back button.
+ *   presses the system back button (per [properties]).
  * @param modifier Modifier applied to the root [Card], before the
  *   built-in full-width, horizontal-padding, and entrance-animation
  *   modifiers.
@@ -55,6 +62,14 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
  * @param horizontalPadding Horizontal margin between the dialog edges
  *   and the screen edges. Defaults to 16 dp.
+ * @param contentColor Default content color inside the card. When
+ *   `null` (default), the color scheme's default content color is
+ *   used.
+ * @param properties The platform [DialogProperties]. Defaults to
+ *   `DialogProperties(usePlatformDefaultWidth = false)` so the dialog
+ *   spans the full available width. Use `dismissOnBackPress` and
+ *   `dismissOnClickOutside` (constructor parameters of
+ *   [DialogProperties]) to control dismissal.
  * @param content Content rendered inside the card's [ColumnScope].
  *   Callers are responsible for their own internal padding.
  */
@@ -66,6 +81,8 @@ public fun StylishDialogSurface(
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color? = null,
     horizontalPadding: Dp = 16.dp,
+    contentColor: Color? = null,
+    properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     var entered by remember { mutableStateOf(false) }
@@ -73,18 +90,21 @@ public fun StylishDialogSurface(
 
     val dialogScale by animateFloatAsState(
         targetValue = if (entered) 1f else 0.92f,
-        animationSpec = tween(durationMillis = 200, easing = { it * it }),
+        animationSpec = tween(
+            durationMillis = StylishTheme.animation.durationShort,
+            easing = { it * it },
+        ),
         label = "dialogScale",
     )
     val dialogAlpha by animateFloatAsState(
         targetValue = if (entered) 1f else 0f,
-        animationSpec = tween(durationMillis = 180),
+        animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
         label = "dialogAlpha",
     )
 
     Dialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        properties = properties,
     ) {
         Card(
             modifier = modifier
@@ -102,9 +122,16 @@ public fun StylishDialogSurface(
                     },
                 ),
             shape = shape,
-            colors = CardDefaults.cardColors(
-                containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
-            ),
+            colors = if (contentColor != null) {
+                CardDefaults.cardColors(
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
+                    contentColor = contentColor,
+                )
+            } else {
+                CardDefaults.cardColors(
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
+                )
+            },
             content = content,
         )
     }

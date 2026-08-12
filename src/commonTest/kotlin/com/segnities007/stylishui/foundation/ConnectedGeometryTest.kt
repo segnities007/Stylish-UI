@@ -141,15 +141,131 @@ class ConnectedGeometryTest {
     }
 
     @Test
-    fun `edges default to all sides and validate their input`() {
-        assertEquals(ConnectedEdges.All, connectedRowEdges(0, 2))
-        assertEquals(ConnectedEdges.All, connectedColumnEdges(1, 2))
-        assertEquals(ConnectedEdges.All, connectedGridEdges(3, 7, 3))
+    fun `edges suppress internal boundaries and validate their input`() {
+        assertEquals(
+            ConnectedEdges(top = true, end = false, bottom = true, start = true),
+            connectedRowEdges(0, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = true),
+            connectedColumnEdges(1, 2),
+        )
+        // size=7, columns=3: index 3 is the first column of the middle row — right (4),
+        // above (0), and below (the partially filled final row is stretched) neighbors exist,
+        // but it has no left neighbor, so only its start edge stays enabled.
+        assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = false, start = true),
+            connectedGridEdges(3, 7, 3),
+        )
         assertFailsWith<IllegalArgumentException> {
             connectedGridEdges(index = 7, size = 7, columns = 3)
         }
         assertFailsWith<IllegalArgumentException> {
             connectedRowEdges(index = 0, size = 0)
         }
+    }
+
+    @Test
+    fun `row edges keep outer sides and suppress shared sides`() {
+        assertEquals(ConnectedEdges.All, connectedRowEdges(0, 1))
+        assertEquals(
+            ConnectedEdges(top = true, end = false, bottom = true, start = true),
+            connectedRowEdges(0, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = true, end = false, bottom = true, start = false),
+            connectedRowEdges(1, 3),
+        )
+        assertEquals(
+            ConnectedEdges(top = true, end = true, bottom = true, start = false),
+            connectedRowEdges(2, 3),
+        )
+    }
+
+    @Test
+    fun `column edges keep outer sides and suppress shared sides`() {
+        assertEquals(ConnectedEdges.All, connectedColumnEdges(0, 1))
+        assertEquals(
+            ConnectedEdges(top = true, end = true, bottom = false, start = true),
+            connectedColumnEdges(0, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = true),
+            connectedColumnEdges(1, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = false, start = true),
+            connectedColumnEdges(1, 3),
+        )
+    }
+
+    @Test
+    fun `grid edges suppress shared sides at every boundary`() {
+        assertEquals(ConnectedEdges.All, connectedGridEdges(0, 1, 3))
+        assertEquals(
+            ConnectedEdges(top = true, end = false, bottom = false, start = true),
+            connectedGridEdges(0, 4, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = true, end = true, bottom = false, start = false),
+            connectedGridEdges(1, 4, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = true, start = true),
+            connectedGridEdges(2, 4, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = false),
+            connectedGridEdges(3, 4, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = false, start = false),
+            connectedGridEdges(4, 9, 3),
+        )
+    }
+
+    @Test
+    fun `grid edges treat the stretched final row as a full row of neighbors`() {
+        // size=7, columns=3: the middle row (indices 3-5) has a stretched neighbor below in
+        // every column, so all its internal edges are suppressed; index 3 keeps its start
+        // edge because it is the first column of the grid.
+        assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = false, start = true),
+            connectedGridEdges(3, 7, 3),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = false, start = false),
+            connectedGridEdges(4, 7, 3),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = true),
+            connectedGridEdges(6, 7, 3),
+        )
+        // size=3, columns=2: the item above the stretched final row keeps only its outer
+        // top/end edges; the stretched item itself keeps its outer bottom and end edges.
+        assertEquals(
+            ConnectedEdges(top = true, end = true, bottom = false, start = false),
+            connectedGridEdges(1, 3, 2),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = true),
+            connectedGridEdges(2, 3, 2),
+        )
+    }
+
+    @Test
+    fun `grid edges with a single column behave like column edges`() {
+        assertEquals(
+            ConnectedEdges(top = true, end = true, bottom = false, start = true),
+            connectedGridEdges(0, 3, 1),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = false, start = true),
+            connectedGridEdges(1, 3, 1),
+        )
+        assertEquals(
+            ConnectedEdges(top = false, end = true, bottom = true, start = true),
+            connectedGridEdges(2, 3, 1),
+        )
     }
 }

@@ -2,8 +2,11 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -106,8 +110,9 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param titleSpacing Vertical gap between [title] and [supportingText]
  *   in structured mode. Ignored in content mode.
  * @param enabled When `false`, the card ignores pointer input, renders
- *   at zero elevation regardless of [onClick], and is visually dimmed
- *   with [disabledContainerColor] and [disabledContentColor].
+ *   at zero elevation regardless of [onClick], is announced as disabled
+ *   via semantics, and is visually dimmed with [disabledContainerColor]
+ *   and [disabledContentColor].
  * @param onClick Called when the card is tapped. `null` (default) makes
  *   the card display-only.
  * @param onLongClick Called when the card is long-pressed. Triggers
@@ -118,6 +123,18 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   structured mode.
  * @param supportingTextOverflow Overflow strategy for [supportingText]
  *   in structured mode.
+ * @param variant The visual style of the card (see [StylishCardVariant]).
+ *   Defaults to [StylishCardVariant.Elevated], preserving the classic
+ *   Stylish look.
+ * @param border Border stroke drawn around the card, in addition to the
+ *   connected outline. When `null` (default), resolved from [variant]:
+ *   a hairline of [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant` for
+ *   [StylishCardVariant.Outlined], and no border otherwise. Pass an
+ *   explicit [BorderStroke] to override.
+ * @param interactionSource The [MutableInteractionSource] for the
+ *   card, used to observe press/focus/hover interactions. When
+ *   `null`, an internal one is remembered.
  * @param leadingContent Content before the title column in structured
  *   mode. Ignored in content mode.
  * @param trailingContent Content after the title column in structured
@@ -133,6 +150,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @see StylishConnectedCardGrid
  * @see connectedShape
  * @see connectedOutline
+ * @see StylishCardVariant
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -162,6 +180,9 @@ public fun StylishConnectedCard(
     titleOverflow: TextOverflow = TextOverflow.Ellipsis,
     supportingTextMaxLines: Int = 1,
     supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    variant: StylishCardVariant = StylishCardVariant.Elevated,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource? = null,
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
     content: (@Composable () -> Unit)? = null,
@@ -172,6 +193,19 @@ public fun StylishConnectedCard(
         hasClickAction = onClick != null,
         hasLongClickAction = onLongClick != null,
     )
+    val resolvedBorder = border ?: if (variant == StylishCardVariant.Outlined) {
+        BorderStroke(
+            StylishTheme.dimensions.outlineWidth,
+            MaterialTheme.colorScheme.outlineVariant,
+        )
+    } else {
+        null
+    }
+    val resolvedElevation = if (variant == StylishCardVariant.Elevated) {
+        if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp
+    } else {
+        0.dp
+    }
     val resolvedContainerColor = if (!enabled) {
         disabledContainerColor
     } else {
@@ -185,11 +219,16 @@ public fun StylishConnectedCard(
     Card(
         modifier = modifier
             .connectedOutline(outlineEdges, outlineCorners)
+            .semantics {
+                if (!enabled) disabled()
+            }
             .then(
                 if (actionable) {
                     Modifier
                         .semantics(mergeDescendants = true) { role = Role.Button }
                         .combinedClickable(
+                            interactionSource = interactionSource,
+                            indication = LocalIndication.current,
                             onClick = { onClick?.invoke() },
                             onLongClick = onLongClick?.let {
                                 {
@@ -208,8 +247,9 @@ public fun StylishConnectedCard(
             contentColor = resolvedContentColor,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+            defaultElevation = resolvedElevation,
         ),
+        border = resolvedBorder,
     ) {
         if (content != null) {
             Box(

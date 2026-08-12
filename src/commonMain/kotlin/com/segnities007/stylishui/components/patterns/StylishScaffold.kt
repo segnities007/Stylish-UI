@@ -4,8 +4,9 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -44,9 +45,13 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param contentColor Default content color propagated to child
  *   composables. Defaults to [contentColorFor] of [containerColor],
  *   matching the Material 3 [Scaffold] default.
+ * @param floatingActionButtonPosition Position of [floatingActionButton]
+ *   along the bottom edge, forwarded to the Material 3 [Scaffold].
+ *   Defaults to [FabPosition.End].
  * @param contentWindowInsets [WindowInsets] consumed by the scaffold.
- *   Defaults to [WindowInsets.navigationBars] so content avoids the
- *   system navigation bar.
+ *   Defaults to [WindowInsets.systemBars] (status + navigation bars) so
+ *   content avoids both system bars, matching the Material 3 [Scaffold]
+ *   default.
  * @param content Main page content. Receives the [PaddingValues] that
  *   account for the top bar, bottom bar, and window insets; apply them
  *   via [Modifier.padding].
@@ -64,7 +69,8 @@ public fun StylishScaffold(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
+    floatingActionButtonPosition: FabPosition = FabPosition.End,
+    contentWindowInsets: WindowInsets = WindowInsets.systemBars,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
@@ -72,6 +78,7 @@ public fun StylishScaffold(
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = floatingActionButton,
+        floatingActionButtonPosition = floatingActionButtonPosition,
         snackbarHost = snackbarHost,
         containerColor = containerColor,
         contentColor = contentColor,

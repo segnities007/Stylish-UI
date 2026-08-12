@@ -9,6 +9,37 @@ on:
       - main
 
 jobs:
+  check-branch-base:
+    name: Check branch base
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Only meaningful for pull requests: verifies the branch does not
+    # re-introduce commits whose content is already in main (a symptom of
+    # branching from a squash-merged branch, which causes spurious
+    # conflicts — see AGENTS.md rule 3).
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Verify no already-merged commits in the branch
+        run: |
+          set -euo pipefail
+          # git cherry marks '-' commits whose content is already in main
+          # (patch-id match). A '-' entry means this branch was based on a
+          # squash-merged branch and re-applies already-merged work.
+          stale=$(git cherry origin/main HEAD | grep '^-' || true)
+          if [ -n "$stale" ]; then
+            echo "::error::This branch contains commits that are already in main (squash-merged)."
+            echo "::error::Create a fresh branch from origin/main (scripts/new-branch.sh) and re-apply the new work only."
+            git cherry -v origin/main HEAD | grep '^-' || true
+            exit 1
+          fi
+          echo "branch base is clean (no already-merged commits)"
+
   build:
     name: Build and test
     runs-on: ubuntu-latest

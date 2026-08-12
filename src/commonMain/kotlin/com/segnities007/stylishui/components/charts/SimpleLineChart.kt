@@ -1,24 +1,26 @@
 package com.segnities007.stylishui.components.charts
 
-import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A single data point in a [SimpleLineChart], pairing an X-axis label
@@ -35,9 +37,10 @@ import androidx.compose.ui.unit.dp
  *   10 % padding on each end.
  * @see SimpleLineChart
  */
+@Immutable
 public data class LineChartData(
-    val label: String,
-    val value: Float,
+    public val label: String,
+    public val value: Float,
 )
 
 /**
@@ -52,7 +55,8 @@ public data class LineChartData(
  * The Y axis auto-scales to the data range with 10 % padding above and
  * below. When all values are non-negative the axis floor is clamped to
  * zero so no misleading negative ticks appear. Horizontal grid lines carry
- * formatted value labels on the left margin.
+ * formatted value labels on the left margin; labels use a locale-neutral
+ * one-decimal format.
  *
  * X-axis labels are automatically thinned to approximately [maxLabelCount]
  * visible entries (always including the last point) to avoid overlap on
@@ -61,8 +65,8 @@ public data class LineChartData(
  * When [data] contains fewer than two points, [emptyLabel] is drawn at the
  * chart center instead of a line.
  *
- * **Platform:** Android only (androidMain). Uses `android.graphics.Paint`
- * for text rendering.
+ * This composable is available on all platforms (commonMain). Text is drawn
+ * with Compose's common [rememberTextMeasurer] + [drawText] APIs.
  *
  * @param data Ordered data points to plot.
  * @param contentDescriptionPrefix Leading text for the combined accessibility
@@ -78,7 +82,8 @@ public data class LineChartData(
  *   `MaterialTheme.colorScheme.primary`.
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
- * @param chartHeight Total height of the chart area. Defaults to 200 dp.
+ * @param chartHeight Total height of the chart area. Defaults to
+ *   [DefaultStylishDimensions.lineChartHeight].
  * @param strokeWidth Thickness of the connecting line. Defaults to 2.5 dp.
  * @param pointRadius Outer radius of each data-point circle. Defaults to
  *   4 dp.
@@ -105,7 +110,7 @@ public fun SimpleLineChart(
     fillColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
     pointColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = 200.dp,
+    chartHeight: Dp = DefaultStylishDimensions.lineChartHeight,
     strokeWidth: Dp = 2.5.dp,
     pointRadius: Dp = 4.dp,
     pointInnerRadius: Dp = 2.dp,
@@ -113,10 +118,15 @@ public fun SimpleLineChart(
     gridLineCount: Int = 5,
     maxLabelCount: Int = 6,
 ) {
-    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant.toArgb()
+    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
     val pointInnerColor = MaterialTheme.colorScheme.surface
     val description = "$contentDescriptionPrefix: " +
         data.joinToString(", ") { "${it.label}=${it.value}" }
+    val textMeasurer = rememberTextMeasurer()
+    val labelStyle = TextStyle(
+        fontSize = labelTextSize.value.sp,
+        color = labelColor,
+    )
 
     Canvas(
         modifier = modifier
@@ -131,13 +141,6 @@ public fun SimpleLineChart(
         val leftPadding = 40.dp.toPx()
         val usableWidth = chartWidth - leftPadding
         val usableHeight = chartHeight - bottomPadding - topPadding
-
-        val labelPaint = Paint().apply {
-            color = labelColor
-            textSize = labelTextSize.toPx()
-            isAntiAlias = true
-            typeface = Typeface.DEFAULT
-        }
 
         val maxValue = data.maxOfOrNull { it.value } ?: 0f
         val minValue = data.minOfOrNull { it.value } ?: 0f
@@ -156,21 +159,30 @@ public fun SimpleLineChart(
                 strokeWidth = 1f,
             )
             val gridValue = axisMax - (axisMax - axisMin) * i / (gridLineCount - 1).coerceAtLeast(1)
-            drawContext.canvas.nativeCanvas.drawText(
-                "%.1f".format(gridValue),
-                2.dp.toPx(),
-                y + 4.dp.toPx(),
-                labelPaint,
+            val layout = textMeasurer.measure(
+                text = gridValue.formatDecimal(1),
+                style = labelStyle,
+            )
+            drawText(
+                textLayoutResult = layout,
+                topLeft = Offset(
+                    2.dp.toPx(),
+                    y - layout.size.height / 2f,
+                ),
             )
         }
 
         if (data.size < 2) {
-            labelPaint.textAlign = Paint.Align.CENTER
-            drawContext.canvas.nativeCanvas.drawText(
-                emptyLabel,
-                chartWidth / 2f,
-                chartHeight / 2f,
-                labelPaint,
+            val layout = textMeasurer.measure(
+                text = emptyLabel,
+                style = labelStyle,
+            )
+            drawText(
+                textLayoutResult = layout,
+                topLeft = Offset(
+                    (chartWidth - layout.size.width) / 2f,
+                    (chartHeight - layout.size.height) / 2f,
+                ),
             )
         }
         else {
@@ -222,13 +234,17 @@ public fun SimpleLineChart(
             val step = (data.size + maxLabelCount - 1) / maxLabelCount
             data.forEachIndexed { index, d ->
                 if (index % step == 0 || index == data.size - 1) {
-                    val x = points[index].x
-                    labelPaint.textAlign = Paint.Align.CENTER
-                    drawContext.canvas.nativeCanvas.drawText(
-                        d.label,
-                        x.coerceIn(leftPadding, chartWidth - 10.dp.toPx()),
-                        chartHeight - 8.dp.toPx(),
-                        labelPaint,
+                    val x = points[index].x.coerceIn(leftPadding, chartWidth - 10.dp.toPx())
+                    val layout = textMeasurer.measure(
+                        text = d.label,
+                        style = labelStyle,
+                    )
+                    drawText(
+                        textLayoutResult = layout,
+                        topLeft = Offset(
+                            x - layout.size.width / 2f,
+                            chartHeight - 8.dp.toPx() - layout.size.height,
+                        ),
                     )
                 }
             }

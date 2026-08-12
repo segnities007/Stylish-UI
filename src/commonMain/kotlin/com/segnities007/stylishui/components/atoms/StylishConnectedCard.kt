@@ -2,8 +2,11 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -63,38 +67,38 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [titleOverflow], [supportingTextStyle], [supportingTextMaxLines],
  * [supportingTextOverflow], [contentSpacing], [titleSpacing]) are
  * ignored. Container-level parameters ([minHeight], [horizontalPadding],
- * [verticalPadding], [shape], [containerColor], [contentColor]) still
- * apply in both modes.
+ * [verticalPadding], [shape], [containerColor], [contentColor],
+ * [disabledContainerColor], [disabledContentColor]) still apply in
+ * both modes.
  *
  * @param title Primary text displayed in the card body in structured
  *   mode. Ignored in content mode. Defaults to `""`.
  * @param supportingText Secondary text below the title in structured
  *   mode. Omitted when blank. Ignored in content mode.
- * @param onClick Called when the card is tapped. `null` (default) makes
- *   the card display-only.
- * @param onLongClick Called when the card is long-pressed. Triggers
- *   [HapticFeedbackType.LongPress] before invocation.
+ * @param modifier Modifier applied to the card root.
  * @param shape Shape of the card surface. Defaults to
  *   [connectedShape] with [ConnectedCorners.Standalone].
  * @param outlineEdges Which edges of the hairline outline to draw.
  *   Defaults to [ConnectedEdges.All].
  * @param outlineCorners Which corners use the large (outer) radius.
  *   Defaults to [ConnectedCorners.Standalone].
- * @param enabled When `false`, the card ignores pointer input and
- *   renders at zero elevation regardless of [onClick].
- * @param titleMaxLines Maximum lines for [title] in structured mode.
- * @param titleOverflow Overflow strategy for [title] in structured mode.
+ * @param containerColor Background color. Defaults to
+ *   [stylishComponentColors.groupedContainer]. Ignored when
+ *   [enabled] is `false`.
+ * @param contentColor Default content color. Defaults to
+ *   `MaterialTheme.colorScheme.onSurface`. Ignored when [enabled]
+ *   is `false`.
+ * @param disabledContainerColor Background color used when [enabled]
+ *   is `false`, visually dimming the card. Defaults to
+ *   `MaterialTheme.colorScheme.surfaceVariant`.
+ * @param disabledContentColor Content color used when [enabled] is
+ *   `false`, visually dimming the card. Defaults to
+ *   `MaterialTheme.colorScheme.onSurfaceVariant`.
  * @param titleStyle Text style for [title] in structured mode.
- * @param supportingTextMaxLines Maximum lines for [supportingText] in
- *   structured mode.
- * @param supportingTextOverflow Overflow strategy for [supportingText]
- *   in structured mode.
  * @param supportingTextStyle Text style for [supportingText] in
  *   structured mode.
- * @param containerColor Background color. Defaults to
- *   [stylishComponentColors.groupedContainer].
- * @param contentColor Default content color. Defaults to
- *   `MaterialTheme.colorScheme.onSurface`.
+ * @param supportingTextColor Color for [supportingText] in structured
+ *   mode. Defaults to `MaterialTheme.colorScheme.onSurfaceVariant`.
  * @param minHeight Minimum height of the card body. Defaults to 77.dp.
  *   Applies in both modes.
  * @param horizontalPadding Horizontal padding inside the card.
@@ -105,6 +109,32 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   mode. Ignored in content mode.
  * @param titleSpacing Vertical gap between [title] and [supportingText]
  *   in structured mode. Ignored in content mode.
+ * @param enabled When `false`, the card ignores pointer input, renders
+ *   at zero elevation regardless of [onClick], is announced as disabled
+ *   via semantics, and is visually dimmed with [disabledContainerColor]
+ *   and [disabledContentColor].
+ * @param onClick Called when the card is tapped. `null` (default) makes
+ *   the card display-only.
+ * @param onLongClick Called when the card is long-pressed. Triggers
+ *   [HapticFeedbackType.LongPress] before invocation.
+ * @param titleMaxLines Maximum lines for [title] in structured mode.
+ * @param titleOverflow Overflow strategy for [title] in structured mode.
+ * @param supportingTextMaxLines Maximum lines for [supportingText] in
+ *   structured mode.
+ * @param supportingTextOverflow Overflow strategy for [supportingText]
+ *   in structured mode.
+ * @param variant The visual style of the card (see [StylishCardVariant]).
+ *   Defaults to [StylishCardVariant.Elevated], preserving the classic
+ *   Stylish look.
+ * @param border Border stroke drawn around the card, in addition to the
+ *   connected outline. When `null` (default), resolved from [variant]:
+ *   a hairline of [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant` for
+ *   [StylishCardVariant.Outlined], and no border otherwise. Pass an
+ *   explicit [BorderStroke] to override.
+ * @param interactionSource The [MutableInteractionSource] for the
+ *   card, used to observe press/focus/hover interactions. When
+ *   `null`, an internal one is remembered.
  * @param leadingContent Content before the title column in structured
  *   mode. Ignored in content mode.
  * @param trailingContent Content after the title column in structured
@@ -120,32 +150,39 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @see StylishConnectedCardGrid
  * @see connectedShape
  * @see connectedOutline
+ * @see StylishCardVariant
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun StylishConnectedCard(
-    modifier: Modifier = Modifier,
     title: String = "",
     supportingText: String = "",
-    onClick: (() -> Unit)? = null,
-    onLongClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
     shape: Shape = connectedShape(ConnectedCorners.Standalone),
     outlineEdges: ConnectedEdges = ConnectedEdges.All,
     outlineCorners: ConnectedCorners = ConnectedCorners.Standalone,
-    enabled: Boolean = true,
-    titleMaxLines: Int = 1,
-    titleOverflow: TextOverflow = TextOverflow.Ellipsis,
-    titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
-    supportingTextMaxLines: Int = 1,
-    supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
-    supportingTextStyle: TextStyle = MaterialTheme.typography.bodySmall,
     containerColor: Color? = null,
     contentColor: Color? = null,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
+    supportingTextStyle: TextStyle = MaterialTheme.typography.bodySmall,
+    supportingTextColor: Color? = null,
     minHeight: Dp = 77.dp,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 12.dp,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
     titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    enabled: Boolean = true,
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
+    titleMaxLines: Int = 1,
+    titleOverflow: TextOverflow = TextOverflow.Ellipsis,
+    supportingTextMaxLines: Int = 1,
+    supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    variant: StylishCardVariant = StylishCardVariant.Elevated,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource? = null,
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
     content: (@Composable () -> Unit)? = null,
@@ -156,14 +193,42 @@ public fun StylishConnectedCard(
         hasClickAction = onClick != null,
         hasLongClickAction = onLongClick != null,
     )
+    val resolvedBorder = border ?: if (variant == StylishCardVariant.Outlined) {
+        BorderStroke(
+            StylishTheme.dimensions.outlineWidth,
+            MaterialTheme.colorScheme.outlineVariant,
+        )
+    } else {
+        null
+    }
+    val resolvedElevation = if (variant == StylishCardVariant.Elevated) {
+        if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp
+    } else {
+        0.dp
+    }
+    val resolvedContainerColor = if (!enabled) {
+        disabledContainerColor
+    } else {
+        containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer
+    }
+    val resolvedContentColor = if (!enabled) {
+        disabledContentColor
+    } else {
+        contentColor ?: MaterialTheme.colorScheme.onSurface
+    }
     Card(
         modifier = modifier
             .connectedOutline(outlineEdges, outlineCorners)
+            .semantics {
+                if (!enabled) disabled()
+            }
             .then(
                 if (actionable) {
                     Modifier
                         .semantics(mergeDescendants = true) { role = Role.Button }
                         .combinedClickable(
+                            interactionSource = interactionSource,
+                            indication = LocalIndication.current,
                             onClick = { onClick?.invoke() },
                             onLongClick = onLongClick?.let {
                                 {
@@ -178,12 +243,13 @@ public fun StylishConnectedCard(
             ),
         shape = shape,
         colors = CardDefaults.cardColors(
-            containerColor = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
-            contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
+            containerColor = resolvedContainerColor,
+            contentColor = resolvedContentColor,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+            defaultElevation = resolvedElevation,
         ),
+        border = resolvedBorder,
     ) {
         if (content != null) {
             Box(
@@ -218,7 +284,7 @@ public fun StylishConnectedCard(
                         Text(
                             supportingText,
                             style = supportingTextStyle,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = supportingTextColor ?: MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = supportingTextMaxLines,
                             overflow = supportingTextOverflow,
                         )

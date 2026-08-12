@@ -1,24 +1,26 @@
 package com.segnities007.stylishui.components.charts
 
-import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A single segment within a stacked bar, representing one sub-category's
@@ -35,9 +37,10 @@ import androidx.compose.ui.unit.dp
  * @see BarChartData
  * @see SimpleBarChart
  */
+@Immutable
 public data class BarChartSegment(
-    val value: Float,
-    val color: Color,
+    public val value: Float,
+    public val color: Color,
 )
 
 /**
@@ -59,10 +62,11 @@ public data class BarChartSegment(
  * @see BarChartSegment
  * @see SimpleBarChart
  */
+@Immutable
 public data class BarChartData(
-    val label: String,
-    val value: Float,
-    val segments: List<BarChartSegment> = emptyList(),
+    public val label: String,
+    public val value: Float,
+    public val segments: List<BarChartSegment> = emptyList(),
 )
 
 /**
@@ -71,8 +75,9 @@ public data class BarChartData(
  *
  * Each [BarChartData] entry produces one bar whose height is proportional
  * to its value relative to the dataset maximum. Horizontal grid lines with
- * compact axis labels (via [formatCompact]) are drawn on the left. When
- * [data] is empty, [emptyLabel] is centered in the chart area.
+ * magnitude-scaled axis labels (via [formatCompact], without unit suffixes)
+ * are drawn on the left. When [data] is empty, [emptyLabel] is centered in
+ * the chart area.
  *
  * Bars support two modes:
  * - **Single-color** — when `BarChartData.segments` is empty, the bar is
@@ -80,8 +85,8 @@ public data class BarChartData(
  * - **Stacked** — when segments are present, each is drawn in its own
  *   color; only the topmost non-zero segment is rounded.
  *
- * **Platform:** Android only (androidMain). Uses `android.graphics.Paint`
- * for text rendering.
+ * This composable is available on all platforms (commonMain). Text is drawn
+ * with Compose's common [rememberTextMeasurer] + [drawText] APIs.
  *
  * @param data The categories to render as bars.
  * @param contentDescriptionPrefix Leading text for the combined accessibility
@@ -92,7 +97,8 @@ public data class BarChartData(
  *   to `MaterialTheme.colorScheme.primary`.
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
- * @param chartHeight Total height of the chart area. Defaults to 180 dp.
+ * @param chartHeight Total height of the chart area. Defaults to
+ *   [DefaultStylishDimensions.barChartHeight].
  * @param topRadius Corner radius applied to the top of each bar (or the
  *   topmost segment in stacked mode). Defaults to 4 dp.
  * @param labelTextSize Text size for axis and category labels. Defaults to
@@ -112,7 +118,7 @@ public fun SimpleBarChart(
     modifier: Modifier = Modifier,
     barColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = 180.dp,
+    chartHeight: Dp = DefaultStylishDimensions.barChartHeight,
     topRadius: Dp = 4.dp,
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 4,
@@ -120,10 +126,15 @@ public fun SimpleBarChart(
     val maxValue = if (data.isNotEmpty()) data.maxOf { it.value }
         .coerceAtLeast(1f)
     else 1f
-    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant.toArgb()
+    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
     val description = "$contentDescriptionPrefix: " + data.joinToString(", ") {
         "${it.label}=${formatInteger(it.value.toInt())}"
     }
+    val textMeasurer = rememberTextMeasurer()
+    val labelStyle = TextStyle(
+        fontSize = labelTextSize.value.sp,
+        color = labelColor,
+    )
 
     Canvas(
         modifier = modifier
@@ -139,13 +150,6 @@ public fun SimpleBarChart(
         val usableWidth = chartWidth - leftPadding
         val usableHeight = chartHeight - bottomPadding - topPadding
 
-        val labelPaint = Paint().apply {
-            color = labelColor
-            textSize = labelTextSize.toPx()
-            isAntiAlias = true
-            typeface = Typeface.DEFAULT
-        }
-
         for (i in 0 until gridLineCount) {
             val y = topPadding + usableHeight * i / (gridLineCount - 1).coerceAtLeast(1)
             drawLine(
@@ -155,22 +159,30 @@ public fun SimpleBarChart(
                 strokeWidth = 1f,
             )
             val gridValue = maxValue * (gridLineCount - 1 - i) / (gridLineCount - 1).coerceAtLeast(1)
-            drawContext.canvas.nativeCanvas.drawText(
-                com.segnities007.stylishui.components.charts.formatCompact(gridValue),
-                2.dp.toPx(),
-                y + 4.dp.toPx(),
-                labelPaint,
+            val layout = textMeasurer.measure(
+                text = formatCompact(gridValue),
+                style = labelStyle,
+            )
+            drawText(
+                textLayoutResult = layout,
+                topLeft = Offset(
+                    2.dp.toPx(),
+                    y - layout.size.height / 2f,
+                ),
             )
         }
 
         if (data.isEmpty()) {
-            labelPaint.textAlign = Paint.Align.CENTER
-            labelPaint.color = labelColor
-            drawContext.canvas.nativeCanvas.drawText(
-                emptyLabel,
-                chartWidth / 2f,
-                chartHeight / 2f,
-                labelPaint,
+            val layout = textMeasurer.measure(
+                text = emptyLabel,
+                style = labelStyle,
+            )
+            drawText(
+                textLayoutResult = layout,
+                topLeft = Offset(
+                    (chartWidth - layout.size.width) / 2f,
+                    (chartHeight - layout.size.height) / 2f,
+                ),
             )
         }
         else {
@@ -219,12 +231,16 @@ public fun SimpleBarChart(
                     }
                 }
 
-                labelPaint.textAlign = Paint.Align.CENTER
-                drawContext.canvas.nativeCanvas.drawText(
-                    d.label,
-                    x + barWidth / 2,
-                    chartHeight - 8.dp.toPx(),
-                    labelPaint,
+                val layout = textMeasurer.measure(
+                    text = d.label,
+                    style = labelStyle,
+                )
+                drawText(
+                    textLayoutResult = layout,
+                    topLeft = Offset(
+                        x + (barWidth - layout.size.width) / 2f,
+                        chartHeight - 8.dp.toPx() - layout.size.height,
+                    ),
                 )
             }
         }

@@ -70,6 +70,9 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   default.
  * @param horizontalPadding Horizontal padding inside the row.
  * @param verticalPadding Vertical padding inside the row.
+ * @param contentSpacing Horizontal gap between the leading slot, text block,
+ *   and trailing slot. Defaults to
+ *   [StylishTheme.dimensions.itemSpacing] (8 dp).
  *
  * @see StylishConnectedListItemRow
  * @see StylishConnectedListItemColumn
@@ -93,6 +96,7 @@ public fun DefaultStylishConnectedListItem(
     contentColor: Color?,
     horizontalPadding: Dp,
     verticalPadding: Dp,
+    contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
 ) {
     val haptic = LocalHapticFeedback.current
     val actionable = isActionable(
@@ -143,7 +147,7 @@ public fun DefaultStylishConnectedListItem(
             Row(
                 Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(contentSpacing),
             ) {
                 item.leadingContent?.invoke(this)
                 Column(Modifier.weight(1f)) {
@@ -199,6 +203,7 @@ private fun DefaultStylishConnectedListItemPreview() {
                 contentColor = null,
                 horizontalPadding = 16.dp,
                 verticalPadding = 14.dp,
+                contentSpacing = StylishTheme.dimensions.itemSpacing,
             )
         }
     }

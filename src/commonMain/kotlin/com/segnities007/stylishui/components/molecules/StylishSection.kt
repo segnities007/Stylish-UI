@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -39,6 +40,13 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [MaterialTheme.typography.titleMedium].
  * @param titleColor Color for the heading. Defaults to
  *   [MaterialTheme.colorScheme.primary].
+ * @param supportingTextStyle Typography for [supportingText]. Defaults to
+ *   [MaterialTheme.typography.bodyMedium].
+ * @param supportingTextColor Color for [supportingText]. Defaults to
+ *   [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param horizontalAlignment Horizontal alignment of the heading,
+ *   supporting text, and [content] inside the [Column]. Defaults to
+ *   [Alignment.Start].
  * @param content The section body, rendered below the heading. Receives
  *   [ColumnScope].
  *
@@ -47,15 +55,19 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishSection(
     title: String,
-    modifier: Modifier = Modifier,
     supportingText: String? = null,
+    modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.contentSpacing,
     titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
     titleColor: Color = MaterialTheme.colorScheme.primary,
+    supportingTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    supportingTextColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier,
+        horizontalAlignment = horizontalAlignment,
         verticalArrangement = Arrangement.spacedBy(spacing),
     ) {
         StylishSectionTitle(
@@ -67,8 +79,8 @@ public fun StylishSection(
         if (supportingText != null) {
             Text(
                 supportingText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = supportingTextStyle,
+                color = supportingTextColor,
             )
         }
         content()

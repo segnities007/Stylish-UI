@@ -102,10 +102,10 @@ StylishTheme(
         connectedSpacing = 6.dp,        // 間隔を広く
         outlineWidth = 1.dp,            // 輪郭を太く
     ),
-) {
-    // 以下の全コンポーネントがカスタム値で描画される
-}
+) { ... }
 ```
+
+Android 12+ では `dynamicColor = true` で Material You（壁紙由来）の色を適用できます（他のプラットフォームでは無視され、静的スキームにフォールバック）。`animation` パラメータでモーショントークン（`StylishAnimationTokens`）も上書き可能です。
 
 ### 個別上書き（コンポーネントパラメータ経由）
 
@@ -118,6 +118,8 @@ StylishConnectedButtonRow(
 
 ### 上書き可能なトークン一覧
 
+#### `StylishDimensions`（空間・サイズ）
+
 | トークン | デフォルト | 意味 |
 |---------|-----------|------|
 | `connectedSpacing` | 3.dp | 連結アイテムの間隔 |
@@ -127,3 +129,29 @@ StylishConnectedButtonRow(
 | `connectedCornerRadius` | 12.dp | 連結外角の丸み |
 | `joinedCornerRadius` | 2.dp | 連結接合部の丸み |
 | `floatingCornerRadius` | 28.dp | FAB/ヘッダーの丸み |
+| `inlineSpacing` | 4.dp | インライン要素間の最小間隔 |
+| `itemSpacing` | 8.dp | グループ内アイテム間の間隔 |
+| `contentSpacing` | 16.dp | コンテンツブロック間の間隔 |
+| `sectionSpacing` | 32.dp | セクション間の間隔 |
+| `buttonMinHeight` | 52.dp | ボタンの最小高さ |
+| `cardMinHeight` | 77.dp | カードの最小高さ |
+| `iconButtonMinSize` | 48.dp | アイコンボタンのタッチターゲット |
+| `roundedIconButtonMinWidth` | 80.dp | ラベル付きアイコンボタンの最小幅 |
+| `fabSize` | 56.dp | 通常 FAB のサイズ |
+| `fabSmallSize` | 40.dp | スモール FAB のサイズ |
+| `fabLargeSize` | 96.dp | ラージ FAB のサイズ |
+| `screenPadding` | 20.dp | 画面端の標準パディング |
+| `controlPadding` | 16.dp | コントロール内の水平パディング |
+| `controlVerticalPadding` | 12.dp | コントロール内の垂直パディング |
+| `pieChartSize` | 160.dp | 円グラフの一辺 |
+| `barChartHeight` | 180.dp | 棒グラフの高さ |
+| `lineChartHeight` | 200.dp | 折れ線グラフの高さ |
+
+#### `StylishAnimationTokens`（モーション）
+
+| トークン | デフォルト | 意味 |
+|---------|-----------|------|
+| `durationShort` | 180 ms | マイクロインタラクション（状態色変化など） |
+| `durationMedium` | 300 ms | 要素の出現・展開 |
+| `durationLong` | 500 ms | ページレベルの動き |
+| `defaultEasing` | FastOutSlowIn | 全アニメーションの標準イージング |

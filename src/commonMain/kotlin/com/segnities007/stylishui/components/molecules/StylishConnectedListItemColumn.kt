@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.structure.ConnectedListItemColumn
+import com.segnities007.stylishui.structure.ConnectedListItemContent
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -36,7 +37,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  * lines, and optional leading/trailing slot content. Items whose
  * [StylishConnectedListItem.onClick] and [StylishConnectedListItem.onLongClick]
  * are both `null`, or whose [StylishConnectedListItem.enabled] is `false`, are
- * rendered without elevation and do not respond to interaction.
+ * rendered without elevation and do not respond to interaction. Pass a custom
+ * [listItem] to override the Stylish rendering while keeping the connected
+ * geometry.
  *
  * @param items The list of [StylishConnectedListItem] data objects that
  *   describe each row's headline, supporting text, click/long-click actions,
@@ -63,6 +66,14 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   to 16 dp.
  * @param verticalPadding The vertical padding inside each item. Defaults to
  *   14 dp.
+ * @param contentSpacing The horizontal gap between the leading slot, text
+ *   block, and trailing slot inside each item. Defaults to
+ *   [StylishTheme.dimensions.itemSpacing] (8 dp).
+ * @param listItem A composable lambda that renders a single item. Receives
+ *   the item data, a modifier (including fill-max-width), the connected
+ *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
+ *   Defaults to [DefaultStylishConnectedListItem], dressed in the Stylish look
+ *   with the text, color, padding, and spacing parameters above.
  *
  * @see ConnectedListItemColumn
  * @see StylishConnectedListItemRow
@@ -84,14 +95,16 @@ public fun StylishConnectedListItemColumn(
     contentColor: Color? = null,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
-) {
-    ConnectedListItemColumn(items, modifier, spacing) { item, itemModifier, shape, edges, corners ->
+    contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    listItem: ConnectedListItemContent = { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedListItem(
             item, itemModifier, shape, edges, corners, headlineMaxLines, headlineOverflow,
             headlineStyle, supportingTextMaxLines, supportingTextOverflow, supportingTextStyle,
-            containerColor, contentColor, horizontalPadding, verticalPadding,
+            containerColor, contentColor, horizontalPadding, verticalPadding, contentSpacing,
         )
-    }
+    },
+) {
+    ConnectedListItemColumn(items, modifier, spacing, listItem = listItem)
 }
 
 @Preview(name = "Connected list items", showBackground = true, widthDp = 393)

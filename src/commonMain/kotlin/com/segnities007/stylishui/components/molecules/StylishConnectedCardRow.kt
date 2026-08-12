@@ -49,7 +49,7 @@ public fun StylishConnectedCardRow(
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
-    ConnectedCardRow(items, modifier, spacing, card)
+    ConnectedCardRow(items, modifier, spacing, card = card)
 }
 
 @Preview(name = "Connected card row", showBackground = true, widthDp = 393)

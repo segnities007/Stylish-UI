@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
  * preventing visual artifacts when the segment is very short or narrow.
  * If either [width] or [height] is non-positive the call is a no-op.
  *
- * **Platform:** Android only (androidMain), though the implementation uses
- * only Compose Multiplatform drawing APIs.
+ * Available on all platforms (commonMain); the implementation uses only
+ * Compose Multiplatform drawing APIs.
  *
  * @param color Fill color of the rectangle.
  * @param left X coordinate of the rectangle's left edge in pixels.

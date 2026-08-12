@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedGridCorners
+import com.segnities007.stylishui.foundation.connectedGridEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
@@ -37,10 +40,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * which receives the pre-computed connection geometry.
  *
  * This component makes **no** visual or interactive decisions — no colors,
- * elevation, animation, or click handling. It is the headless backbone that the
- * Stylish Finish counterpart `StylishConnectedButtonGrid` consumes by supplying
- * a styled [button]. Supply your own [button] to render a custom skin over the
- * same connected geometry.
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedButtonGrid` consumes by supplying a styled
+ * [button]. Supply your own [button] to render a custom skin over the same
+ * connected geometry.
  *
  * @param items The list of [StylishConnectedButtonItem] data objects describing
  *   each button.
@@ -87,7 +90,7 @@ public fun ConnectedButtonGrid(
                                 .weight(1f)
                                 .fillMaxHeight(),
                             connectedShape(corners, cornerRadius),
-                            ConnectedEdges.All,
+                            connectedGridEdges(index, items.size, columns),
                             corners,
                         )
                     }

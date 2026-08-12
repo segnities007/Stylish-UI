@@ -6,10 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -19,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -47,12 +50,13 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * A date-input field that opens a Material 3 [DatePickerDialog] when tapped,
  * displaying the selected date as formatted text in an [OutlinedTextField].
  *
- * The text field itself is read-only and disabled; all interaction goes
- * through the date-picker dialog. When [value] is `null` the field shows the
- * [placeholder] text. The dialog's confirm button commits the selected date
- * via [onValueChange]; the dismiss button closes the dialog without changing
- * the value. Date formatting avoids `java.time` so the component works across
- * all Kotlin Multiplatform targets.
+ * The text field itself is read-only but keeps its enabled appearance; all
+ * interaction goes through the date-picker dialog. Set [enabled] to `false`
+ * to grey the field out and block the dialog. When [value] is `null` the
+ * field shows the [placeholder] text. The dialog's confirm button commits the
+ * selected date via [onValueChange]; the dismiss button closes the dialog
+ * without changing the value. Date formatting avoids `java.time` so the
+ * component works across all Kotlin Multiplatform targets.
  *
  * @param value The currently selected date, or `null` if no date has been
  *   chosen.
@@ -71,6 +75,25 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  *   Ignored when [placeholderContent] is provided.
  * @param formatter A function that converts a [LocalDate] to its display
  *   string. Defaults to `yyyy/MM/dd` formatting.
+ * @param enabled Whether the field is interactive. When `false`, taps do not
+ *   open the date-picker dialog and the field renders in a disabled state.
+ *   Defaults to `true`.
+ * @param isError When `true`, the field renders its error visual state
+ *   (error-colored outline). Defaults to `false`.
+ * @param supportingText An optional text displayed below the field, in the
+ *   error color when [isError] is `true`. When `null`, no supporting text is
+ *   shown.
+ * @param yearRange The range of years selectable in the picker, forwarded to
+ *   the Material 3 [rememberDatePickerState]. Defaults to
+ *   [DatePickerDefaults.YearRange].
+ * @param initialDisplayMode The display mode (calendar picker or text input)
+ *   the dialog opens with, forwarded to the Material 3
+ *   [rememberDatePickerState]. Defaults to [DisplayMode.Picker].
+ * @param showModeToggle Whether the picker shows its picker/input mode toggle
+ *   button, forwarded to the Material 3 [DatePicker]. Defaults to `false`.
+ * @param selectableDates A policy deciding which dates may be selected,
+ *   forwarded to the Material 3 [rememberDatePickerState]. Defaults to
+ *   [DatePickerDefaults.AllDates].
  * @param labelContent An optional custom composable for the text field label.
  *   When `null`, a [Text] composable with [label] is used.
  * @param placeholderContent An optional custom composable for the text field
@@ -81,6 +104,12 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * @param dismissLabelContent An optional custom composable for the dialog's
  *   dismiss button content. When `null`, a [Text] composable with
  *   [dismissLabel] is used.
+ * @param leadingIcon An optional composable rendered at the start of the
+ *   field, typically an [androidx.compose.material3.Icon]. When `null`, no
+ *   leading icon is shown.
+ * @param trailingIcon An optional composable rendered at the end of the
+ *   field, typically an [androidx.compose.material3.Icon]. When `null`, no
+ *   trailing icon is shown.
  *
  * @see StylishFormTextField
  */
@@ -92,20 +121,29 @@ public fun StylishDatePickerField(
     label: String,
     confirmLabel: String,
     dismissLabel: String,
-    modifier: Modifier = Modifier,
     placeholder: String,
+    modifier: Modifier = Modifier,
     formatter: (LocalDate) -> String = defaultDateFormatter,
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    supportingText: String? = null,
+    yearRange: IntRange = DatePickerDefaults.YearRange,
+    initialDisplayMode: DisplayMode = DisplayMode.Picker,
+    showModeToggle: Boolean = false,
+    selectableDates: SelectableDates = DatePickerDefaults.AllDates,
     labelContent: @Composable (() -> Unit)? = null,
     placeholderContent: @Composable (() -> Unit)? = null,
     confirmLabelContent: @Composable (() -> Unit)? = null,
     dismissLabelContent: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { showDialog = true },
+            .clickable(enabled = enabled) { showDialog = true },
     ) {
         OutlinedTextField(
             value = value?.let(formatter) ?: "",
@@ -113,14 +151,22 @@ public fun StylishDatePickerField(
             label = labelContent ?: { Text(label) },
             placeholder = placeholderContent ?: { Text(placeholder) },
             modifier = Modifier.fillMaxWidth(),
-            enabled = false,
+            enabled = enabled,
+            readOnly = true,
             singleLine = true,
+            isError = isError,
+            supportingText = supportingText?.let { text -> { Text(text) } },
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
         )
     }
 
     if (showDialog) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = value?.toEpochMillis(),
+            yearRange = yearRange,
+            initialDisplayMode = initialDisplayMode,
+            selectableDates = selectableDates,
         )
         DatePickerDialog(
             onDismissRequest = { showDialog = false },
@@ -136,7 +182,10 @@ public fun StylishDatePickerField(
                 TextButton(onClick = { showDialog = false }) { dismissLabelContent ?: Text(dismissLabel) }
             },
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                state = datePickerState,
+                showModeToggle = showModeToggle,
+            )
         }
     }
 }
@@ -144,7 +193,7 @@ public fun StylishDatePickerField(
 @Preview(name = "Stylish date picker field", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishDatePickerFieldPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishDatePickerField(
             value = LocalDate(2026, 7, 25),
             onValueChange = {},
@@ -159,7 +208,7 @@ private fun StylishDatePickerFieldPreview() {
 @Preview(name = "Stylish date picker field (null)", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishDatePickerFieldNullPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishDatePickerField(
             value = null,
             onValueChange = {},

@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -69,6 +70,16 @@ private fun StylishHorizontalDividerPreview() {
     StylishTheme(darkTheme = false) {
         Surface(Modifier.padding(20.dp)) {
             StylishHorizontalDivider(Modifier.fillMaxWidth())
+        }
+    }
+}
+
+@Preview(name = "Stylish vertical divider", showBackground = true, widthDp = 393)
+@Composable
+private fun StylishVerticalDividerPreview() {
+    StylishTheme(darkTheme = false) {
+        Surface(Modifier.padding(20.dp)) {
+            StylishVerticalDivider(Modifier.height(48.dp))
         }
     }
 }

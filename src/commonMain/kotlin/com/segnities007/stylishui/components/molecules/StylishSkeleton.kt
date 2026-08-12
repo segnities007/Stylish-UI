@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.tokens.DefaultStylishAnimationTokens
 
 /**
  * A shimmering placeholder line used to indicate loading content.
@@ -44,6 +45,12 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [RoundedCornerShape] with 4.dp.
  * @param minAlpha Minimum opacity during the shimmer cycle.
  * @param maxAlpha Maximum opacity during the shimmer cycle.
+ * @param durationMillis Duration in milliseconds of one full shimmer
+ *   half-cycle (fade up or down). Defaults to
+ *   [DefaultStylishAnimationTokens.durationLong] (500 ms).
+ * @param animate When `true` (the default) the opacity oscillates to produce
+ *   the shimmer. When `false` the line renders statically at the midpoint of
+ *   [minAlpha] and [maxAlpha], for reduced-motion contexts.
  *
  * @see StylishSkeletonCard
  * @see StylishSkeletonAvatar
@@ -55,17 +62,24 @@ public fun StylishSkeletonLine(
     shape: Shape = RoundedCornerShape(4.dp),
     minAlpha: Float = 0.3f,
     maxAlpha: Float = 0.7f,
+    durationMillis: Int = DefaultStylishAnimationTokens.durationLong,
+    animate: Boolean = true,
 ) {
-    val transition = rememberInfiniteTransition(label = "skeleton")
-    val alpha by transition.animateFloat(
-        initialValue = minAlpha,
-        targetValue = maxAlpha,
-        animationSpec = infiniteRepeatable(
-            animation = tween(800),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "skeletonAlpha",
-    )
+    val alpha = if (animate) {
+        val transition = rememberInfiniteTransition(label = "skeleton")
+        val animatedAlpha by transition.animateFloat(
+            initialValue = minAlpha,
+            targetValue = maxAlpha,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "skeletonAlpha",
+        )
+        animatedAlpha
+    } else {
+        (minAlpha + maxAlpha) / 2f
+    }
     Box(
         modifier
             .clip(shape)
@@ -80,6 +94,9 @@ public fun StylishSkeletonLine(
  * @param modifier Modifier applied to the placeholder box.
  * @param color Base color. Defaults to
  *   [MaterialTheme.colorScheme.surfaceVariant].
+ * @param animate When `true` (the default) the opacity oscillates to produce
+ *   the shimmer. When `false` the avatar renders statically, for
+ *   reduced-motion contexts.
  *
  * @see StylishSkeletonLine
  * @see StylishSkeletonCard
@@ -89,21 +106,29 @@ public fun StylishSkeletonAvatar(
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
     color: Color = MaterialTheme.colorScheme.surfaceVariant,
+    animate: Boolean = true,
 ) {
     StylishSkeletonLine(
         modifier = modifier.size(size),
         color = color,
         shape = CircleShape,
+        animate = animate,
     )
 }
 
 /**
  * A card-shaped skeleton placeholder with an avatar, a title line,
- * and a body line, mimicking the layout of
+ * and one or more body lines, mimicking the layout of
  * [com.segnities007.stylishui.components.atoms.StylishConnectedCard].
  *
  * @param modifier Modifier applied to the outer [Column].
  * @param color Base color for all placeholder elements.
+ * @param titleWidth Width of the title placeholder line. Defaults to 160.dp.
+ * @param bodyWidth Width of each body placeholder line. Defaults to 100.dp.
+ * @param bodyLineCount Number of body placeholder lines rendered below the
+ *   title line. Defaults to 1.
+ * @param animate When `true` (the default) the placeholder elements shimmer.
+ *   When `false` they render statically, for reduced-motion contexts.
  *
  * @see StylishSkeletonLine
  * @see StylishSkeletonAvatar
@@ -112,6 +137,10 @@ public fun StylishSkeletonAvatar(
 public fun StylishSkeletonCard(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surfaceVariant,
+    titleWidth: Dp = 160.dp,
+    bodyWidth: Dp = 100.dp,
+    bodyLineCount: Int = 1,
+    animate: Boolean = true,
 ) {
     Column(
         modifier = modifier.padding(
@@ -120,22 +149,26 @@ public fun StylishSkeletonCard(
         ),
     ) {
         Row {
-            StylishSkeletonAvatar(color = color)
+            StylishSkeletonAvatar(color = color, animate = animate)
             Spacer(Modifier.width(StylishTheme.dimensions.itemSpacing))
             Column {
                 StylishSkeletonLine(
                     Modifier
-                        .width(160.dp)
+                        .width(titleWidth)
                         .height(16.dp),
                     color = color,
+                    animate = animate,
                 )
-                Spacer(Modifier.height(StylishTheme.dimensions.inlineSpacing))
-                StylishSkeletonLine(
-                    Modifier
-                        .width(100.dp)
-                        .height(12.dp),
-                    color = color,
-                )
+                repeat(bodyLineCount) {
+                    Spacer(Modifier.height(StylishTheme.dimensions.inlineSpacing))
+                    StylishSkeletonLine(
+                        Modifier
+                            .width(bodyWidth)
+                            .height(12.dp),
+                        color = color,
+                        animate = animate,
+                    )
+                }
             }
         }
     }

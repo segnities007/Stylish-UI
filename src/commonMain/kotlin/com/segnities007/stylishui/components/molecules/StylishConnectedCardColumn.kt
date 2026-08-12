@@ -48,7 +48,7 @@ public fun StylishConnectedCardColumn(
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
-    ConnectedCardColumn(items, modifier, spacing, card)
+    ConnectedCardColumn(items, modifier, spacing, card = card)
 }
 
 @Preview(name = "Connected card column", showBackground = true, widthDp = 393)

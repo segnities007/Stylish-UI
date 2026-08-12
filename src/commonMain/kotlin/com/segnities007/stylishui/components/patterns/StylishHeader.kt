@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -48,6 +50,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param actions Optional composable rendered at the end (trailing) edge,
  *   typically one or more [StylishIconButton]s for search, settings, etc.
  *   When null, no trailing content is shown.
+ * @param modifier Modifier applied to the outer [Column].
  * @param shape Corner shape of the header surface. Defaults to
  *   [RoundedCornerShape] with [StylishTheme.dimensions.floatingCornerRadius]
  *   radius, matching the floating aesthetic.
@@ -70,16 +73,20 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   content. Defaults to [StylishTheme.dimensions.contentSpacing].
  * @param actionsSpacing Horizontal gap between items inside the [actions]
  *   slot. Defaults to [StylishTheme.dimensions.inlineSpacing].
+ * @param windowInsets [WindowInsets] consumed above the surface via
+ *   [Modifier.windowInsetsPadding], typically the status-bar insets.
+ *   Defaults to [WindowInsets.statusBars] so the bar clears the system
+ *   status area.
  *
  * @see StylishScaffold
  * @see StylishPageContent
  */
 @Composable
 public fun StylishHeader(
-    modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
+    modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -93,11 +100,12 @@ public fun StylishHeader(
     topPadding: Dp = StylishTheme.dimensions.itemSpacing,
     bottomPadding: Dp = StylishTheme.dimensions.contentSpacing,
     actionsSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
 ) {
     Column(
         modifier
             .fillMaxWidth()
-            .statusBarsPadding()
+            .windowInsetsPadding(windowInsets)
             .padding(top = topPadding, bottom = bottomPadding),
     ) {
         Surface(

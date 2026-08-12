@@ -30,6 +30,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param cornerRadius The radius used for outer-corner arcs. Defaults to
  *   [StylishTheme.dimensions.connectedCornerRadius].
  * @return A [Modifier] that draws the outline after the decorated content.
+ *
+ * Note: the Foundation layer normally contains no rendering composables; [connectedOutline]
+ * is the documented exception — the reference renderer for the geometry this layer computes.
  * @see ConnectedEdges
  * @see ConnectedCorners
  * @see connectedShape

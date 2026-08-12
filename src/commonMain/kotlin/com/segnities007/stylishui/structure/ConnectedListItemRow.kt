@@ -14,9 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
+import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedRowCorners
 import com.segnities007.stylishui.foundation.connectedRowEdges
@@ -35,15 +38,17 @@ import com.segnities007.stylishui.theme.StylishTheme
  * connection geometry.
  *
  * This component makes **no** visual or interactive decisions — no colors,
- * elevation, animation, semantics, or click handling. It is the headless
- * backbone that the Stylish Finish counterpart `StylishConnectedListItemRow`
- * consumes by supplying a styled [listItem]. Supply your own [listItem] to
- * render a custom skin over the same connected geometry.
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedListItemRow` consumes by supplying a styled
+ * [listItem]. Supply your own [listItem] to render a custom skin over the same
+ * connected geometry.
  *
  * @param items The list of [StylishConnectedListItem] data objects describing
  *   each row.
  * @param spacing The horizontal gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param listItem A composable lambda that renders a single row. Receives the
  *   item data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -57,6 +62,7 @@ public fun ConnectedListItemRow(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     listItem: ConnectedListItemContent,
 ) {
     Row(
@@ -70,7 +76,7 @@ public fun ConnectedListItemRow(
                 Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                connectedShape(corners),
+                connectedShape(corners, cornerRadius),
                 connectedRowEdges(index, items.size),
                 corners,
             )

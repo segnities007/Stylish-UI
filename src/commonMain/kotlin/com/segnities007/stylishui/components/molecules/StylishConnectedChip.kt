@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -46,7 +47,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * state, a hairline connected outline, interactive elevation, and a haptic
  * pulse on tap. Items whose [StylishConnectedChipItem.onClick] is `null` or
  * whose [StylishConnectedChipItem.enabled] is `false` are non-interactive and
- * lose their elevation.
+ * lose their elevation. Disabled chips drop the selection colors entirely:
+ * they render with the `surfaceVariant` container and `onSurfaceVariant`
+ * content colors without animation, and are marked with the `disabled()`
+ * semantic flag.
  *
  * @param item The [StylishConnectedChipItem] data for the chip.
  * @param modifier A modifier carrying layout constraints from the parent
@@ -92,21 +96,31 @@ public fun DefaultStylishConnectedChip(
         enabled = item.enabled,
         hasClickAction = item.onClick != null,
     )
-    val containerColor by animateColorAsState(
-        targetValue = if (item.selected) selectedContainerColor else unselectedContainerColor,
-        animationSpec = tween(180),
-        label = "chipContainer",
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (item.selected) selectedContentColor else unselectedContentColor,
-        animationSpec = tween(180),
-        label = "chipContent",
-    )
+    val containerColor: Color
+    val contentColor: Color
+    if (item.enabled) {
+        val animatedContainerColor by animateColorAsState(
+            targetValue = if (item.selected) selectedContainerColor else unselectedContainerColor,
+            animationSpec = tween(180),
+            label = "chipContainer",
+        )
+        val animatedContentColor by animateColorAsState(
+            targetValue = if (item.selected) selectedContentColor else unselectedContentColor,
+            animationSpec = tween(180),
+            label = "chipContent",
+        )
+        containerColor = animatedContainerColor
+        contentColor = animatedContentColor
+    } else {
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+    }
     Surface(
         modifier = modifier
-            .semantics {
+            .semantics(mergeDescendants = true) {
                 selected = item.selected
                 role = Role.Tab
+                if (!item.enabled) disabled()
             }
             .then(
                 if (actionable) {

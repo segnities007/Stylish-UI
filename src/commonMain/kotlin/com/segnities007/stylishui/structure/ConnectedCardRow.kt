@@ -14,9 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
+import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedRowCorners
 import com.segnities007.stylishui.foundation.connectedRowEdges
@@ -34,15 +37,18 @@ import com.segnities007.stylishui.theme.StylishTheme
  * delegated to the [card] lambda, which receives the pre-computed connection
  * geometry.
  *
- * This component makes **no** visual decisions — no colors, elevation, or
- * animation. It is the headless backbone that the Stylish Finish counterpart
- * `StylishConnectedCardRow` consumes by supplying a styled [card]. Supply your
- * own [card] to render a custom skin over the same connected geometry.
+ * This component makes **no** visual or interactive decisions — no colors,
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedCardRow` consumes by supplying a styled [card].
+ * Supply your own [card] to render a custom skin over the same connected
+ * geometry.
  *
  * @param items The list of [StylishConnectedCardItem] data objects describing
  *   each card.
  * @param spacing The horizontal gap between adjacent cards. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param card A composable lambda that renders a single card. Receives the item
  *   data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -56,6 +62,7 @@ public fun ConnectedCardRow(
     items: List<StylishConnectedCardItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     card: ConnectedCardItemContent,
 ) {
     Row(
@@ -69,7 +76,7 @@ public fun ConnectedCardRow(
                 Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                connectedShape(corners),
+                connectedShape(corners, cornerRadius),
                 connectedRowEdges(index, items.size),
                 corners,
             )

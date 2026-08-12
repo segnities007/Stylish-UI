@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedGridCorners
+import com.segnities007.stylishui.foundation.connectedGridEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
@@ -37,10 +40,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * receives the pre-computed connection geometry.
  *
  * This component makes **no** visual or interactive decisions — no colors,
- * selection animation, semantics, or click handling. It is the headless
- * backbone that the Stylish Finish counterpart `StylishConnectedChipGrid`
- * consumes by supplying a styled [chip]. Supply your own [chip] to render a
- * custom skin over the same connected geometry.
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedChipGrid` consumes by supplying a styled [chip].
+ * Supply your own [chip] to render a custom skin over the same connected
+ * geometry.
  *
  * @param items The list of [StylishConnectedChipItem] data objects describing
  *   each chip.
@@ -48,6 +51,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   than zero.
  * @param spacing The gap between adjacent chips both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param chip A composable lambda that renders a single chip. Receives the item
  *   data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -62,6 +67,7 @@ public fun ConnectedChipGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     chip: ConnectedChipItemContent,
 ) {
     require(columns > 0) { "columns must be greater than zero" }
@@ -83,8 +89,8 @@ public fun ConnectedChipGrid(
                             Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                            connectedShape(corners),
-                            ConnectedEdges.All,
+                            connectedShape(corners, cornerRadius),
+                            connectedGridEdges(index, items.size, columns),
                             corners,
                         )
                     }

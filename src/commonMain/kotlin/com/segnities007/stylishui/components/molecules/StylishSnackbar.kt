@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +30,8 @@ import com.segnities007.stylishui.theme.StylishTheme
 
 /**
  * A snackbar styled with the Stylish design language — rounded corners
- * from [StylishTheme.dimensions.connectedCornerRadius], a hairline
- * outline, and theme-aware container/content colors.
+ * from [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
+ * container/content colors.
  *
  * Use together with [StylishSnackbarHost] to display transient
  * messages at the bottom of the screen.
@@ -62,6 +63,56 @@ public fun StylishSnackbar(
         containerColor = containerColor,
         contentColor = contentColor,
         actionColor = actionColor,
+    )
+}
+
+/**
+ * A slot-based snackbar styled with the Stylish design language, for
+ * composing the message and action content directly instead of driving the
+ * snackbar from a [SnackbarData]. Carries the same styling as the
+ * [SnackbarData] overload: rounded corners from
+ * [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
+ * container/content colors.
+ *
+ * @param modifier Modifier applied to the [Snackbar] root.
+ * @param action Optional composable shown as the snackbar's action area,
+ *   typically a [TextButton]. When `null`, no action is displayed.
+ * @param dismissAction Optional composable shown as the dismiss affordance,
+ *   typically an icon button. When `null`, no dismiss affordance is
+ *   displayed.
+ * @param actionOnNewLine When `true`, [action] is placed on a separate line
+ *   below the message. Defaults to `false`.
+ * @param shape Corner shape. Defaults to [RoundedCornerShape] with
+ *   [StylishTheme.dimensions.connectedCornerRadius].
+ * @param containerColor Background color.
+ * @param contentColor Text color for the message.
+ * @param actionColor Text color applied to [action].
+ * @param content The snackbar message content.
+ *
+ * @see StylishSnackbarHost
+ */
+@Composable
+public fun StylishSnackbar(
+    modifier: Modifier = Modifier,
+    action: (@Composable () -> Unit)? = null,
+    dismissAction: (@Composable () -> Unit)? = null,
+    actionOnNewLine: Boolean = false,
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
+    contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
+    actionColor: Color = MaterialTheme.colorScheme.inversePrimary,
+    content: @Composable () -> Unit,
+) {
+    Snackbar(
+        modifier = modifier,
+        action = action,
+        dismissAction = dismissAction,
+        actionOnNewLine = actionOnNewLine,
+        shape = shape,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        actionContentColor = actionColor,
+        content = content,
     )
 }
 
@@ -124,6 +175,20 @@ private fun StylishSnackbarPreview() {
     StylishTheme(darkTheme = false) {
         Surface(Modifier.padding(20.dp)) {
             StylishSnackbar(snackbarData = PreviewSnackbarData())
+        }
+    }
+}
+
+@Preview(name = "Stylish snackbar host", showBackground = true, widthDp = 393, heightDp = 240)
+@Composable
+private fun StylishSnackbarHostPreview() {
+    StylishTheme(darkTheme = false) {
+        val hostState = remember { SnackbarHostState() }
+        LaunchedEffect(Unit) {
+            hostState.showSnackbar(PreviewSnackbarVisuals())
+        }
+        Surface(Modifier.padding(20.dp)) {
+            StylishSnackbarHost(hostState = hostState)
         }
     }
 }

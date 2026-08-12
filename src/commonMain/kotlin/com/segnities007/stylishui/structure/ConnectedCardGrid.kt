@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedGridCorners
+import com.segnities007.stylishui.foundation.connectedGridEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
@@ -36,10 +39,11 @@ import com.segnities007.stylishui.theme.StylishTheme
  * row width. The actual rendering is delegated to the [card] lambda, which
  * receives the pre-computed connection geometry.
  *
- * This component makes **no** visual decisions — no colors, elevation, or
- * animation. It is the headless backbone that the Stylish Finish counterpart
- * `StylishConnectedCardGrid` consumes by supplying a styled [card]. Supply your
- * own [card] to render a custom skin over the same connected geometry.
+ * This component makes **no** visual or interactive decisions — no colors,
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedCardGrid` consumes by supplying a styled [card].
+ * Supply your own [card] to render a custom skin over the same connected
+ * geometry.
  *
  * @param items The list of [StylishConnectedCardItem] data objects describing
  *   each card.
@@ -47,6 +51,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   than zero.
  * @param spacing The gap between adjacent cards both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param card A composable lambda that renders a single card. Receives the item
  *   data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -61,6 +67,7 @@ public fun ConnectedCardGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     card: ConnectedCardItemContent,
 ) {
     require(columns > 0) { "columns must be greater than zero" }
@@ -82,8 +89,8 @@ public fun ConnectedCardGrid(
                             Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                            connectedShape(corners),
-                            ConnectedEdges.All,
+                            connectedShape(corners, cornerRadius),
+                            connectedGridEdges(index, items.size, columns),
                             corners,
                         )
                     }

@@ -3,12 +3,16 @@ package com.segnities007.stylishui.components.organisms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -23,14 +27,21 @@ import com.segnities007.stylishui.theme.StylishTheme
 /**
  * A modal bottom sheet styled with the Stylish design language —
  * rounded top corners from
- * [StylishTheme.dimensions.connectedCornerRadius], a hairline drag
- * handle, and theme-aware container colors.
+ * [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
+ * container colors.
  *
  * Wraps Material 3 [ModalBottomSheet] with Stylish defaults.
  *
  * @param onDismiss Called when the sheet is dismissed (swipe down,
  *   tap outside, or back gesture).
  * @param modifier Modifier applied to the [ModalBottomSheet].
+ * @param skipPartiallyExpanded Whether the partially-expanded state
+ *   should be skipped, so the sheet always opens fully expanded.
+ *   Applied to the default [sheetState]; ignored when a custom
+ *   [sheetState] is supplied.
+ * @param sheetState The state of the sheet. Defaults to
+ *   [rememberModalBottomSheetState] honoring
+ *   [skipPartiallyExpanded].
  * @param shape Corner shape of the sheet. Defaults to
  *   [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius] on the top
@@ -38,9 +49,16 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param containerColor Background color of the sheet.
  * @param contentColor Default content color.
  * @param tonalElevation Tonal elevation of the sheet surface.
- * @param dragHandle Optional custom drag handle composable. When
- *   `null`, the default M3 drag handle is used.
- * @param content The sheet content.
+ * @param scrimColor Color of the scrim that obscures content while
+ *   the sheet is open. Defaults to
+ *   [BottomSheetDefaults.ScrimColor].
+ * @param dragHandle Optional drag handle composable. When `null`
+ *   (the default), **no** drag handle is shown. Pass
+ *   `@Composable { BottomSheetDefaults.DragHandle() }` for the M3
+ *   default handle, or custom content for a bespoke one.
+ * @param properties Window behavior of the sheet (dismiss on back
+ *   press / scrim click). Defaults to [ModalBottomSheetProperties].
+ * @param content The sheet content, laid out inside a [ColumnScope].
  *
  * @see com.segnities007.stylishui.components.atoms.StylishDialogSurface
  */
@@ -49,6 +67,10 @@ import com.segnities007.stylishui.theme.StylishTheme
 public fun StylishBottomSheet(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    skipPartiallyExpanded: Boolean = false,
+    sheetState: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded,
+    ),
     shape: Shape = RoundedCornerShape(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
@@ -56,10 +78,11 @@ public fun StylishBottomSheet(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
+    scrimColor: Color = BottomSheetDefaults.ScrimColor,
     dragHandle: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
+    properties: ModalBottomSheetProperties = ModalBottomSheetProperties(),
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         modifier = modifier,
@@ -68,10 +91,11 @@ public fun StylishBottomSheet(
         containerColor = containerColor,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
+        scrimColor = scrimColor,
         dragHandle = dragHandle,
-    ) {
-        content()
-    }
+        properties = properties,
+        content = content,
+    )
 }
 
 @Preview(name = "Stylish bottom sheet content", showBackground = true, widthDp = 393)

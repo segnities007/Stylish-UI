@@ -17,11 +17,13 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +37,7 @@ import com.segnities007.stylishui.components.atoms.StylishBadge
 import com.segnities007.stylishui.components.atoms.StylishBadgedBox
 import com.segnities007.stylishui.components.atoms.StylishButton
 import com.segnities007.stylishui.components.atoms.StylishButtonVariant
+import com.segnities007.stylishui.components.atoms.StylishCode
 import com.segnities007.stylishui.components.atoms.StylishCard
 import com.segnities007.stylishui.components.atoms.StylishCheckbox
 import com.segnities007.stylishui.components.atoms.StylishChip
@@ -71,6 +74,10 @@ import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
+import com.segnities007.stylishui.components.molecules.StylishAlert
+import com.segnities007.stylishui.components.molecules.StylishAutocomplete
+import com.segnities007.stylishui.components.molecules.StylishDescriptions
+import com.segnities007.stylishui.components.molecules.StylishDescriptionItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
@@ -83,8 +90,15 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedListItemG
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.components.molecules.StylishListItem
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
+import com.segnities007.stylishui.components.molecules.StylishResult
+import com.segnities007.stylishui.components.molecules.StylishResultVariant
+import com.segnities007.stylishui.components.molecules.StylishToastData
+import com.segnities007.stylishui.components.molecules.StylishToastHost
+import com.segnities007.stylishui.components.molecules.StylishToastVariant
+import com.segnities007.stylishui.components.molecules.rememberStylishToastHostState
 import com.segnities007.stylishui.components.organisms.StylishAlertDialog
 import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishPopconfirm
 import com.segnities007.stylishui.components.organisms.StylishNavigationRail
 import com.segnities007.stylishui.components.organisms.StylishNavigationRailItem
 import com.segnities007.stylishui.components.organisms.StylishSearchBar
@@ -523,6 +537,74 @@ private fun ComponentCatalog() {
                     androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索")
                 }
             })
+
+            StylishHorizontalDivider(Modifier.fillMaxWidth())
+
+            // ── Web Parity 2 (0.9) ──
+            StylishSectionTitle("Web Parity 2")
+
+            StylishSectionTitle("Alert / Toast", textStyle = MaterialTheme.typography.titleSmall)
+            StylishAlert(
+                title = "お知らせ",
+                message = "新しいバージョンが利用可能です。",
+                onDismiss = {},
+            )
+            var toastVisible by remember { mutableStateOf(false) }
+            StylishButton(onClick = { toastVisible = true }, variant = StylishButtonVariant.Outlined) {
+                Text("トーストを表示")
+            }
+            val toastHostState = rememberStylishToastHostState()
+            LaunchedEffect(toastVisible) {
+                if (toastVisible) {
+                    toastHostState.showToast(StylishToastData("保存しました", StylishToastVariant.Success))
+                    toastVisible = false
+                }
+            }
+            StylishToastHost(toastHostState)
+
+            StylishSectionTitle("Result / Popconfirm", textStyle = MaterialTheme.typography.titleSmall)
+            StylishResult(
+                title = "送信が完了しました",
+                description = "お問い合わせを受け付けました。",
+                variant = StylishResultVariant.Success,
+            )
+            var confirmExpanded by remember { mutableStateOf(false) }
+            StylishPopconfirm(
+                expanded = confirmExpanded,
+                onExpandedChange = { confirmExpanded = it },
+                anchor = {
+                    StylishButton(
+                        onClick = { confirmExpanded = true },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error,
+                            contentColor = MaterialTheme.colorScheme.onError,
+                        ),
+                    ) { Text("削除") }
+                },
+                title = "この記録を削除しますか?",
+                confirmLabel = "削除",
+                onConfirm = {},
+            )
+
+            StylishSectionTitle("Descriptions / Autocomplete", textStyle = MaterialTheme.typography.titleSmall)
+            StylishDescriptions(
+                items = listOf(
+                    StylishDescriptionItem("車両名", "Stylish Car"),
+                    StylishDescriptionItem("年式", "2026"),
+                    StylishDescriptionItem("色", "ホワイト"),
+                    StylishDescriptionItem("走行距離", "12,000 km"),
+                ),
+            )
+            var autocompleteValue by remember { mutableStateOf("") }
+            StylishAutocomplete(
+                value = autocompleteValue,
+                onValueChange = { autocompleteValue = it },
+                options = listOf("Stylish UI", "Compose Multiplatform", "Material 3", "Kotlin"),
+                label = "ライブラリ検索",
+            )
+
+            StylishSectionTitle("Code / VisuallyHidden", textStyle = MaterialTheme.typography.titleSmall)
+            StylishCode("implementation(\"io.github.segnities007:stylish-ui:0.8.0\")")
 
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 

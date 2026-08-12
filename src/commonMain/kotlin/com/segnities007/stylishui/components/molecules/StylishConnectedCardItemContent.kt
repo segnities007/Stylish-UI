@@ -1,13 +1,20 @@
 package com.segnities007.stylishui.components.molecules
 
+import androidx.compose.ui.tooling.preview.Preview
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
+import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.structure.ConnectedCardItemContent
+import com.segnities007.stylishui.theme.StylishTheme
 
 /**
  * The Finish-layer alias for the headless connected-card rendering contract.
@@ -71,4 +78,23 @@ public fun DefaultStylishConnectedCardItem(
         trailingContent = item.trailingContent,
         content = item.content,
     )
+}
+
+@Preview(name = "Stylish connected card item", showBackground = true, widthDp = 393)
+@Composable
+private fun DefaultStylishConnectedCardItemPreview() {
+    StylishTheme(darkTheme = false) {
+        Surface(Modifier.padding(20.dp)) {
+            DefaultStylishConnectedCardItem(
+                item = StylishConnectedCardItem(
+                    title = "12",
+                    supportingText = "メモ",
+                ),
+                modifier = Modifier,
+                shape = connectedShape(ConnectedCorners.Standalone),
+                outlineEdges = ConnectedEdges.All,
+                outlineCorners = ConnectedCorners.Standalone,
+            )
+        }
+    }
 }

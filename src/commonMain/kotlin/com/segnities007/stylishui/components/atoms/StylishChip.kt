@@ -49,8 +49,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param modifier Modifier applied to the [Surface] root.
  * @param selected When `true`, the chip renders in the selected color
  *   scheme.
- * @param enabled When `false`, the chip ignores pointer input and
- *   renders at zero elevation.
+ * @param enabled When `false`, the chip ignores pointer input, renders
+ *   at zero elevation, and is visually dimmed with
+ *   [disabledContainerColor] and [disabledContentColor] regardless of
+ *   [selected].
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param labelMaxLines Maximum lines for [label] in structured mode.
@@ -60,6 +62,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param selectedContentColor Content color when selected.
  * @param unselectedContainerColor Background color when unselected.
  * @param unselectedContentColor Content color when unselected.
+ * @param disabledContainerColor Background color used when [enabled]
+ *   is `false`, visually dimming the chip. Defaults to
+ *   `MaterialTheme.colorScheme.surfaceVariant`.
+ * @param disabledContentColor Content color used when [enabled] is
+ *   `false`, visually dimming the chip. Defaults to
+ *   `MaterialTheme.colorScheme.onSurfaceVariant`.
  * @param contentPadding Inner padding of the chip.
  * @param contentSpacing Gap between leading slot, label, and trailing
  *   slot in structured mode. Defaults to
@@ -92,6 +100,8 @@ public fun StylishChip(
     selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
     unselectedContainerColor: Color = MaterialTheme.stylishComponentColors.groupedContainer,
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
     contentSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
     leadingContent: (@Composable RowScope.() -> Unit)? = null,
@@ -101,12 +111,20 @@ public fun StylishChip(
     val haptic = LocalHapticFeedback.current
     val actionable = isActionable(enabled = enabled, hasClickAction = onClick != null)
     val containerColor by animateColorAsState(
-        targetValue = if (selected) selectedContainerColor else unselectedContainerColor,
+        targetValue = when {
+            !enabled -> disabledContainerColor
+            selected -> selectedContainerColor
+            else -> unselectedContainerColor
+        },
         animationSpec = tween(180),
         label = "chipContainer",
     )
     val contentColor by animateColorAsState(
-        targetValue = if (selected) selectedContentColor else unselectedContentColor,
+        targetValue = when {
+            !enabled -> disabledContentColor
+            selected -> selectedContentColor
+            else -> unselectedContentColor
+        },
         animationSpec = tween(180),
         label = "chipContent",
     )

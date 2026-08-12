@@ -36,6 +36,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
  * @param contentDescription Accessibility label for [imageVector].
+ *   Defaults to `null` (no label); provide one whenever the action is
+ *   not otherwise described on screen.
  * @param onClick Called when the button is tapped.
  * @param enabled When `false`, the button ignores pointer input and
  *   the shadow elevation is removed.
@@ -46,6 +48,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param contentColor Content tint override. When `null`, resolved
  *   from [active] (see above).
  * @param shape Shape of the surface. Defaults to [CircleShape].
+ * @param border Border stroke drawn around the surface. Defaults to a
+ *   hairline of [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
+ *   border.
  * @param minWidth Minimum width of the tappable surface.
  *   Defaults to 48 dp.
  * @param minHeight Minimum height of the tappable surface.
@@ -61,7 +67,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishIconButton(
     imageVector: ImageVector,
-    contentDescription: String,
+    contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -69,6 +75,10 @@ public fun StylishIconButton(
     containerColor: Color? = null,
     contentColor: Color? = null,
     shape: Shape? = null,
+    border: BorderStroke? = BorderStroke(
+        StylishTheme.dimensions.outlineWidth,
+        MaterialTheme.colorScheme.outlineVariant,
+    ),
     minWidth: Dp = 48.dp,
     minHeight: Dp = 48.dp,
     iconContent: (@Composable () -> Unit)? = null,
@@ -88,10 +98,7 @@ public fun StylishIconButton(
         modifier = modifier.sizeIn(minWidth = minWidth, minHeight = minHeight),
         shape = shape ?: CircleShape,
         color = resolvedContainerColor,
-        border = BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        ),
+        border = border,
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         IconButton(onClick = onClick, enabled = enabled) {

@@ -48,6 +48,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param actions Optional composable rendered at the end (trailing) edge,
  *   typically one or more [StylishIconButton]s for search, settings, etc.
  *   When null, no trailing content is shown.
+ * @param modifier Modifier applied to the outer [Column].
  * @param shape Corner shape of the header surface. Defaults to
  *   [RoundedCornerShape] with [StylishTheme.dimensions.floatingCornerRadius]
  *   radius, matching the floating aesthetic.
@@ -76,10 +77,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  */
 @Composable
 public fun StylishHeader(
-    modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
+    modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,

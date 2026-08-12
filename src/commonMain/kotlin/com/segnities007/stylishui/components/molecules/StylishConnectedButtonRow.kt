@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
+import com.segnities007.stylishui.structure.ConnectedButtonItemContent
 import com.segnities007.stylishui.structure.ConnectedButtonRow
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
@@ -34,18 +35,26 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * sibling. Outline edges and corner radii are computed automatically from each
  * item's index. Items whose [StylishConnectedButtonItem.onClick] is `null` or
  * whose [StylishConnectedButtonItem.enabled] is `false` are rendered in a
- * disabled state and do not respond to interaction.
+ * disabled state and do not respond to interaction. Pass a custom [button] to
+ * override the Stylish rendering while keeping the connected geometry.
  *
  * @param items The list of [StylishConnectedButtonItem] data objects that
  *   describe each button's content, click action, colors, and enabled state.
  * @param cornerRadius The radius applied to the outer corners of the first and
- *   last buttons. Defaults to 12 dp.
+ *   last buttons. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param spacing The horizontal gap between adjacent buttons. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding The inner padding of each button. Defaults to
  *   12 dp horizontal and 12 dp vertical.
  * @param defaultColors The [ButtonColors] used for every item whose
  *   [StylishConnectedButtonItem.colors] is `null`.
+ * @param button A composable lambda that renders a single button. Receives
+ *   the item data, a modifier (including weight and fill-max-height), the
+ *   connected [Shape], the outline [ConnectedEdges], and the outline
+ *   [ConnectedCorners]. Defaults to [DefaultStylishConnectedButton], dressed
+ *   in the Stylish look with [cornerRadius], [contentPadding], and
+ *   [defaultColors].
  *
  * @see ConnectedButtonRow
  * @see StylishConnectedButtonColumn
@@ -56,7 +65,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
 public fun StylishConnectedButtonRow(
     items: List<StylishConnectedButtonItem>,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = 12.dp,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
     defaultColors: ButtonColors = ButtonDefaults.buttonColors(
@@ -65,12 +74,13 @@ public fun StylishConnectedButtonRow(
         disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ),
-) {
-    ConnectedButtonRow(items, modifier, cornerRadius, spacing) { item, itemModifier, shape, edges, corners ->
+    button: ConnectedButtonItemContent = { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedButton(
             item, itemModifier, shape, edges, corners, cornerRadius, contentPadding, defaultColors,
         )
-    }
+    },
+) {
+    ConnectedButtonRow(items, modifier, cornerRadius, spacing, button)
 }
 
 @Preview(name = "Connected button row", showBackground = true, widthDp = 393)

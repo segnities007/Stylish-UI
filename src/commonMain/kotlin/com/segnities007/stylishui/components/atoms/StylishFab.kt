@@ -36,6 +36,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
  * @param contentDescription Accessibility label for [imageVector].
+ *   Defaults to `null` (no label); provide one whenever the action is
+ *   not otherwise described on screen.
  * @param onClick Called when the button is tapped.
  * @param enabled When `false`, the button ignores pointer input and
  *   renders with Material's disabled treatment.
@@ -48,6 +50,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param border Border stroke around the surface. Defaults to a
  *   hairline of [StylishTheme.dimensions.outlineWidth] (0.4 dp)
  *   using `MaterialTheme.colorScheme.outlineVariant`.
+ * @param tonalElevation Tonal elevation of the surface. Defaults to
+ *   [StylishTheme.dimensions.floatingElevation].
+ * @param shadowElevation Shadow elevation of the surface. Defaults to
+ *   [StylishTheme.dimensions.floatingElevation].
  * @param iconContent Optional slot that replaces the default [Icon].
  *   When `null` (default), [imageVector] and [contentDescription]
  *   are used instead.
@@ -58,7 +64,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishFab(
     imageVector: ImageVector,
-    contentDescription: String,
+    contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -67,6 +73,8 @@ public fun StylishFab(
     shape: Shape? = null,
     size: Dp = 56.dp,
     border: BorderStroke? = null,
+    tonalElevation: Dp = StylishTheme.dimensions.floatingElevation,
+    shadowElevation: Dp = StylishTheme.dimensions.floatingElevation,
     iconContent: (@Composable () -> Unit)? = null,
 ) {
     Surface(
@@ -78,8 +86,8 @@ public fun StylishFab(
             StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,
         ),
-        tonalElevation = StylishTheme.dimensions.floatingElevation,
-        shadowElevation = StylishTheme.dimensions.floatingElevation,
+        tonalElevation = tonalElevation,
+        shadowElevation = shadowElevation,
     ) {
         IconButton(onClick = onClick, enabled = enabled) {
             iconContent?.invoke() ?: Icon(imageVector, contentDescription)

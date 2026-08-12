@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,12 +36,15 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [StylishSegmentedOption] to a [StylishConnectedButtonItem].
  *
  * @param options The selectable segments. Each [StylishSegmentedOption]
- *   carries a [value], a display [label], and an optional [leadingContent]
- *   icon slot rendered before the label.
+ *   carries a [value], a display [label], an [enabled] flag, and optional
+ *   [leadingContent]/[trailingContent] icon slots rendered before/after
+ *   the label.
  * @param selectedValue The currently selected value. The segment whose
  *   [StylishSegmentedOption.value] equals this is rendered with
  *   [selectedColors].
  * @param onSelected Callback invoked with the tapped segment's value.
+ * @param labelStyle [TextStyle] for each segment label. Defaults to
+ *   [MaterialTheme.typography.labelLarge].
  * @param labelMaxLines Maximum lines for each segment label. Defaults to 1.
  * @param labelOverflow [TextOverflow] strategy when a label exceeds
  *   [labelMaxLines]. Defaults to [TextOverflow.Ellipsis].
@@ -62,6 +66,7 @@ public fun <T> StylishConnectedSegmentedControl(
     selectedValue: T,
     onSelected: (T) -> Unit,
     modifier: Modifier = Modifier,
+    labelStyle: TextStyle = MaterialTheme.typography.labelLarge,
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
     selectedColors: ButtonColors = ButtonDefaults.buttonColors(
@@ -78,11 +83,14 @@ public fun <T> StylishConnectedSegmentedControl(
         items = options.map { option ->
             StylishConnectedButtonItem(
                 onClick = { onSelected(option.value) },
+                enabled = option.enabled,
                 colors = selectedColors.takeIf { option.value == selectedValue },
                 leadingContent = option.leadingContent,
+                trailingContent = option.trailingContent,
             ) {
                 Text(
                     option.label,
+                    style = labelStyle,
                     maxLines = labelMaxLines,
                     overflow = labelOverflow,
                 )
@@ -101,12 +109,16 @@ private fun StylishConnectedSegmentedControlPreview() {
         Surface(Modifier.padding(20.dp)) {
             StylishConnectedSegmentedControl(
                 options = listOf(
-                    StylishSegmentedOption("list", "リスト") {
-                        Icon(Icons.AutoMirrored.Filled.ViewList, null)
-                    },
-                    StylishSegmentedOption("grid", "グリッド") {
-                        Icon(Icons.Default.GridView, null)
-                    },
+                    StylishSegmentedOption(
+                        value = "list",
+                        label = "リスト",
+                        leadingContent = { Icon(Icons.AutoMirrored.Filled.ViewList, null) },
+                    ),
+                    StylishSegmentedOption(
+                        value = "grid",
+                        label = "グリッド",
+                        leadingContent = { Icon(Icons.Default.GridView, null) },
+                    ),
                 ),
                 selectedValue = "list",
                 onSelected = {},

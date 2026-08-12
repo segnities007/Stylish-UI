@@ -42,6 +42,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *
  * @param onDismiss Called when the user taps outside the dialog or
  *   presses the system back button.
+ * @param modifier Modifier applied to the root [Card], before the
+ *   built-in full-width, horizontal-padding, and entrance-animation
+ *   modifiers.
  * @param animate When `true` (default), the dialog plays the
  *   scale-and-fade entrance animation. When `false`, the dialog
  *   appears immediately with no transition.
@@ -58,6 +61,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishDialogSurface(
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
     animate: Boolean = true,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color? = null,
@@ -83,7 +87,7 @@ public fun StylishDialogSurface(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding)
                 .then(

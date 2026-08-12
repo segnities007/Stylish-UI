@@ -2,7 +2,7 @@ package com.segnities007.stylishui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/** StylishUI のライト/ダークテーマで使用する内部カラーパレット。 */
+/** Internal color palette used by the StylishUI light/dark themes. */
 internal object StylishPalette {
     val Ink = Color(0xFF202124)
     val Paper = Color(0xFFF0F0ED)

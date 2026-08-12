@@ -124,12 +124,15 @@ public fun connectedShape(
  * @see connectedShape
  * @see connectedColumnEdges
  */
-public fun connectedColumnCorners(index: Int, size: Int): ConnectedCorners = ConnectedCorners(
-    topStart = index == 0,
-    topEnd = index == 0,
-    bottomStart = index == size - 1,
-    bottomEnd = index == size - 1,
-)
+public fun connectedColumnCorners(index: Int, size: Int): ConnectedCorners {
+    require(index in 0 until size) { "index must reference an existing item" }
+    return ConnectedCorners(
+        topStart = index == 0,
+        topEnd = index == 0,
+        bottomStart = index == size - 1,
+        bottomEnd = index == size - 1,
+    )
+}
 
 /**
  * Computes the outer corners for the item at [index] in a horizontal (row) Connected UI list.
@@ -143,12 +146,15 @@ public fun connectedColumnCorners(index: Int, size: Int): ConnectedCorners = Con
  * @see connectedShape
  * @see connectedRowEdges
  */
-public fun connectedRowCorners(index: Int, size: Int): ConnectedCorners = ConnectedCorners(
-    topStart = index == 0,
-    bottomStart = index == 0,
-    topEnd = index == size - 1,
-    bottomEnd = index == size - 1,
-)
+public fun connectedRowCorners(index: Int, size: Int): ConnectedCorners {
+    require(index in 0 until size) { "index must reference an existing item" }
+    return ConnectedCorners(
+        topStart = index == 0,
+        bottomStart = index == 0,
+        topEnd = index == size - 1,
+        bottomEnd = index == size - 1,
+    )
+}
 
 /**
  * Computes the outer corners for the item at [index] in a grid-based Connected UI layout.
@@ -158,6 +164,11 @@ public fun connectedRowCorners(index: Int, size: Int): ConnectedCorners = Connec
  * `topStart` is outer when there is no item above *and* no item to the left. The last row may
  * be partially filled; the function accounts for this by checking actual item existence rather
  * than assuming a full rectangular grid.
+ *
+ * A partially filled final row is stretched to the full grid width by the Connected grid
+ * layouts, so every column of the row above it is treated as having a neighbor below. This
+ * keeps the junction between the last full row and the stretched final row a seamless
+ * joined edge instead of exposing outer corners toward the stretched row.
  *
  * @param index Zero-based position of the item in row-major order.
  * @param size Total number of items in the grid. Must be greater than zero.
@@ -175,20 +186,29 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
 
     val column = index % columns
     val row = index / columns
-    // 同じ行内の左右は実座標のまま厳密に判定する
+    val lastRow = (size - 1) / columns
+    val finalRowStretched = size % columns != 0
+
+    // Left/right neighbours within the same row are checked against actual item existence.
     fun hasHorizontalNeighbor(targetColumn: Int): Boolean {
         if (targetColumn !in 0 until columns) return false
         return row * columns + targetColumn in 0 until size
     }
 
-    // 上下も同じ列に実際にアイテムがある場合のみ隣接とみなす
+    // Above/below neighbours count only when an item actually exists in the same column.
     fun hasVerticalNeighbor(targetRow: Int): Boolean {
         if (targetRow < 0) return false
         return targetRow * columns + column in 0 until size
     }
 
     val hasAbove = hasVerticalNeighbor(row - 1)
-    val hasBelow = hasVerticalNeighbor(row + 1)
+    // A partially filled final row is stretched to the full grid width by the layouts, so
+    // every column of the row directly above it has a neighbor below.
+    val hasBelow = if (finalRowStretched && row == lastRow - 1) {
+        true
+    } else {
+        hasVerticalNeighbor(row + 1)
+    }
     val hasLeft = hasHorizontalNeighbor(column - 1)
     val hasRight = hasHorizontalNeighbor(column + 1)
 
@@ -215,7 +235,7 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
  * @see com.segnities007.stylishui.foundation.connectedOutline
  */
 public fun connectedRowEdges(index: Int, size: Int): ConnectedEdges {
-    require(index in 0 until size)
+    require(index in 0 until size) { "index must reference an existing item" }
     return ConnectedEdges.All
 }
 
@@ -234,6 +254,29 @@ public fun connectedRowEdges(index: Int, size: Int): ConnectedEdges {
  * @see com.segnities007.stylishui.foundation.connectedOutline
  */
 public fun connectedColumnEdges(index: Int, size: Int): ConnectedEdges {
-    require(index in 0 until size)
+    require(index in 0 until size) { "index must reference an existing item" }
+    return ConnectedEdges.All
+}
+
+/**
+ * Returns the outline edges for the item at [index] in a grid-based Connected UI layout.
+ *
+ * Currently all items draw all four edges ([ConnectedEdges.All]); the parameters are validated
+ * and reserved for future edge-suppression logic (e.g. hiding shared internal borders between
+ * adjacent items). Provided for symmetry with [connectedRowEdges] and [connectedColumnEdges]
+ * so grid layouts source their edges from the Foundation layer.
+ *
+ * @param index Zero-based position of the item in row-major order.
+ * @param size Total number of items in the grid. Must be greater than zero.
+ * @param columns Number of columns in the grid layout. Must be greater than zero.
+ * @return The [ConnectedEdges] indicating which sides to outline.
+ * @throws IllegalArgumentException if [columns] is not greater than zero, or if [index] is
+ *   outside the range `0 until size`.
+ * @see connectedGridCorners
+ * @see com.segnities007.stylishui.foundation.connectedOutline
+ */
+public fun connectedGridEdges(index: Int, size: Int, columns: Int): ConnectedEdges {
+    require(columns > 0) { "columns must be greater than zero" }
+    require(index in 0 until size) { "index must reference an existing item" }
     return ConnectedEdges.All
 }

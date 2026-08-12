@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.structure.ConnectedChipColumn
+import com.segnities007.stylishui.structure.ConnectedChipItemContent
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -35,7 +36,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * chip fills the full available width. Tapping an actionable chip triggers a
  * haptic feedback pulse and animates the container/content colors over 180 ms.
  * Chips are assigned `Role.Tab` semantics with the `selected` state reflected
- * from [StylishConnectedChipItem.selected].
+ * from [StylishConnectedChipItem.selected]. Pass a custom [chip] to override
+ * the Stylish rendering while keeping the connected geometry.
  *
  * @param items The list of [StylishConnectedChipItem] data objects that
  *   describe each chip's label, selection state, click action, and optional
@@ -60,6 +62,11 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   horizontal and 10 dp vertical.
  * @param contentSpacing The horizontal gap between the leading slot, label,
  *   and trailing slot inside each chip. Defaults to 6 dp.
+ * @param chip A composable lambda that renders a single chip. Receives the
+ *   item data, a modifier (including fill-max-width), the connected [Shape],
+ *   the outline [ConnectedEdges], and the outline [ConnectedCorners]. Defaults
+ *   to [DefaultStylishConnectedChip], dressed in the Stylish look with the
+ *   label, color, and padding parameters above.
  *
  * @see ConnectedChipColumn
  * @see StylishConnectedChipRow
@@ -80,14 +87,15 @@ public fun StylishConnectedChipColumn(
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
     contentSpacing: Dp = 6.dp,
-) {
-    ConnectedChipColumn(items, modifier, spacing) { item, itemModifier, shape, edges, corners ->
+    chip: ConnectedChipItemContent = { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedChip(
             item, itemModifier, shape, edges, corners, labelMaxLines, labelOverflow, labelStyle,
             selectedContainerColor, selectedContentColor, unselectedContainerColor,
             unselectedContentColor, contentPadding, contentSpacing,
         )
-    }
+    },
+) {
+    ConnectedChipColumn(items, modifier, spacing, chip = chip)
 }
 
 @Preview(name = "Connected chip column", showBackground = true, widthDp = 393)

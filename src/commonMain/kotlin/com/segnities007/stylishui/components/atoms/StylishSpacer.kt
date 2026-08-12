@@ -3,31 +3,33 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
- * A spacing element that inserts a fixed gap between siblings,
- * backed by the Stylish Rhythm spacing scale. Use the convenience
- * factories ([StylishInlineSpacer], [StylishItemSpacer],
- * [StylishContentSpacer], [StylishSectionSpacer]) for the standard
- * steps, or pass a custom [spacing] for one-off gaps.
+ * A vertical spacing element that inserts a fixed-height gap between
+ * siblings, backed by the Stylish Rhythm spacing scale. Use the
+ * convenience factories ([StylishItemSpacer], [StylishContentSpacer],
+ * [StylishSectionSpacer]) for the standard vertical steps, or pass a
+ * custom [spacing] for one-off gaps. For horizontal gaps, use
+ * [StylishHorizontalSpacer] or [StylishInlineSpacer].
  *
- * @param spacing The size of the gap. Defaults to
+ * @param spacing The height of the gap. Defaults to
  *   [StylishTheme.dimensions.itemSpacing].
- * @param modifier Modifier applied to the [Spacer]. Use
- *   [Modifier.height] or [Modifier.width] to control orientation;
- *   by default the spacer has no intrinsic size and must be
- *   constrained by the caller.
+ * @param modifier Modifier applied to the [Spacer].
  *
+ * @see StylishHorizontalSpacer
  * @see StylishInlineSpacer
  * @see StylishItemSpacer
  * @see StylishContentSpacer
@@ -39,6 +41,27 @@ public fun StylishSpacer(
     modifier: Modifier = Modifier,
 ) {
     Spacer(modifier.height(spacing))
+}
+
+/**
+ * A horizontal spacing element that inserts a fixed-width gap between
+ * siblings, backed by the Stylish Rhythm spacing scale. Use it for
+ * one-off horizontal gaps; for the standard smallest step
+ * (icon-to-label), prefer [StylishInlineSpacer].
+ *
+ * @param spacing The width of the gap. Defaults to
+ *   [StylishTheme.dimensions.inlineSpacing].
+ * @param modifier Modifier applied to the [Spacer].
+ *
+ * @see StylishSpacer
+ * @see StylishInlineSpacer
+ */
+@Composable
+public fun StylishHorizontalSpacer(
+    spacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    modifier: Modifier = Modifier,
+) {
+    Spacer(modifier.width(spacing))
 }
 
 /**
@@ -88,6 +111,20 @@ private fun StylishSpacerPreview() {
         Surface(Modifier.padding(20.dp)) {
             Box {
                 StylishItemSpacer()
+            }
+        }
+    }
+}
+
+@Preview(name = "Stylish horizontal spacer", showBackground = true, widthDp = 393)
+@Composable
+private fun StylishHorizontalSpacerPreview() {
+    StylishTheme(darkTheme = false) {
+        Surface(Modifier.padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("左")
+                StylishHorizontalSpacer(spacing = 16.dp)
+                Text("右")
             }
         }
     }

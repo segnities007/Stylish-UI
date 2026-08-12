@@ -15,12 +15,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A page-content pattern that renders a header as the first item of a
@@ -37,12 +39,20 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param listState [LazyListState] controlling scroll position. Defaults
  *   to [rememberLazyListState]. Supply a hoisted state to observe scroll
  *   offset or programmatically scroll.
+ * @param modifier Modifier applied to the underlying [LazyColumn].
  * @param contentPadding [PaddingValues] applied around the entire lazy
  *   list. Defaults to 20.dp horizontal padding.
  * @param headerSpacing Vertical gap between the [header] and the first
- *   list item. Defaults to 8.dp.
+ *   list item. Defaults to [DefaultStylishDimensions.itemSpacing]
+ *   (typically 8.dp).
  * @param verticalArrangement [Arrangement.Vertical] governing spacing and
  *   alignment of list items. Defaults to [Arrangement.Top].
+ * @param horizontalAlignment Horizontal alignment of the list items
+ *   inside the [LazyColumn]. Defaults to [Alignment.Start].
+ * @param reverseLayout When true, items are laid out bottom to top and
+ *   the list scrolls toward its top edge. Defaults to false.
+ * @param userScrollEnabled Whether the user can scroll the list via
+ *   touch input. Defaults to true.
  * @param content [LazyListScope] receiver where the caller emits list
  *   items via `item {}` / `items {}` builders.
  *
@@ -55,15 +65,21 @@ public fun StylishPageContent(
     listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp),
-    headerSpacing: Dp = 8.dp,
+    headerSpacing: Dp = DefaultStylishDimensions.itemSpacing,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    reverseLayout: Boolean = false,
+    userScrollEnabled: Boolean = true,
     content: LazyListScope.() -> Unit,
 ) {
     LazyColumn(
         modifier.fillMaxSize(),
         contentPadding = contentPadding,
         state = listState,
+        reverseLayout = reverseLayout,
         verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
+        userScrollEnabled = userScrollEnabled,
     ) {
         item {
             header()

@@ -25,21 +25,27 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
- * A full-size placeholder displayed when a list or content area has no data,
- * presenting an icon, title, description, and an optional call-to-action.
+ * A placeholder displayed when a list or content area has no data, presenting
+ * an optional icon, title, description, and an optional call-to-action.
  *
- * The component fills the available space and centers its children
- * vertically and horizontally. By default the [icon] vector is rendered with
- * [iconTint]; supply [iconContent] to replace it with arbitrary composable
- * content. Similarly, the action area renders a [TextButton] with
- * [actionLabel] when both [actionLabel] and [onAction] are non-null, or the
- * custom [action] composable when provided. If neither action parameter is
- * set, no action area is shown.
+ * The component centers its children vertically and horizontally within the
+ * space granted by [modifier]; callers that want it to occupy all available
+ * space add `Modifier.fillMaxSize()` themselves. When an [icon] vector is
+ * supplied it is rendered with [iconTint]; provide [iconContent] to replace
+ * it with arbitrary composable content, or leave both `null` to omit the icon
+ * entirely. The title and description each render a [Text] from their string
+ * unless a [titleContent] / [descriptionContent] slot is provided; blank
+ * strings without a slot render nothing. The action area renders a
+ * [TextButton] with [actionLabel] when both [actionLabel] and [onAction] are
+ * non-null, or the custom [action] composable when provided. If neither
+ * action parameter is set, no action area is shown.
  *
- * @param icon The [ImageVector] displayed above the title. Ignored when
- *   [iconContent] is provided.
- * @param title The headline text describing the empty state.
- * @param description The explanatory text shown below the title.
+ * @param icon The optional [ImageVector] displayed above the title. Rendered
+ *   only when non-null and [iconContent] is not provided.
+ * @param title The headline text describing the empty state. Skipped when
+ *   blank and [titleContent] is `null`.
+ * @param description The explanatory text shown below the title. Skipped when
+ *   blank and [descriptionContent] is `null`.
  * @param actionLabel The label for the optional call-to-action button. When
  *   `null` (or when [onAction] is `null`), no default button is rendered.
  * @param onAction The callback invoked when the default action button is
@@ -62,14 +68,23 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param contentColor The color applied to the title and description text.
  *   Defaults to [MaterialTheme.colorScheme.onSurfaceVariant].
  * @param iconContent An optional custom composable that replaces the default
- *   icon. When `null`, the [icon] vector is rendered. Note: the default icon
- *   includes 16 dp bottom padding; custom slots do not inherit this spacing.
+ *   icon. When `null`, the [icon] vector is rendered (if non-null). Note: the
+ *   default icon includes bottom spacing from
+ *   [StylishTheme.dimensions.contentSpacing]; custom slots do not inherit this
+ *   spacing.
+ * @param titleContent An optional custom composable that replaces the default
+ *   title [Text]. When `null`, the [title] string is rendered unless blank.
+ * @param descriptionContent An optional custom composable that replaces the
+ *   default description [Text]. When `null`, the [description] string is
+ *   rendered unless blank. Note: the default description includes top spacing
+ *   from [StylishTheme.dimensions.itemSpacing]; custom slots do not inherit
+ *   this spacing.
  * @param action An optional custom composable that replaces the default
  *   action button. When `null`, the default [TextButton] logic applies.
  */
 @Composable
 public fun StylishEmptyState(
-    icon: ImageVector,
+    icon: ImageVector? = null,
     title: String,
     description: String,
     modifier: Modifier = Modifier,
@@ -84,32 +99,46 @@ public fun StylishEmptyState(
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     iconContent: (@Composable () -> Unit)? = null,
+    titleContent: (@Composable () -> Unit)? = null,
+    descriptionContent: (@Composable () -> Unit)? = null,
     action: (@Composable () -> Unit)? = null,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        if (iconContent != null) iconContent() else Icon(
-            icon, contentDescription = null, tint = iconTint,
-            modifier = Modifier.padding(bottom = StylishTheme.dimensions.contentSpacing),
-        )
-        Text(
-            title,
-            style = titleStyle,
-            color = contentColor,
-            maxLines = titleMaxLines,
-            overflow = titleOverflow,
-        )
-        Text(
-            description,
-            style = descriptionStyle,
-            color = contentColor,
-            maxLines = descriptionMaxLines,
-            overflow = descriptionOverflow,
-            modifier = Modifier.padding(top = StylishTheme.dimensions.itemSpacing),
-        )
+        if (iconContent != null) {
+            iconContent()
+        } else if (icon != null) {
+            Icon(
+                icon, contentDescription = null, tint = iconTint,
+                modifier = Modifier.padding(bottom = StylishTheme.dimensions.contentSpacing),
+            )
+        }
+        if (titleContent != null || title.isNotBlank()) {
+            (titleContent ?: {
+                Text(
+                    title,
+                    style = titleStyle,
+                    color = contentColor,
+                    maxLines = titleMaxLines,
+                    overflow = titleOverflow,
+                )
+            })()
+        }
+        if (descriptionContent != null || description.isNotBlank()) {
+            (descriptionContent ?: {
+                Text(
+                    description,
+                    style = descriptionStyle,
+                    color = contentColor,
+                    maxLines = descriptionMaxLines,
+                    overflow = descriptionOverflow,
+                    modifier = Modifier.padding(top = StylishTheme.dimensions.itemSpacing),
+                )
+            })()
+        }
         if (action != null) {
             action()
         } else if (actionLabel != null && onAction != null) {
@@ -132,6 +161,7 @@ private fun StylishEmptyStatePreview() {
                 icon = Icons.Default.DirectionsCar,
                 title = "まだ車両が登録されていません",
                 description = "下の＋ボタンから最初の車を登録しましょう",
+                modifier = Modifier.fillMaxSize(),
                 actionLabel = "車両を登録する",
                 onAction = {},
             )

@@ -16,7 +16,11 @@ import androidx.compose.runtime.Immutable
  * @property value The domain value associated with this option. The consuming composable
  *   compares [value] against the current selection to determine the selected state.
  * @property label The text displayed on the segment.
+ * @property enabled Whether this segment is enabled. When `false`, the segment is
+ *   visually dimmed and does not respond to interaction.
  * @property leadingContent Optional composable slot rendered before [label] (e.g. an icon).
+ *   Receives [RowScope] for alignment control. `null` omits the slot.
+ * @property trailingContent Optional composable slot rendered after [label] (e.g. a badge).
  *   Receives [RowScope] for alignment control. `null` omits the slot.
  * @see com.segnities007.stylishui.foundation.ConnectedCorners
  */
@@ -24,5 +28,7 @@ import androidx.compose.runtime.Immutable
 public data class StylishSegmentedOption<T>(
     val value: T,
     val label: String,
+    val enabled: Boolean = true,
     val leadingContent: (@Composable RowScope.() -> Unit)? = null,
+    val trailingContent: (@Composable RowScope.() -> Unit)? = null,
 )

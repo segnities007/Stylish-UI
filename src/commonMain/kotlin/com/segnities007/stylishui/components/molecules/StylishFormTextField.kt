@@ -1,13 +1,10 @@
 package com.segnities007.stylishui.components.molecules
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,20 +20,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  * A form-oriented outlined text field with built-in label, placeholder, and
  * inline error-message display.
  *
- * This molecules-layer variant is a streamlined version of the atoms-layer
- * [com.segnities007.stylishui.components.atoms.StylishFormTextField]. It omits
- * the `labelContent`, `placeholderContent`, `supportingContent`, and
- * `fieldModifier` parameters, always rendering the label and placeholder as
- * plain [Text] composables and applying [Modifier.fillMaxWidth] to the inner
- * field. Use this variant when the default text-based label/placeholder is
- * sufficient; use the atoms variant when custom slot content or a separate
- * field modifier is needed.
- *
- * When [minLines] is 1 and [maxLines] resolves to 1, the field operates in
- * single-line mode. Setting [minLines] greater than 1 enables multi-line
- * input with [maxLines] defaulting to [Int.MAX_VALUE]. When [isError] is
- * `true` the field draws its error outline, and a non-null [errorMessage] is
- * displayed below the field in [MaterialTheme.colorScheme.error].
+ * This molecules-layer variant is a deprecated alias of the atoms-layer
+ * [com.segnities007.stylishui.components.atoms.StylishFormTextField], which is
+ * a strict superset of this API. It delegates every parameter unchanged.
  *
  * @param value The current text value of the field.
  * @param onValueChange Callback invoked with the updated text whenever the
@@ -67,6 +53,18 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @see com.segnities007.stylishui.components.atoms.StylishFormTextField
  * @see StylishDatePickerField
  */
+@Deprecated(
+    message = "Duplicate of the atoms-layer StylishFormTextField, which is a strict " +
+        "superset of this API (adds labelContent, placeholderContent, " +
+        "supportingContent, and fieldModifier). Use the atoms variant instead.",
+    replaceWith = ReplaceWith(
+        "StylishFormTextField(value, onValueChange, label, placeholder, modifier, " +
+            "minLines, maxLines, isError, errorMessage, leadingIcon, trailingIcon, " +
+            "textStyle, shape, colors)",
+        "com.segnities007.stylishui.components.atoms.StylishFormTextField",
+    ),
+    level = DeprecationLevel.WARNING,
+)
 @Composable
 public fun StylishFormTextField(
     value: String,
@@ -84,34 +82,25 @@ public fun StylishFormTextField(
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors? = null,
 ) {
-    Column(modifier) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(label) },
-            placeholder = { Text(placeholder) },
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            minLines = minLines,
-            maxLines = maxLines,
-            textStyle = textStyle,
-            shape = shape,
-            colors = colors ?: OutlinedTextFieldDefaults.colors(),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = minLines == 1 && maxLines == 1,
-            isError = isError,
-            supportingText = errorMessage?.let { message ->
-                {
-                    Text(
-                        text = message,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            },
-        )
-    }
+    com.segnities007.stylishui.components.atoms.StylishFormTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        placeholder = placeholder,
+        modifier = modifier,
+        minLines = minLines,
+        maxLines = maxLines,
+        isError = isError,
+        errorMessage = errorMessage,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        textStyle = textStyle,
+        shape = shape,
+        colors = colors,
+    )
 }
 
+@Suppress("DEPRECATION")
 @Preview(name = "Form text field", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishFormTextFieldPreview() {
@@ -129,6 +118,7 @@ private fun StylishFormTextFieldPreview() {
     }
 }
 
+@Suppress("DEPRECATION")
 @Preview(name = "Form text field with error", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishFormTextFieldErrorPreview() {
@@ -147,6 +137,7 @@ private fun StylishFormTextFieldErrorPreview() {
     }
 }
 
+@Suppress("DEPRECATION")
 @Preview(name = "Form text field multiline", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishFormTextFieldMultilinePreview() {

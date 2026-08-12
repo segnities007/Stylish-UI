@@ -4,7 +4,6 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -53,6 +52,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   `onSurfaceVariant`.
  * @param shape Shape of the surface. Defaults to
  *   `RoundedCornerShape(24.dp)`.
+ * @param border Border stroke drawn around the surface. Defaults to a
+ *   hairline of [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
+ *   border.
  * @param minWidth Minimum width of the tappable surface.
  *   Defaults to 80 dp.
  * @param minHeight Minimum height of the tappable surface.
@@ -75,7 +78,11 @@ public fun StylishRoundedIconButton(
     active: Boolean = false,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape? = null,
+    shape: Shape = RoundedCornerShape(24.dp),
+    border: BorderStroke? = BorderStroke(
+        StylishTheme.dimensions.outlineWidth,
+        MaterialTheme.colorScheme.outlineVariant,
+    ),
     minWidth: Dp = 80.dp,
     minHeight: Dp = 48.dp,
     iconContent: (@Composable () -> Unit)? = null,
@@ -93,12 +100,9 @@ public fun StylishRoundedIconButton(
 
     Surface(
         modifier = modifier.sizeIn(minWidth = minWidth, minHeight = minHeight),
-        shape = shape ?: RoundedCornerShape(24.dp),
+        shape = shape,
         color = resolvedContainerColor,
-        border = BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        ),
+        border = border,
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         if (enabled) {
@@ -106,7 +110,10 @@ public fun StylishRoundedIconButton(
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         } else {
-            Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+            Box(
+                Modifier.sizeIn(minWidth = minWidth, minHeight = minHeight),
+                contentAlignment = Alignment.Center,
+            ) {
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         }

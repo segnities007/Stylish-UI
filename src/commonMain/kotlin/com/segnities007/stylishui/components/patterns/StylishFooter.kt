@@ -39,11 +39,11 @@ import com.segnities007.stylishui.theme.StylishTheme
  *
  * @param content Composable rendered at the horizontal center of the
  *   bar, typically a primary action button or label.
- * @param modifier Modifier applied to the outer [Column].
  * @param leadingContent Optional composable rendered at the start
  *   (leading) edge. When null, no leading content is shown.
  * @param trailingContent Optional composable rendered at the end
  *   (trailing) edge. When null, no trailing content is shown.
+ * @param modifier Modifier applied to the outer [Column].
  * @param shape Corner shape of the footer surface. Defaults to
  *   [RoundedCornerShape] with
  *   [StylishTheme.dimensions.floatingCornerRadius].
@@ -70,10 +70,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  */
 @Composable
 public fun StylishFooter(
-    modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {},
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
+    modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,

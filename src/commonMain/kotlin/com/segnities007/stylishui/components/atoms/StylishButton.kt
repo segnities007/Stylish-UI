@@ -47,8 +47,15 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param shape Corner shape. Defaults to
  *   [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius].
+ * @param border Border stroke drawn around the button. Defaults to a
+ *   hairline of [StylishTheme.dimensions.outlineWidth] using
+ *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
+ *   border.
  * @param contentPadding Inner padding of the button.
  * @param minHeight Minimum height of the button. Defaults to 52.dp.
+ * @param contentArrangement Horizontal arrangement of the label row
+ *   between the leading and trailing slots. Defaults to
+ *   [Arrangement.Center].
  * @param leadingContent Optional content before the label (e.g. an
  *   icon). Rendered in a fixed-alignment slot.
  * @param trailingContent Optional content after the label (e.g. a
@@ -69,8 +76,13 @@ public fun StylishButton(
         contentColor = MaterialTheme.colorScheme.onSurface,
     ),
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    border: BorderStroke? = BorderStroke(
+        StylishTheme.dimensions.outlineWidth,
+        MaterialTheme.colorScheme.outlineVariant,
+    ),
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     minHeight: Dp = 52.dp,
+    contentArrangement: Arrangement.Horizontal = Arrangement.Center,
     leadingContent: (@Composable RowScope.() -> Unit)? = null,
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable RowScope.() -> Unit,
@@ -87,10 +99,7 @@ public fun StylishButton(
             pressedElevation = 0.dp,
             disabledElevation = 0.dp,
         ),
-        border = BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        ),
+        border = border,
         contentPadding = contentPadding,
     ) {
         if (leadingContent != null) {
@@ -98,7 +107,7 @@ public fun StylishButton(
         }
         Row(
             modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = contentArrangement,
             verticalAlignment = Alignment.CenterVertically,
             content = content,
         )

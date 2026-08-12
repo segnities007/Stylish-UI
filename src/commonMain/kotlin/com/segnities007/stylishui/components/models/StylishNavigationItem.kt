@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
  *   and renders in a dimmed state.
  * @property badge Optional badge content (e.g. a notification count)
  *   rendered near the icon. When `null`, no badge is shown.
+ * @property iconContent Optional custom content rendered in place of
+ *   [icon] when non-null. When `null` (the default), [icon] is
+ *   rendered.
  */
 @Immutable
 public data class StylishNavigationItem(
@@ -25,4 +28,5 @@ public data class StylishNavigationItem(
     val onClick: () -> Unit = {},
     val enabled: Boolean = true,
     val badge: (@Composable () -> Unit)? = null,
+    val iconContent: (@Composable () -> Unit)? = null,
 )

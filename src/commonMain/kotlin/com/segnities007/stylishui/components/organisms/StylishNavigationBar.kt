@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,13 +21,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.foundation.isActionable
@@ -45,6 +50,17 @@ import com.segnities007.stylishui.theme.StylishTheme
  *
  * @param items The navigation destinations to display.
  * @param modifier Modifier applied to the root [Row].
+ * @param labelStyle [TextStyle] applied to each destination label.
+ *   Defaults to [MaterialTheme.typography.labelSmall].
+ * @param iconSize Size of each destination icon. Defaults to 24 dp.
+ * @param selectedContentColor Content color for the selected
+ *   destination. Defaults to [MaterialTheme.colorScheme.primary].
+ * @param unselectedContentColor Content color for unselected
+ *   destinations. Defaults to
+ *   [MaterialTheme.colorScheme.onSurfaceVariant].
+ * @param disabledContentColor Content color for disabled
+ *   destinations. Defaults to
+ *   [MaterialTheme.colorScheme.onSurface] at 38 % alpha.
  * @param labelMaxLines Maximum lines for each destination label.
  * @param labelOverflow Overflow strategy for labels.
  *
@@ -55,6 +71,11 @@ import com.segnities007.stylishui.theme.StylishTheme
 public fun StylishNavigationBar(
     items: List<StylishNavigationItem>,
     modifier: Modifier = Modifier,
+    labelStyle: TextStyle = MaterialTheme.typography.labelSmall,
+    iconSize: Dp = 24.dp,
+    selectedContentColor: Color = MaterialTheme.colorScheme.primary,
+    unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
@@ -70,9 +91,9 @@ public fun StylishNavigationBar(
                 hasClickAction = true,
             )
             val contentColor = when {
-                !item.enabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                item.selected -> MaterialTheme.colorScheme.primary
-                else -> MaterialTheme.colorScheme.onSurfaceVariant
+                !item.enabled -> disabledContentColor
+                item.selected -> selectedContentColor
+                else -> unselectedContentColor
             }
             Column(
                 modifier = Modifier
@@ -80,6 +101,7 @@ public fun StylishNavigationBar(
                     .semantics {
                         this.selected = item.selected
                         role = Role.Tab
+                        if (!item.enabled) disabled()
                     }
                     .then(
                         if (actionable) {
@@ -95,19 +117,25 @@ public fun StylishNavigationBar(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
             ) {
-                if (item.badge != null) {
-                    item.badge()
-                } else {
-                    Icon(
-                        item.icon,
-                        contentDescription = item.label,
-                        tint = contentColor,
-                        modifier = Modifier.size(24.dp),
-                    )
+                Box {
+                    val iconContent = item.iconContent
+                    if (iconContent != null) {
+                        iconContent()
+                    } else {
+                        Icon(
+                            item.icon,
+                            contentDescription = item.label,
+                            tint = contentColor,
+                            modifier = Modifier.size(iconSize),
+                        )
+                    }
+                    item.badge?.let { badge ->
+                        Box(Modifier.align(Alignment.TopEnd)) { badge() }
+                    }
                 }
                 Text(
                     item.label,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = labelStyle,
                     color = contentColor,
                     maxLines = labelMaxLines,
                     overflow = labelOverflow,

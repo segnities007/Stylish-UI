@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedGridCorners
+import com.segnities007.stylishui.foundation.connectedGridEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
@@ -37,10 +40,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * receives the pre-computed connection geometry.
  *
  * This component makes **no** visual or interactive decisions — no colors,
- * elevation, animation, semantics, or click handling. It is the headless
- * backbone that the Stylish Finish counterpart `StylishConnectedListItemGrid`
- * consumes by supplying a styled [listItem]. Supply your own [listItem] to
- * render a custom skin over the same connected geometry.
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedListItemGrid` consumes by supplying a styled
+ * [listItem]. Supply your own [listItem] to render a custom skin over the same
+ * connected geometry.
  *
  * @param items The list of [StylishConnectedListItem] data objects describing
  *   each cell.
@@ -48,6 +51,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   than zero.
  * @param spacing The gap between adjacent items both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param listItem A composable lambda that renders a single cell. Receives the
  *   item data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -62,6 +67,7 @@ public fun ConnectedListItemGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     listItem: ConnectedListItemContent,
 ) {
     require(columns > 0) { "columns must be greater than zero" }
@@ -83,8 +89,8 @@ public fun ConnectedListItemGrid(
                             Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                            connectedShape(corners),
-                            ConnectedEdges.All,
+                            connectedShape(corners, cornerRadius),
+                            connectedGridEdges(index, items.size, columns),
                             corners,
                         )
                     }

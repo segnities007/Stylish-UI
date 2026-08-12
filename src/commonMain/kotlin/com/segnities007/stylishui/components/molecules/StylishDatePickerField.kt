@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -47,12 +47,13 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * A date-input field that opens a Material 3 [DatePickerDialog] when tapped,
  * displaying the selected date as formatted text in an [OutlinedTextField].
  *
- * The text field itself is read-only and disabled; all interaction goes
- * through the date-picker dialog. When [value] is `null` the field shows the
- * [placeholder] text. The dialog's confirm button commits the selected date
- * via [onValueChange]; the dismiss button closes the dialog without changing
- * the value. Date formatting avoids `java.time` so the component works across
- * all Kotlin Multiplatform targets.
+ * The text field itself is read-only but keeps its enabled appearance; all
+ * interaction goes through the date-picker dialog. Set [enabled] to `false`
+ * to grey the field out and block the dialog. When [value] is `null` the
+ * field shows the [placeholder] text. The dialog's confirm button commits the
+ * selected date via [onValueChange]; the dismiss button closes the dialog
+ * without changing the value. Date formatting avoids `java.time` so the
+ * component works across all Kotlin Multiplatform targets.
  *
  * @param value The currently selected date, or `null` if no date has been
  *   chosen.
@@ -71,6 +72,9 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  *   Ignored when [placeholderContent] is provided.
  * @param formatter A function that converts a [LocalDate] to its display
  *   string. Defaults to `yyyy/MM/dd` formatting.
+ * @param enabled Whether the field is interactive. When `false`, taps do not
+ *   open the date-picker dialog and the field renders in a disabled state.
+ *   Defaults to `true`.
  * @param labelContent An optional custom composable for the text field label.
  *   When `null`, a [Text] composable with [label] is used.
  * @param placeholderContent An optional custom composable for the text field
@@ -92,9 +96,10 @@ public fun StylishDatePickerField(
     label: String,
     confirmLabel: String,
     dismissLabel: String,
-    modifier: Modifier = Modifier,
     placeholder: String,
+    modifier: Modifier = Modifier,
     formatter: (LocalDate) -> String = defaultDateFormatter,
+    enabled: Boolean = true,
     labelContent: @Composable (() -> Unit)? = null,
     placeholderContent: @Composable (() -> Unit)? = null,
     confirmLabelContent: @Composable (() -> Unit)? = null,
@@ -105,7 +110,7 @@ public fun StylishDatePickerField(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { showDialog = true },
+            .clickable(enabled = enabled) { showDialog = true },
     ) {
         OutlinedTextField(
             value = value?.let(formatter) ?: "",
@@ -113,7 +118,8 @@ public fun StylishDatePickerField(
             label = labelContent ?: { Text(label) },
             placeholder = placeholderContent ?: { Text(placeholder) },
             modifier = Modifier.fillMaxWidth(),
-            enabled = false,
+            enabled = enabled,
+            readOnly = true,
             singleLine = true,
         )
     }
@@ -144,7 +150,7 @@ public fun StylishDatePickerField(
 @Preview(name = "Stylish date picker field", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishDatePickerFieldPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishDatePickerField(
             value = LocalDate(2026, 7, 25),
             onValueChange = {},
@@ -159,7 +165,7 @@ private fun StylishDatePickerFieldPreview() {
 @Preview(name = "Stylish date picker field (null)", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishDatePickerFieldNullPreview() {
-    MaterialTheme {
+    StylishTheme(darkTheme = false) {
         StylishDatePickerField(
             value = null,
             onValueChange = {},

@@ -11,9 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
+import com.segnities007.stylishui.foundation.ConnectedCorners
+import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedColumnCorners
 import com.segnities007.stylishui.foundation.connectedColumnEdges
 import com.segnities007.stylishui.foundation.connectedOutline
@@ -31,15 +34,17 @@ import com.segnities007.stylishui.theme.StylishTheme
  * pre-computed connection geometry.
  *
  * This component makes **no** visual or interactive decisions — no colors,
- * selection animation, semantics, or click handling. It is the headless
- * backbone that the Stylish Finish counterpart `StylishConnectedChipColumn`
- * consumes by supplying a styled [chip]. Supply your own [chip] to render a
- * custom skin over the same connected geometry.
+ * elevation, or animation. It is the headless backbone that the Stylish Finish
+ * counterpart `StylishConnectedChipColumn` consumes by supplying a styled
+ * [chip]. Supply your own [chip] to render a custom skin over the same
+ * connected geometry.
  *
  * @param items The list of [StylishConnectedChipItem] data objects describing
  *   each chip.
  * @param spacing The vertical gap between adjacent chips. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
+ * @param cornerRadius The radius applied to the outer corners. Defaults to
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param chip A composable lambda that renders a single chip. Receives the item
  *   data, a modifier (fill-max-width), the connected [Shape], the outline
  *   [ConnectedEdges], and the outline [ConnectedCorners].
@@ -53,6 +58,7 @@ public fun ConnectedChipColumn(
     items: List<StylishConnectedChipItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
+    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
     chip: ConnectedChipItemContent,
 ) {
     Column(
@@ -64,7 +70,7 @@ public fun ConnectedChipColumn(
             chip(
                 item,
                 Modifier.fillMaxWidth(),
-                connectedShape(corners),
+                connectedShape(corners, cornerRadius),
                 connectedColumnEdges(index, items.size),
                 corners,
             )

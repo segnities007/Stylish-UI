@@ -92,10 +92,10 @@ Finish  →  Structure  →  Foundation
 
 ### 公開コンポーネント
 
-- **atoms** — `StylishFab`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishSectionTitle`, `StylishConnectedCard`, `StylishDialogSurface`, `StylishFormTextField`
-- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid), `StylishSection`, `StylishDatePickerField`, `StylishEmptyState`
-- **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`
-- **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`
+- **atoms** — `StylishButton`, `StylishIconButton`, `StylishRoundedIconButton`, `StylishFab`, `StylishChip`, `StylishCard`, `StylishConnectedCard`, `StylishSwitch`, `StylishCheckbox`, `StylishRadioButton`, `StylishBadge`, `StylishSectionTitle`, `StylishHorizontalDivider`, `StylishVerticalDivider`, `StylishCircularProgressIndicator`, `StylishLinearProgressIndicator`, `StylishSpacer`, `StylishDialogSurface`, `StylishFormTextField`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid), `StylishSection`, `StylishDatePickerField`, `StylishEmptyState`, `StylishSnackbar`, `StylishSnackbarHost`, `StylishSkeletonLine`, `StylishSkeletonAvatar`, `StylishSkeletonCard`
+- **organisms** — `StylishConnectedSegmentedControl`, `StylishDialogActions`, `StylishDeleteConfirmDialog`, `StylishNavigationBar`, `StylishTabBar`, `StylishBottomSheet`
+- **patterns** — `StylishHeader`, `StylishScaffold`, `StylishPageContent`, `StylishFooter`
 - **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + 各 `Connected*ItemContent` スロット契約
 - **charts** — `SimplePieChart` (common), `SimpleBarChart`, `SimpleLineChart` (Android)
 - **theme** — `StylishTheme`, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`

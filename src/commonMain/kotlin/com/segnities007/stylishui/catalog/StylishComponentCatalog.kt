@@ -21,19 +21,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishBadge
 import com.segnities007.stylishui.components.atoms.StylishButton
+import com.segnities007.stylishui.components.atoms.StylishCard
+import com.segnities007.stylishui.components.atoms.StylishCheckbox
 import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndicator
 import com.segnities007.stylishui.components.atoms.StylishFab
 import com.segnities007.stylishui.components.atoms.StylishHorizontalDivider
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishLinearProgressIndicator
+import com.segnities007.stylishui.components.atoms.StylishRadioButton
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
+import com.segnities007.stylishui.components.atoms.StylishSwitch
 import com.segnities007.stylishui.components.charts.PieChartData
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
@@ -78,6 +85,68 @@ private fun ComponentCatalog() {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 StylishChip(label = "通常", onClick = {})
                 StylishChip(label = "選択中", onClick = {}, selected = true)
+            }
+
+            StylishSectionTitle("StylishCard", textStyle = MaterialTheme.typography.titleSmall)
+            StylishCard(
+                title = "Actionable",
+                supportingText = "Click and elevation",
+                onClick = {},
+            )
+            StylishCard(
+                title = "Read only",
+                supportingText = "No click or elevation",
+            )
+            StylishCard(
+                onClick = {},
+                minHeight = 96.dp,
+            ) {
+                Column(
+                    Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
+                ) {
+                    Text("Content mode", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        "自由にレイアウトできるコンテンツモード",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            StylishSectionTitle("Selection Controls", textStyle = MaterialTheme.typography.titleSmall)
+            var switchChecked by remember { mutableStateOf(true) }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                StylishSwitch(checked = switchChecked, onCheckedChange = { switchChecked = it })
+                StylishSwitch(checked = false, onCheckedChange = null, enabled = false)
+            }
+            var checkboxChecked by remember { mutableStateOf(false) }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                StylishCheckbox(checked = checkboxChecked, onCheckedChange = { checkboxChecked = it })
+                StylishCheckbox(checked = true, onCheckedChange = null, enabled = false)
+            }
+            var radioSelected by remember { mutableIntStateOf(0) }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                StylishRadioButton(selected = radioSelected == 0, onClick = { radioSelected = 0 })
+                StylishRadioButton(selected = radioSelected == 1, onClick = { radioSelected = 1 })
+            }
+
+            StylishSectionTitle("Badge", textStyle = MaterialTheme.typography.titleSmall)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                StylishBadge { Text("99+") }
+                StylishBadge { Text("3") }
             }
 
             StylishSectionTitle("Icon Buttons", textStyle = MaterialTheme.typography.titleSmall)

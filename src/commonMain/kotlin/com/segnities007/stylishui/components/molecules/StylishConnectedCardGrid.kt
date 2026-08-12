@@ -55,7 +55,7 @@ public fun StylishConnectedCardGrid(
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
 ) {
-    ConnectedCardGrid(items, columns, modifier, spacing, card)
+    ConnectedCardGrid(items, columns, modifier, spacing, card = card)
 }
 
 @Preview(name = "Connected card grid", showBackground = true, widthDp = 393)

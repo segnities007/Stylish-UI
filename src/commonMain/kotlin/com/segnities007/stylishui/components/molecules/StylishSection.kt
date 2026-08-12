@@ -39,6 +39,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [MaterialTheme.typography.titleMedium].
  * @param titleColor Color for the heading. Defaults to
  *   [MaterialTheme.colorScheme.primary].
+ * @param supportingTextStyle Typography for [supportingText]. Defaults to
+ *   [MaterialTheme.typography.bodyMedium].
+ * @param supportingTextColor Color for [supportingText]. Defaults to
+ *   [MaterialTheme.colorScheme.onSurfaceVariant].
  * @param content The section body, rendered below the heading. Receives
  *   [ColumnScope].
  *
@@ -47,11 +51,13 @@ import com.segnities007.stylishui.theme.StylishTheme
 @Composable
 public fun StylishSection(
     title: String,
-    modifier: Modifier = Modifier,
     supportingText: String? = null,
+    modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.contentSpacing,
     titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
     titleColor: Color = MaterialTheme.colorScheme.primary,
+    supportingTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    supportingTextColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
@@ -67,8 +73,8 @@ public fun StylishSection(
         if (supportingText != null) {
             Text(
                 supportingText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = supportingTextStyle,
+                color = supportingTextColor,
             )
         }
         content()

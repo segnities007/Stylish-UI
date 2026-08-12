@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/segnities007/Stylish-UI/compare/v0.6.1...v0.7.0) (2026-08-12)
+
+
+### Features
+
+* library hardening ([#28](https://github.com/segnities007/Stylish-UI/issues/28)) ([91884a3](https://github.com/segnities007/Stylish-UI/commit/91884a361e87732796f05c4540149531c77598bf))
+
 ## [0.6.1](https://github.com/segnities007/Stylish-UI/compare/v0.6.0...v0.6.1) (2026-07-29)
 
 

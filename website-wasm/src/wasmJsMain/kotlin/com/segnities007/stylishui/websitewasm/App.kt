@@ -259,7 +259,7 @@ private fun SegmentedSection() {
             StylishSegmentedOption("month", "Month"),
         ),
         selectedValue = selected,
-        onSelected = { selected = it },
+        onSelectedChange = { selected = it },
     )
 }
 

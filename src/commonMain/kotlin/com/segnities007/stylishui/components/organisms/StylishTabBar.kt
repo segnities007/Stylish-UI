@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishChip
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 import kotlin.math.roundToInt
@@ -88,6 +89,14 @@ import kotlin.math.roundToInt
  * [com.segnities007.stylishui.components.atoms.StylishChip]).
  * Tab icons are decorative and carry no content description.
  *
+ * ## Accessibility
+ *
+ * Selection, enabling, and disabled semantics are provided by the
+ * underlying [StylishChip]. The auto-scroll that brings the selected
+ * tab into view snaps instead of animating when the system
+ * reduced-motion setting is active (see
+ * [isStylishReducedMotionEnabled]).
+ *
  * @see StylishChip
  * @see StylishConnectedSegmentedControl
  */
@@ -109,9 +118,15 @@ public fun StylishTabBar(
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val tabPositions = remember { mutableStateMapOf<Int, Float>() }
+    val reducedMotion = isStylishReducedMotionEnabled()
     LaunchedEffect(selectedIndex) {
         tabPositions[selectedIndex]?.let { x ->
-            scrollState.animateScrollTo(x.roundToInt())
+            val target = x.roundToInt()
+            if (reducedMotion) {
+                scrollState.scrollTo(target)
+            } else {
+                scrollState.animateScrollTo(target)
+            }
         }
     }
     Surface(

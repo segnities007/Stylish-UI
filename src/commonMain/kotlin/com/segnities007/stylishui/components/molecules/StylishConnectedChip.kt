@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -35,6 +38,8 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -69,6 +74,9 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param unselectedContentColor Content color of an unselected chip.
  * @param contentPadding Inner padding of the chip.
  * @param contentSpacing Gap between the leading slot, label, and trailing slot.
+ * @param interactionSource The [MutableInteractionSource] used to observe
+ *   press/hover/focus interactions for the state layer. When `null`, an
+ *   internal one is remembered per chip.
  *
  * @see StylishConnectedChipRow
  * @see StylishConnectedChipColumn
@@ -90,8 +98,10 @@ public fun DefaultStylishConnectedChip(
     unselectedContentColor: Color,
     contentPadding: PaddingValues,
     contentSpacing: Dp,
+    interactionSource: MutableInteractionSource? = null,
 ) {
     val haptic = LocalHapticFeedback.current
+    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val actionable = isActionable(
         enabled = item.enabled,
         hasClickAction = item.onClick != null,
@@ -99,18 +109,23 @@ public fun DefaultStylishConnectedChip(
     val containerColor: Color
     val contentColor: Color
     if (item.enabled) {
-        val animatedContainerColor by animateColorAsState(
-            targetValue = if (item.selected) selectedContainerColor else unselectedContainerColor,
-            animationSpec = tween(180),
-            label = "chipContainer",
-        )
-        val animatedContentColor by animateColorAsState(
-            targetValue = if (item.selected) selectedContentColor else unselectedContentColor,
-            animationSpec = tween(180),
-            label = "chipContent",
-        )
-        containerColor = animatedContainerColor
-        contentColor = animatedContentColor
+        if (isStylishReducedMotionEnabled()) {
+            containerColor = if (item.selected) selectedContainerColor else unselectedContainerColor
+            contentColor = if (item.selected) selectedContentColor else unselectedContentColor
+        } else {
+            val animatedContainerColor by animateColorAsState(
+                targetValue = if (item.selected) selectedContainerColor else unselectedContainerColor,
+                animationSpec = tween(StylishTheme.animation.durationShort),
+                label = "chipContainer",
+            )
+            val animatedContentColor by animateColorAsState(
+                targetValue = if (item.selected) selectedContentColor else unselectedContentColor,
+                animationSpec = tween(StylishTheme.animation.durationShort),
+                label = "chipContent",
+            )
+            containerColor = animatedContainerColor
+            contentColor = animatedContentColor
+        }
     } else {
         containerColor = MaterialTheme.colorScheme.surfaceVariant
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -124,10 +139,22 @@ public fun DefaultStylishConnectedChip(
             }
             .then(
                 if (actionable) {
-                    Modifier.clickable {
+                    Modifier.clickable(
+                        interactionSource = resolvedInteractionSource,
+                        indication = null,
+                    ) {
                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                         item.onClick?.invoke()
                     }
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (actionable) {
+                    Modifier
+                        .clip(shape)
+                        .stylishStateLayer(resolvedInteractionSource)
                 } else {
                     Modifier
                 },

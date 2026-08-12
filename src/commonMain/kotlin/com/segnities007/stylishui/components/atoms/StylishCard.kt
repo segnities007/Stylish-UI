@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
@@ -88,6 +89,12 @@ public enum class StylishCardVariant {
  * ignored. Container-level parameters ([minHeight], [horizontalPadding],
  * [verticalPadding], [shape], [containerColor], [contentColor]) still
  * apply in both modes.
+ *
+ * ## Testing
+ *
+ * The root carries the default test tag `stylish_card` for UI tests.
+ * Callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param modifier Modifier applied to the [Card] root.
  * @param onClick Called when the card is tapped. `null` (default) makes
@@ -206,6 +213,7 @@ public fun StylishCard(
     }
     Card(
         modifier = modifier
+            .testTag("stylish_card")
             .semantics {
                 if (!enabled) disabled()
             }

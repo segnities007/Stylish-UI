@@ -1,11 +1,15 @@
 package com.segnities007.stylishui.components.charts
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -20,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
@@ -31,7 +36,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * rectangles so the stack appears seamless.
  *
  * @property value Numeric magnitude of this segment. Its rendered height is
- *   proportional to `value / chartMaxValue`. Must be non-negative.
+ *   proportional to `value / chartMaxValue`. Negative or non-finite values
+ *   (`NaN`, `±Infinity`) are treated as zero and render no height.
  * @property color Fill color for this segment's rectangle. Typically
  *   obtained from [stylishChartColor] for palette consistency.
  * @see BarChartData
@@ -55,7 +61,9 @@ public data class BarChartSegment(
  * @property label Category name rendered below the bar on the X axis and
  *   included in the accessibility description.
  * @property value Total magnitude that determines the bar's height relative
- *   to the chart's maximum value.
+ *   to the chart's maximum value. Negative or non-finite values render as a
+ *   zero-height bar; the accessibility description always shows the original
+ *   value.
  * @property segments Optional stacked sub-divisions. When non-empty, each
  *   [BarChartSegment] is drawn in order from the base upward. Defaults to
  *   an empty list (single-color bar).
@@ -85,6 +93,15 @@ public data class BarChartData(
  * - **Stacked** — when segments are present, each is drawn in its own
  *   color; only the topmost non-zero segment is rounded.
  *
+ * Extreme values are handled defensively: negative, `NaN`, and infinite
+ * values render as zero-height bars (the chart floor is always zero), while
+ * the accessibility description always reflects the original values.
+ *
+ * On first composition bars animate their height from zero to the target
+ * value (see [animate]). Text layouts (category labels, grid values, and the
+ * empty label) are measured once per data change in composition and reused
+ * inside the draw scope, so frames do not re-measure text.
+ *
  * This composable is available on all platforms (commonMain). Text is drawn
  * with Compose's common [rememberTextMeasurer] + [drawText] APIs.
  *
@@ -105,6 +122,9 @@ public data class BarChartData(
  *   10 dp.
  * @param gridLineCount Number of horizontal grid lines including the
  *   baseline. Defaults to 4.
+ * @param animate When `true`, bars animate their height from zero on first
+ *   composition using `tween(StylishTheme.animation.durationMedium)`.
+ *   When `false`, the chart appears instantly. Defaults to `true`.
  * @see BarChartData
  * @see BarChartSegment
  * @see SimplePieChart
@@ -122,10 +142,9 @@ public fun SimpleBarChart(
     topRadius: Dp = 4.dp,
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 4,
+    animate: Boolean = true,
 ) {
-    val maxValue = if (data.isNotEmpty()) data.maxOf { it.value }
-        .coerceAtLeast(1f)
-    else 1f
+    val maxValue = barScaleMax(data.map { it.value })
     val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
     val description = "$contentDescriptionPrefix: " + data.joinToString(", ") {
         "${it.label}=${formatInteger(it.value.toInt())}"
@@ -135,6 +154,31 @@ public fun SimpleBarChart(
         fontSize = labelTextSize.value.sp,
         color = labelColor,
     )
+    val labelLayouts = remember(data, labelTextSize, labelColor) {
+        data.map { textMeasurer.measure(it.label, labelStyle) }
+    }
+    val gridLayouts = remember(data, gridLineCount, labelTextSize, labelColor, maxValue) {
+        List(gridLineCount) { i ->
+            val gridValue = maxValue * (gridLineCount - 1 - i) / (gridLineCount - 1).coerceAtLeast(1)
+            textMeasurer.measure(formatCompact(gridValue), labelStyle)
+        }
+    }
+    val emptyLayout = remember(emptyLabel, labelTextSize, labelColor) {
+        textMeasurer.measure(emptyLabel, labelStyle)
+    }
+    val progress = remember { Animatable(0f) }
+    val animationDuration = StylishTheme.animation.durationMedium
+    LaunchedEffect(Unit) {
+        if (animate) {
+            progress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(animationDuration),
+            )
+        }
+        else {
+            progress.snapTo(1f)
+        }
+    }
 
     Canvas(
         modifier = modifier
@@ -149,6 +193,7 @@ public fun SimpleBarChart(
         val leftPadding = 40.dp.toPx()
         val usableWidth = chartWidth - leftPadding
         val usableHeight = chartHeight - bottomPadding - topPadding
+        val animationProgress = progress.value
 
         for (i in 0 until gridLineCount) {
             val y = topPadding + usableHeight * i / (gridLineCount - 1).coerceAtLeast(1)
@@ -158,11 +203,7 @@ public fun SimpleBarChart(
                 end = Offset(chartWidth, y),
                 strokeWidth = 1f,
             )
-            val gridValue = maxValue * (gridLineCount - 1 - i) / (gridLineCount - 1).coerceAtLeast(1)
-            val layout = textMeasurer.measure(
-                text = formatCompact(gridValue),
-                style = labelStyle,
-            )
+            val layout = gridLayouts[i]
             drawText(
                 textLayoutResult = layout,
                 topLeft = Offset(
@@ -173,32 +214,28 @@ public fun SimpleBarChart(
         }
 
         if (data.isEmpty()) {
-            val layout = textMeasurer.measure(
-                text = emptyLabel,
-                style = labelStyle,
-            )
             drawText(
-                textLayoutResult = layout,
+                textLayoutResult = emptyLayout,
                 topLeft = Offset(
-                    (chartWidth - layout.size.width) / 2f,
-                    (chartHeight - layout.size.height) / 2f,
+                    (chartWidth - emptyLayout.size.width) / 2f,
+                    (chartHeight - emptyLayout.size.height) / 2f,
                 ),
             )
         }
         else {
             val resolvedTopRadius = topRadius.toPx()
             data.forEachIndexed { index, d ->
-                val barHeight = (d.value / maxValue) * usableHeight
+                val barHeightValue = barHeight(d.value, maxValue, usableHeight) * animationProgress
                 val barWidth = usableWidth / (data.size * 2f + 1)
                 val spacing = barWidth
                 val x = leftPadding + spacing + index * (barWidth + spacing)
-                val y = chartHeight - bottomPadding - barHeight
+                val y = chartHeight - bottomPadding - barHeightValue
 
                 if (d.segments.isEmpty()) {
                     drawRoundRect(
                         color = barColor,
                         topLeft = Offset(x, y),
-                        size = Size(barWidth, barHeight),
+                        size = Size(barWidth, barHeightValue),
                         cornerRadius = CornerRadius(resolvedTopRadius, resolvedTopRadius),
                     )
                 }
@@ -206,7 +243,7 @@ public fun SimpleBarChart(
                     val lastNonZero = d.segments.indexOfLast { it.value > 0f }
                     var accumulated = 0f
                     d.segments.forEachIndexed { segIdx, seg ->
-                        val segHeight = (seg.value / maxValue) * usableHeight
+                        val segHeight = barHeight(seg.value, maxValue, usableHeight) * animationProgress
                         if (segHeight > 0f) {
                             val segTop = chartHeight - bottomPadding - accumulated - segHeight
                             if (segIdx == lastNonZero) {
@@ -231,10 +268,7 @@ public fun SimpleBarChart(
                     }
                 }
 
-                val layout = textMeasurer.measure(
-                    text = d.label,
-                    style = labelStyle,
-                )
+                val layout = labelLayouts[index]
                 drawText(
                     textLayoutResult = layout,
                     topLeft = Offset(

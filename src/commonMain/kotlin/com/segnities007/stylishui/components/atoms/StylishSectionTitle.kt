@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +28,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * breathing room between the preceding section's content and the
  * next section's body. When [maxLines] is reached, [overflow]
  * controls how the excess text is handled.
+ *
+ * The root carries the default test tag `stylish_sectiontitle` for UI
+ * tests; callers can override it by passing their own
+ * `Modifier.testTag(...)` in [modifier].
  *
  * @param title Heading text to display.
  * @param maxLines Maximum number of visible lines. Defaults to
@@ -57,6 +62,7 @@ public fun StylishSectionTitle(
         maxLines = maxLines,
         overflow = overflow,
         modifier = modifier
+            .testTag("stylish_sectiontitle")
             .semantics(mergeDescendants = false) {
                 heading()
             }

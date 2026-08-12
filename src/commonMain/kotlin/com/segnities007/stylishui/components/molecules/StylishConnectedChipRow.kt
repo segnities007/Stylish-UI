@@ -2,6 +2,7 @@ package com.segnities007.stylishui.components.molecules
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -64,6 +65,11 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   horizontal and 10 dp vertical.
  * @param contentSpacing The horizontal gap between the leading slot, label,
  *   and trailing slot inside each chip. Defaults to 6 dp.
+ * @param interactionSource The [MutableInteractionSource] forwarded to each
+ *   actionable chip to observe press/hover/focus interactions for the state
+ *   layer. When `null`, each chip remembers its own. Pass a shared source to
+ *   observe group-level interaction, e.g. to trigger a state update from a
+ *   parent.
  * @param chip A composable lambda that renders a single chip. Receives the
  *   item data, a modifier (including weight when [fillWidth] is `true`), the
  *   connected [Shape], the outline [ConnectedEdges], and the outline
@@ -90,11 +96,13 @@ public fun StylishConnectedChipRow(
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     contentPadding: PaddingValues = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
     contentSpacing: Dp = 6.dp,
+    interactionSource: MutableInteractionSource? = null,
     chip: ConnectedChipItemContent = { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedChip(
             item, itemModifier, shape, edges, corners, labelMaxLines, labelOverflow, labelStyle,
             selectedContainerColor, selectedContentColor, unselectedContainerColor,
             unselectedContentColor, contentPadding, contentSpacing,
+            interactionSource = interactionSource,
         )
     },
 ) {

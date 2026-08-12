@@ -24,6 +24,16 @@ import androidx.compose.ui.unit.dp
  *   renders as a sub-pixel hairline that rounds to approximately 1 physical pixel on many device densities.
  * @property interactiveElevation The tonal elevation applied to tappable cards and list items
  *   to signal interactivity. Default 1 dp produces a subtle lift without a heavy shadow.
+ * @property focusedElevation The elevation applied while an interactive element has keyboard or
+ *   focus-ring focus. Default 1 dp matches [interactiveElevation] because the focus ring, not
+ *   a higher shadow, is the primary focus cue.
+ * @property hoveredElevation The elevation applied while a pointer hovers over an interactive
+ *   element (pointer devices). Default 2 dp lifts the element slightly to acknowledge the
+ *   hovered state without competing with floating surfaces.
+ * @property pressedElevation The elevation applied while an interactive element is pressed.
+ *   Default 0 dp presses the element flat, reinforcing the pressed feedback.
+ * @property disabledElevation The elevation applied to disabled interactive elements. Default
+ *   0 dp keeps disabled elements visually flat, matching the Material 3 disabled treatment.
  * @property floatingElevation The elevation for floating elements such as FABs, sticky headers,
  *   and bottom bars. Default 2 dp keeps them clearly above scrollable content.
  * @property connectedCornerRadius The outer corner radius for Connected UI items — the corners
@@ -70,6 +80,10 @@ public data class StylishDimensions(
     public val connectedSpacing: Dp = 3.dp,
     public val outlineWidth: Dp = 0.4.dp,
     public val interactiveElevation: Dp = 1.dp,
+    public val focusedElevation: Dp = 1.dp,
+    public val hoveredElevation: Dp = 2.dp,
+    public val pressedElevation: Dp = 0.dp,
+    public val disabledElevation: Dp = 0.dp,
     public val floatingElevation: Dp = 2.dp,
     public val connectedCornerRadius: Dp = 12.dp,
     public val joinedCornerRadius: Dp = 2.dp,

@@ -8,6 +8,11 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
+composeCompiler {
+    metricsDestination.set(layout.buildDirectory.dir("compose-metrics"))
+    reportsDestination.set(layout.buildDirectory.dir("compose-reports"))
+}
+
 group = "io.github.segnities007"
 
 version = providers.fileContents(
@@ -41,6 +46,9 @@ kotlin {
         binaries.executable()
     }
 
+    iosArm64()
+    iosSimulatorArm64()
+
     applyDefaultHierarchyTemplate()
 
     sourceSets {
@@ -54,6 +62,7 @@ kotlin {
             implementation(compose.uiUtil)
             implementation(libs.compose.multiplatform.ui.tooling.preview)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.material.kolor)
         }
 
         commonTest.dependencies {

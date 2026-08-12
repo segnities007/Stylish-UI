@@ -148,7 +148,7 @@ class InteractionTest {
                         StylishSegmentedOption("b", "B"),
                     ),
                     selectedValue = selected,
-                    onSelected = { selected = it },
+                    onSelectedChange = { selected = it },
                 )
             }
         }

@@ -31,6 +31,10 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           add-job-summary: 'on-failure'
 
+      # Golden tests (src/jvmTest/.../visual/) run inside `./gradlew check`
+      # via jvmTest. On the first run they record the baseline PNGs under
+      # src/jvmTest/resources/golden/ and pass; afterwards they compare
+      # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
       - name: Build and test
         run: ./gradlew check
 
@@ -44,3 +48,31 @@ jobs:
           name: build-reports
           path: '**/build/reports/'
           if-no-files-found: ignore
+
+  ios:
+    name: Compile iOS targets
+    runs-on: macos-15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          add-job-summary: 'on-failure'
+
+      # iOS targets (iosArm64 / iosSimulatorArm64) are only enabled on macOS
+      # hosts. This job verifies the common code compiles for iOS even though
+      # the targets are not published yet (QA-11, PLT-01).
+      - name: Compile iOS targets
+        run: ./gradlew compileKotlinIosArm64 compileKotlinIosSimulatorArm64

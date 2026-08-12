@@ -105,7 +105,7 @@ StylishTheme(
 ) { ... }
 ```
 
-Android 12+ では `dynamicColor = true` で Material You（壁紙由来）の色を適用できます（他のプラットフォームでは無視され、静的スキームにフォールバック）。`animation` パラメータでモーショントークン（`StylishAnimationTokens`）も上書き可能です。
+Android 12+ では `dynamicColor = true` で Material You（壁紙由来）の色を適用できます（他のプラットフォームでは無視され、静的スキームにフォールバック）。`seedColor` を指定すると **全プラットフォーム** で MaterialKolor によるシードカラー由来のダイナミックスキーム（トーナル M3 配色）が適用されます。`animation` パラメータでモーショントークン（`StylishAnimationTokens`）、`shapes` パラメータで角丸トークン（`StylishShapes`）、`componentColors` パラメータで派生コンポーネントカラー（`StylishComponentColors`）も上書き可能です。
 
 ### 個別上書き（コンポーネントパラメータ経由）
 
@@ -125,6 +125,10 @@ StylishConnectedButtonRow(
 | `connectedSpacing` | 3.dp | 連結アイテムの間隔 |
 | `outlineWidth` | 0.4.dp | 輪郭線の太さ |
 | `interactiveElevation` | 1.dp | 操作可能要素の標高 |
+| `focusedElevation` | 1.dp | フォーカス時の標高（フォーカスリングが主な手掛かり） |
+| `hoveredElevation` | 2.dp | ホバー時の標高（ポインタデバイス） |
+| `pressedElevation` | 0.dp | 押下時の標高（平らに沈める） |
+| `disabledElevation` | 0.dp | 無効時の標高（フラット） |
 | `floatingElevation` | 2.dp | 浮遊要素（FAB/ヘッダー）の標高 |
 | `connectedCornerRadius` | 12.dp | 連結外角の丸み |
 | `joinedCornerRadius` | 2.dp | 連結接合部の丸み |
@@ -154,4 +158,18 @@ StylishConnectedButtonRow(
 | `durationShort` | 180 ms | マイクロインタラクション（状態色変化など） |
 | `durationMedium` | 300 ms | 要素の出現・展開 |
 | `durationLong` | 500 ms | ページレベルの動き |
+| `durationEmphasized` | 350 ms | 強調モーション（注目させたい遷移） |
 | `defaultEasing` | FastOutSlowIn | 全アニメーションの標準イージング |
+| `emphasizedEasing` | Emphasized | 強調モーションのイージング（減速して着地） |
+| `gentleEasing` | LinearOutSlowIn | フェードイン等の穏やかなイージング |
+
+#### `StylishShapes`（角丸）
+
+| トークン | デフォルト | 意味 |
+|---------|-----------|------|
+| `small` | 6.dp | チップ・バッジ等の小さい角丸 |
+| `medium` | 12.dp | カード・連結アイテム等の標準角丸 |
+| `large` | 20.dp | ダイアログ・シート等の大きい角丸 |
+| `extraLarge` | 28.dp | カプセル・拡張FAB等の全丸角丸 |
+
+モーションの使い分けとインタラクションフィードバックの詳細は [docs/design-spec.md](docs/design-spec.md)（モーション & インタラクション仕様書）を参照。

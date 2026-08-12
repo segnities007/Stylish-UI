@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
@@ -41,11 +45,41 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param listState [LazyGridState] controlling scroll position. Defaults to
  *   [rememberLazyGridState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
+ * @param containerColor Background color of each card. When `null`, defaults
+ *   to [MaterialTheme.stylishComponentColors.groupedContainer].
+ * @param contentColor Content color of each card. When `null`, defaults to an
+ *   enabled/disabled-aware color.
+ * @param disabledContainerColor Background color of each card when its
+ *   [StylishConnectedCardItem.enabled] is `false`.
+ * @param disabledContentColor Content color of each card when its
+ *   [StylishConnectedCardItem.enabled] is `false`.
+ * @param titleStyle The [TextStyle] applied to each card's title.
+ * @param supportingTextStyle The [TextStyle] applied to each card's supporting
+ *   text.
+ * @param titleMaxLines Maximum number of lines for each card's title. Defaults
+ *   to 1.
+ * @param titleOverflow The [TextOverflow] strategy for each card's title.
+ *   Defaults to [TextOverflow.Ellipsis].
+ * @param supportingTextMaxLines Maximum number of lines for each card's
+ *   supporting text. Defaults to 1.
+ * @param supportingTextOverflow The [TextOverflow] strategy for each card's
+ *   supporting text. Defaults to [TextOverflow.Ellipsis].
+ * @param minHeight Minimum height of each card body. Defaults to
+ *   [DefaultStylishDimensions.cardMinHeight] (77 dp).
+ * @param horizontalPadding Horizontal padding inside each card. Defaults to
+ *   [DefaultStylishDimensions.controlPadding] (16 dp).
+ * @param verticalPadding Vertical padding inside each card. Defaults to
+ *   [DefaultStylishDimensions.controlVerticalPadding] (12 dp).
+ * @param contentSpacing Horizontal gap between slots inside each card.
+ *   Defaults to [StylishTheme.dimensions.itemSpacing] (8 dp).
+ * @param titleSpacing Vertical gap between title and supporting text inside
+ *   each card. Defaults to [StylishTheme.dimensions.inlineSpacing] (4 dp).
  * @param card A composable lambda that renders a single card. Receives the item data, a
  *   modifier (fill-max-width within an equal-weight cell), the connected [Shape], the outline
  *   [ConnectedEdges], and the outline [ConnectedCorners]. Defaults to
  *   [DefaultStylishConnectedCardItem], which delegates to the
- *   [com.segnities007.stylishui.components.atoms.StylishConnectedCard] atom.
+ *   [com.segnities007.stylishui.components.atoms.StylishConnectedCard] atom with the styling
+ *   parameters above.
  *
  * @see ConnectedCardLazyGrid
  * @see StylishConnectedCardGrid
@@ -60,7 +94,41 @@ public fun StylishConnectedCardLazyGrid(
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
     listState: LazyGridState = rememberLazyGridState(),
-    card: StylishConnectedCardItemContent = ::DefaultStylishConnectedCardItem,
+    containerColor: Color? = null,
+    contentColor: Color? = null,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
+    supportingTextStyle: TextStyle = MaterialTheme.typography.bodySmall,
+    titleMaxLines: Int = 1,
+    titleOverflow: TextOverflow = TextOverflow.Ellipsis,
+    supportingTextMaxLines: Int = 1,
+    supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    minHeight: Dp = DefaultStylishDimensions.cardMinHeight,
+    horizontalPadding: Dp = DefaultStylishDimensions.controlPadding,
+    verticalPadding: Dp = DefaultStylishDimensions.controlVerticalPadding,
+    contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
+    card: StylishConnectedCardItemContent = { item, itemModifier, shape, edges, corners ->
+        DefaultStylishConnectedCardItem(
+            item, itemModifier, shape, edges, corners,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = disabledContainerColor,
+            disabledContentColor = disabledContentColor,
+            titleStyle = titleStyle,
+            supportingTextStyle = supportingTextStyle,
+            titleMaxLines = titleMaxLines,
+            titleOverflow = titleOverflow,
+            supportingTextMaxLines = supportingTextMaxLines,
+            supportingTextOverflow = supportingTextOverflow,
+            minHeight = minHeight,
+            horizontalPadding = horizontalPadding,
+            verticalPadding = verticalPadding,
+            contentSpacing = contentSpacing,
+            titleSpacing = titleSpacing,
+        )
+    },
 ) {
     ConnectedCardLazyGrid(items, columns, modifier, spacing, contentPadding, listState, card = card)
 }

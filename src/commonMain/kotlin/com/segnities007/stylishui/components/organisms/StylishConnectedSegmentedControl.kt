@@ -49,7 +49,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param selectedValue The currently selected value. The segment whose
  *   [StylishSegmentedOption.value] equals this is rendered with
  *   [selectedColors].
- * @param onSelected Callback invoked with the tapped segment's value.
+ * @param onSelectedChange Callback invoked with the tapped segment's value.
  * @param labelStyle [TextStyle] for each segment label. Defaults to
  *   [MaterialTheme.typography.labelLarge].
  * @param labelMaxLines Maximum lines for each segment label. Defaults to 1.
@@ -71,7 +71,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
 public fun <T> StylishConnectedSegmentedControl(
     options: List<StylishSegmentedOption<T>>,
     selectedValue: T,
-    onSelected: (T) -> Unit,
+    onSelectedChange: (T) -> Unit,
     modifier: Modifier = Modifier,
     labelStyle: TextStyle = MaterialTheme.typography.labelLarge,
     labelMaxLines: Int = 1,
@@ -89,7 +89,7 @@ public fun <T> StylishConnectedSegmentedControl(
     StylishConnectedButtonRow(
         items = options.map { option ->
             StylishConnectedButtonItem(
-                onClick = { onSelected(option.value) },
+                onClick = { onSelectedChange(option.value) },
                 enabled = option.enabled,
                 colors = selectedColors.takeIf { option.value == selectedValue && option.enabled },
                 leadingContent = option.leadingContent,
@@ -158,7 +158,7 @@ private fun StylishConnectedSegmentedControlPreview() {
                     ),
                 ),
                 selectedValue = "list",
-                onSelected = {},
+                onSelectedChange = {},
             )
         }
     }

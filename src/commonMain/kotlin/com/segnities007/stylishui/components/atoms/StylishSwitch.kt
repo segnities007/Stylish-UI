@@ -12,6 +12,7 @@ import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -26,7 +27,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param checked Whether the switch is currently on.
  * @param onCheckedChange Called with the new state when the user
  *   toggles the switch. `null` makes the switch display-only.
- * @param modifier Modifier applied to the [Switch] root.
+ * @param modifier Modifier applied to the [Switch] root. The root
+ *   carries the default test tag `stylish_switch` for UI tests;
+ *   callers can override it by passing their own `Modifier.testTag(...)`
+ *   here.
  * @param enabled When `false`, the switch ignores pointer input and
  *   renders in the disabled color scheme.
  * @param colors Colors used in each state. Defaults to
@@ -50,7 +54,7 @@ public fun StylishSwitch(
     Switch(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.testTag("stylish_switch"),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,

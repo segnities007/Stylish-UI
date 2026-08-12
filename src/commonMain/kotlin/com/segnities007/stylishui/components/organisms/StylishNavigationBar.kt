@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.organisms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -90,6 +92,16 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   [WindowInsets.navigationBars] so content stays clear of the system
  *   navigation bar.
  *
+ * ## Accessibility
+ *
+ * Each destination is exposed with `Role.Tab` semantics, marks
+ * [StylishNavigationItem.selected] via the `selected` semantics and
+ * [StylishNavigationItem.enabled] via the `disabled` semantics, so
+ * screen readers announce the selection and disabled states. The
+ * selection-pill cross-fade honors the system reduced-motion setting
+ * (see
+ * [isStylishReducedMotionEnabled]) by snapping instead of tweening.
+ *
  * @see StylishNavigationItem
  * @see com.segnities007.stylishui.components.patterns.StylishFooter
  */
@@ -134,7 +146,11 @@ public fun StylishNavigationBar(
                 }
                 val indicatorAlpha by animateFloatAsState(
                     targetValue = if (item.selected && item.enabled) 0.12f else 0f,
-                    animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
+                    animationSpec = if (isStylishReducedMotionEnabled()) {
+                        snap()
+                    } else {
+                        tween(durationMillis = StylishTheme.animation.durationShort)
+                    },
                     label = "navIndicator",
                 )
                 Column(

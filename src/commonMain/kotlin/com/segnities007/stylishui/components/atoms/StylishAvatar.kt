@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +41,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * the avatar's [androidx.compose.ui.semantics.contentDescription].
  * For image avatars, set an appropriate description inside [avatarImage]
  * (e.g. via [Modifier.semantics]) since the library cannot infer it.
+ *
+ * The root carries the default test tag `stylish_avatar` for UI tests;
+ * callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param initials Short text shown in the avatar, typically a person's
  *   initials (max 3 characters are displayed). Ignored when
@@ -69,6 +74,7 @@ public fun StylishAvatar(
 ) {
     Surface(
         modifier = modifier
+            .testTag("stylish_avatar")
             .size(size)
             .then(
                 if (initials.isNotBlank() && avatarImage == null && content == null) {

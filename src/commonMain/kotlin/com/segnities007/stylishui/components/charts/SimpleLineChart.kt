@@ -1,11 +1,15 @@
 package com.segnities007.stylishui.components.charts
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -20,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
+import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
@@ -32,9 +38,9 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @property label Category or time-period name displayed below the
  *   corresponding point on the X axis. Labels are thinned automatically
  *   when the dataset exceeds `maxLabelCount`.
- * @property value Numeric magnitude plotted on the Y axis. The vertical
- *   position is normalized between the dataset minimum and maximum with
- *   10 % padding on each end.
+ * @property value Numeric magnitude plotted on the Y axis. Negative values
+ *   are clamped to zero for drawing (the axis floor never drops below
+ *   zero); non-finite values (`NaN`, `±Infinity`) are skipped entirely.
  * @see SimpleLineChart
  */
 @Immutable
@@ -53,17 +59,25 @@ public data class LineChartData(
  * two-tone circle (outer [pointColor], inner surface color) for visibility.
  *
  * The Y axis auto-scales to the data range with 10 % padding above and
- * below. When all values are non-negative the axis floor is clamped to
- * zero so no misleading negative ticks appear. Horizontal grid lines carry
- * formatted value labels on the left margin; labels use a locale-neutral
- * one-decimal format.
+ * below. Negative values are clamped to zero for drawing, so the axis floor
+ * never drops below zero; non-finite values (`NaN`, `±Infinity`) are
+ * excluded from the scale and skipped in drawing. The accessibility
+ * description always reflects the original values. Horizontal grid lines
+ * carry formatted value labels on the left margin; labels use a
+ * locale-neutral one-decimal format.
  *
  * X-axis labels are automatically thinned to approximately [maxLabelCount]
  * visible entries (always including the last point) to avoid overlap on
  * dense datasets.
  *
- * When [data] contains fewer than two points, [emptyLabel] is drawn at the
- * chart center instead of a line.
+ * When [data] contains fewer than two finite points, [emptyLabel] is drawn
+ * at the chart center instead of a line.
+ *
+ * On first composition points animate upward from the baseline (see
+ * [animate]); the area fill follows the same animated points. Text layouts
+ * (category labels, grid values, and the empty label) are measured once per
+ * data change in composition and reused inside the draw scope, so frames do
+ * not re-measure text.
  *
  * This composable is available on all platforms (commonMain). Text is drawn
  * with Compose's common [rememberTextMeasurer] + [drawText] APIs.
@@ -72,7 +86,7 @@ public data class LineChartData(
  * @param contentDescriptionPrefix Leading text for the combined accessibility
  *   description (e.g. "Fuel efficiency trend").
  * @param emptyLabel Text displayed at the chart center when [data] has
- *   fewer than two entries.
+ *   fewer than two finite entries.
  * @param modifier Modifier applied to the outer [Canvas].
  * @param lineColor Stroke color of the connecting line. Defaults to
  *   `MaterialTheme.colorScheme.primary`.
@@ -96,6 +110,10 @@ public data class LineChartData(
  * @param maxLabelCount Maximum number of X-axis labels rendered. Labels are
  *   evenly sampled; the last data point's label is always included.
  *   Defaults to 6.
+ * @param animate When `true`, points animate from the baseline to their
+ *   target Y positions on first composition using
+ *   `tween(StylishTheme.animation.durationMedium)`. When `false`, the chart
+ *   appears instantly. Defaults to `true`.
  * @see LineChartData
  * @see SimpleBarChart
  * @see SimplePieChart
@@ -117,7 +135,12 @@ public fun SimpleLineChart(
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 5,
     maxLabelCount: Int = 6,
+    animate: Boolean = true,
 ) {
+    val values = data.map { it.value.coerceAtLeast(0f) }
+    val axisRange = lineScaleRange(values)
+    val axisMin = axisRange.start
+    val axisMax = axisRange.endInclusive
     val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
     val pointInnerColor = MaterialTheme.colorScheme.surface
     val description = "$contentDescriptionPrefix: " +
@@ -127,6 +150,31 @@ public fun SimpleLineChart(
         fontSize = labelTextSize.value.sp,
         color = labelColor,
     )
+    val labelLayouts = remember(data, labelTextSize, labelColor) {
+        data.map { textMeasurer.measure(it.label, labelStyle) }
+    }
+    val gridLayouts = remember(data, gridLineCount, labelTextSize, labelColor, axisRange) {
+        List(gridLineCount) { i ->
+            val gridValue = axisMax - (axisMax - axisMin) * i / (gridLineCount - 1).coerceAtLeast(1)
+            textMeasurer.measure(gridValue.formatDecimal(1), labelStyle)
+        }
+    }
+    val emptyLayout = remember(emptyLabel, labelTextSize, labelColor) {
+        textMeasurer.measure(emptyLabel, labelStyle)
+    }
+    val progress = remember { Animatable(0f) }
+    val animationDuration = StylishTheme.animation.durationMedium
+    LaunchedEffect(Unit) {
+        if (animate) {
+            progress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(animationDuration),
+            )
+        }
+        else {
+            progress.snapTo(1f)
+        }
+    }
 
     Canvas(
         modifier = modifier
@@ -141,14 +189,8 @@ public fun SimpleLineChart(
         val leftPadding = 40.dp.toPx()
         val usableWidth = chartWidth - leftPadding
         val usableHeight = chartHeight - bottomPadding - topPadding
-
-        val maxValue = data.maxOfOrNull { it.value } ?: 0f
-        val minValue = data.minOfOrNull { it.value } ?: 0f
-        val range = (maxValue - minValue).coerceAtLeast(1f)
-        val axisPadding = range * 0.1f
-        val axisMax = maxValue + axisPadding
-        // データが非負なら値軸の下端を 0 未満にしない（燃費・費用などでマイナス目盛りが出ないよう）
-        val axisMin = if (minValue >= 0f) (minValue - axisPadding).coerceAtLeast(0f) else minValue - axisPadding
+        val animationProgress = progress.value
+        val baselineY = chartHeight - bottomPadding
 
         for (i in 0 until gridLineCount) {
             val y = topPadding + usableHeight * i / (gridLineCount - 1).coerceAtLeast(1)
@@ -158,11 +200,7 @@ public fun SimpleLineChart(
                 end = Offset(chartWidth, y),
                 strokeWidth = 1f,
             )
-            val gridValue = axisMax - (axisMax - axisMin) * i / (gridLineCount - 1).coerceAtLeast(1)
-            val layout = textMeasurer.measure(
-                text = gridValue.formatDecimal(1),
-                style = labelStyle,
-            )
+            val layout = gridLayouts[i]
             drawText(
                 textLayoutResult = layout,
                 topLeft = Offset(
@@ -172,44 +210,46 @@ public fun SimpleLineChart(
             )
         }
 
-        if (data.size < 2) {
-            val layout = textMeasurer.measure(
-                text = emptyLabel,
-                style = labelStyle,
-            )
+        val points: List<Offset?> = if (data.size < 2) {
+            emptyList()
+        }
+        else {
+            val normalizedValues = lineNormalized(values, axisMin, axisMax)
+            data.mapIndexed { index, d ->
+                if (!d.value.isFinite()) {
+                    null
+                }
+                else {
+                    val x = leftPadding + usableWidth * index / (data.size - 1)
+                    val targetY = topPadding + usableHeight * (1f - normalizedValues[index])
+                    Offset(x, lerp(baselineY, targetY, animationProgress))
+                }
+            }
+        }
+        val drawablePoints = points.filterNotNull()
+
+        if (drawablePoints.size < 2) {
             drawText(
-                textLayoutResult = layout,
+                textLayoutResult = emptyLayout,
                 topLeft = Offset(
-                    (chartWidth - layout.size.width) / 2f,
-                    (chartHeight - layout.size.height) / 2f,
+                    (chartWidth - emptyLayout.size.width) / 2f,
+                    (chartHeight - emptyLayout.size.height) / 2f,
                 ),
             )
         }
         else {
-            val points = data.mapIndexed { index, d ->
-                val x = if (data.size > 1) {
-                    leftPadding + usableWidth * index / (data.size - 1)
-                }
-                else {
-                    leftPadding + usableWidth / 2
-                }
-                val normalized = (d.value - axisMin) / (axisMax - axisMin)
-                val y = topPadding + usableHeight * (1 - normalized)
-                Offset(x, y)
-            }
-
             val fillPath = Path().apply {
-                moveTo(points.first().x, chartHeight - bottomPadding)
-                points.forEach { lineTo(it.x, it.y) }
-                lineTo(points.last().x, chartHeight - bottomPadding)
+                moveTo(drawablePoints.first().x, baselineY)
+                drawablePoints.forEach { lineTo(it.x, it.y) }
+                lineTo(drawablePoints.last().x, baselineY)
                 close()
             }
             drawPath(fillPath, fillColor)
 
             val linePath = Path().apply {
-                moveTo(points.first().x, points.first().y)
-                for (i in 1 until points.size) {
-                    lineTo(points[i].x, points[i].y)
+                moveTo(drawablePoints.first().x, drawablePoints.first().y)
+                for (i in 1 until drawablePoints.size) {
+                    lineTo(drawablePoints[i].x, drawablePoints[i].y)
                 }
             }
             drawPath(
@@ -218,7 +258,7 @@ public fun SimpleLineChart(
                 style = Stroke(width = strokeWidth.toPx()),
             )
 
-            points.forEach { point ->
+            drawablePoints.forEach { point ->
                 drawCircle(
                     color = pointColor,
                     radius = pointRadius.toPx(),
@@ -234,11 +274,9 @@ public fun SimpleLineChart(
             val step = (data.size + maxLabelCount - 1) / maxLabelCount
             data.forEachIndexed { index, d ->
                 if (index % step == 0 || index == data.size - 1) {
-                    val x = points[index].x.coerceIn(leftPadding, chartWidth - 10.dp.toPx())
-                    val layout = textMeasurer.measure(
-                        text = d.label,
-                        style = labelStyle,
-                    )
+                    val point = points[index] ?: return@forEachIndexed
+                    val layout = labelLayouts[index]
+                    val x = point.x.coerceIn(leftPadding, chartWidth - 10.dp.toPx())
                     drawText(
                         textLayoutResult = layout,
                         topLeft = Offset(

@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,7 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
@@ -35,7 +37,9 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *
  * The [active] / [enabled] color and elevation logic mirrors
  * [StylishIconButton]: active inverts to primary/onPrimary, and
- * disabling removes the shadow. When [enabled] is `false`, the icon
+ * disabling removes the shadow. When [enabled], a Material-style state
+ * layer (see [Modifier.stylishStateLayer]) darkens the surface on
+ * hover and press. When [enabled] is `false`, the icon
  * is rendered inside a plain [Box] instead of an [IconButton], so
  * no ripple or click handling is attached; the box is announced as
  * disabled and carries the [contentDescription] via semantics.
@@ -110,16 +114,28 @@ public fun StylishRoundedIconButton(
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
     }
+    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
 
     Surface(
-        modifier = modifier.sizeIn(minWidth = minWidth, minHeight = minHeight),
+        modifier = modifier
+            .sizeIn(minWidth = minWidth, minHeight = minHeight)
+            .then(
+                if (enabled) {
+                    Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape,
+                    )
+                } else {
+                    Modifier
+                },
+            ),
         shape = shape,
         color = resolvedContainerColor,
         border = border,
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         if (enabled) {
-            IconButton(onClick = onClick, interactionSource = interactionSource) {
+            IconButton(onClick = onClick, interactionSource = resolvedInteractionSource) {
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         } else {

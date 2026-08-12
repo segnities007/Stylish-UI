@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -56,6 +57,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   (the default), **no** drag handle is shown. Pass
  *   `@Composable { BottomSheetDefaults.DragHandle() }` for the M3
  *   default handle, or custom content for a bespoke one.
+ * @param contentWindowInsets [WindowInsets] consumed by the sheet's
+ *   content area so it clears system bars. Defaults to
+ *   [BottomSheetDefaults.windowInsets].
  * @param properties Window behavior of the sheet (dismiss on back
  *   press / scrim click). Defaults to [ModalBottomSheetProperties].
  * @param content The sheet content, laid out inside a [ColumnScope].
@@ -80,6 +84,7 @@ public fun StylishBottomSheet(
     tonalElevation: Dp = 1.dp,
     scrimColor: Color = BottomSheetDefaults.ScrimColor,
     dragHandle: @Composable (() -> Unit)? = null,
+    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     properties: ModalBottomSheetProperties = ModalBottomSheetProperties(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -93,6 +98,7 @@ public fun StylishBottomSheet(
         tonalElevation = tonalElevation,
         scrimColor = scrimColor,
         dragHandle = dragHandle,
+        contentWindowInsets = contentWindowInsets,
         properties = properties,
         content = content,
     )

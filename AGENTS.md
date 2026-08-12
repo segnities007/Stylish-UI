@@ -158,6 +158,17 @@ Every public composable, function, and data class must have a KDoc comment descr
    - Use `scripts/new-branch.sh <branch-name>` as the single entry point
      for creating feature branches (it fetches, verifies, and creates
      from `origin/main`).
+   - **Local pre-push guard (automatic):** the repository's `pre-push` git
+     hook (`.githooks/pre-push`, installed via `scripts/setup-hooks.sh`,
+     which `new-branch.sh` runs automatically) blocks any push whose
+     branch does not contain the latest `origin/main` as an ancestor —
+     i.e. branches created from squash-merged or otherwise stale bases.
+     The same check runs in CI (`check-branch-base` job). If the hook
+     blocks a push, rebase the new work onto main
+     (`git rebase --onto origin/main <first-new-commit>^`) and
+     `git push --force-with-lease`, or recreate the branch with
+     `scripts/new-branch.sh`. To bypass once: `git push --no-verify`
+     (only after verifying the push is intentional).
 4. **Open a Pull Request** for all changes.
 5. **Use Conventional Commits** for all commit messages and PR titles.
    GitHub auto-generates the PR title from the branch name (e.g.

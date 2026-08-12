@@ -41,3 +41,9 @@ fi
 git checkout -b "$BRANCH" origin/main
 echo
 echo "branch '$BRANCH' created from origin/main ($REMOTE_MAIN)"
+
+# Ensure the pre-push guard is installed so stale bases are caught at
+# push time (see .githooks/pre-push).
+if [ "$(git config core.hooksPath)" != "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.githooks" ]; then
+  bash "$(dirname "${BASH_SOURCE[0]}")/setup-hooks.sh"
+fi

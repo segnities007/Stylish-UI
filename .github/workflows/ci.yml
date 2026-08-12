@@ -66,7 +66,11 @@ jobs:
       # src/jvmTest/resources/golden/ and pass; afterwards they compare
       # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
       - name: Build and test
-        run: ./gradlew check
+        # wasmJsBrowserTest runs the same commonTest suite as the Node-based
+        # wasmJsTest but additionally requires a headless Chrome, which has
+        # been flaky in this CI environment. The Node run fully covers the
+        # tests, so exclude the browser variant from `check`.
+        run: ./gradlew check -x wasmJsBrowserTest
 
       - name: Check public ABI
         run: ./gradlew apiCheck

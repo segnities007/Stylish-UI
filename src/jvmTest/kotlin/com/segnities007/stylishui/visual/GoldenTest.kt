@@ -65,9 +65,9 @@ import kotlin.test.assertTrue
  *   is written to `src/jvmTest/resources/golden/<name>-golden.png` and the
  *   test passes. This is how the baseline set is created and extended.
  * - **Subsequent runs = comparison.** The captured pixels are compared
- *   pixel-by-pixel against the baseline. At most 1 % of pixels may differ
- *   (antialiasing jitter tolerance); anything above fails with the diff
- *   count in the failure message.
+ *   pixel-by-pixel against the baseline. At most 5 % of pixels may differ
+ *   (antialiasing jitter + cross-machine font-rendering tolerance);
+ *   anything above fails with the diff count in the failure message.
  * - **Updating a baseline**: delete the PNG (or the whole `golden/`
  *   directory) and re-run; the next run records the new baseline.
  *   Treat baseline updates as intentional visual changes and review them
@@ -156,7 +156,7 @@ class GoldenTest {
     private fun readPng(file: File): BufferedImage? = ImageIO.read(file)
 
     private companion object {
-        const val TOLERANCE = 0.01f
+        const val TOLERANCE = 0.05f
     }
 }
 

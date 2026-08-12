@@ -1,0 +1,90 @@
+name: バグ報告
+description: 不具合や予期しない動作を報告する
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグの報告ありがとうございます。再現できる情報をできるだけ詳しく記入してください。
+        セキュリティ関連の脆弱性は公開 issue ではなく、リポジトリの **Security** タブから
+        プライベート脆弱性報告でお知らせください（[SECURITY.md](../../SECURITY.md)）。
+  - type: textarea
+    id: description
+    attributes:
+      label: 不具合の説明
+      description: 何が起きていますか？
+      placeholder: 例: ダークテーマで StylishButton のラベルが読めない
+    validations:
+      required: true
+  - type: dropdown
+    id: component_area
+    attributes:
+      label: コンポーネント種別
+      description: 影響を受けるレイヤー
+      options:
+        - atoms（StylishButton / StylishCard / StylishChip など）
+        - molecules（Connected ファミリー / リスト / スケルトンなど）
+        - organisms（NavigationBar / Dialog / SearchBar など）
+        - patterns（TopAppBar / Scaffold など）
+        - charts（SimplePieChart など）
+        - theme / tokens
+        - foundation / structure
+        - その他
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: 対象コンポーネント / API
+      description: 具体的なクラス名や関数名（例: StylishConnectedCardRow）
+      placeholder: StylishButton
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: OS / プラットフォーム
+      multiple: true
+      options:
+        - Android
+        - JVM Desktop（Windows）
+        - JVM Desktop（macOS）
+        - JVM Desktop（Linux）
+        - Web（Wasm）
+        - iOS（in progress）
+        - 不明
+    validations:
+      required: true
+  - type: input
+    id: cmp_version
+    attributes:
+      label: バージョン情報
+      description: Stylish UI のバージョンと、可能なら Compose Multiplatform のバージョン
+      placeholder: "stylish-ui 0.7.0 / Compose Multiplatform 1.11.1"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待する動作
+      description: 本来どう動作すべきですか？
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+      description: 実際にはどう動作しましたか？エラーメッセージがあればそのまま貼り付けてください
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 再現手順
+      description: 再現のための手順、サンプルコード、スクリーンショットがあれば貼り付けてください
+      placeholder: |
+        1. StylishTheme(darkTheme = true) で ...
+        2. ...
+    validations:
+      required: true

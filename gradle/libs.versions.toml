@@ -6,12 +6,14 @@ dokka = "2.2.0"
 junit = "4.13.2"
 kotlin = "2.4.10"
 kotlinxDatetime = "0.8.0"
+materialKolor = "5.0.0"
 mavenPublish = "0.37.0"
 
 [libraries]
 compose-multiplatform-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "composeMultiplatform" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+material-kolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "materialKolor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

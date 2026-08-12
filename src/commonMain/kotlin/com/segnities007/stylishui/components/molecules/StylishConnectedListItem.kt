@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -34,6 +37,7 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -73,6 +77,9 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param contentSpacing Horizontal gap between the leading slot, text block,
  *   and trailing slot. Defaults to
  *   [StylishTheme.dimensions.itemSpacing] (8 dp).
+ * @param interactionSource The [MutableInteractionSource] used to observe
+ *   press/hover/focus interactions for the state layer. When `null`, an
+ *   internal one is remembered per item.
  *
  * @see StylishConnectedListItemRow
  * @see StylishConnectedListItemColumn
@@ -97,8 +104,10 @@ public fun DefaultStylishConnectedListItem(
     horizontalPadding: Dp,
     verticalPadding: Dp,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    interactionSource: MutableInteractionSource? = null,
 ) {
     val haptic = LocalHapticFeedback.current
+    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val actionable = isActionable(
         enabled = item.enabled,
         hasClickAction = item.onClick != null,
@@ -110,6 +119,8 @@ public fun DefaultStylishConnectedListItem(
                 if (actionable) {
                     Modifier
                         .combinedClickable(
+                            interactionSource = resolvedInteractionSource,
+                            indication = null,
                             onClick = { item.onClick?.invoke() },
                             onLongClick = item.onLongClick?.let {
                                 {
@@ -121,6 +132,15 @@ public fun DefaultStylishConnectedListItem(
                             },
                         )
                         .semantics { role = Role.Button }
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (actionable) {
+                    Modifier
+                        .clip(shape)
+                        .stylishStateLayer(resolvedInteractionSource)
                 } else {
                     Modifier
                 },

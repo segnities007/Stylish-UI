@@ -3,6 +3,8 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
@@ -39,6 +42,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -82,7 +87,21 @@ public enum class StylishChipVariant {
  *
  * When [onClick] is `null` the chip is display-only: no `Role.Tab`
  * semantics, no ripple, and no elevation lift. When [enabled] is
- * `false`, the chip is announced as disabled via semantics.
+ * `false`, the chip is announced as disabled via semantics. When
+ * actionable, a Material-style state layer (see
+ * [Modifier.stylishStateLayer]) darkens the surface on hover and press.
+ *
+ * The selected/unselected color transition animates with
+ * [StylishTheme.animation.durationShort]; when the platform requests
+ * reduced motion (see
+ * [isStylishReducedMotionEnabled]) the color snaps to its target
+ * instead of tweening.
+ *
+ * ## Testing
+ *
+ * The root carries the default test tag `stylish_chip` for UI tests.
+ * Callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param label Text displayed on the chip in structured mode. Ignored
  *   in content mode. Defaults to `""`.
@@ -170,16 +189,22 @@ public fun StylishChip(
         StylishChipVariant.Input -> MaterialTheme.colorScheme.surfaceVariant
         else -> MaterialTheme.stylishComponentColors.groupedContainer
     }
+    val reducedMotion = isStylishReducedMotionEnabled()
+    val colorAnimationSpec: AnimationSpec<Color> = if (reducedMotion) {
+        snap()
+    } else {
+        tween(
+            durationMillis = StylishTheme.animation.durationShort,
+            easing = StylishTheme.animation.defaultEasing,
+        )
+    }
     val containerColor by animateColorAsState(
         targetValue = when {
             !enabled -> disabledContainerColor
             selected -> selectedContainerColor
             else -> resolvedUnselectedContainerColor
         },
-        animationSpec = tween(
-            durationMillis = StylishTheme.animation.durationShort,
-            easing = StylishTheme.animation.defaultEasing,
-        ),
+        animationSpec = colorAnimationSpec,
         label = "chipContainer",
     )
     val contentColor by animateColorAsState(
@@ -188,10 +213,7 @@ public fun StylishChip(
             selected -> selectedContentColor
             else -> unselectedContentColor
         },
-        animationSpec = tween(
-            durationMillis = StylishTheme.animation.durationShort,
-            easing = StylishTheme.animation.defaultEasing,
-        ),
+        animationSpec = colorAnimationSpec,
         label = "chipContent",
     )
     val resolvedLeadingContent: (@Composable RowScope.() -> Unit)? = when {
@@ -209,6 +231,7 @@ public fun StylishChip(
     }
     Surface(
         modifier = modifier
+            .testTag("stylish_chip")
             .semantics {
                 this.selected = selected
                 if (onClick != null) {
@@ -231,6 +254,16 @@ public fun StylishChip(
                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                         onClick?.invoke()
                     }
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (actionable) {
+                    Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape,
+                    )
                 } else {
                     Modifier
                 },

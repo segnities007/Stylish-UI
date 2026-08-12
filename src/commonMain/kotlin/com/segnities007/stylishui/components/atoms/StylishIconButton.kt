@@ -13,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -21,6 +22,7 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
@@ -37,6 +39,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * When [enabled] is `false`, the shadow elevation drops to zero, the
  * content is dimmed to 38 % opacity, the button is announced as
  * disabled via semantics, and the inner [IconButton] rejects clicks.
+ * When [enabled], a Material-style state layer (see
+ * [Modifier.stylishStateLayer]) darkens the surface on hover and press.
  *
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
@@ -109,6 +113,7 @@ public fun StylishIconButton(
     } else {
         resolvedContentColor.copy(alpha = 0.38f)
     }
+    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
 
     Surface(
         modifier = modifier
@@ -116,6 +121,16 @@ public fun StylishIconButton(
             .then(
                 if (!enabled) {
                     Modifier.semantics { disabled() }
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (enabled) {
+                    Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape ?: CircleShape,
+                    )
                 } else {
                     Modifier
                 },
@@ -128,7 +143,7 @@ public fun StylishIconButton(
         IconButton(
             onClick = onClick,
             enabled = enabled,
-            interactionSource = interactionSource,
+            interactionSource = resolvedInteractionSource,
         ) {
             iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = effectiveContentColor)
         }

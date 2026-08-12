@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -31,7 +32,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   outside of it.
  * @param onValueChange Called with the new value while the user drags
  *   or taps the track.
- * @param modifier Modifier applied to the [Slider] root.
+ * @param modifier Modifier applied to the [Slider] root. The root
+ *   carries the default test tag `stylish_slider` for UI tests;
+ *   callers can override it by passing their own `Modifier.testTag(...)`
+ *   here.
  * @param enabled When `false`, the slider ignores pointer input and
  *   renders in the disabled color scheme.
  * @param valueRange Range of values the slider can take. Defaults to
@@ -72,7 +76,7 @@ public fun StylishSlider(
     Slider(
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier,
+        modifier = modifier.testTag("stylish_slider"),
         enabled = enabled,
         valueRange = valueRange,
         steps = steps,

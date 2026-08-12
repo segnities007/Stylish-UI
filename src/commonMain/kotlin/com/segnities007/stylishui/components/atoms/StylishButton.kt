@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
@@ -75,6 +76,12 @@ public enum class StylishButtonVariant {
  * When [isLoading] is `true` and the button is [enabled], the label
  * row is replaced by a small spinner and clicks are ignored until
  * loading completes.
+ *
+ * ## Testing
+ *
+ * The root carries the default test tag `stylish_button` for UI tests.
+ * Callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param onClick Called when the button is tapped.
  * @param modifier Modifier applied to the [Button] root.
@@ -207,7 +214,9 @@ public fun StylishButton(
     Button(
         onClick = onClick,
         enabled = actionable,
-        modifier = modifier.heightIn(min = minHeight),
+        modifier = modifier
+            .testTag("stylish_button")
+            .heightIn(min = minHeight),
         shape = shape,
         colors = resolvedColors,
         elevation = resolvedElevation,

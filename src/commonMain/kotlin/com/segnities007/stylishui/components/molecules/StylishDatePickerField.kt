@@ -29,10 +29,17 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 
 /**
- * ライブラリ内部で使うデフォルトの日付書式。
- * java.time への依存を避け、KMP 各ターゲットで動作させる。
+ * The default date formatter used by [StylishDatePickerField], producing
+ * `yyyy/MM/dd` output (e.g. `2026/07/25`).
+ *
+ * The format is **locale-neutral**: it always uses the zero-padded Gregorian
+ * month and day numbers with ASCII digits and a forward-slash separator,
+ * regardless of the device locale. This keeps the field display stable across
+ * languages, at the cost of not following the user's locale conventions.
+ * Pass a custom [formatter][com.segnities007.stylishui.components.molecules.StylishDatePickerField.formatter]
+ * when a locale-aware format is required.
  */
-private val defaultDateFormatter: (LocalDate) -> String = { date ->
+public val defaultDateFormatter: (LocalDate) -> String = { date ->
     val month = date.monthNumber.toString().padStart(2, '0')
     val day = date.dayOfMonth.toString().padStart(2, '0')
     "${date.year}/$month/$day"
@@ -58,6 +65,10 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * without changing the value. Date formatting avoids `java.time` so the
  * component works across all Kotlin Multiplatform targets.
  *
+ * The dialog is the Material 3 [DatePickerDialog], which applies platform
+ * window insets (system bars, IME) itself; this component does not add any
+ * additional inset handling.
+ *
  * @param value The currently selected date, or `null` if no date has been
  *   chosen.
  * @param onValueChange Callback invoked with the newly selected [LocalDate]
@@ -74,7 +85,10 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * @param placeholder The placeholder text shown when [value] is `null`.
  *   Ignored when [placeholderContent] is provided.
  * @param formatter A function that converts a [LocalDate] to its display
- *   string. Defaults to `yyyy/MM/dd` formatting.
+ *   string. Defaults to [defaultDateFormatter], a **locale-neutral**
+ *   `yyyy/MM/dd` format (zero-padded Gregorian numbers with ASCII digits,
+ *   independent of the device locale). Supply a custom formatter when a
+ *   locale-aware format is required.
  * @param enabled Whether the field is interactive. When `false`, taps do not
  *   open the date-picker dialog and the field renders in a disabled state.
  *   Defaults to `true`.
@@ -111,7 +125,7 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  *   field, typically an [androidx.compose.material3.Icon]. When `null`, no
  *   trailing icon is shown.
  *
- * @see StylishFormTextField
+ * @see com.segnities007.stylishui.components.atoms.StylishFormTextField
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

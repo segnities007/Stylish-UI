@@ -8,6 +8,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -29,13 +30,15 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @property label Human-readable category name used in accessibility
  *   descriptions and legends.
  * @property value Numeric magnitude of this slice. The arc angle is derived
- *   as `value / totalSum * 360°`. Must be non-negative.
+ *   as `value / totalSum * 360°`. Negative or non-finite values (`NaN`,
+ *   `±Infinity`) are treated as zero and contribute no arc.
  * @property color Fill color of the arc segment. Typically obtained from
  *   [stylishChartColor] to stay consistent with the theme's categorical
  *   palette.
  * @see SimplePieChart
  * @see stylishChartColor
  */
+@Immutable
 public data class PieChartData(
     val label: String,
     val value: Float,
@@ -48,12 +51,13 @@ public data class PieChartData(
  * Each [PieChartData] entry contributes an arc whose sweep angle is
  * proportional to its value relative to the total sum. A circular hole is
  * punched in the center (controlled by [holeRatio]) to produce the donut
- * appearance. When [data] is empty or all values are zero, a neutral
- * skeleton ring is drawn instead so the layout space is preserved.
+ * appearance. When [data] is empty or all values are zero, negative, or
+ * non-finite, a neutral skeleton ring is drawn instead so the layout space
+ * is preserved.
  *
  * The chart exposes a combined [contentDescription] for accessibility
  * services, built from [contentDescriptionPrefix] followed by each
- * label–value pair.
+ * label–value pair (always using the original values).
  *
  * On first composition the slices animate their sweep angles from zero to
  * their final proportions (see [animate]). The animation is drawn with
@@ -100,8 +104,8 @@ public fun SimplePieChart(
     startAngle: Float = -90f,
     animate: Boolean = true,
 ) {
-    val total = data.sumOf { it.value.toDouble() }
-        .toFloat()
+    val sweepAngles = pieSweepAngles(data.map { it.value })
+    val hasSlices = data.isNotEmpty() && sweepAngles.any { it > 0f }
     val description = data.joinToString(", ") {
         "${it.label}: ${formatInteger(it.value.toInt())}"
     }
@@ -125,7 +129,7 @@ public fun SimplePieChart(
             .semantics { contentDescription = "$contentDescriptionPrefix: $description" },
     ) {
         val animationProgress = progress.value
-        if (total <= 0f || data.isEmpty()) {
+        if (!hasSlices) {
             drawCircle(
                 color = skeletonColor,
                 radius = chartSize.toPx() * skeletonRatio,
@@ -137,15 +141,15 @@ public fun SimplePieChart(
         }
         else {
             var currentAngle = startAngle
-            data.forEach { slice ->
-                val sweep = (slice.value / total) * 360f * animationProgress
+            sweepAngles.forEachIndexed { index, sweep ->
+                val animatedSweep = sweep * animationProgress
                 drawArc(
-                    color = slice.color,
+                    color = data[index].color,
                     startAngle = currentAngle,
-                    sweepAngle = sweep,
+                    sweepAngle = animatedSweep,
                     useCenter = true,
                 )
-                currentAngle += sweep
+                currentAngle += animatedSweep
             }
             drawCircle(
                 color = holeColor,

@@ -2,6 +2,7 @@ package com.segnities007.stylishui.components.molecules
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -67,6 +68,11 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param contentSpacing The horizontal gap between the leading slot, text
  *   block, and trailing slot inside each item. Defaults to
  *   [StylishTheme.dimensions.itemSpacing] (8 dp).
+ * @param interactionSource The [MutableInteractionSource] forwarded to each
+ *   actionable item to observe press/hover/focus interactions for the state
+ *   layer. When `null`, each item remembers its own. Pass a shared source to
+ *   observe group-level interaction, e.g. to trigger a state update from a
+ *   parent.
  * @param listItem A composable lambda that renders a single item. Receives
  *   the item data, a modifier (including weight and fill-max-height), the
  *   connected [Shape], the outline [ConnectedEdges], and the outline
@@ -95,11 +101,13 @@ public fun StylishConnectedListItemRow(
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 14.dp,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
+    interactionSource: MutableInteractionSource? = null,
     listItem: ConnectedListItemContent = { item, itemModifier, shape, edges, corners ->
         DefaultStylishConnectedListItem(
             item, itemModifier, shape, edges, corners, headlineMaxLines, headlineOverflow,
             headlineStyle, supportingTextMaxLines, supportingTextOverflow, supportingTextStyle,
             containerColor, contentColor, horizontalPadding, verticalPadding, contentSpacing,
+            interactionSource = interactionSource,
         )
     },
 ) {

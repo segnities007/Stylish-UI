@@ -12,6 +12,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -26,7 +27,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param selected Whether the radio button is currently selected.
  * @param onClick Called when the user taps the radio button. `null`
  *   makes the radio button display-only.
- * @param modifier Modifier applied to the [RadioButton] root.
+ * @param modifier Modifier applied to the [RadioButton] root. The root
+ *   carries the default test tag `stylish_radiobutton` for UI tests;
+ *   callers can override it by passing their own `Modifier.testTag(...)`
+ *   here.
  * @param enabled When `false`, the radio button ignores pointer input
  *   and renders in the disabled color scheme.
  * @param colors Colors used in each state. Defaults to
@@ -50,7 +54,7 @@ public fun StylishRadioButton(
     RadioButton(
         selected = selected,
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.testTag("stylish_radiobutton"),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,

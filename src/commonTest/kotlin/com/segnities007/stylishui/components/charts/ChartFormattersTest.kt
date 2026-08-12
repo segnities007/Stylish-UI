@@ -38,6 +38,21 @@ class ChartFormattersTest {
     }
 
     @Test
+    fun `formatCompact boundaries between tiers`() {
+        assertEquals("1.0", formatCompact(10_000f))
+        assertEquals("1.0", formatCompact(1_000f))
+        assertEquals("999", formatCompact(999.4f))
+        assertEquals("1000", formatCompact(999.9f))
+        assertEquals("0", formatCompact(0f))
+    }
+
+    @Test
+    fun `formatCompact rounds at the boundary with the scaled tier`() {
+        assertEquals("10.0", formatCompact(9_999f))
+        assertEquals("1.0", formatCompact(10_000f))
+    }
+
+    @Test
     fun `formatDecimal pads fractional digits`() {
         assertEquals("12.50", 12.5f.formatDecimal(2))
         assertEquals("1.25", 1.25f.formatDecimal(2))

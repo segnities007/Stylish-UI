@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,8 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
@@ -64,7 +68,24 @@ public enum class StylishFabSize {
  *
  * While pressed, the shadow elevation animates down to 0 dp (using
  * [StylishTheme.animation.durationShort]), matching the standard
- * Material FAB pressed behavior.
+ * Material FAB pressed behavior. Additionally, when [enabled], a
+ * Material-style state layer (see [Modifier.stylishStateLayer]) darkens
+ * the surface on hover and press.
+ *
+ * ## Size precedence
+ *
+ * Two parameters control the button's diameter: [sizeVariant], which maps
+ * a named size to the [DefaultStylishDimensions] `fab*Size` tokens, and
+ * [size], which accepts an arbitrary exact diameter. When [size] is
+ * non-null it always wins over [sizeVariant]; leave [size] `null` to use
+ * a named variant. Prefer [sizeVariant] for the standard sizes and
+ * [size] only for bespoke dimensions.
+ *
+ * ## Testing
+ *
+ * The root carries the default test tag `stylish_fab` for UI tests.
+ * Callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
@@ -128,13 +149,26 @@ public fun StylishFab(
     }
     val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isPressed by resolvedInteractionSource.collectIsPressedAsState()
+    val reducedMotion = isStylishReducedMotionEnabled()
     val resolvedShadowElevation by animateDpAsState(
         targetValue = if (isPressed) 0.dp else shadowElevation,
-        animationSpec = tween(StylishTheme.animation.durationShort),
+        animationSpec = if (reducedMotion) snap() else tween(StylishTheme.animation.durationShort),
         label = "fabShadowElevation",
     )
     Surface(
-        modifier = modifier.size(resolvedSize),
+        modifier = modifier
+            .testTag("stylish_fab")
+            .size(resolvedSize)
+            .then(
+                if (enabled) {
+                    Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape ?: CircleShape,
+                    )
+                } else {
+                    Modifier
+                },
+            ),
         shape = shape ?: CircleShape,
         color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -30,6 +31,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * [LocalTextStyle] so plain [Text] children pick up the compact badge
  * typography automatically. Text color falls back to [contentColor]
  * via `LocalContentColor`.
+ *
+ * The root carries the default test tag `stylish_badge` for UI tests;
+ * callers can override it by passing their own `Modifier.testTag(...)`
+ * in [modifier].
  *
  * @param modifier Modifier applied to the [Surface] root.
  * @param containerColor Background color of the badge. Defaults to
@@ -52,7 +57,7 @@ public fun StylishBadge(
     content: @Composable () -> Unit,
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.testTag("stylish_badge"),
         shape = shape,
         color = containerColor,
         contentColor = contentColor,

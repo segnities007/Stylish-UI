@@ -12,6 +12,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -26,7 +27,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param checked Whether the checkbox is currently checked.
  * @param onCheckedChange Called with the new state when the user
  *   toggles the checkbox. `null` makes the checkbox display-only.
- * @param modifier Modifier applied to the [Checkbox] root.
+ * @param modifier Modifier applied to the [Checkbox] root. The root
+ *   carries the default test tag `stylish_checkbox` for UI tests;
+ *   callers can override it by passing their own `Modifier.testTag(...)`
+ *   here.
  * @param enabled When `false`, the checkbox ignores pointer input and
  *   renders in the disabled color scheme.
  * @param colors Colors used in each state. Defaults to
@@ -50,7 +54,7 @@ public fun StylishCheckbox(
     Checkbox(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.testTag("stylish_checkbox"),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,

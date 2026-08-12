@@ -156,7 +156,7 @@ class ComponentSmokeTest {
                         StylishSegmentedOption("b", "オプションB"),
                     ),
                     selectedValue = "a",
-                    onSelected = {},
+                    onSelectedChange = {},
                 )
             }
         }

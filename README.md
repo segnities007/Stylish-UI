@@ -3,7 +3,8 @@
 **Clear, Simple, Modern.**
 
 Stylish UI は、この3つを体現した Compose Multiplatform デザインシステムです。
-Android・JVM Desktop・Web（Wasm）をサポートしています。
+Android・JVM Desktop・Web（Wasm）をサポートしており、iOS（`iosArm64` /
+`iosSimulatorArm64`）は開発中です。
 
 ## デザイン哲学
 
@@ -109,6 +110,22 @@ Finish  →  Structure  →  Foundation
 ./gradlew apiCheck      # ABI 互換性チェック
 ./gradlew apiDump       # ABI ダンプ更新（意図的な API 変更時）
 ```
+
+## 品質
+
+Stylish UI の品質管理に関するドキュメントです。
+
+| ドキュメント | 内容 |
+|---|---|
+| [DESIGN.md](DESIGN.md) | デザインチェックリスト（Clear / Simple / Modern） |
+| [docs/design-spec.md](docs/design-spec.md) | デザイン仕様書 |
+| [docs/quality-audit.md](docs/quality-audit.md) | 品質監査（欠点の列挙と進捗管理の作業ファイル） |
+| [ROADMAP.md](ROADMAP.md) | 公開ロードマップ（0.8.0 / 0.9.0 / 1.0.0） |
+
+ゴールデンテスト（`src/jvmTest/.../visual/`）は、明暗テーマの描画を
+ピクセル単位で検証します。初回実行でベースライン画像を記録し、以降は
+比較して描画の回帰を検知します。ベースラインを更新するには対象の PNG を
+削除して再実行してください。
 
 ## 公式サイト
 

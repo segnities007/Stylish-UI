@@ -9,6 +9,36 @@ on:
       - main
 
 jobs:
+  check-branch-base:
+    name: Check branch base
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Only meaningful for pull requests: verifies the PR head CONTAINS the
+    # latest origin/main as an ancestor. A branch created from a stale base
+    # (e.g. a squash-merged branch) re-applies changes already in main,
+    # which GitHub flags as conflicts even though the content is identical
+    # (AGENTS.md rule 3). git cherry/patch-id cannot detect this (the
+    # squash commit's patch differs), so the ancestor check is used.
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Verify branch is based on the latest main
+        run: |
+          set -euo pipefail
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "::error::This branch does not contain the latest origin/main as an ancestor."
+            echo "::error::It was created from a stale base. Rebase the new work:"
+            echo "::error::  git rebase --onto origin/main <first-new-commit>^ && git push --force-with-lease"
+            echo "::error::Or recreate the branch: scripts/new-branch.sh <branch-name>"
+            exit 1
+          fi
+          echo "branch base is clean (contains latest origin/main)"
+
   build:
     name: Build and test
     runs-on: ubuntu-latest
@@ -31,8 +61,16 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           add-job-summary: 'on-failure'
 
+      # Golden tests (src/jvmTest/.../visual/) run inside `./gradlew check`
+      # via jvmTest. On the first run they record the baseline PNGs under
+      # src/jvmTest/resources/golden/ and pass; afterwards they compare
+      # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
       - name: Build and test
-        run: ./gradlew check
+        # wasmJsBrowserTest runs the same commonTest suite as the Node-based
+        # wasmJsTest but additionally requires a headless Chrome, which has
+        # been flaky in this CI environment. The Node run fully covers the
+        # tests, so exclude the browser variant from `check`.
+        run: ./gradlew check -x wasmJsBrowserTest
 
       - name: Check public ABI
         run: ./gradlew apiCheck
@@ -44,3 +82,31 @@ jobs:
           name: build-reports
           path: '**/build/reports/'
           if-no-files-found: ignore
+
+  ios:
+    name: Compile iOS targets
+    runs-on: macos-15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          add-job-summary: 'on-failure'
+
+      # iOS targets (iosArm64 / iosSimulatorArm64) are only enabled on macOS
+      # hosts. This job verifies the common code compiles for iOS even though
+      # the targets are not published yet (QA-11, PLT-01).
+      - name: Compile iOS targets
+        run: ./gradlew compileKotlinIosArm64 compileKotlinIosSimulatorArm64

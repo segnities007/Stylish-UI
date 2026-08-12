@@ -39,6 +39,12 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
  * state and do not respond to interaction.
  *
+ * The renderer delegates to the Material 3 [Button], which owns its
+ * [androidx.compose.foundation.interaction.MutableInteractionSource]
+ * internally; no `interactionSource` parameter is exposed here. Observe
+ * button interaction by hoisting state into [StylishConnectedButtonItem]
+ * data instead.
+ *
  * @param item The [StylishConnectedButtonItem] data for the button.
  * @param modifier A modifier carrying layout constraints from the parent
  *   layout. Applied to the [Button] root.

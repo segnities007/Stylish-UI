@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishAvatar
 import com.segnities007.stylishui.components.atoms.StylishBadge
+import com.segnities007.stylishui.components.atoms.StylishBadgedBox
 import com.segnities007.stylishui.components.atoms.StylishButton
 import com.segnities007.stylishui.components.atoms.StylishButtonVariant
 import com.segnities007.stylishui.components.atoms.StylishCard
@@ -41,15 +43,20 @@ import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndica
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
 import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishFilledIconButton
+import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconButton
+import com.segnities007.stylishui.components.atoms.StylishFilledTextField
 import com.segnities007.stylishui.components.atoms.StylishHorizontalDivider
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishLinearProgressIndicator
+import com.segnities007.stylishui.components.atoms.StylishOutlinedIconButton
 import com.segnities007.stylishui.components.atoms.StylishRadioButton
 import com.segnities007.stylishui.components.atoms.StylishRangeSlider
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.atoms.StylishSlider
 import com.segnities007.stylishui.components.atoms.StylishSwitch
+import com.segnities007.stylishui.components.atoms.StylishTriStateCheckbox
 import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.PieChartData
@@ -78,8 +85,14 @@ import com.segnities007.stylishui.components.molecules.StylishListItem
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
 import com.segnities007.stylishui.components.organisms.StylishAlertDialog
 import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishNavigationRail
+import com.segnities007.stylishui.components.organisms.StylishNavigationRailItem
 import com.segnities007.stylishui.components.organisms.StylishSearchBar
+import com.segnities007.stylishui.components.organisms.StylishSegmentedButton
 import com.segnities007.stylishui.components.organisms.StylishTabBar
+import com.segnities007.stylishui.components.patterns.StylishBottomAppBar
+import com.segnities007.stylishui.components.patterns.StylishCenterAlignedTopAppBar
+import com.segnities007.stylishui.components.patterns.StylishLargeTopAppBar
 import com.segnities007.stylishui.components.patterns.StylishTopAppBar
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -449,6 +462,67 @@ private fun ComponentCatalog() {
                     LineChartData("4月", 52000f),
                 ),
             )
+
+            StylishHorizontalDivider(Modifier.fillMaxWidth())
+
+            // ── M3 Parity (0.8) ──
+            StylishSectionTitle("M3 Parity")
+
+            StylishSectionTitle("BadgedBox / TriStateCheckbox", textStyle = MaterialTheme.typography.titleSmall)
+            var triState by remember { mutableStateOf(ToggleableState.Indeterminate) }
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                StylishBadgedBox(badge = { StylishBadge { Text("3") } }) {
+                    androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "通知")
+                }
+                StylishTriStateCheckbox(state = triState, onClick = {
+                    triState = when (triState) {
+                        ToggleableState.On -> ToggleableState.Off
+                        else -> ToggleableState.On
+                    }
+                })
+            }
+
+            StylishSectionTitle("Icon Button Variants", textStyle = MaterialTheme.typography.titleSmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StylishFilledIconButton(onClick = {}) {
+                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+                }
+                StylishFilledTonalIconButton(onClick = {}) {
+                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+                }
+                StylishOutlinedIconButton(onClick = {}) {
+                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+                }
+            }
+
+            StylishSectionTitle("Filled / Secure TextField", textStyle = MaterialTheme.typography.titleSmall)
+            var filledValue by remember { mutableStateOf("") }
+            StylishFilledTextField(value = filledValue, onValueChange = { filledValue = it }, label = "フィールド")
+
+            StylishSectionTitle("ToggleButton", textStyle = MaterialTheme.typography.titleSmall)
+            var toggleChecked by remember { mutableStateOf(false) }
+            androidx.compose.material3.SingleChoiceSegmentedButtonRow {
+                StylishSegmentedButton(selected = !toggleChecked, onClick = { toggleChecked = false }) { Text("オフ") }
+                StylishSegmentedButton(selected = toggleChecked, onClick = { toggleChecked = true }) { Text("オン") }
+            }
+
+            StylishSectionTitle("NavigationRail", textStyle = MaterialTheme.typography.titleSmall)
+            var railSelected by remember { mutableIntStateOf(0) }
+            StylishNavigationRail {
+                StylishNavigationRailItem(selected = railSelected == 0, onClick = { railSelected = 0 }, icon = { androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "ホーム") }, label = { Text("ホーム") })
+                StylishNavigationRailItem(selected = railSelected == 1, onClick = { railSelected = 1 }, icon = { androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索") }, label = { Text("検索") })
+            }
+
+            StylishSectionTitle("TopAppBar Variants", textStyle = MaterialTheme.typography.titleSmall)
+            StylishCenterAlignedTopAppBar(title = { Text("中央寄せ") })
+            StylishLargeTopAppBar(title = { Text("ラージ") })
+
+            StylishSectionTitle("BottomAppBar", textStyle = MaterialTheme.typography.titleSmall)
+            StylishBottomAppBar(actions = {
+                androidx.compose.material3.IconButton(onClick = {}) {
+                    androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索")
+                }
+            })
 
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 

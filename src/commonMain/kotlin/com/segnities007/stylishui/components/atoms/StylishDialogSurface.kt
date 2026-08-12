@@ -5,8 +5,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,6 +50,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * either dismissal path. [onDismiss] is invoked for whichever
  * dismissals remain enabled.
  *
+ * The card is padded by [windowInsets] (defaults to
+ * [WindowInsets.safeDrawing]) so its content never collides with the
+ * system bars; pass `WindowInsets(0)` to disable this behaviour.
+ *
  * @param onDismiss Called when the user taps outside the dialog or
  *   presses the system back button (per [properties]).
  * @param modifier Modifier applied to the root [Card], before the
@@ -70,6 +77,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   spans the full available width. Use `dismissOnBackPress` and
  *   `dismissOnClickOutside` (constructor parameters of
  *   [DialogProperties]) to control dismissal.
+ * @param windowInsets Insets padded around the card so its content
+ *   stays clear of system bars. Defaults to [WindowInsets.safeDrawing].
+ *   Pass `WindowInsets(0)` to disable.
  * @param content Content rendered inside the card's [ColumnScope].
  *   Callers are responsible for their own internal padding.
  */
@@ -83,6 +93,7 @@ public fun StylishDialogSurface(
     horizontalPadding: Dp = 16.dp,
     contentColor: Color? = null,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
+    windowInsets: WindowInsets = WindowInsets.safeDrawing,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     var entered by remember { mutableStateOf(false) }
@@ -108,6 +119,7 @@ public fun StylishDialogSurface(
     ) {
         Card(
             modifier = modifier
+                .windowInsetsPadding(windowInsets)
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding)
                 .then(

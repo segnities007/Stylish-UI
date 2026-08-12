@@ -1,0 +1,70 @@
+name: 機能リクエスト
+description: 新しいコンポーネントや機能の提案
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        機能リクエストありがとうございます。提案がどのように使われるのか、
+        具体的な利用ケースを交えて記入してください。
+        新規コンポーネントの仕様提案には [CONTRIBUTING.md](../../CONTRIBUTING.md)
+        の「コンポーネント仕様テンプレート」を参考にしてください。
+  - type: textarea
+    id: use_case
+    attributes:
+      label: 利用ケース（Use case）
+      description: どのような場面で、何を実現したいですか？
+      placeholder: 例: 設定画面でトグルが並ぶリストを、統一された見た目で表示したい
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 現状の問題点
+      description: 今の Stylish UI / M3 ではなぜ不足しているのですか？
+      placeholder: 例: StylishSwitch 単体はあるが、connected リストに組み込む方法がない
+    validations:
+      required: true
+  - type: dropdown
+    id: component_area
+    attributes:
+      label: 対象レイヤー
+      description: 追加・拡張されるべき場所
+      options:
+        - atoms
+        - molecules
+        - organisms
+        - patterns
+        - charts
+        - theme / tokens
+        - foundation / structure
+        - ドキュメント / DX
+        - その他
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: 関連コンポーネント / API
+      description: 関連する既存コンポーネントがあれば（任意）
+      placeholder: StylishSwitch
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 提案
+      description: 望ましい API の形や見た目について（任意）
+      placeholder: |
+        StylishConnectedSwitchRow(
+          items = listOf(...),
+        )
+      render: kotlin
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 代替案
+      description: 検討した他の方法があれば（任意）
+    validations:
+      required: false

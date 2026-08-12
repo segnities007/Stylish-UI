@@ -5,14 +5,43 @@ Chakra UI）と Stylish UI を比較し、欠落している要素と実装判�
 
 調査日: 2026-08-13 / 対象: v0.8.0 時点の Stylish UI
 
-## 前回分（ブランチ feat/web-parity にて実装済み・マージ待ち）
+## 比較方法
 
-Accordion / Stepper / Breadcrumb / Popover / Pagination / Rating /
-NumberInput / PinInput / Editable / Table / Statistic / Timeline / Kbd /
-SpeedDial / focus-visible リング（stylishFocusRing）は前回ラウンドで実装し、
-`feat/web-parity` ブランチとして PR 提出済み。
+- shadcn/ui コンポーネント一覧（ui.shadcn.com/docs/components）
+- Material UI コンポーネント一覧（mui.com/material-ui/all-components）
+- Radix UI / Ant Design / Chakra UI は知識ベースで補完
 
-## 第2ラウンド: Ant Design / Chakra UI 固有の比較
+## 第1ラウンド: shadcn/MUI 比較（本ブランチで実装）
+
+| # | コンポーネント | Web 出典 | Stylish 判断 | 状態 |
+|---|---|---|---|---|
+| 1 | Accordion / Collapsible | shadcn/MUI/Chakra | **実装**: 折りたたみセクションの標準パターン | ✅ |
+| 2 | Stepper / Steps | MUI/Ant/Chakra | **実装**: ウィザード・段階表示 | ✅ |
+| 3 | Breadcrumb | shadcn/MUI/Ant | **実装**: 階層ナビゲーション | ✅ |
+| 4 | Popover | shadcn/Radix/MUI | **実装**: 汎用アンカー付きフローティング（メニュー以外） | ✅ |
+| 5 | Pagination | shadcn/MUI/Ant | **実装**: ページング | ✅ |
+| 6 | Rating / Rate | MUI/Ant/Chakra | **実装**: スター評価 | ✅ |
+| 7 | NumberInput / NumberField | MUI/Ant/Chakra | **実装**: 数値スピナー入力 | ✅ |
+| 8 | InputOTP / PinInput | shadcn/Chakra | **実装**: ワンタイムコード入力 | ✅ |
+| 9 | Editable | Chakra | **実装**: インライン編集 | ✅ |
+| 10 | Table | shadcn(MUI/Ant) | **実装**: シンプルなデータテーブル | ✅ |
+| 11 | Statistic / Stat | Ant/Chakra | **実装**: ラベル+値+変化量の表示 | ✅ |
+| 12 | Timeline | Ant/MUI(lab) | **実装**: 時系列の項目表示 | ✅ |
+| 13 | Kbd | shadcn/Chakra | **実装**: キーボードキー表示（軽量） | ✅ |
+| 14 | SpeedDial | MUI | **実装**: FAB を中心に展開するアクション群 | ✅ |
+| 15 | Drawer / Sheet | shadcn/MUI/Ant | 対応済み: StylishModalNavigationDrawer 等 | — |
+| 16 | Toggle Group | shadcn/MUI | 対応済み: StylishToggleButton / SegmentedButton | — |
+| 17 | Select / Combobox | shadcn/MUI/Ant | 対応済み: StylishExposedDropdownMenu / SearchBar | — |
+| 18 | Toast / Snackbar | shadcn/MUI | 対応済み: StylishSnackbar | — |
+| 19 | ContextMenu | Radix/shadcn | 見送り: 右クリック検出が CMP のプラットフォーム差あり | 次期 |
+| 20 | Command Palette | shadcn/cmdk | 見送り: SearchBar + List で構成可能 | 次期 |
+| 21 | TransferList | MUI | 見送り: 複雑・利用頻度低 | 次期 |
+| 22 | ScrollArea / Resizable / Masonry | Radix/MUI | 見送り: プラットフォーム固有のスクロールに依存 | 次期 |
+| 23 | Autocomplete | MUI/Ant | 見送り: ExposedDropdownMenu + フィルタで構成可能 | 次期 |
+| 24 | Alert / Result | Ant/MUI | 対応済み: StylishAlertDialog / StylishEmptyState | — |
+| 25 | Label | shadcn/Radix | 見送り: Text で十分（KDoc で案内） | — |
+
+## 第2ラウンド: Ant Design / Chakra UI 固有（#32 で実装済み）
 
 | # | コンポーネント | Web 出典 | Stylish 判断 | 状態 |
 |---|---|---|---|---|
@@ -30,9 +59,9 @@ SpeedDial / focus-visible リング（stylishFocusRing）は前回ラウンド�
 | 12 | ColorPicker / QRCode / Upload | Ant | 見送り: 外部依存が必要 | 次期 |
 | 13 | Tag | Ant | 対応済み: StylishChip / StylishBadge で代替 | — |
 | 14 | FloatButton | Ant | 対応済み: StylishFab / StylishSpeedDial | — |
-| 15 | Steps / Collapse / Stat / PinInput / Editable | Ant/Chakra | 対応済み: 前回ラウンドで実装 | — |
+| 15 | Steps / Collapse / Stat / PinInput / Editable | Ant/Chakra | 対応済み: 第1ラウンドで実装 | — |
 
-## 品質面
+## 品質面の比較と対応
 
 - **フォーカス可視化**（focus-visible リング）: 前回ラウンドで実装済み（stylishFocusRing）
 - **VisuallyHidden**: スクリーンリーダー専用コンテンツの標準パターン（Chakra）を今回実装

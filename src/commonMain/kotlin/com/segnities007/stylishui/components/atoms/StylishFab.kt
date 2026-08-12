@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
@@ -70,7 +71,9 @@ public enum class StylishFabSize {
  * [StylishTheme.animation.durationShort]), matching the standard
  * Material FAB pressed behavior. Additionally, when [enabled], a
  * Material-style state layer (see [Modifier.stylishStateLayer]) darkens
- * the surface on hover and press.
+ * the surface on hover and press, and a primary-colored focus ring (see
+ * [Modifier.stylishFocusRing]) is drawn while the button holds keyboard
+ * focus.
  *
  * ## Size precedence
  *
@@ -162,6 +165,16 @@ public fun StylishFab(
             .then(
                 if (enabled) {
                     Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape ?: CircleShape,
+                    )
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (enabled) {
+                    Modifier.stylishFocusRing(
                         interactionSource = resolvedInteractionSource,
                         shape = shape ?: CircleShape,
                     )

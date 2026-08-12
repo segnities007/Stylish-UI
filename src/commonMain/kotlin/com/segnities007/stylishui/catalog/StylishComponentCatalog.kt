@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +18,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -94,16 +98,33 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedListItemC
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.components.molecules.StylishListItem
+import com.segnities007.stylishui.components.molecules.StylishAccordion
+import com.segnities007.stylishui.components.molecules.StylishAccordionItem
+import com.segnities007.stylishui.components.molecules.StylishBreadcrumb
+import com.segnities007.stylishui.components.molecules.StylishBreadcrumbItem
+import com.segnities007.stylishui.components.molecules.StylishEditable
+import com.segnities007.stylishui.components.atoms.StylishNumberInput
+import com.segnities007.stylishui.components.molecules.StylishPagination
+import com.segnities007.stylishui.components.atoms.StylishPinInput
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
+import com.segnities007.stylishui.components.atoms.StylishKbd
+import com.segnities007.stylishui.components.atoms.StylishRating
+import com.segnities007.stylishui.components.atoms.StylishSpeedDial
 import com.segnities007.stylishui.components.molecules.StylishAvatarGroup
 import com.segnities007.stylishui.components.molecules.StylishFormField
 import com.segnities007.stylishui.components.molecules.StylishMasonry
+import com.segnities007.stylishui.components.molecules.StylishPopover
 import com.segnities007.stylishui.components.molecules.StylishSplitter
-import com.segnities007.stylishui.components.organisms.StylishCommandPalette
 import com.segnities007.stylishui.components.organisms.StylishCommandItem
+import com.segnities007.stylishui.components.organisms.StylishCommandPalette
 import com.segnities007.stylishui.components.organisms.StylishHoverCard
 import com.segnities007.stylishui.components.molecules.StylishResult
 import com.segnities007.stylishui.components.molecules.StylishResultVariant
+import com.segnities007.stylishui.components.molecules.StylishStatistic
+import com.segnities007.stylishui.components.molecules.StylishStepper
+import com.segnities007.stylishui.components.molecules.StylishTable
+import com.segnities007.stylishui.components.molecules.StylishTimeline
+import com.segnities007.stylishui.components.molecules.StylishTimelineItem
 import com.segnities007.stylishui.components.molecules.StylishToastData
 import com.segnities007.stylishui.components.molecules.StylishToastHost
 import com.segnities007.stylishui.components.molecules.StylishToastVariant
@@ -551,6 +572,116 @@ private fun ComponentCatalog() {
             })
 
             StylishHorizontalDivider(Modifier.fillMaxWidth())
+
+            // ── Web Parity (0.9) ──
+            StylishSectionTitle("Web Parity")
+
+            StylishSectionTitle("Accordion", textStyle = MaterialTheme.typography.titleSmall)
+            StylishAccordion(
+                items = listOf(
+                    StylishAccordionItem(
+                        title = "車両情報",
+                        content = { Text("ナンバー・年式・色などの基本情報を表示します。", style = MaterialTheme.typography.bodyMedium) },
+                    ),
+                    StylishAccordionItem(
+                        title = "メンテナンス",
+                        content = { Text("整備履歴の一覧です。", style = MaterialTheme.typography.bodyMedium) },
+                    ),
+                ),
+            )
+
+            StylishSectionTitle("Stepper / Breadcrumb", textStyle = MaterialTheme.typography.titleSmall)
+            StylishStepper(
+                steps = listOf("情報入力", "確認", "完了"),
+                currentStep = 1,
+                completedSteps = setOf(0),
+            )
+            StylishBreadcrumb(
+                items = listOf(
+                    StylishBreadcrumbItem("ホーム", onClick = {}),
+                    StylishBreadcrumbItem("車両管理", onClick = {}),
+                    StylishBreadcrumbItem("詳細"),
+                ),
+            )
+
+            StylishSectionTitle("Pagination / Rating / Kbd", textStyle = MaterialTheme.typography.titleSmall)
+            var page by remember { mutableIntStateOf(3) }
+            StylishPagination(page = page, onPageChange = { page = it }, pageCount = 12)
+            var rating by remember { mutableIntStateOf(4) }
+            StylishRating(value = rating, onValueChange = { rating = it })
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                StylishKbd("Ctrl")
+                StylishKbd("K")
+            }
+
+            StylishSectionTitle("NumberInput / PinInput", textStyle = MaterialTheme.typography.titleSmall)
+            var numberValue by remember { mutableStateOf(5) }
+            StylishNumberInput(
+                value = numberValue,
+                onValueChange = { numberValue = it },
+                label = "台数",
+                range = 1..10,
+            )
+            var pinValue by remember { mutableStateOf("") }
+            StylishPinInput(value = pinValue, onValueChange = { pinValue = it })
+
+            StylishSectionTitle("Editable / Statistic / Timeline", textStyle = MaterialTheme.typography.titleSmall)
+            var editableValue by remember { mutableStateOf("Stylish UI") }
+            StylishEditable(value = editableValue, onValueChange = { editableValue = it })
+            Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+                StylishStatistic(label = "燃費", value = "15.2 km/L", delta = "+1.3%")
+                StylishStatistic(label = "経費", value = "¥32,000", delta = "-8%", deltaPositive = false)
+            }
+            StylishTimeline(
+                items = listOf(
+                    StylishTimelineItem("オイル交換", "エンジンオイル交換", "2026/08/10"),
+                    StylishTimelineItem("車検", "ユーザー車検にて合格", "2026/06/01"),
+                ),
+            )
+
+            StylishSectionTitle("Table", textStyle = MaterialTheme.typography.titleSmall)
+            StylishTable(
+                columns = listOf("項目", "金額", "日付"),
+                rows = listOf(
+                    listOf("オイル交換", "¥12,000", "2026/08/10"),
+                    listOf("タイヤ", "¥48,000", "2026/07/22"),
+                ),
+            )
+
+            StylishSectionTitle("Popover / SpeedDial", textStyle = MaterialTheme.typography.titleSmall)
+            var popoverExpanded by remember { mutableStateOf(false) }
+            StylishPopover(
+                expanded = popoverExpanded,
+                onExpandedChange = { popoverExpanded = it },
+                anchor = {
+                    StylishButton(onClick = { popoverExpanded = true }, variant = StylishButtonVariant.Outlined) {
+                        Text("フィルター")
+                    }
+                },
+            ) {
+                Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
+                Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
+            }
+            Box(Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.BottomEnd) {
+                var speedDialExpanded by remember { mutableStateOf(false) }
+                StylishSpeedDial(
+                    expanded = speedDialExpanded,
+                    onExpandedChange = { speedDialExpanded = it },
+                    actionCount = 2,
+                    onActionClick = {},
+                    fabIcon = {
+                        androidx.compose.material3.Icon(
+                            if (speedDialExpanded) Icons.Default.Close else Icons.Default.Add,
+                            contentDescription = "アクション",
+                        )
+                    },
+                ) { index ->
+                    androidx.compose.material3.Icon(
+                        if (index == 0) Icons.Default.Edit else Icons.Default.Share,
+                        contentDescription = null,
+                    )
+                }
+            }
 
             // ── Web Parity 2 (0.9) ──
             StylishSectionTitle("Web Parity 2")

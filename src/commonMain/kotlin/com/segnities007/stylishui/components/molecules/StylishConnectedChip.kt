@@ -39,6 +39,7 @@ import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
@@ -77,6 +78,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param interactionSource The [MutableInteractionSource] used to observe
  *   press/hover/focus interactions for the state layer. When `null`, an
  *   internal one is remembered per chip.
+ *
+ * Focus: actionable chips draw the web "focus-visible ring"
+ * ([Modifier.stylishFocusRing]) around [shape] while the chip holds keyboard
+ * or focus-ring focus.
  *
  * @see StylishConnectedChipRow
  * @see StylishConnectedChipColumn
@@ -146,6 +151,7 @@ public fun DefaultStylishConnectedChip(
                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                         item.onClick?.invoke()
                     }
+                        .stylishFocusRing(resolvedInteractionSource, shape)
                 } else {
                     Modifier
                 },

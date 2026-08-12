@@ -144,15 +144,40 @@ Every public composable, function, and data class must have a KDoc comment descr
    squash-merged branch causes recurring merge conflicts because Git cannot
    recognise that the work is already in `main`. After a PR is merged,
    delete the branch and create a fresh one from the latest `main`.
-3. **Open a Pull Request** for all changes.
-4. **Use Conventional Commits** for all commit messages and PR titles.
+3. **Create branches ONLY from `origin/main`** — never from an existing
+   branch. A branch created from a merged branch inherits commits that are
+   already in `main`, which GitHub flags as conflicts even if the content
+   is identical. Concretely:
+   - Always start with `git checkout -b <branch> origin/main` (after
+     `git fetch origin`), never `git checkout -b <branch>` from the
+     current branch.
+   - Before opening a PR, verify the branch contains no already-merged
+     commits: `git log --oneline origin/main..HEAD` must show only new
+     work. If it shows old commit titles, rebase them away with
+     `git rebase --onto origin/main <old-base-sha>`.
+   - Use `scripts/new-branch.sh <branch-name>` as the single entry point
+     for creating feature branches (it fetches, verifies, and creates
+     from `origin/main`).
+   - **Local pre-push guard (automatic):** the repository's `pre-push` git
+     hook (`.githooks/pre-push`, installed via `scripts/setup-hooks.sh`,
+     which `new-branch.sh` runs automatically) blocks any push whose
+     branch does not contain the latest `origin/main` as an ancestor —
+     i.e. branches created from squash-merged or otherwise stale bases.
+     The same check runs in CI (`check-branch-base` job). If the hook
+     blocks a push, rebase the new work onto main
+     (`git rebase --onto origin/main <first-new-commit>^`) and
+     `git push --force-with-lease`, or recreate the branch with
+     `scripts/new-branch.sh`. To bypass once: `git push --no-verify`
+     (only after verifying the push is intentional).
+4. **Open a Pull Request** for all changes.
+5. **Use Conventional Commits** for all commit messages and PR titles.
    GitHub auto-generates the PR title from the branch name (e.g.
    `docs/foo` → "Docs/foo"), which **fails the `pr-title-check` CI**.
    Always set the PR title manually to `<type>(<scope>): <subject>`
    format with a lowercase subject (e.g.
    `docs(components): enrich KDoc across all public API`).
-5. **Use Squash merge** when merging PRs.
-6. **Do not modify release-related files** unless explicitly instructed:
+6. **Use Squash merge** when merging PRs.
+7. **Do not modify release-related files** unless explicitly instructed:
    - `version.properties`
    - `.release-please-manifest.json`
    - `CHANGELOG.md` (managed by Release Please)

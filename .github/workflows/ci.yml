@@ -9,6 +9,36 @@ on:
       - main
 
 jobs:
+  check-branch-base:
+    name: Check branch base
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Only meaningful for pull requests: verifies the PR head CONTAINS the
+    # latest origin/main as an ancestor. A branch created from a stale base
+    # (e.g. a squash-merged branch) re-applies changes already in main,
+    # which GitHub flags as conflicts even though the content is identical
+    # (AGENTS.md rule 3). git cherry/patch-id cannot detect this (the
+    # squash commit's patch differs), so the ancestor check is used.
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Verify branch is based on the latest main
+        run: |
+          set -euo pipefail
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "::error::This branch does not contain the latest origin/main as an ancestor."
+            echo "::error::It was created from a stale base. Rebase the new work:"
+            echo "::error::  git rebase --onto origin/main <first-new-commit>^ && git push --force-with-lease"
+            echo "::error::Or recreate the branch: scripts/new-branch.sh <branch-name>"
+            exit 1
+          fi
+          echo "branch base is clean (contains latest origin/main)"
+
   build:
     name: Build and test
     runs-on: ubuntu-latest

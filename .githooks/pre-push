@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# pre-push hook: blocks pushes that are not based on the latest origin/main.
+#
+# Why: squash merges create a new commit on main with no link to the
+# original branch. A branch created FROM a squash-merged branch (or from
+# any stale base) inherits changes that already exist in main — GitHub
+# then reports conflicts even though the content is identical
+# (AGENTS.md rule 3). `git cherry`/patch-id cannot detect this (the
+# squash commit's patch differs from the original commits), so this hook
+# instead verifies the pushed branch CONTAINS the latest origin/main as
+# an ancestor. Any stale base fails the check and the push is blocked
+# before it ever reaches GitHub.
+#
+# Install: run scripts/setup-hooks.sh (sets core.hooksPath to .githooks).
+# Bypass: git push --no-verify (only when you know what you are doing).
+#
+# stdin: <local ref> <local sha> <remote ref> <remote sha> (per ref pushed)
+
+set -euo pipefail
+
+REMOTE="${1:-origin}"
+
+if ! git remote get-url "$REMOTE" >/dev/null 2>&1; then
+  exit 0
+fi
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Skip deletions (remote sha all zeros).
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    continue
+  fi
+  # Only check branch refs; main itself is exempt (it is the base).
+  case "$local_ref" in
+    refs/heads/*) ;;
+    *) continue ;;
+  esac
+  if [ "$local_ref" = "refs/heads/main" ]; then
+    continue
+  fi
+
+  # Refresh origin/main so the comparison is accurate.
+  git fetch --quiet "$REMOTE" main 2>/dev/null || {
+    echo "pre-push: could not fetch $REMOTE/main; aborting push (run 'git fetch $REMOTE')" >&2
+    exit 1
+  }
+
+  if ! git merge-base --is-ancestor "$REMOTE/main" "$local_sha" 2>/dev/null; then
+    echo "error: '$local_ref' does not contain the latest $REMOTE/main as an ancestor." >&2
+    echo "       The branch was created from a stale base (e.g. a squash-merged branch)," >&2
+    echo "       so GitHub will report conflicts even when the content is identical." >&2
+    echo >&2
+    echo "Fix — rebase the new work onto the latest main:" >&2
+    echo "  git fetch origin" >&2
+    echo "  git rebase --onto origin/main <sha-of-your-first-new-commit>^" >&2
+    echo "  git push --force-with-lease" >&2
+    echo >&2
+    echo "Or start over from the latest main (recommended):" >&2
+    echo "  scripts/new-branch.sh <branch-name>   # creates from origin/main" >&2
+    echo >&2
+    echo "To bypass this check only this once: git push --no-verify" >&2
+    exit 1
+  fi
+done
+
+exit 0

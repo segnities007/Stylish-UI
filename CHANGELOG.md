@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.10.0](https://github.com/segnities007/Stylish-UI/compare/v0.9.0...v0.10.0) (2026-08-13)
+
+
+### Features
+
+* **components:** add round-3 web parity components (command palette, splitter, masonry, etc.) ([#39](https://github.com/segnities007/Stylish-UI/issues/39)) ([0cfcd6b](https://github.com/segnities007/Stylish-UI/commit/0cfcd6b105e49ff3a3ad7f6e44494bbf7953ea50))
+* **website:** rebuild the official site as an interactive playground ([#35](https://github.com/segnities007/Stylish-UI/issues/35)) ([da28c6f](https://github.com/segnities007/Stylish-UI/commit/da28c6f7e4572eee7d8f20fb2108f4416ee2fd0c))
+* **website:** rebuild the official site as an interactive playground ([#38](https://github.com/segnities007/Stylish-UI/issues/38)) ([0e3098b](https://github.com/segnities007/Stylish-UI/commit/0e3098bb20eef2bc0b01cb7eeb6097560dfd921d))
+
 ## [0.9.0](https://github.com/segnities007/Stylish-UI/compare/v0.8.0...v0.9.0) (2026-08-13)
 
 

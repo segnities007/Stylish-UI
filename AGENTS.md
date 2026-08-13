@@ -172,9 +172,8 @@ Every public composable, function, and data class must have a KDoc comment descr
 4. **Open a Pull Request** for all changes.
 5. **Use Conventional Commits** for all commit messages and PR titles.
    GitHub auto-generates the PR title from the branch name (e.g.
-   `docs/foo` → "Docs/foo"), which **fails the `pr-title-check` CI**.
-   Always set the PR title manually to `<type>(<scope>): <subject>`
-   format with a lowercase subject (e.g.
+   `docs/foo` → "Docs/foo"). Set the PR title manually to
+   `<type>(<scope>): <subject>` format with a lowercase subject (e.g.
    `docs(components): enrich KDoc across all public API`).
 6. **Use Squash merge** when merging PRs.
 7. **Do not modify release-related files** unless explicitly instructed:

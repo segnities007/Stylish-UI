@@ -35,16 +35,29 @@ jobs:
           validate-wrappers: true
           add-job-summary: 'on-failure'
 
+      # Clean before building: the webpack bundle keeps stale hashed
+      # artifacts, which previously produced an index.js referencing a wasm
+      # that was never uploaded (site broken with a 404 wasm).
       - name: Build Wasm gallery
-        run: ./gradlew :website-wasm:wasmJsBrowserProductionWebpack
+        run: ./gradlew :website-wasm:clean :website-wasm:wasmJsBrowserProductionWebpack
 
       - name: Build Dokka API docs
         run: ./gradlew dokkaGeneratePublicationHtml
 
       - name: Assemble Pages artifact
         run: |
+          rm -rf _site
           mkdir -p _site/api
-          cp -r website-wasm/build/dist/wasmJs/productionExecutable/* _site/
+          # CMP 1.11 writes the production bundle to build/kotlin-webpack;
+          # older layouts used build/dist. Copy from whichever exists so the
+          # hashed wasm files always ship together with the bundle.
+          for dir in \
+            website-wasm/build/dist/wasmJs/productionExecutable \
+            website-wasm/build/kotlin-webpack/wasmJs/productionExecutable; do
+            if [ -d "$dir" ]; then
+              cp -r "$dir"/* _site/
+            fi
+          done
           cp -r build/dokka/html/* _site/api/
 
       - name: Upload artifact

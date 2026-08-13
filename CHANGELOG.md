@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/segnities007/Stylish-UI/compare/v0.8.0...v0.9.0) (2026-08-13)
+
+
+### Features
+
+* **components:** add round-2 web parity components (alert, toast, result, popconfirm, etc.) ([#32](https://github.com/segnities007/Stylish-UI/issues/32)) ([9417f2c](https://github.com/segnities007/Stylish-UI/commit/9417f2c0874dbe8dc21184e3766454bbd2f2937a))
+
+
+### Bug Fixes
+
+* **release:** sync version.properties and use inline release-please marker ([#33](https://github.com/segnities007/Stylish-UI/issues/33)) ([03022ae](https://github.com/segnities007/Stylish-UI/commit/03022aebb71c55835885ac09474ae9807f0be1e4))
+
 ## [0.8.0](https://github.com/segnities007/Stylish-UI/compare/v0.7.0...v0.8.0) (2026-08-12)
 
 

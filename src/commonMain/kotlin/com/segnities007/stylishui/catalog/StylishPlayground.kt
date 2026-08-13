@@ -3,14 +3,12 @@ package com.segnities007.stylishui.catalog
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -32,9 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishChip
-import com.segnities007.stylishui.components.patterns.StylishFooter
-import com.segnities007.stylishui.components.patterns.StylishHeader
-import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.components.atoms.StylishChipVariant
 
 /**
  * Playground categories shown as filter chips on the website.
@@ -55,10 +51,10 @@ internal enum class DemoCategory(val label: String) {
  * The interactive component playground of the Stylish website — the
  * shadcn/Tailwind "UI blocks" style gallery.
  *
- * Renders a header with a dark-mode toggle, a category filter chip row,
- * and a responsive two-column grid of interactive [StylishDemoCard]s
- * (one column on narrow viewports). Each demo lets the visitor change
- * component state live and view/copy its code.
+ * Renders a clean header with a dark-mode toggle, a category filter
+ * chip row, and a single centered column of interactive
+ * [StylishDemoCard]s. Each demo lets the visitor change component state
+ * live and view/copy its code.
  *
  * @param darkTheme Current theme flag.
  * @param onToggleTheme Switches between light and dark theme.
@@ -70,57 +66,55 @@ public fun StylishPlayground(
 ) {
     var category by remember { mutableStateOf(DemoCategory.Buttons) }
 
-    BoxWithConstraints(Modifier.fillMaxSize()) {
-        val twoColumns = maxWidth >= 760.dp
-        val cardWidth = if (twoColumns) {
-            (maxWidth - 12.dp) / 2
-        } else {
-            maxWidth
-        }
-
-        Column(Modifier.fillMaxSize()) {
-            StylishHeader(
-                title = {
-                    Column {
-                        Text("Stylish UI", style = MaterialTheme.typography.titleLarge)
-                        Text(
-                            "Compose Multiplatform design system",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onToggleTheme) {
-                        Icon(
-                            imageVector = if (darkTheme) Icons.Default.LightMode else Icons.Default.DarkMode,
-                            contentDescription = if (darkTheme) "ライトモードへ" else "ダークモードへ",
-                        )
-                    }
-                },
-            )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            CategoryFilter(
-                selected = category,
-                onSelect = { category = it },
-            )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                CategoryIntro(category)
-                DemoColumn(
-                    category = category,
-                    cardWidth = cardWidth,
-                    twoColumns = twoColumns,
+    Column(Modifier.fillMaxSize()) {
+        // Clean app-bar style header with hairline border.
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column {
+                Text(
+                    "Stylish UI",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(Modifier.size(8.dp))
-                PlaygroundFooter()
+                Text(
+                    "Compose Multiplatform design system",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            IconButton(onClick = onToggleTheme) {
+                Icon(
+                    imageVector = if (darkTheme) Icons.Default.LightMode else Icons.Default.DarkMode,
+                    contentDescription = if (darkTheme) "ライトモードへ" else "ダークモードへ",
+                )
+            }
+        }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        CategoryFilter(selected = category, onSelect = { category = it })
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 24.dp),
+        ) {
+            // Centered content column — single column layout never breaks
+            // across viewport widths.
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Column(
+                    Modifier.width(720.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    CategoryIntro(category)
+                    CategoryDemos(category, Modifier.fillMaxWidth())
+                    PlaygroundFooter()
+                }
             }
         }
     }
@@ -135,7 +129,7 @@ private fun CategoryFilter(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = 24.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         DemoCategory.entries.forEach { category ->
@@ -143,7 +137,7 @@ private fun CategoryFilter(
                 label = category.label,
                 onClick = { onSelect(category) },
                 selected = category == selected,
-                variant = com.segnities007.stylishui.components.atoms.StylishChipVariant.Filter,
+                variant = StylishChipVariant.Filter,
             )
         }
     }
@@ -170,26 +164,6 @@ private fun CategoryIntro(category: DemoCategory) {
 }
 
 @Composable
-private fun DemoColumn(
-    category: DemoCategory,
-    cardWidth: androidx.compose.ui.unit.Dp,
-    twoColumns: Boolean,
-) {
-    if (twoColumns) {
-        androidx.compose.foundation.layout.FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            CategoryDemos(category, Modifier.width(cardWidth))
-        }
-    } else {
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            CategoryDemos(category, Modifier.fillMaxWidth())
-        }
-    }
-}
-
-@Composable
 private fun CategoryDemos(category: DemoCategory, modifier: Modifier) {
     when (category) {
         DemoCategory.Buttons -> DemoButtons(modifier)
@@ -206,18 +180,17 @@ private fun CategoryDemos(category: DemoCategory, modifier: Modifier) {
 
 @Composable
 private fun PlaygroundFooter() {
-    StylishFooter(
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    "Stylish UI — Clear, Simple, Modern.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        },
-    )
+    Surface(color = MaterialTheme.colorScheme.surface) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                "Stylish UI — Clear, Simple, Modern.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 16.dp),
+            )
+        }
+    }
 }

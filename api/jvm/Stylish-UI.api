@@ -188,8 +188,7 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$Styli
 public final class com/segnities007/stylishui/catalog/ComposableSingletons$StylishPlaygroundKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/catalog/ComposableSingletons$StylishPlaygroundKt;
 	public fun <init> ()V
-	public final fun getLambda$-226649567$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-92668994$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1169468578$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/segnities007/stylishui/catalog/StylishDemoCardKt {

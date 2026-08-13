@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -49,6 +53,7 @@ import com.segnities007.stylishui.components.atoms.StylishFab
 import com.segnities007.stylishui.components.atoms.StylishFilledIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTextField
+import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.atoms.StylishHorizontalDivider
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishLinearProgressIndicator
@@ -90,6 +95,13 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedListItemG
 import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
 import com.segnities007.stylishui.components.molecules.StylishListItem
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
+import com.segnities007.stylishui.components.molecules.StylishAvatarGroup
+import com.segnities007.stylishui.components.molecules.StylishFormField
+import com.segnities007.stylishui.components.molecules.StylishMasonry
+import com.segnities007.stylishui.components.molecules.StylishSplitter
+import com.segnities007.stylishui.components.organisms.StylishCommandPalette
+import com.segnities007.stylishui.components.organisms.StylishCommandItem
+import com.segnities007.stylishui.components.organisms.StylishHoverCard
 import com.segnities007.stylishui.components.molecules.StylishResult
 import com.segnities007.stylishui.components.molecules.StylishResultVariant
 import com.segnities007.stylishui.components.molecules.StylishToastData
@@ -605,6 +617,77 @@ private fun ComponentCatalog() {
 
             StylishSectionTitle("Code / VisuallyHidden", textStyle = MaterialTheme.typography.titleSmall)
             StylishCode("implementation(\"io.github.segnities007:stylish-ui:0.8.0\")")
+
+            StylishHorizontalDivider(Modifier.fillMaxWidth())
+
+            // ── Web Parity 3 (0.9) ──
+            StylishSectionTitle("Web Parity 3")
+
+            StylishSectionTitle("Splitter / Masonry", textStyle = MaterialTheme.typography.titleSmall)
+            StylishSplitter(
+                modifier = Modifier.fillMaxWidth().height(140.dp),
+                first = {
+                    Box(
+                        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center,
+                    ) { Text("パネルA") }
+                },
+                second = {
+                    Box(
+                        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.secondaryContainer),
+                        contentAlignment = Alignment.Center,
+                    ) { Text("パネルB") }
+                },
+            )
+            StylishMasonry(itemCount = 4, columns = 2) { index ->
+                Box(
+                    Modifier.fillMaxWidth().height(if (index % 2 == 0) 64.dp else 96.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)),
+                    contentAlignment = Alignment.Center,
+                ) { Text("項目 $index") }
+            }
+
+            StylishSectionTitle("FormField / AvatarGroup", textStyle = MaterialTheme.typography.titleSmall)
+            StylishFormField(
+                label = "車両名",
+                required = true,
+                supportingText = "登録する車両の名前を入力してください。",
+            ) {
+                StylishFormTextField(
+                    value = "Stylish Car",
+                    onValueChange = {},
+                    label = "車両名",
+                )
+            }
+            StylishAvatarGroup(count = 4, size = 40.dp) { index ->
+                StylishAvatar(initials = "U$index", size = 36.dp)
+            }
+
+            StylishSectionTitle("HoverCard / CommandPalette", textStyle = MaterialTheme.typography.titleSmall)
+            StylishHoverCard(
+                trigger = { Text("ホバーして詳細表示", style = MaterialTheme.typography.bodyLarge) },
+            ) {
+                Text("詳細情報", style = MaterialTheme.typography.titleSmall)
+                Text("ホバーで表示されるカードです。", style = MaterialTheme.typography.bodySmall)
+            }
+            var paletteQuery by remember { mutableStateOf("") }
+            StylishButton(
+                onClick = { paletteQuery = "palette" },
+                variant = StylishButtonVariant.Outlined,
+            ) { Text("コマンドパレット") }
+            if (paletteQuery == "palette") {
+                StylishCommandPalette(
+                    expanded = true,
+                    onDismiss = { paletteQuery = "" },
+                    query = "",
+                    onQueryChange = {},
+                    items = listOf(
+                        StylishCommandItem("ダッシュボードを開く", { paletteQuery = "" }),
+                        StylishCommandItem("給油記録を追加", { paletteQuery = "" }),
+                        StylishCommandItem("設定を開く", { paletteQuery = "" }),
+                    ),
+                )
+            }
 
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 

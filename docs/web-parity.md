@@ -36,3 +36,16 @@ SpeedDial / focus-visible リング（stylishFocusRing）は前回ラウンド�
 
 - **フォーカス可視化**（focus-visible リング）: 前回ラウンドで実装済み（stylishFocusRing）
 - **VisuallyHidden**: スクリーンリーダー専用コンテンツの標準パターン（Chakra）を今回実装
+
+## 第3ラウンド: Radix/shadcn(Ant) の追加パターン
+
+| # | コンポーネント | Web 出典 | Stylish 判断 | 状態 |
+|---|---|---|---|---|
+| 1 | Command Palette（⌘K） | shadcn(cmdk)/Radix | **実装**: StylishCommandPalette（キーボードナビ付き） | ✅ |
+| 2 | Splitter / Resizable | Ant/Radix | **実装**: StylishSplitter（ドラッグ分割パネル） | ✅ |
+| 3 | Masonry | Ant/MUI | **実装**: StylishMasonry（カラム分配レイアウト） | ✅ |
+| 4 | Field（フォームラッパー） | shadcn/Ant | **実装**: StylishFormField（ラベル+必須+エラー+ヘルプ） | ✅ |
+| 5 | Avatar.Group | Ant/MUI | **実装**: StylishAvatarGroup（重ね表示） | ✅ |
+| 6 | HoverCard | Radix/shadcn | **実装**: StylishHoverCard（ホバー情報カード） | ✅ |
+| 7 | Menubar / NavigationMenu | Radix/MUI | 見送り: デスクトップ特化・複雑 | 次期 |
+| 8 | TransferList / Tree / Tour | Ant | 見送り: 高複雑度 | 次期 |

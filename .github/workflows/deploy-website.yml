@@ -48,9 +48,11 @@ jobs:
         run: |
           rm -rf _site
           mkdir -p _site/api
-          # CMP 1.11 writes the production bundle to build/kotlin-webpack;
-          # older layouts used build/dist. Copy from whichever exists so the
-          # hashed wasm files always ship together with the bundle.
+          # The webpack bundle (build/kotlin-webpack or legacy build/dist)
+          # contains the hashed wasm files but NOT index.html — CMP 1.11
+          # keeps the HTML template in build/processedResources instead.
+          # Copy all three so the published site is complete.
+          cp -r website-wasm/build/processedResources/wasmJs/main/* _site/
           for dir in \
             website-wasm/build/dist/wasmJs/productionExecutable \
             website-wasm/build/kotlin-webpack/wasmJs/productionExecutable; do

@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
@@ -40,7 +41,9 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * content is dimmed to 38 % opacity, the button is announced as
  * disabled via semantics, and the inner [IconButton] rejects clicks.
  * When [enabled], a Material-style state layer (see
- * [Modifier.stylishStateLayer]) darkens the surface on hover and press.
+ * [Modifier.stylishStateLayer]) darkens the surface on hover and press,
+ * and a primary-colored focus ring (see [Modifier.stylishFocusRing]) is
+ * drawn while the button holds keyboard focus.
  *
  * @param imageVector Icon drawn inside the button when [iconContent]
  *   is `null`.
@@ -128,6 +131,16 @@ public fun StylishIconButton(
             .then(
                 if (enabled) {
                     Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape ?: CircleShape,
+                    )
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (enabled) {
+                    Modifier.stylishFocusRing(
                         interactionSource = resolvedInteractionSource,
                         shape = shape ?: CircleShape,
                     )

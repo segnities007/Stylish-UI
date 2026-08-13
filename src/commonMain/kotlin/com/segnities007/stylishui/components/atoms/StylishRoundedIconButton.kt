@@ -25,6 +25,7 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
@@ -39,7 +40,9 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * [StylishIconButton]: active inverts to primary/onPrimary, and
  * disabling removes the shadow. When [enabled], a Material-style state
  * layer (see [Modifier.stylishStateLayer]) darkens the surface on
- * hover and press. When [enabled] is `false`, the icon
+ * hover and press, and a primary-colored focus ring (see
+ * [Modifier.stylishFocusRing]) is drawn while the button holds keyboard
+ * focus. When [enabled] is `false`, the icon
  * is rendered inside a plain [Box] instead of an [IconButton], so
  * no ripple or click handling is attached; the box is announced as
  * disabled and carries the [contentDescription] via semantics.
@@ -122,6 +125,16 @@ public fun StylishRoundedIconButton(
             .then(
                 if (enabled) {
                     Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape,
+                    )
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (enabled) {
+                    Modifier.stylishFocusRing(
                         interactionSource = resolvedInteractionSource,
                         shape = shape,
                     )

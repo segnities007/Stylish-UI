@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
@@ -89,7 +90,9 @@ public enum class StylishChipVariant {
  * semantics, no ripple, and no elevation lift. When [enabled] is
  * `false`, the chip is announced as disabled via semantics. When
  * actionable, a Material-style state layer (see
- * [Modifier.stylishStateLayer]) darkens the surface on hover and press.
+ * [Modifier.stylishStateLayer]) darkens the surface on hover and press,
+ * and a primary-colored focus ring (see [Modifier.stylishFocusRing]) is
+ * drawn around the chip while it holds keyboard focus.
  *
  * The selected/unselected color transition animates with
  * [StylishTheme.animation.durationShort]; when the platform requests
@@ -261,6 +264,16 @@ public fun StylishChip(
             .then(
                 if (actionable) {
                     Modifier.stylishStateLayer(
+                        interactionSource = resolvedInteractionSource,
+                        shape = shape,
+                    )
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (actionable) {
+                    Modifier.stylishFocusRing(
                         interactionSource = resolvedInteractionSource,
                         shape = shape,
                     )

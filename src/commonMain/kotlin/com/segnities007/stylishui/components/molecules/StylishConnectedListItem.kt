@@ -37,6 +37,7 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
@@ -80,6 +81,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param interactionSource The [MutableInteractionSource] used to observe
  *   press/hover/focus interactions for the state layer. When `null`, an
  *   internal one is remembered per item.
+ *
+ * Focus: actionable rows draw the web "focus-visible ring"
+ * ([Modifier.stylishFocusRing]) around [shape] while the row holds keyboard
+ * or focus-ring focus.
  *
  * @see StylishConnectedListItemRow
  * @see StylishConnectedListItemColumn
@@ -132,6 +137,7 @@ public fun DefaultStylishConnectedListItem(
                             },
                         )
                         .semantics { role = Role.Button }
+                        .stylishFocusRing(resolvedInteractionSource, shape)
                 } else {
                     Modifier
                 },

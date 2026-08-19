@@ -1,4 +1,4 @@
-.PHONY: compile build run clean
+.PHONY: compile build run clean apiDump apiCheck test
 
 compile:
 	./gradlew :compileKotlinWasmJs
@@ -11,3 +11,12 @@ run:
 
 clean:
 	./gradlew clean
+
+apiDump:
+	./gradlew apiDump
+
+apiCheck:
+	./gradlew apiCheck
+
+test:
+	./gradlew jvmTest

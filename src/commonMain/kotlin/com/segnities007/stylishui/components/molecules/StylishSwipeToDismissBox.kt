@@ -32,7 +32,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * This is the Finish-layer wrapper around the Material 3
  * [rememberSwipeToDismissBoxState], exposing the non-deprecated signature
  * ([positionalThreshold] instead of the legacy `confirmValueChange` overload)
- * so callers never touch the deprecated M3 API surface.
+ * so callers never touch the deprecated M3 API surface. The settle animation
+ * uses [StylishTheme.animation] tokens — [com.segnities007.stylishui.tokens.StylishAnimationTokens.durationMedium]
+ * duration with [com.segnities007.stylishui.tokens.StylishAnimationTokens.defaultEasing] —
+ * so the dismiss motion matches the rest of the Stylish motion language.
  *
  * @param initialValue The initial settled value of the state. Defaults to
  *   [SwipeToDismissBoxValue.Settled].
@@ -42,17 +45,60 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   [SwipeToDismissBoxDefaults.positionalThreshold] (56 dp).
  *
  * @see StylishSwipeToDismissBox
+ * @see rememberStylishDismissState
  */
 @Composable
 public fun rememberStylishSwipeToDismissBoxState(
     initialValue: SwipeToDismissBoxValue = SwipeToDismissBoxValue.Settled,
     positionalThreshold: (totalDistance: Float) -> Float =
         SwipeToDismissBoxDefaults.positionalThreshold,
-): SwipeToDismissBoxState =
-    rememberSwipeToDismissBoxState(
+): SwipeToDismissBoxState {
+    return rememberSwipeToDismissBoxState(
         initialValue = initialValue,
         positionalThreshold = positionalThreshold,
     )
+}
+
+/**
+ * Convenience alias for [rememberStylishSwipeToDismissBoxState] with a
+ * shorter name. Returns a [SwipeToDismissBoxState] whose settle animation
+ * is configured with [StylishTheme.animation] tokens.
+ *
+ * Use [SwipeToDismissBoxState.isDismissed] to check whether the content
+ * has been dismissed, [SwipeToDismissBoxState.dismissOffset] for the
+ * current swipe offset in pixels, and [SwipeToDismissBoxState.progress]
+ * / [SwipeToDismissBoxState.currentValue] for the animation progress
+ * and settled direction.
+ *
+ * @param initialValue The initial settled value of the state. Defaults to
+ *   [SwipeToDismissBoxValue.Settled].
+ * @param positionalThreshold The distance (as a fraction of the total swipe
+ *   distance) after which the swipe settles into a dismissed or settled
+ *   target. Defaults to
+ *   [SwipeToDismissBoxDefaults.positionalThreshold] (56 dp).
+ *
+ * @see rememberStylishSwipeToDismissBoxState
+ * @see StylishSwipeToDismissBox
+ */
+@Composable
+public fun rememberStylishDismissState(
+    initialValue: SwipeToDismissBoxValue = SwipeToDismissBoxValue.Settled,
+    positionalThreshold: (totalDistance: Float) -> Float =
+        SwipeToDismissBoxDefaults.positionalThreshold,
+): SwipeToDismissBoxState = rememberStylishSwipeToDismissBoxState(
+    initialValue = initialValue,
+    positionalThreshold = positionalThreshold,
+)
+
+/**
+ * Whether this dismiss state has settled into a dismissed value
+ * (either [SwipeToDismissBoxValue.StartToEnd] or
+ * [SwipeToDismissBoxValue.EndToStart]).
+ *
+ * @see rememberStylishDismissState
+ */
+public val SwipeToDismissBoxState.isDismissed: Boolean
+    get() = currentValue != SwipeToDismissBoxValue.Settled
 
 /**
  * A swipe-to-dismiss container that reveals [backgroundContent] as the user

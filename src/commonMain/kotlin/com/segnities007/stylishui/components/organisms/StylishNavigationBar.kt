@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -159,6 +160,7 @@ public fun StylishNavigationBar(
                         .semantics {
                             this.selected = item.selected
                             role = Role.Tab
+                            stateDescription = if (item.selected) "Selected" else ""
                             if (!item.enabled) disabled()
                         }
                         .then(
@@ -219,6 +221,22 @@ public fun StylishNavigationBar(
 @Composable
 private fun StylishNavigationBarPreview() {
     StylishTheme(darkTheme = false) {
+        Surface {
+            StylishNavigationBar(
+                items = listOf(
+                    StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
+                    StylishNavigationItem(Icons.Default.Search, "検索"),
+                    StylishNavigationItem(Icons.Default.Settings, "設定"),
+                ),
+            )
+        }
+    }
+}
+
+@Preview(name = "Stylish navigation bar (dark)", showBackground = true, widthDp = 393)
+@Composable
+private fun StylishNavigationBarDarkPreview() {
+    StylishTheme(darkTheme = true) {
         Surface {
             StylishNavigationBar(
                 items = listOf(

@@ -19,7 +19,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Stylish UI - Official Website",
     ) {
-        var darkTheme by remember { mutableStateOf(false) }
+        var darkTheme by remember { mutableStateOf(true) }
         StylishTheme(darkTheme = darkTheme) {
             Surface(Modifier.fillMaxSize()) {
                 StylishPlayground(

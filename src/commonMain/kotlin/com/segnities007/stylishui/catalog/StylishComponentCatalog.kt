@@ -5,7 +5,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -653,15 +652,16 @@ private fun ComponentCatalog() {
             StylishPopover(
                 expanded = popoverExpanded,
                 onExpandedChange = { popoverExpanded = it },
-                anchor = {
+                trigger = {
                     StylishButton(onClick = { popoverExpanded = true }, variant = StylishButtonVariant.Outlined) {
                         Text("フィルター")
                     }
                 },
-            ) {
-                Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
-                Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
-            }
+                content = {
+                    Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
+                    Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
+                },
+            )
             Box(Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.BottomEnd) {
                 var speedDialExpanded by remember { mutableStateOf(false) }
                 StylishSpeedDial(

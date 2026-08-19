@@ -1,20 +1,19 @@
 package com.segnities007.stylishui.catalog
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,120 +28,117 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * A playable demo card of the Stylish playground: title, description,
- * an interactive preview area, and a collapsible code snippet with a
- * copy button.
+ * A preview-first demo card for the Stylish UI catalog gallery.
  *
- * This is part of the public catalog (like [StylishComponentCatalog]);
- * it is not a design-system component but the website gallery's building
- * block.
+ * Displays the component preview as the primary content with minimal chrome.
+ * Clicking the card expands a code panel below.
  *
- * @param title Name of the demo.
- * @param description One-line explanation of the demo.
- * @param code The Kotlin snippet shown when the code section is
- *   expanded.
- * @param modifier Modifier applied to the card surface.
- * @param content The interactive preview.
+ * This design matches the uiverse.io gallery aesthetic: clean, preview-focused,
+ * with interactive reveals rather than persistent labels.
+ *
+ * @param name Display name shown above the preview.
+ * @param code Kotlin source code snippet for the component.
+ * @param modifier Modifier applied to the card.
+ * @param preview Composable that renders the interactive preview.
  */
 @Composable
 public fun StylishDemoCard(
-    title: String,
-    description: String,
+    name: String,
     code: String,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
+    preview: @Composable () -> Unit,
 ) {
     var showCode by remember { mutableStateOf(false) }
-    val reducedMotion = isStylishReducedMotionEnabled()
 
-    Surface(
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(
-            DefaultStylishDimensions.connectedCornerRadius,
-        ),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Column(Modifier.padding(16.dp)) {
-            Text(
-                title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (description.isNotEmpty()) {
-                Text(
-                    description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 2.dp),
-                )
-            }
-            Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+    Column(modifier = modifier.fillMaxWidth()) {
+        // Card container
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            tonalElevation = 1.dp,
+            shadowElevation = 6.dp,
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Column(
-                    Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    content()
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
+                // Component name
+                Text(
+                    name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                
+                // Preview content
+                preview()
+
+                // Code toggle button
                 TextButton(onClick = { showCode = !showCode }) {
+                    Icon(
+                        Icons.Default.Code,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 4.dp),
+                    )
                     Text(if (showCode) "コードを隠す" else "コードを表示")
                 }
             }
-            AnimatedVisibility(
-                visible = showCode,
-                enter = expandVertically(
-                    animationSpec = tween(if (reducedMotion) 0 else StylishTheme.animation.durationShort),
-                ),
-                exit = shrinkVertically(
-                    animationSpec = tween(if (reducedMotion) 0 else StylishTheme.animation.durationShort),
-                ),
-            ) {
-                CodeBlock(code)
-            }
+        }
+
+        // Expandable code panel
+        if (showCode) {
+            CodePanel(code, Modifier.padding(top = 12.dp))
         }
     }
 }
 
+/**
+ * Dark-themed code panel with syntax-friendly monospace font and copy button.
+ *
+ * @param code The Kotlin source code to display.
+ * @param modifier Modifier applied to the panel.
+ */
 @Composable
-private fun CodeBlock(code: String) {
+private fun CodePanel(
+    code: String,
+    modifier: Modifier = Modifier,
+) {
     val clipboard = androidx.compose.ui.platform.LocalClipboardManager.current
     val scope = rememberCoroutineScope()
     var copied by remember { mutableStateOf(false) }
+    val panelShape = RoundedCornerShape(12.dp)
 
     Surface(
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
+        shape = panelShape,
+        color = Color(0xFF1E1F22),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
     ) {
         Row(
-            modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 4.dp, top = 12.dp, bottom = 12.dp),
             verticalAlignment = Alignment.Top,
         ) {
             Text(
                 code,
-                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontFamily = FontFamily.Monospace,
+                    color = Color(0xFFE6E6E6),
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .horizontalScroll(rememberScrollState())
@@ -151,18 +147,46 @@ private fun CodeBlock(code: String) {
             IconButton(onClick = {
                 clipboard.setText(AnnotatedString(code))
                 copied = true
-                // Reset the checkmark after a short delay.
                 scope.launch {
-                    kotlinx.coroutines.delay(1500)
+                    delay(1500)
                     copied = false
                 }
             }) {
                 Icon(
                     imageVector = if (copied) Icons.Default.Check else Icons.Default.ContentCopy,
                     contentDescription = "コードをコピー",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = Color(0xFF9A9A9E),
                 )
             }
+        }
+    }
+}
+
+/**
+ * Preview of the demo card in dark theme.
+ */
+@androidx.compose.ui.tooling.preview.Preview(name = "Demo Card - Dark", showBackground = false, widthDp = 320)
+@Composable
+private fun StylishDemoCardPreview() {
+    StylishTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+                .padding(16.dp),
+        ) {
+            StylishDemoCard(
+                name = "Button variants",
+                code = """StylishButton(
+    onClick = {},
+    variant = StylishButtonVariant.Filled,
+) { Text("保存する") }""",
+                preview = {
+                    com.segnities007.stylishui.components.atoms.StylishButton(onClick = {}) {
+                        Text("保存する")
+                    }
+                },
+            )
         }
     }
 }

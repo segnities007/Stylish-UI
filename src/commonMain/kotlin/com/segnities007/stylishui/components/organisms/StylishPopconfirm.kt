@@ -76,14 +76,14 @@ public fun StylishPopconfirm(
     width: Dp = 260.dp,
 ) {
     StylishPopover(
+        trigger = anchor,
         expanded = expanded,
         onExpandedChange = onExpandedChange,
         modifier = modifier,
-        anchor = anchor,
         shape = shape,
         width = width,
-    ) {
-        Column(
+        content = {
+            Column(
             verticalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.itemSpacing),
         ) {
             Text(
@@ -126,7 +126,8 @@ public fun StylishPopconfirm(
                 }
             }
         }
-    }
+    },
+)
 }
 
 @Preview(name = "Stylish popconfirm", showBackground = true, widthDp = 393)

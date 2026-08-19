@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.molecules.StylishPopover
@@ -83,7 +84,7 @@ public fun StylishAutocomplete(
         expanded = expanded && enabled && suggestions.isNotEmpty(),
         onExpandedChange = { expanded = it },
         modifier = modifier.fillMaxWidth(),
-        anchor = {
+        trigger = {
             StylishFormTextField(
                 value = value,
                 onValueChange = {
@@ -100,8 +101,8 @@ public fun StylishAutocomplete(
         },
         shape = shape,
         width = width,
-        offset = 4.dp,
-    ) {
+        offset = DpOffset(0.dp, 4.dp),
+        content = {
         if (suggestions.isEmpty()) {
             Text(
                 "候補がありません",
@@ -131,7 +132,8 @@ public fun StylishAutocomplete(
                 }
             }
         }
-    }
+    },
+)
 }
 
 @Preview(name = "Stylish autocomplete", showBackground = true, widthDp = 393)

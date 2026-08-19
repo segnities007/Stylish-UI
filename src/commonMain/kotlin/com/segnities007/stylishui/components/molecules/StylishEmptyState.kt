@@ -173,7 +173,7 @@ public fun StylishEmptyState(
     }
 }
 
-@Preview(name = "Empty state", showBackground = true, widthDp = 393, heightDp = 500)
+@Preview(name = "Empty state with action", showBackground = true, widthDp = 393, heightDp = 500)
 @Composable
 private fun StylishEmptyStatePreview() {
     StylishTheme(darkTheme = false) {
@@ -185,6 +185,21 @@ private fun StylishEmptyStatePreview() {
                 modifier = Modifier.fillMaxSize(),
                 actionLabel = "車両を登録する",
                 onAction = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "Empty state without action", showBackground = true, widthDp = 393, heightDp = 500)
+@Composable
+private fun StylishEmptyStateWithoutActionPreview() {
+    StylishTheme(darkTheme = false) {
+        Surface {
+            StylishEmptyState(
+                icon = Icons.Default.DirectionsCar,
+                title = "まだ車両が登録されていません",
+                description = "下の＋ボタンから最初の車を登録しましょう",
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }

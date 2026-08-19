@@ -24,11 +24,39 @@ import androidx.compose.ui.graphics.luminance
  *   connected container layouts (e.g. connected card lists). In light themes this is a barely
  *   perceptible darkening of the surface (1.2% toward onSurface); in dark themes the shift is
  *   stronger (6%) to remain visible against dark backgrounds.
+ * @property card The default container color for card surfaces. Derived from
+ *   [ColorScheme.surfaceContainerLow] to provide a subtle elevation above the base surface.
+ * @property cardContent The default content color (text, icons) rendered on top of a [card]
+ *   container. Derived from [ColorScheme.onSurface].
+ * @property button The default container color for filled buttons. Derived from
+ *   [ColorScheme.primary] to match the primary action treatment.
+ * @property buttonContent The default content color (text, icons) rendered on top of a
+ *   [button] container. Derived from [ColorScheme.onPrimary].
+ * @property chip The default container color for chips. Derived from
+ *   [ColorScheme.surfaceContainerHigh] to distinguish chips from flat surfaces while keeping
+ *   them visually lighter than cards.
+ * @property chipContent The default content color (text, icons) rendered on top of a [chip]
+ *   container. Derived from [ColorScheme.onSurfaceVariant].
+ * @property textField The default container color for text fields. Derived from
+ *   [ColorScheme.surfaceContainerHighest] to provide the deepest surface tone among input
+ *   components, signalling interactivity.
+ * @property textFieldContent The default content color (text, icons) rendered on top of a
+ *   [textField] container. Derived from [ColorScheme.onSurface].
  * @see MaterialTheme.stylishComponentColors
  * @see StylishTheme
  */
 @Immutable
-public data class StylishComponentColors(public val groupedContainer: Color)
+public data class StylishComponentColors(
+    public val groupedContainer: Color,
+    public val card: Color,
+    public val cardContent: Color,
+    public val button: Color,
+    public val buttonContent: Color,
+    public val chip: Color,
+    public val chipContent: Color,
+    public val textField: Color,
+    public val textFieldContent: Color,
+)
 
 /**
  * The [StylishComponentColors] provided by the enclosing [StylishTheme], or `null` when no
@@ -54,6 +82,14 @@ internal fun stylishComponentColors(colorScheme: ColorScheme): StylishComponentC
             colorScheme.onSurface,
             if (colorScheme.background.luminance() > 0.5f) 0.012f else 0.06f,
         ),
+        card = colorScheme.surfaceContainerLow,
+        cardContent = colorScheme.onSurface,
+        button = colorScheme.primary,
+        buttonContent = colorScheme.onPrimary,
+        chip = colorScheme.surfaceContainerHigh,
+        chipContent = colorScheme.onSurfaceVariant,
+        textField = colorScheme.surfaceContainerHighest,
+        textFieldContent = colorScheme.onSurface,
     )
 
 /**

@@ -49,7 +49,8 @@ private fun androidx.compose.material3.Typography.withFontFamily(fontFamily: Fon
 
 @Composable
 fun App() {
-    var darkTheme by remember { mutableStateOf(false) }
+    // Default to dark theme for the gallery aesthetic
+    var darkTheme by remember { mutableStateOf(true) }
     StylishTheme(
         darkTheme = darkTheme,
         typography = StylishTypography.withFontFamily(stylishFontFamily()),

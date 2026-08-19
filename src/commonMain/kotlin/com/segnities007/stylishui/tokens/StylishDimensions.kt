@@ -45,6 +45,24 @@ import androidx.compose.ui.unit.dp
  * @property floatingCornerRadius The corner radius for floating elements such as FABs and
  *   pill-shaped headers. Default 28 dp produces the fully-rounded capsule look typical of
  *   Material 3 extended FABs.
+ * @property spacingNone Zero spacing — no gap. Use when components should touch with no
+ *   separation. Part of the semantic spacing scale.
+ * @property spacingXxs Extra-extra-small spacing (2 dp): the finest visible gap, e.g. between a
+ *   badge and its anchor. Part of the semantic spacing scale.
+ * @property spacingXs Extra-small spacing (4 dp): gap between tightly related inline elements
+ *   such as an icon and its label. Part of the semantic spacing scale.
+ * @property spacingSm Small spacing (8 dp): gap between items within a group or list. Part of
+ *   the semantic spacing scale.
+ * @property spacingMd Medium-small spacing (12 dp): gap between related but distinct elements,
+ *   e.g. a label and its associated control. Part of the semantic spacing scale.
+ * @property spacingLg Large spacing (16 dp): gap between distinct content blocks within a
+ *   section. Part of the semantic spacing scale.
+ * @property spacingXl Extra-large spacing (20 dp): standard screen-edge padding and gap between
+ *   major content regions. Part of the semantic spacing scale.
+ * @property spacingXxl Extra-extra-large spacing (24 dp): gap between loosely related groups.
+ *   Part of the semantic spacing scale.
+ * @property spacingXxxl Extra-extra-extra-large spacing (32 dp): gap between top-level sections
+ *   of a page. Part of the semantic spacing scale.
  * @property inlineSpacing The smallest spacing step (4 dp): gap between tightly related inline
  *   elements such as an icon and its label. Part of the Rhythm spacing scale (S6).
  * @property itemSpacing The small spacing step (8 dp): gap between items within a group or list.
@@ -66,6 +84,8 @@ import androidx.compose.ui.unit.dp
  * @property fabLargeSize The size of the large floating action button. Default 96 dp.
  * @property screenPadding The standard horizontal screen-edge padding for page-level layouts.
  *   Default 20 dp.
+ * @property contentPadding The standard padding inside content areas (cards, dialogs, sheets).
+ *   Default 16 dp.
  * @property controlPadding The standard horizontal padding inside controls (buttons, fields,
  *   cards). Default 16 dp.
  * @property controlVerticalPadding The standard vertical padding inside controls. Default 12 dp.
@@ -88,6 +108,15 @@ public data class StylishDimensions(
     public val connectedCornerRadius: Dp = 12.dp,
     public val joinedCornerRadius: Dp = 2.dp,
     public val floatingCornerRadius: Dp = 28.dp,
+    public val spacingNone: Dp = 0.dp,
+    public val spacingXxs: Dp = 2.dp,
+    public val spacingXs: Dp = 4.dp,
+    public val spacingSm: Dp = 8.dp,
+    public val spacingMd: Dp = 12.dp,
+    public val spacingLg: Dp = 16.dp,
+    public val spacingXl: Dp = 20.dp,
+    public val spacingXxl: Dp = 24.dp,
+    public val spacingXxxl: Dp = 32.dp,
     public val inlineSpacing: Dp = 4.dp,
     public val itemSpacing: Dp = 8.dp,
     public val contentSpacing: Dp = 16.dp,
@@ -100,6 +129,7 @@ public data class StylishDimensions(
     public val fabSmallSize: Dp = 40.dp,
     public val fabLargeSize: Dp = 96.dp,
     public val screenPadding: Dp = 20.dp,
+    public val contentPadding: Dp = 16.dp,
     public val controlPadding: Dp = 16.dp,
     public val controlVerticalPadding: Dp = 12.dp,
     public val pieChartSize: Dp = 160.dp,

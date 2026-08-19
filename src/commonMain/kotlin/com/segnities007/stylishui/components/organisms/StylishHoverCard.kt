@@ -75,7 +75,7 @@ public fun StylishHoverCard(
         expanded = expanded,
         onExpandedChange = { expanded = it },
         modifier = modifier,
-        anchor = {
+        trigger = {
             Box(
                 Modifier.pointerInput(Unit) {
                     awaitPointerEventScope {
@@ -97,9 +97,12 @@ public fun StylishHoverCard(
         containerColor = containerColor,
         contentColor = contentColor,
         width = width,
-    ) {
-        content()
-    }
+        content = {
+            Column {
+                content()
+            }
+        },
+    )
 }
 
 @Preview(name = "Stylish hover card", showBackground = true, widthDp = 393)

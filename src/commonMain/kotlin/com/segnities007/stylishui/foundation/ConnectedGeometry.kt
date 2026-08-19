@@ -1,9 +1,23 @@
 package com.segnities007.stylishui.foundation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
@@ -221,6 +235,47 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
 }
 
 /**
+ * Builds a position-aware [RoundedCornerShape] for the item at [index] in a grid-based
+ * Connected UI layout.
+ *
+ * This is a convenience wrapper that combines [connectedGridCorners] and [connectedShape]:
+ * it computes which corners of the item face the exterior of the grid and returns a shape
+ * where those corners receive [outerCornerRadius] while all interior (joined) corners
+ * receive [joinedCornerRadius].
+ *
+ * Corner assignment follows the same rules as [connectedGridCorners]: a corner is outer
+ * only when the item has no neighbor in the two directions that meet at that corner. For
+ * example, the item at `index = 0` (top-left) has no neighbor above or to the left, so
+ * its `topStart` corner is outer; an interior item with neighbors on every side has all
+ * joined corners. A partially filled final row is stretched to the full grid width by the
+ * Connected grid layouts, so the function treats every column of the row directly above
+ * the last row as having a neighbor below.
+ *
+ * @param index Zero-based position of the item in row-major order.
+ * @param totalItems Total number of items in the grid. Must be greater than zero.
+ * @param columns Number of columns in the grid layout. Must be greater than zero.
+ * @param outerCornerRadius Radius applied to corners that face the exterior of the grid.
+ *   Defaults to [DefaultStylishDimensions.connectedCornerRadius] (12 dp).
+ * @param joinedCornerRadius Radius applied to corners that face an adjacent item. Defaults
+ *   to [DefaultStylishDimensions.joinedCornerRadius] (2 dp).
+ * @return A [Shape] suitable for use with `Modifier.clip()` or `Modifier.background()`.
+ * @throws IllegalArgumentException if [columns] is not greater than zero, or if [index] is
+ *   outside the range `0 until totalItems`.
+ * @see connectedGridCorners
+ * @see connectedShape
+ */
+public fun connectedGridItemShape(
+    index: Int,
+    totalItems: Int,
+    columns: Int,
+    outerCornerRadius: Dp = DefaultStylishDimensions.connectedCornerRadius,
+    joinedCornerRadius: Dp = DefaultStylishDimensions.joinedCornerRadius,
+): Shape {
+    val corners = connectedGridCorners(index, totalItems, columns)
+    return connectedShape(corners, outerCornerRadius, joinedCornerRadius)
+}
+
+/**
  * Returns the outline edges for the item at [index] in a horizontal (row) Connected UI list.
  *
  * Edges shared with an adjacent item are suppressed so that neighbors share a single seamless
@@ -328,4 +383,44 @@ public fun connectedGridEdges(index: Int, size: Int, columns: Int): ConnectedEdg
         bottom = !hasBelow,
         start = !hasLeft,
     )
+}
+
+@Preview(name = "Connected grid item shapes", showBackground = true, widthDp = 393)
+@Composable
+private fun ConnectedGridItemShapePreview() {
+    Box(
+        modifier = Modifier.padding(16.dp),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            val columns = 3
+            val totalItems = 7
+            val rows = (totalItems + columns - 1) / columns
+            for (row in 0 until rows) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    for (col in 0 until columns) {
+                        val index = row * columns + col
+                        if (index < totalItems) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(64.dp)
+                                    .clip(connectedGridItemShape(index, totalItems, columns))
+                                    .background(Color.LightGray),
+                            )
+                        } else {
+                            Spacer(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(64.dp),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

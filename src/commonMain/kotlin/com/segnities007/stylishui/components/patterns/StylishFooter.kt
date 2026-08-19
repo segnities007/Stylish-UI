@@ -2,6 +2,12 @@ package com.segnities007.stylishui.components.patterns
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +33,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
+import com.segnities007.stylishui.foundation.VisibilityState
+import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -94,13 +102,19 @@ public fun StylishFooter(
     bottomPadding: Dp = StylishTheme.dimensions.itemSpacing,
     actionsSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
     windowInsets: WindowInsets = WindowInsets.navigationBars,
+    visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
-    Column(
-        modifier
-            .fillMaxWidth()
-            .padding(top = topPadding, bottom = bottomPadding)
-            .windowInsetsPadding(windowInsets),
+    AnimatedVisibility(
+        visible = visibilityState.isVisible(),
+        enter = fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
+        exit = fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
     ) {
+        Column(
+            modifier
+                .fillMaxWidth()
+                .padding(top = topPadding, bottom = bottomPadding)
+                .windowInsetsPadding(windowInsets),
+        ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = shape,
@@ -135,6 +149,7 @@ public fun StylishFooter(
                 }
             }
         }
+    }
     }
 }
 

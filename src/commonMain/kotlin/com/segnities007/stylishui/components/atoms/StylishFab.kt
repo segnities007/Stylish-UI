@@ -2,9 +2,14 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -28,7 +33,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
@@ -144,6 +151,7 @@ public fun StylishFab(
     shadowElevation: Dp = StylishTheme.dimensions.floatingElevation,
     interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
+    visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
     val resolvedSize = size ?: when (sizeVariant) {
         StylishFabSize.Small -> StylishTheme.dimensions.fabSmallSize
@@ -158,8 +166,12 @@ public fun StylishFab(
         animationSpec = if (reducedMotion) snap() else tween(StylishTheme.animation.durationShort),
         label = "fabShadowElevation",
     )
-    Surface(
-        modifier = modifier
+    AnimatedVisibility(
+        visible = visibilityState.isVisible(),
+        enter = fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
+        exit = fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
+    ) {
+        Surface(            modifier = modifier
             .testTag("stylish_fab")
             .size(resolvedSize)
             .then(
@@ -199,6 +211,7 @@ public fun StylishFab(
         ) {
             iconContent?.invoke() ?: Icon(imageVector, contentDescription)
         }
+    }
     }
 }
 

@@ -193,7 +193,11 @@ jobs:
           target: google_apis_playstore
           arch: x86_64
           profile: pixel_6
-          emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect
+          # Cold-boot without snapshots: snapshot restore/save can hang on
+          # hosted runners and the API 35 image can exceed the default boot
+          # window, so give it an explicit longer timeout.
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect
+          emulator-boot-timeout: 900
           script: bash scripts/verify-android-runtime.sh
       - name: Upload Android runtime evidence
         uses: actions/upload-artifact@v7

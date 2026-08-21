@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/segnities007/Stylish-UI/compare/v0.11.0...v0.11.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* **release:** allow unresolved SBOM licenses in publish gate ([#46](https://github.com/segnities007/Stylish-UI/issues/46)) ([d3f5dd5](https://github.com/segnities007/Stylish-UI/commit/d3f5dd5d1a11068f0966709fa9914c98f4addba9))
+
 ## [0.11.0](https://github.com/segnities007/Stylish-UI/compare/v0.10.0...v0.11.0) (2026-08-21)
 
 

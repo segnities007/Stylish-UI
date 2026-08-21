@@ -34,9 +34,7 @@ window, or browser assistive technology.
 
 These invariants are covered by
 `src/jvmTest/kotlin/com/segnities007/stylishui/components/AccessibilityLayoutSmokeTest.kt`.
-The source-level regression gate is
-`scripts/verify-accessibility-contract.py`; Android API 35 UIAutomator is a
-separate executable evidence recipe (`scripts/verify-android-runtime.sh`).
+(Android emulator UIAutomator evidence recipes were removed on 2026-08-21.)
 
 ## Motion policy (reduced-motion)
 

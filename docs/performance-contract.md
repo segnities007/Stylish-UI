@@ -13,7 +13,6 @@ not a frame-time or heap SLO.
 | Canvas charts | Line, area, and scatter render at most `StylishChartMaxRenderedPoints` (500) points per frame. Downsampling is deterministic and preserves the first/last source points, including a 100,000-point fixture. Accessibility text retains the original finite samples through the shared pure `buildStylishChartDescription` contract. | `ChartMathTest`, `ChartAreaScatterSemanticsSmokeTest`, chart implementations |
 | Invalid numeric input | NaN, infinities, negative bar values, and degenerate ranges have deterministic finite rendering rules. | `ChartMathTest` |
 | Linux algorithmic smoke | 10k DataTable sort, 100k Tree flatten, and 100k chart downsample run under broad deterministic smoke budgets (5,000/5,000/2,000 ms). With `WRITE_PERFORMANCE_REPORT=1`, measured values are emitted as JSON. | `src/jvmTest/kotlin/com/segnities007/stylishui/performance/PerformanceBudgetTest.kt`, `build/reports/performance/algorithmic-budgets.json`, CI `algorithmic-performance-evidence` artifact |
-| Android runtime performance proxy | API 35 emulator proxy with two explicitly separated measurement windows. (1) Cold-process startup: one unrecorded warmup launch after fresh install absorbs install-time dexopt/verification, then 5 `am force-stop` + `am start -W` `TotalTime` samples; with 5 samples the nearest-rank p95 equals the worst start, and the warmup value is retained in the report. (2) Post-warmup frame window: `dumpsys gfxinfo` counters are reset twice around a settle interval so startup frames are excluded, then one `KEYCODE_TAB` interaction window is sampled through machine-readable `FrameCompleted − IntendedVsync` durations (human-readable percentile is a compatibility fallback). Raw per-start and per-frame samples stay in `performance.json` next to derived min/median/max, deadline-miss counts against the budget, and a small-sample caveat: an idle window can hold fewer than 30 frames, where nearest-rank p95 approximates the worst single frame instead of a stable distribution estimate. Budgets are unchanged (startup p95 ≤ 2,000 ms, frame-proxy p95 ≤ 32 ms); the report records `environment.buildType=debug` and `scopeGuard.emulatorOnly=true`, so an emulator FAIL is a proxy verdict, never a production-device SLO claim — Macrobenchmark/OEM runs remain required before any device claim. | `scripts/verify-android-performance.py`, `scripts/verify-android-runtime.sh`, `build/reports/android-runtime/performance.json` |
 
 The 500-point chart limit is an allocation/drawing bound, not a frame-time SLO. Consumers that need
 every sample for inspection must retain the source data and provide a separate inspection/selection
@@ -51,21 +50,11 @@ fixture. The required next evidence is:
 - Multi-series charts: render/update p95 frame time, path allocation, heap, and bundle size.
 - Android, iOS, and Desktop runs with recorded toolchain/device versions.
 
-The Android runtime job now records a real API 35 emulator startup/frame proxy when the emulator
-is online. `status=PASS` is reserved for a measured `am start -W` p95 and a measured `gfxinfo`
-frame percentile inside the explicit budgets; missing fields are `UNMEASURED`, never a green
-fallback. `frameTimeProxy` is intentionally not a production-device SLO: Android Macrobenchmark,
-OEM matrix, and long-running scroll/interaction traces remain required for adoption.
-
-The 2026-08-21 local API 35 emulator run measured startup p95 ≈ 2,449 ms (budget 2,000 ms) and
-frame-proxy p95 ≈ 300 ms (budget 32 ms): FAIL, retained verbatim. Root-cause reading of the frame
-number: the post-settle window on an idle paginated table screen contains very few frames, so the
-nearest-rank p95 approximates the worst single frame of a debug/JIT emulator build (no R8, no
-baseline profile), where one focus-traversal or idle-wake frame — including goldfish vsync
-scheduling latency already documented in the collector's parser — can land near 300 ms. The
-budgets are deliberately NOT relaxed to absorb emulator overhead: keeping 32 ms preserves
-comparability across runs and leaves production frame SLOs owned by Macrobenchmark. The value
-must be re-measured under the separated protocol above, not averaged away or reclassified.
+Android emulator runtime/performance measurement tooling was removed on 2026-08-21 together with
+the hosted emulator job (no current demand). The last recorded local run measured startup p95 ≈
+2,449 ms and frame-proxy p95 ≈ 300 ms against budgets of 2,000 ms / 32 ms: FAIL. That history
+stays in git if device-level measurement is ever revisited; until then no startup or frame SLO is
+claimed.
 
 Until those measurements are stored and gated, the performance dimension remains partial in the
 GAFA adoption score even though the common deterministic contracts are complete.

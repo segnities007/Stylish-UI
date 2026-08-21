@@ -42,4 +42,4 @@ Stylish UIを依存させ、`isMinifyEnabled=true` と `isShrinkResources=true`�
 `mapping.txt`、`configuration.txt`、`seeds.txt`、`usage.txt`を
 `build/reports/release/android-r8.json`へ記録する。2026-08-21のLinux実行では294,816 bytes、
 1 dex、R8 PASSだった。これはリンク・縮小の証跡であり、Android実機の起動、TalkBack、startup
-SLOを証明しない。API 35 emulatorのUI smokeは `scripts/verify-android-runtime.sh` で別途記録する。
+SLOを証明しない。API 35 emulatorのUI smoke計測は2026-08-21に削除した（履歴はgit参照）。

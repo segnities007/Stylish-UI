@@ -276,7 +276,6 @@ tasks.register("generateSbom") {
         reportDir.resolve("license-check.txt").writeText(
             "components=${ordered.size}\n" +
                 "missingLicense=${ordered.count { (it["licenses"] as? List<*>)?.isEmpty() != false }}\n" +
-                "policy=docs/sbom-license-policy.md\n" +
                 "status=REVIEW_REQUIRED\n",
         )
         logger.lifecycle("SBOM generated: ${ordered.size} Gradle-resolved components -> ${reportDir.absolutePath}")

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/segnities007/Stylish-UI/compare/v0.10.0...v0.11.0) (2026-08-21)
+
+
+### Features
+
+* **adoption:** expand catalog coverage and harden release evidence g… ([#44](https://github.com/segnities007/Stylish-UI/issues/44)) ([4148383](https://github.com/segnities007/Stylish-UI/commit/4148383e38c5e0666bf0c03b30850dcb0dc13289))
+
 ## [0.10.0](https://github.com/segnities007/Stylish-UI/compare/v0.9.0...v0.10.0) (2026-08-13)
 
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.segnities007.stylishui.catalog.StylishPlayground
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.StylishTypography
+import com.segnities007.stylishui.theme.withFontFamily
 import org.jetbrains.compose.resources.Font
 import com.segnities007.stylishui.websitewasm.resources.NotoSansJP_subset
 import com.segnities007.stylishui.websitewasm.resources.Res
@@ -27,24 +28,6 @@ private fun stylishFontFamily(): FontFamily = FontFamily(
     Font(Res.font.NotoSansJP_subset, weight = FontWeight.Normal),
     Font(Res.font.NotoSansJP_subset, weight = FontWeight.Medium),
     Font(Res.font.NotoSansJP_subset, weight = FontWeight.Bold),
-)
-
-private fun androidx.compose.material3.Typography.withFontFamily(fontFamily: FontFamily) = copy(
-    displayLarge = displayLarge.copy(fontFamily = fontFamily),
-    displayMedium = displayMedium.copy(fontFamily = fontFamily),
-    displaySmall = displaySmall.copy(fontFamily = fontFamily),
-    headlineLarge = headlineLarge.copy(fontFamily = fontFamily),
-    headlineMedium = headlineMedium.copy(fontFamily = fontFamily),
-    headlineSmall = headlineSmall.copy(fontFamily = fontFamily),
-    titleLarge = titleLarge.copy(fontFamily = fontFamily),
-    titleMedium = titleMedium.copy(fontFamily = fontFamily),
-    titleSmall = titleSmall.copy(fontFamily = fontFamily),
-    bodyLarge = bodyLarge.copy(fontFamily = fontFamily),
-    bodyMedium = bodyMedium.copy(fontFamily = fontFamily),
-    bodySmall = bodySmall.copy(fontFamily = fontFamily),
-    labelLarge = labelLarge.copy(fontFamily = fontFamily),
-    labelMedium = labelMedium.copy(fontFamily = fontFamily),
-    labelSmall = labelSmall.copy(fontFamily = fontFamily),
 )
 
 @Composable

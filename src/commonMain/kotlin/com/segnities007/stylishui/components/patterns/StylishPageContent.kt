@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A page-content pattern that renders a header as the first item of a
@@ -41,7 +41,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   offset or programmatically scroll.
  * @param modifier Modifier applied to the underlying [LazyColumn].
  * @param contentPadding [PaddingValues] applied around the entire lazy
- *   list. Defaults to [DefaultStylishDimensions.screenPadding] horizontal
+ *   list. Defaults to [StylishTheme.dimensions.screenPadding] horizontal
  *   padding (20.dp).
  * @param headerSpacing Vertical gap between the [header] and the first
  *   list item. Defaults to [Dp.Unspecified], which resolves to the active
@@ -66,7 +66,7 @@ public fun StylishPageContent(
     header: @Composable () -> Unit,
     listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.screenPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.screenPadding),
     headerSpacing: Dp = Dp.Unspecified,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
@@ -80,7 +80,7 @@ public fun StylishPageContent(
         headerSpacing
     }
     LazyColumn(
-        modifier.fillMaxSize(),
+        modifier.stylishTestTag("page_content").fillMaxSize(),
         contentPadding = contentPadding,
         state = listState,
         reverseLayout = reverseLayout,

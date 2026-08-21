@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -36,6 +37,7 @@ import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 
 /**
  * A floating page footer that hosts action slots at the bottom of the
@@ -104,10 +106,11 @@ public fun StylishFooter(
     windowInsets: WindowInsets = WindowInsets.navigationBars,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
+    val reducedMotion = isStylishReducedMotionEnabled()
     AnimatedVisibility(
         visible = visibilityState.isVisible(),
-        enter = fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
-        exit = fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
+        enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
+        exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
     ) {
         Column(
             modifier

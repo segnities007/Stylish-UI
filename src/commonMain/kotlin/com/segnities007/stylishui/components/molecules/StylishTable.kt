@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A simple read-only data table — the web "Table" pattern from shadcn/ui
@@ -51,10 +50,10 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   [MaterialTheme.typography.bodyMedium].
  * @param rowSpacing Vertical gap between body rows. Defaults to 0 dp.
  * @param cellPadding Inner padding of every cell. Defaults to
- *   12 x 10 dp.
+ *   to the theme's control padding tokens.
  * @param shape Corner shape of the table surface. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions].
  */
 @Composable
 public fun StylishTable(
@@ -67,8 +66,11 @@ public fun StylishTable(
     headerTextStyle: TextStyle = MaterialTheme.typography.labelLarge,
     cellTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     rowSpacing: Dp = 0.dp,
-    cellPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    cellPadding: PaddingValues = PaddingValues(
+        horizontal = StylishTheme.dimensions.controlPadding,
+        vertical = StylishTheme.dimensions.controlVerticalPadding,
+    ),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
 ) {
     Surface(
         shape = shape,

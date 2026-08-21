@@ -23,10 +23,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A snackbar styled with the Stylish design language — rounded corners
@@ -58,7 +62,7 @@ public fun StylishSnackbar(
 ) {
     Snackbar(
         snackbarData = snackbarData,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("snackbar").semantics { liveRegion = LiveRegionMode.Polite },
         shape = shape,
         containerColor = containerColor,
         contentColor = contentColor,
@@ -104,7 +108,7 @@ public fun StylishSnackbar(
     content: @Composable () -> Unit,
 ) {
     Snackbar(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("snackbar_host").semantics { liveRegion = LiveRegionMode.Polite },
         action = action,
         dismissAction = dismissAction,
         actionOnNewLine = actionOnNewLine,
@@ -143,7 +147,7 @@ public fun StylishSnackbarHost(
 ) {
     SnackbarHost(
         hostState = hostState,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("snackbar_action").semantics { liveRegion = LiveRegionMode.Polite },
     ) { data ->
         StylishSnackbar(
             snackbarData = data,

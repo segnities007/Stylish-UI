@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.molecules.StylishSnackbarHost
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A Stylish UI wrapper around Material 3 [Scaffold] that provides the
@@ -74,7 +75,7 @@ public fun StylishScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("scaffold"),
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = floatingActionButton,

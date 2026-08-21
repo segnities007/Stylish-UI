@@ -25,12 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishInteractiveTarget
 
 /**
  * A pager control for long lists — the web "Pagination" pattern from
@@ -51,11 +54,14 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param enabled When `false`, all controls are disabled.
  * @param shape Corner shape of the page buttons. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param colors [ButtonColors] for the current page button. Defaults to
  *   the primary container.
  * @param unselectedColors [ButtonColors] for other page buttons.
  *   Defaults to the grouped-container look.
+ * @param previousPageContentDescription Localized accessibility label for previous-page action.
+ * @param nextPageContentDescription Localized accessibility label for next-page action.
+ * @param selectedPageStateDescription Localized selected-state description.
  */
 @Composable
 public fun StylishPagination(
@@ -66,7 +72,7 @@ public fun StylishPagination(
     siblingCount: Int = 1,
     boundaryCount: Int = 1,
     enabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -75,12 +81,16 @@ public fun StylishPagination(
         containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
     ),
+    previousPageContentDescription: String? = null,
+    nextPageContentDescription: String? = null,
+    selectedPageStateDescription: String? = null,
 ) {
     require(pageCount > 0) { "pageCount must be greater than zero" }
     val safePage = page.coerceIn(1, pageCount)
+    val strings = StylishTheme.strings
 
     Row(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("pagination"),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
     ) {
@@ -88,7 +98,7 @@ public fun StylishPagination(
             onClick = { onPageChange(safePage - 1) },
             enabled = enabled && safePage > 1,
         ) {
-            Icon(Icons.Default.ChevronLeft, contentDescription = "前のページ")
+            Icon(Icons.Default.ChevronLeft, contentDescription = previousPageContentDescription ?: strings.previousPage)
         }
 
         pageWindow(pageCount, safePage, siblingCount, boundaryCount).forEach { item ->
@@ -102,9 +112,13 @@ public fun StylishPagination(
                         shape = shape,
                         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp),
                         modifier = Modifier
-                            .heightIn(min = 36.dp)
+                            // Keep page targets at the shared 48 dp interaction minimum;
+                            // text may remain visually compact inside the hit target.
+                            .stylishInteractiveTarget()
                             .semantics {
                                 role = Role.Button
+                                this.selected = selected
+                                if (selected) stateDescription = selectedPageStateDescription ?: strings.selectedPage
                             },
                     ) {
                         Text(
@@ -130,7 +144,7 @@ public fun StylishPagination(
             onClick = { onPageChange(safePage + 1) },
             enabled = enabled && safePage < pageCount,
         ) {
-            Icon(Icons.Default.ChevronRight, contentDescription = "次のページ")
+            Icon(Icons.Default.ChevronRight, contentDescription = nextPageContentDescription ?: strings.nextPage)
         }
     }
 }

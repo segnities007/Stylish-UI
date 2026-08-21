@@ -43,13 +43,18 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * One selectable entry of a [StylishCommandPalette].
@@ -91,7 +96,7 @@ public data class StylishCommandItem(
  *   to 8.
  * @param shape Corner shape of the palette. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param containerColor Background of the palette. Defaults to
  *   [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param contentColor Foreground color of the palette.
@@ -107,14 +112,14 @@ public fun StylishCommandPalette(
     items: List<StylishCommandItem>,
     placeholder: String = "コマンドを入力…",
     maxResults: Int = 8,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     width: Dp = 480.dp,
 ) {
     if (!expanded) return
 
-    val filtered = remember(query, items) {
+    val filtered = remember(query, items, maxResults) {
         if (query.isBlank()) {
             items
         } else {
@@ -122,12 +127,23 @@ public fun StylishCommandPalette(
                 item.label.contains(query, ignoreCase = true) ||
                     item.keywords.any { it.contains(query, ignoreCase = true) }
             }
-        }.take(maxResults)
+        }.take(maxResults.coerceAtLeast(0))
     }
     var selectedIndex by remember { mutableIntStateOf(0) }
     LaunchedEffect(query, filtered.size) { selectedIndex = 0 }
-    val focusRequester = remember { FocusRequester() }
+    val inputFocusRequester = remember { FocusRequester() }
     val onSurface = MaterialTheme.colorScheme.onSurface
+
+    fun moveSelection(delta: Int) {
+        val enabledIndices = filtered.indices.filter { filtered[it].enabled }
+        if (enabledIndices.isEmpty()) return
+        val currentPosition = enabledIndices.indexOf(selectedIndex)
+        val nextPosition = when {
+            currentPosition < 0 -> if (delta >= 0) 0 else enabledIndices.lastIndex
+            else -> (currentPosition + delta).coerceIn(0, enabledIndices.lastIndex)
+        }
+        selectedIndex = enabledIndices[nextPosition]
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -138,26 +154,29 @@ public fun StylishCommandPalette(
                 modifier
                     .width(width)
                     .background(containerColor, shape)
-                    .focusRequester(focusRequester)
+                    .testTag("stylish_command_palette")
                     .onPreviewKeyEvent { event ->
                         if (event.type == KeyEventType.KeyDown) {
                             when (event.key) {
                                 Key.DirectionDown -> {
-                                    selectedIndex = (selectedIndex + 1).coerceAtMost(filtered.lastIndex)
+                                    moveSelection(1)
                                     true
                                 }
 
                                 Key.DirectionUp -> {
-                                    selectedIndex = (selectedIndex - 1).coerceAtLeast(0)
+                                    moveSelection(-1)
                                     true
                                 }
 
                                 Key.Enter -> {
-                                    filtered.getOrNull(selectedIndex)
-                                        ?.takeIf { it.enabled }
-                                        ?.let { it.onSelect() }
-                                    onDismiss()
-                                    true
+                                    val command = filtered.getOrNull(selectedIndex)?.takeIf { it.enabled }
+                                    if (command == null) {
+                                        false
+                                    } else {
+                                        command.onSelect()
+                                        onDismiss()
+                                        true
+                                    }
                                 }
 
                                 Key.Escape -> {
@@ -192,7 +211,23 @@ public fun StylishCommandPalette(
                         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                         modifier = Modifier
                             .weight(1f)
-                            .onFocusChanged { },
+                            .focusRequester(inputFocusRequester)
+                            .testTag("stylish_command_palette_input")
+                            .semantics {
+                                contentDescription = placeholder
+                            },
+                        decorationBox = { innerTextField ->
+                            Box {
+                                if (query.isEmpty()) {
+                                    Text(
+                                        placeholder,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        },
                     )
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -223,7 +258,14 @@ public fun StylishCommandPalette(
                                 } else {
                                     Color.Transparent
                                 },
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("stylish_command_palette_item_$index")
+                                    .semantics {
+                                        contentDescription = item.label
+                                        role = Role.Button
+                                        this.selected = selected
+                                    },
                             ) {
                                 Row(
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -249,7 +291,10 @@ public fun StylishCommandPalette(
             }
         }
     }
-    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+    // The input, not the decorative palette container, owns initial focus. This
+    // keeps hardware keyboard and screen-reader users in the query field when
+    // the dialog is opened on every Compose target.
+    LaunchedEffect(Unit) { inputFocusRequester.requestFocus() }
 }
 
 @Preview(name = "Stylish command palette", showBackground = true, widthDp = 393)

@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.structure.ConnectedCardGrid
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A grid of connected cards laid out in equal-width cells across a fixed
@@ -61,11 +60,11 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param supportingTextOverflow The [TextOverflow] strategy for each card's
  *   supporting text. Defaults to [TextOverflow.Ellipsis].
  * @param minHeight Minimum height of each card body. Defaults to
- *   [DefaultStylishDimensions.cardMinHeight] (77 dp).
+ *   [StylishTheme.dimensions.cardMinHeight] (77 dp).
  * @param horizontalPadding Horizontal padding inside each card. Defaults to
- *   [DefaultStylishDimensions.controlPadding] (16 dp).
+ *   [StylishTheme.dimensions.controlPadding] (16 dp).
  * @param verticalPadding Vertical padding inside each card. Defaults to
- *   [DefaultStylishDimensions.controlVerticalPadding] (12 dp).
+ *   [StylishTheme.dimensions.controlVerticalPadding] (12 dp).
  * @param contentSpacing Horizontal gap between slots inside each card.
  *   Defaults to [StylishTheme.dimensions.itemSpacing] (8 dp).
  * @param titleSpacing Vertical gap between title and supporting text inside
@@ -98,9 +97,9 @@ public fun StylishConnectedCardGrid(
     titleOverflow: TextOverflow = TextOverflow.Ellipsis,
     supportingTextMaxLines: Int = 1,
     supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
-    minHeight: Dp = DefaultStylishDimensions.cardMinHeight,
-    horizontalPadding: Dp = DefaultStylishDimensions.controlPadding,
-    verticalPadding: Dp = DefaultStylishDimensions.controlVerticalPadding,
+    minHeight: Dp = StylishTheme.dimensions.cardMinHeight,
+    horizontalPadding: Dp = StylishTheme.dimensions.controlPadding,
+    verticalPadding: Dp = StylishTheme.dimensions.controlVerticalPadding,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
     titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
     card: StylishConnectedCardItemContent = { item, itemModifier, shape, edges, corners ->

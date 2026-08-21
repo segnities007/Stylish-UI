@@ -1,5 +1,57 @@
 package com.segnities007.stylishui.components.charts
 
+import kotlin.math.roundToInt
+
+/**
+ * Upper bound for points emitted by a Canvas renderer in one chart frame.
+ *
+ * This is an allocation/drawing guard, not a claim about frame time. Callers that need every
+ * sample for inspection should keep the original data for semantics and interaction, while the
+ * renderer uses [downsampleStylishSeries] for the visual path.
+ */
+internal const val StylishChartMaxRenderedPoints: Int = 500
+
+/**
+ * Selects a deterministic, endpoint-preserving visual window from an ordered series.
+ *
+ * The function performs no timing assumptions and always returns at most [maxPoints] values. The
+ * first and last source values are retained when downsampling, so axes and trends do not lose the
+ * boundaries of a dataset. Equal source indexes cannot be emitted twice.
+ */
+internal fun <T> downsampleStylishSeries(points: List<T>, maxPoints: Int): List<T> {
+    require(maxPoints > 0) { "maxPoints must be positive" }
+    if (points.size <= maxPoints) return points
+    if (maxPoints == 1) return listOf(points.first())
+    val lastIndex = points.lastIndex
+    return buildList(maxPoints) {
+        var previousIndex = -1
+        for (slot in 0 until maxPoints) {
+            val sourceIndex = (slot * lastIndex.toDouble() / (maxPoints - 1)).roundToInt()
+                .coerceIn(0, lastIndex)
+            if (sourceIndex != previousIndex) add(points[sourceIndex])
+            previousIndex = sourceIndex
+        }
+    }
+}
+
+/**
+ * Builds the compact accessibility description shared by categorical charts.
+ *
+ * Invalid numeric samples are deliberately omitted from the spoken output,
+ * while every finite source sample is retained even when the visual renderer
+ * downsamples the path. Keeping this as a pure function makes the visual
+ * point budget and the accessibility data contract independently testable.
+ */
+internal fun buildStylishChartDescription(
+    prefix: String,
+    points: Iterable<Pair<String, Float>>,
+): String = buildString {
+    append(prefix)
+    points.forEach { (label, value) ->
+        if (value.isFinite()) append(". $label=$value")
+    }
+}
+
 /**
  * Converts raw slice values into sweep angles normalized to a total of 360°.
  *

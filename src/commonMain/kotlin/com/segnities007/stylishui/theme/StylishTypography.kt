@@ -20,6 +20,31 @@ private fun style(
 )
 
 /**
+ * Returns this typography scale with one explicit font family applied to every Material 3
+ * text role. Hosts can use this for a brand font or a bundled cross-platform fallback while
+ * preserving Stylish UI's size, weight, line-height, and tracking contract.
+ *
+ * @param fontFamily the family used by all fifteen text roles
+ */
+public fun Typography.withFontFamily(fontFamily: FontFamily): Typography = copy(
+    displayLarge = displayLarge.copy(fontFamily = fontFamily),
+    displayMedium = displayMedium.copy(fontFamily = fontFamily),
+    displaySmall = displaySmall.copy(fontFamily = fontFamily),
+    headlineLarge = headlineLarge.copy(fontFamily = fontFamily),
+    headlineMedium = headlineMedium.copy(fontFamily = fontFamily),
+    headlineSmall = headlineSmall.copy(fontFamily = fontFamily),
+    titleLarge = titleLarge.copy(fontFamily = fontFamily),
+    titleMedium = titleMedium.copy(fontFamily = fontFamily),
+    titleSmall = titleSmall.copy(fontFamily = fontFamily),
+    bodyLarge = bodyLarge.copy(fontFamily = fontFamily),
+    bodyMedium = bodyMedium.copy(fontFamily = fontFamily),
+    bodySmall = bodySmall.copy(fontFamily = fontFamily),
+    labelLarge = labelLarge.copy(fontFamily = fontFamily),
+    labelMedium = labelMedium.copy(fontFamily = fontFamily),
+    labelSmall = labelSmall.copy(fontFamily = fontFamily),
+)
+
+/**
  * The default [Typography] scale for the Stylish UI design system.
  *
  * Defines all fifteen Material 3 text styles using the platform default font family

@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * One collapsible section of a [StylishAccordion].
@@ -79,7 +79,7 @@ public data class StylishAccordionItem(
  *   sections visually grouped.
  * @param shape Corner shape of each section surface. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param containerColor Background of each section. Defaults to
  *   [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param contentColor Foreground color of the section content.
@@ -96,7 +96,7 @@ public fun StylishAccordion(
     expandedIndex: Int? = null,
     onExpandedChange: ((Int?) -> Unit)? = null,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
@@ -109,7 +109,7 @@ public fun StylishAccordion(
     val reducedMotion = isStylishReducedMotionEnabled()
 
     Column(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("accordion"),
         verticalArrangement = Arrangement.spacedBy(spacing),
     ) {
         items.forEachIndexed { index, item ->
@@ -148,8 +148,8 @@ public fun StylishAccordion(
                                 },
                             )
                             .padding(
-                                horizontal = DefaultStylishDimensions.controlPadding,
-                                vertical = DefaultStylishDimensions.controlVerticalPadding,
+                                horizontal = StylishTheme.dimensions.controlPadding,
+                                vertical = StylishTheme.dimensions.controlVerticalPadding,
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
@@ -184,9 +184,9 @@ public fun StylishAccordion(
                     ) {
                         Column(
                             Modifier.padding(
-                                start = DefaultStylishDimensions.controlPadding,
-                                end = DefaultStylishDimensions.controlPadding,
-                                bottom = DefaultStylishDimensions.controlVerticalPadding,
+                                start = StylishTheme.dimensions.controlPadding,
+                                end = StylishTheme.dimensions.controlPadding,
+                                bottom = StylishTheme.dimensions.controlVerticalPadding,
                             ),
                         ) {
                             item.content()

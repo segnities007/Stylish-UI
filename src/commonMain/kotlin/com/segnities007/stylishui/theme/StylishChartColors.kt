@@ -38,6 +38,32 @@ public fun ColorScheme.toStylishChartColors(): StylishChartColors = StylishChart
 )
 
 /**
+ * Returns the Okabe–Ito categorical palette for charts.
+ *
+ * The palette is intentionally independent from the active Material color
+ * scheme: its hues were selected to remain distinguishable for the most
+ * common forms of red/green colour-vision deficiency. Use this palette when
+ * a chart has several adjacent series or when the chart is exported outside
+ * the themed application. The returned colors are opaque and can therefore
+ * be paired with a separate alpha for area fills.
+ *
+ * This is an opt-in alternative to [toStylishChartColors] so existing charts
+ * retain their current branded colors by default.
+ */
+public fun ColorScheme.toStylishColorBlindSafeChartColors(): StylishChartColors = StylishChartColors(
+    categorical = listOf(
+        Color(0xFF000000), // black
+        Color(0xFFE69F00), // orange
+        Color(0xFF56B4E9), // sky blue
+        Color(0xFF009E73), // bluish green
+        Color(0xFFF0E442), // yellow
+        Color(0xFF0072B2), // blue
+        Color(0xFFD55E00), // vermillion
+        Color(0xFFCC79A7), // reddish purple
+    ),
+)
+
+/**
  * Convenience accessor that computes [StylishChartColors] from the current
  * [MaterialTheme.colorScheme].
  *

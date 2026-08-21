@@ -44,7 +44,6 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 import kotlin.math.roundToInt
 
 /**
@@ -103,7 +102,7 @@ import kotlin.math.roundToInt
  *   rendered inside the wrapping [Box].
  * @param shape Shape of the popup surface. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
  * @param containerColor Background color of the popup surface. Defaults
  *   to `MaterialTheme.colorScheme.surfaceContainerHigh`.
  * @param contentColor Default content color inside the popup. Defaults
@@ -112,7 +111,7 @@ import kotlin.math.roundToInt
  *   Defaults to the Stylish control paddings (16 dp horizontal, 12 dp
  *   vertical).
  * @param tonalElevation Tonal elevation of the popup surface. Defaults
- *   to [DefaultStylishDimensions.floatingElevation] (2 dp).
+ *   to [StylishTheme.dimensions.floatingElevation] (2 dp).
  * @param offset Vertical gap between the anchor's bottom edge and the
  *   popup's top edge. Defaults to 8 dp.
  * @param width Width of the popup surface. Defaults to 280 dp.
@@ -128,14 +127,14 @@ public fun StylishPopover(
     onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     anchor: @Composable () -> Unit,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     contentPadding: PaddingValues = PaddingValues(
-        horizontal = DefaultStylishDimensions.controlPadding,
-        vertical = DefaultStylishDimensions.controlVerticalPadding,
+        horizontal = StylishTheme.dimensions.controlPadding,
+        vertical = StylishTheme.dimensions.controlVerticalPadding,
     ),
-    tonalElevation: Dp = DefaultStylishDimensions.floatingElevation,
+    tonalElevation: Dp = StylishTheme.dimensions.floatingElevation,
     offset: Dp = 8.dp,
     width: Dp = 280.dp,
     properties: PopupProperties = PopupProperties(focusable = true),

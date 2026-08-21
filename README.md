@@ -3,8 +3,8 @@
 **Clear, Simple, Modern.**
 
 Stylish UI は、この3つを体現した Compose Multiplatform デザインシステムです。
-Android・JVM Desktop・Web（Wasm）をサポートしており、iOS（`iosArm64` /
-`iosSimulatorArm64`）は開発中です。
+Android・JVM Desktop・Web（Wasm）をサポートし、iOS（`iosArm64` / `iosSimulatorArm64`）は
+common compile対応です。iOS simulator testはmacOS CI jobとして構成していますが、実機A11yは未検証です。
 
 ## デザイン哲学
 
@@ -94,21 +94,28 @@ Finish  →  Structure  →  Foundation
 ### 公開コンポーネント
 
 - **atoms** — `StylishButton`（Filled/Tonal/Outlined/Text/Elevated の variant・ローディング対応）, `StylishIconButton`, `StylishRoundedIconButton`, `StylishFab`（Regular/Small/Large）, `StylishChip`（Assist/Filter/Input/Suggestion）, `StylishCard`（Filled/Elevated/Outlined）, `StylishConnectedCard`, `StylishSwitch`, `StylishCheckbox`, `StylishTriStateCheckbox`, `StylishRadioButton`, `StylishSlider`, `StylishRangeSlider`, `StylishAvatar`, `StylishBadge`, `StylishBadgedBox`, `StylishRating`, `StylishNumberInput`, `StylishPinInput`, `StylishKbd`, `StylishSpeedDial`, `StylishSectionTitle`, `StylishHorizontalDivider`, `StylishVerticalDivider`, `StylishCircularProgressIndicator`, `StylishLinearProgressIndicator`, `StylishSpacer`, `StylishDialogSurface`, `StylishFormTextField`, `StylishFilledTextField`, `StylishSecureTextField`, `StylishDropdownMenu` / `StylishDropdownMenuItem`, `StylishExposedDropdownMenu`, `StylishDragHandle`, IconButton variants（Filled/FilledTonal/Outlined + Toggle）
-- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid + LazyColumn/LazyGrid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid + LazyColumn/LazyGrid), `StylishListItem`, `StylishSection`, `StylishAccordion`, `StylishStepper`, `StylishBreadcrumb`, `StylishPagination`, `StylishEditable`, `StylishStatistic`, `StylishTimeline`, `StylishTable`, `StylishDatePickerField`, `StylishTimePicker`, `StylishDateRangePicker`, `StylishEmptyState`, `StylishSnackbar`, `StylishSnackbarHost`, `StylishSwipeToDismissBox`, `StylishPullToRefresh`, `StylishCarousel`, `StylishSkeletonLine`, `StylishSkeletonAvatar`, `StylishSkeletonCard`
-- **organisms** — `StylishConnectedSegmentedControl`, `StylishSegmentedButton` 系列, `StylishDialogActions`, `StylishDeleteConfirmDialog`, `StylishAlertDialog`, `StylishPopover`, `StylishNavigationBar`, `StylishNavigationRail`, `StylishShortNavigationBar`, `StylishNavigationDrawer`（Modal/Dismissible/Permanent）, `StylishTabBar`, `StylishSearchBar`, `StylishBottomSheet`
+- **molecules** — Connected Button (Row/Column/Grid), Connected Card (Row/Column/Grid + LazyColumn/LazyGrid), Connected Chip (Row/Column/Grid), Connected ListItem (Row/Column/Grid + LazyColumn/LazyGrid), `StylishListItem`, `StylishSection`, `StylishToolbar`, `StylishButtonGroup`（Horizontal/Vertical・任意slot）, `StylishAccordion`, `StylishStepper`, `StylishBreadcrumb`, `StylishPagination`, `StylishEditable`, `StylishStatistic`, `StylishTimeline`, `StylishTable`, `StylishDatePickerField`, `StylishTimePicker`, `StylishDateRangePicker`, `StylishEmptyState`, `StylishSnackbar`, `StylishSnackbarHost`, `StylishSwipeToDismissBox`, `StylishPullToRefresh`, `StylishCarousel`, `StylishSkeletonLine`, `StylishSkeletonAvatar`, `StylishSkeletonCard`
+- **organisms** — `StylishConnectedSegmentedControl`, `StylishSegmentedButton` 系列, `StylishDialogActions`, `StylishDeleteConfirmDialog`, `StylishAlertDialog`, `StylishPopover`, `StylishNavigationBar`, `StylishNavigationRail`, `StylishShortNavigationBar`, `StylishWideNavigationRail`, `StylishNavigationDrawer`（Modal/Dismissible/Permanent）, `StylishTabBar`, `StylishSearchBar`, `StylishBottomSheet`, `StylishDataTable`（列リサイズ、CSV/TSV/JSON exporter）, `StylishTree`, `StylishTransfer`, `StylishUpload`, `StylishColorPicker`, `StylishQrCode`, `StylishScrollArea`, `StylishContextMenu`, `StylishMenubar`
 - **patterns** — `StylishTopAppBar`（+ CenterAligned/Large/Medium）, `StylishBottomAppBar`, `StylishBottomSheetScaffold`, `StylishHeader`, `StylishScaffold`, `StylishPageContent`, `StylishFooter`
-- **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + LazyColumn/LazyGrid + 各 `Connected*ItemContent` スロット契約
-- **charts** — `SimplePieChart`, `SimpleBarChart`, `SimpleLineChart`（すべて common で全プラットフォーム対応）
-- **theme** — `StylishTheme`（`dynamicColor` / `seedColor` / `shapes` 対応）, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`, `StylishColorUtils`
+- **structure**（headless） — `ConnectedCard` / `ConnectedButton` / `ConnectedChip` / `ConnectedListItem` の Row/Column/Grid + LazyColumn/LazyGrid + `DataTableLayout` + 各 slot 契約
+- **charts** — `SimplePieChart`, `SimpleBarChart`, `SimpleLineChart`, `StylishMultiSeriesLineChart`（すべて common で全プラットフォーム対応）
+- **adaptive** — `calculateStylishWindowSizeClass`, `StylishAdaptiveLayout`, `StylishAdaptiveNavigation`
+- **localization** — `StylishStrings`, `StylishJapaneseStrings`、テーマ経由の文言差し替え
+- **theme** — `StylishTheme`（`dynamicColor` / `seedColor` / `highContrast` / `shapes` 対応）, `StylishLightColorScheme`, `StylishDarkColorScheme`, `StylishTypography`, `Typography.withFontFamily`, `StylishColorUtils`
 - **tokens** — `StylishDimensions`（Connectedジオメトリ + Rhythm間隔スケール + コンポーネントサイズ + elevation ラダー。テーマ経由でカスタマイズ可能）, `StylishAnimationTokens`（モーション）, `StylishShapes`
 
 ## 開発
 
 ```bash
 ./gradlew jvmTest       # テスト
+./gradlew wasmJsBrowserTest  # Wasm/Chrome shared-logic smoke (not the packaged UI workflow)
+node scripts/wasm-ui-e2e.mjs  # packaged-site accessibility workflow (Chrome CDP)
 ./gradlew assemble      # ビルド
 ./gradlew apiCheck      # ABI 互換性チェック
 ./gradlew apiDump       # ABI ダンプ更新（意図的な API 変更時）
+
+# Linuxで実行可能な全受入ゲート（JVM/Wasmブラウザ/API/構造）
+./scripts/verify-linux-quality.sh
 ```
 
 ## 品質
@@ -120,6 +127,11 @@ Stylish UI の品質管理に関するドキュメントです。
 | [DESIGN.md](DESIGN.md) | デザインチェックリスト（Clear / Simple / Modern） |
 | [docs/design-spec.md](docs/design-spec.md) | デザイン仕様書 |
 | [docs/quality-audit.md](docs/quality-audit.md) | 品質監査（欠点の列挙と進捗管理の作業ファイル） |
+| [docs/adaptive-and-data.md](docs/adaptive-and-data.md) | Adaptive layout / DataTable / 複数系列Chart 利用ガイド |
+| [docs/catalog.md](docs/catalog.md) | 92 interactive demos、追加規約、Linux受入チェック |
+| [docs/component-inventory.md](docs/component-inventory.md) | UI在庫、API品質契約、Linux inventory gate |
+| [docs/comparison-report.md](docs/comparison-report.md) | Web/iOS競合比較、100点ルーブリック、残存ギャップ |
+| [docs/implementation-roadmap.md](docs/implementation-roadmap.md) | 100点到達の実装規約、モジュール境界、品質ゲート、実行順序 |
 | [ROADMAP.md](ROADMAP.md) | 公開ロードマップ（0.8.0 / 0.9.0 / 1.0.0） |
 
 ゴールデンテスト（`src/jvmTest/.../visual/`）は、明暗テーマの描画を

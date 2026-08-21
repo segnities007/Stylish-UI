@@ -11,7 +11,7 @@
 | Android | ✅ 対応 | Dynamic Color（Material You）は Android 12+ で有効 |
 | JVM Desktop | ✅ 対応 | Windows / macOS / Linux |
 | Web（Wasm） | ✅ 対応 | カタログサイト（GitHub Pages）自体が Wasm 製 |
-| iOS | 🚧 開発中（0.9.0 予定） | `iosArm64` / `iosSimulatorArm64` ターゲットを追加予定。それまでは iOS からの利用不可 |
+| iOS | ✅ compile対応・macOS CI simulator-test job | `iosArm64` / `iosSimulatorArm64`。jobは構成済みだが、iOS固有のDynamic Type/VoiceOver実機QAと現リポジトリ内の実行artifactは未確認 |
 
 ## サポート環境
 
@@ -114,7 +114,7 @@ StylishTheme(darkTheme = isSystemInDarkTheme()) {
 | 1 | `compose.material`（M2）コア依存 | commonMain の使用箇所を grep で確認した結果、`androidx.compose.material.*` の利用は **`material.icons` のみ**で、M2 の UI コンポーネント（`androidx.compose.material.Button` 等）は未使用。M2 コアは不要と判断し、削除を検討 | 0.8.0 実装中に確定 |
 | 2 | `kotlinx-datetime` | **残す**。`StylishDatePickerField` が使用。必須依存として本ドキュメントに明記 | 確定 |
 | 3 | `materialIconsExtended`（アイコン） | **残す**。依存を維持し、上記「アイコンポリシー」として文書化 | 確定 |
-| 4 | アダプティブ（adaptive）対応 | **ユーティリティのみ**を提供（window-size-class ヘルパーと利用ガイド）。フル adaptive 化は次期（0.9.0 以降） | 確定（0.9.0 で実装） |
+| 4 | アダプティブ（adaptive）対応 | window-size-class、custom breakpoints、adaptive slotを提供。OS固有のNavigation自動切替は利用側で選択 | 実装済み（0.10.0） |
 | 5 | ハイコントラストモード | **ドキュメント化のみ**。トークン導入は行わず、利用ガイドで推奨設定を案内 | 確定 |
 | 6 | M3 Expressive | **モーション（motion）トークンの拡張のみ**採用。MotionScheme / TonalPalette 等のフル対応はしない | 確定 |
 

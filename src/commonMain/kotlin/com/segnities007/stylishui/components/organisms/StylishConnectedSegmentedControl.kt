@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,7 @@ import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedBu
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -86,6 +88,7 @@ public fun <T> StylishConnectedSegmentedControl(
     ),
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
 ) {
+    val reducedMotion = isStylishReducedMotionEnabled()
     StylishConnectedButtonRow(
         items = options.map { option ->
             StylishConnectedButtonItem(
@@ -110,12 +113,12 @@ public fun <T> StylishConnectedSegmentedControl(
             val selected = item.colors != null
             val containerColor by animateColorAsState(
                 targetValue = if (selected) selectedColors.containerColor else defaultColors.containerColor,
-                animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
+                animationSpec = if (reducedMotion) snap() else tween(durationMillis = StylishTheme.animation.durationShort),
                 label = "segmentContainer",
             )
             val contentColor by animateColorAsState(
                 targetValue = if (selected) selectedColors.contentColor else defaultColors.contentColor,
-                animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
+                animationSpec = if (reducedMotion) snap() else tween(durationMillis = StylishTheme.animation.durationShort),
                 label = "segmentContent",
             )
             DefaultStylishConnectedButton(

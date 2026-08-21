@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * An outlined text field designed for form input, with built-in
@@ -99,7 +100,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   test tags or input-specific modifiers without affecting the
  *   outer [Column].
  * @param cursorBrush Brush used for the text cursor. Defaults to
- *   [SolidColor] of [Color.Black]. Note: Material's string-based
+ *   [SolidColor] of `MaterialTheme.colorScheme.onSurface`. Note: Material's string-based
  *   [OutlinedTextField] derives the cursor from its colors'
  *   `cursorColor`, so a [SolidColor] brush is honored through the
  *   default [colors], while non-solid brushes fall back to the
@@ -141,7 +142,7 @@ public fun StylishFormTextField(
     placeholderContent: @Composable (() -> Unit)? = null,
     supportingContent: @Composable (() -> Unit)? = null,
     fieldModifier: Modifier = Modifier,
-    cursorBrush: Brush = SolidColor(Color.Black),
+    cursorBrush: Brush = SolidColor(MaterialTheme.colorScheme.onSurface),
     singleLine: Boolean = false,
     interactionSource: MutableInteractionSource? = null,
     prefix: @Composable (() -> Unit)? = null,
@@ -163,14 +164,14 @@ public fun StylishFormTextField(
     }
     val resolvedColors = colors ?: run {
         val solidCursor = (cursorBrush as? SolidColor)?.value
-        if (solidCursor != null && solidCursor != Color.Black) {
+        if (solidCursor != null && solidCursor != MaterialTheme.colorScheme.onSurface) {
             OutlinedTextFieldDefaults.colors(cursorColor = solidCursor)
         } else {
             OutlinedTextFieldDefaults.colors()
         }
     }
     val resolvedSingleLine = singleLine || (minLines == 1 && maxLines == 1)
-    Column(modifier) {
+    Column(modifier.stylishTestTag("form_text_field")) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,

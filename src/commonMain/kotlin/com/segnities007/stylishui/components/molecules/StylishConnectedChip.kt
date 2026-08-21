@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +16,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,8 +39,9 @@ import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
-import com.segnities007.stylishui.foundation.stylishFocusRing
-import com.segnities007.stylishui.foundation.stylishStateLayer
+import com.segnities007.stylishui.foundation.stylishInteractiveSurface
+import com.segnities007.stylishui.foundation.stylishInteractiveElevation
+import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -106,7 +107,7 @@ public fun DefaultStylishConnectedChip(
     interactionSource: MutableInteractionSource? = null,
 ) {
     val haptic = LocalHapticFeedback.current
-    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val resolvedInteractionSource = rememberStylishInteractionSource(interactionSource)
     val actionable = isActionable(
         enabled = item.enabled,
         hasClickAction = item.onClick != null,
@@ -144,23 +145,17 @@ public fun DefaultStylishConnectedChip(
             }
             .then(
                 if (actionable) {
-                    Modifier.clickable(
+                    Modifier
+                        .focusable()
+                        .clickable(
                         interactionSource = resolvedInteractionSource,
                         indication = null,
-                    ) {
+                        ) {
                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                         item.onClick?.invoke()
                     }
-                        .stylishFocusRing(resolvedInteractionSource, shape)
-                } else {
-                    Modifier
-                },
-            )
-            .then(
-                if (actionable) {
-                    Modifier
                         .clip(shape)
-                        .stylishStateLayer(resolvedInteractionSource)
+                        .stylishInteractiveSurface(resolvedInteractionSource, shape)
                 } else {
                     Modifier
                 },
@@ -169,7 +164,7 @@ public fun DefaultStylishConnectedChip(
         shape = shape,
         color = containerColor,
         contentColor = contentColor,
-        shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+        shadowElevation = stylishInteractiveElevation(resolvedInteractionSource, actionable),
     ) {
         Row(
             Modifier.padding(contentPadding),

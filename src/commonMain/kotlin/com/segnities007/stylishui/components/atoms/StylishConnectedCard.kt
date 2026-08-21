@@ -7,6 +7,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +19,11 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +43,10 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.stylishFocusRing
+import com.segnities007.stylishui.foundation.stylishInteractiveElevation
+import com.segnities007.stylishui.foundation.stylishStateLayer
+import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -188,6 +196,7 @@ public fun StylishConnectedCard(
     content: (@Composable () -> Unit)? = null,
 ) {
     val haptic = LocalHapticFeedback.current
+    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val actionable = isActionable(
         enabled = enabled,
         hasClickAction = onClick != null,
@@ -202,7 +211,7 @@ public fun StylishConnectedCard(
         null
     }
     val resolvedElevation = if (variant == StylishCardVariant.Elevated) {
-        if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp
+        stylishInteractiveElevation(resolvedInteractionSource, actionable)
     } else {
         0.dp
     }
@@ -217,8 +226,13 @@ public fun StylishConnectedCard(
         contentColor ?: MaterialTheme.colorScheme.onSurface
     }
     Card(
-        modifier = modifier
+        modifier = modifier.stylishTestTag("connected_card")
             .connectedOutline(outlineEdges, outlineCorners)
+            .then(if (actionable) Modifier.focusable(enabled = true) else Modifier)
+            .then(if (actionable) Modifier.minimumInteractiveComponentSize() else Modifier)
+            .then(if (actionable) Modifier.hoverable(resolvedInteractionSource) else Modifier)
+            .then(if (actionable) Modifier.stylishFocusRing(resolvedInteractionSource, shape) else Modifier)
+            .then(if (actionable) Modifier.stylishStateLayer(resolvedInteractionSource, shape) else Modifier)
             .semantics {
                 if (!enabled) disabled()
             }
@@ -227,7 +241,7 @@ public fun StylishConnectedCard(
                     Modifier
                         .semantics(mergeDescendants = true) { role = Role.Button }
                         .combinedClickable(
-                            interactionSource = interactionSource,
+                            interactionSource = resolvedInteractionSource,
                             indication = LocalIndication.current,
                             onClick = { onClick?.invoke() },
                             onLongClick = onLongClick?.let {

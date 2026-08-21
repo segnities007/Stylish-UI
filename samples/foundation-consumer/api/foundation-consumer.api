@@ -1,0 +1,5 @@
+public final class com/segnities007/stylishui/foundationconsumer/FoundationConsumer {
+	public static final field INSTANCE Lcom/segnities007/stylishui/foundationconsumer/FoundationConsumer;
+	public final fun plan (Lcom/segnities007/stylishui/foundation/headless/StylishViewport;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;
+}
+

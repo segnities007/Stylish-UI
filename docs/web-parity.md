@@ -76,5 +76,5 @@ Chakra UI）と Stylish UI を比較し、欠落している要素と実装判�
 | 4 | Field（フォームラッパー） | shadcn/Ant | **実装**: StylishFormField（ラベル+必須+エラー+ヘルプ） | ✅ |
 | 5 | Avatar.Group | Ant/MUI | **実装**: StylishAvatarGroup（重ね表示） | ✅ |
 | 6 | HoverCard | Radix/shadcn | **実装**: StylishHoverCard（ホバー情報カード） | ✅ |
-| 7 | Menubar / NavigationMenu | Radix/MUI | 見送り: デスクトップ特化・複雑 | 次期 |
+| 7 | Menubar / NavigationMenu | Radix/MUI | `StylishMenubar` を実装（キーボード操作・locale対応） | ✅ |
 | 8 | TransferList / Tree / Tour | Ant | 見送り: 高複雑度 | 次期 |

@@ -115,6 +115,35 @@ jobs:
       - name: Build and verify release artifacts
         run: ./gradlew check
 
+      - name: Verify accessibility source contract
+        run: python3 scripts/verify-accessibility-contract.py
+
+      - name: Verify machine-readable support policy
+        run: python3 scripts/verify-support-policy.py
+
+      # A release must fail closed until every resolved dependency has an
+      # approved license decision.  CI PR builds still upload the report with
+      # REVIEW_REQUIRED so maintainers can resolve the nine current cases.
+      - name: Generate and require clean SBOM
+        run: |
+          ./gradlew generateSbom --no-daemon
+          python3 scripts/verify-sbom.py --require-clean
+          python3 scripts/verify-release-evidence.py --write-manifest
+
+      - name: Build and validate minified Android consumer
+        run: |
+          ./gradlew :samples:android-r8:assembleRelease --no-daemon
+          python3 scripts/verify-android-r8.py
+
+      - name: Generate deterministic design token handoff
+        run: python3 scripts/export-design-tokens.py
+
+      - name: Validate deterministic designer/Figma handoff
+        run: python3 scripts/verify-design-handoff.py
+
+      - name: Validate Compose compiler stability metrics
+        run: python3 scripts/verify-compose-metrics.py
+
       # ----------------------------------------------------------------------
       # Publish and release to Maven Central.
       # Note: configuration cache is disabled for release publishing because
@@ -173,4 +202,12 @@ jobs:
         with:
           name: publish-build-reports
           path: '**/build/reports/'
+          if-no-files-found: ignore
+
+      - name: Upload release evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: release-sbom-evidence
+          path: '**/build/reports/release/'
           if-no-files-found: ignore

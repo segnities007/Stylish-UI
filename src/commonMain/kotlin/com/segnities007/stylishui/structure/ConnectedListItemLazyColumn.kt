@@ -27,7 +27,6 @@ import com.segnities007.stylishui.foundation.connectedColumnEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A headless lazily-composed vertically connected list-item layout (Structure layer).
@@ -49,7 +48,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param spacing The vertical gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding [PaddingValues] applied around the entire lazy list. Defaults to
- *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ *   [StylishTheme.dimensions.controlPadding] horizontal padding.
+ * @param key Optional stable and unique key factory used to preserve item state across moves.
  * @param listState [LazyListState] controlling scroll position. Defaults to
  *   [rememberLazyListState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
@@ -66,7 +66,8 @@ public fun ConnectedListItemLazyColumn(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.controlPadding),
+    key: ((StylishConnectedListItem) -> Any)? = null,
     listState: LazyListState = rememberLazyListState(),
     listItem: ConnectedListItemContent,
 ) {
@@ -76,7 +77,10 @@ public fun ConnectedListItemLazyColumn(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(spacing),
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(
+            items = items,
+            key = key?.let { keyFactory -> { _: Int, item: StylishConnectedListItem -> keyFactory(item) } },
+        ) { index, item ->
             val corners = connectedColumnCorners(index, items.size)
             listItem(
                 item,

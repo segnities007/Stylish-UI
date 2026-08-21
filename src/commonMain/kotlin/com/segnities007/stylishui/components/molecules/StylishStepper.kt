@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A horizontal step indicator (the web "Stepper" pattern from MUI and
@@ -84,7 +84,7 @@ public fun StylishStepper(
 ) {
     val onSurface = MaterialTheme.colorScheme.onSurface
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.stylishTestTag("stepper").fillMaxWidth(),
         verticalAlignment = Alignment.Top,
     ) {
         steps.forEachIndexed { index, label ->
@@ -122,7 +122,7 @@ public fun StylishStepper(
                             }
                             .then(
                                 if (stepClickable) {
-                                    Modifier.clickable { onStepClick?.invoke(index) }
+                                    Modifier.clickable { onStepClick(index) }
                                 } else {
                                     Modifier
                                 },

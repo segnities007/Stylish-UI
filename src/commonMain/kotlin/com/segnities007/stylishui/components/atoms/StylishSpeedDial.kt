@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * The direction in which a [StylishSpeedDial] fans out its actions.
@@ -156,7 +155,7 @@ private class StylishSpeedDialScope(
  *   between adjacent actions. Defaults to
  *   [StylishTheme.dimensions.itemSpacing].
  * @param fabSize The diameter of the main button. Defaults to
- *   [DefaultStylishDimensions.fabSize].
+ *   [StylishTheme.dimensions.fabSize].
  * @param fabContainerColor Background color override for the main
  *   button. When `null`, [StylishFab]'s default applies.
  * @param fabContentColor Content color override for the main button.
@@ -179,7 +178,7 @@ public fun StylishSpeedDial(
     direction: SpeedDialDirection = SpeedDialDirection.Up,
     actionCount: Int = 0,
     spacing: Dp = StylishTheme.dimensions.itemSpacing,
-    fabSize: Dp = DefaultStylishDimensions.fabSize,
+    fabSize: Dp = StylishTheme.dimensions.fabSize,
     fabContainerColor: Color? = null,
     fabContentColor: Color? = null,
     onActionClick: (Int) -> Unit = {},

@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A filled icon button with a primary-container background, wrapping
@@ -62,7 +63,7 @@ public fun StylishFilledIconButton(
 ) {
     FilledIconButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("filled_icon_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,
@@ -111,7 +112,7 @@ public fun StylishFilledTonalIconButton(
 ) {
     FilledTonalIconButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("filled_tonal_icon_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,
@@ -161,7 +162,7 @@ public fun StylishOutlinedIconButton(
 ) {
     OutlinedIconButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("outlined_icon_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,

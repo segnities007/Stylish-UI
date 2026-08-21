@@ -1,0 +1,19 @@
+{
+  "schema": "stylish-ui.wasm-bundle-baseline.v1",
+  "scope": "Wasm production bundle byte budget",
+  "not_a_runtime_slo": true,
+  "revision": "linux-production-build-2026-08-21",
+  "budgets": {
+    "jsBytes": 716800,
+    "wasmBytes": 10240000
+  },
+  "baseline": {
+    "jsBytes": 537970,
+    "wasmBytes": 6422812
+  },
+  "source": {
+    "jsPath": "website-wasm/build/kotlin-webpack/wasmJs/productionExecutable/stylish-ui-website.js",
+    "wasmPath": "website-wasm/build/compileSync/wasmJs/main/productionExecutable/optimized/stylishUiWebsite.wasm",
+    "recordedFrom": "Linux production webpack/optimized Wasm build"
+  }
+}

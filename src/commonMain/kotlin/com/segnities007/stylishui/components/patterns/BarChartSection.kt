@@ -13,7 +13,7 @@ import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.SimpleBarChart
 import com.segnities007.stylishui.components.molecules.StylishSection
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A page section that pairs a [StylishSection] heading with a
@@ -37,7 +37,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
  * @param chartHeight Total height of the chart area. Defaults to
- *   [DefaultStylishDimensions.barChartHeight].
+ *   [StylishTheme.dimensions.barChartHeight].
  * @param topRadius Corner radius applied to the top of each bar (or the
  *   topmost segment in stacked mode). Defaults to 4 dp.
  * @param labelTextSize Text size for axis and category labels. Defaults to
@@ -58,14 +58,14 @@ public fun BarChartSection(
     modifier: Modifier = Modifier,
     barColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = DefaultStylishDimensions.barChartHeight,
+    chartHeight: Dp = StylishTheme.dimensions.barChartHeight,
     topRadius: Dp = 4.dp,
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 4,
 ) {
     StylishSection(
         title = title,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("bar_chart_section"),
     ) {
         SimpleBarChart(
             data = data,

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Stylish UI semantic tokens",
+  "version": "1.0.0",
+  "description": "Portable semantic token contract. Kotlin defaults remain the runtime source and this file is the designer handoff/export format.",
+  "modes": ["light", "dark", "highContrastLight", "highContrastDark"],
+  "color": {
+    "surface": { "value": "{material.surface}", "type": "color" },
+    "onSurface": { "value": "{material.onSurface}", "type": "color" },
+    "primary": { "value": "{material.primary}", "type": "color" },
+    "onPrimary": { "value": "{material.onPrimary}", "type": "color" },
+    "error": { "value": "{material.error}", "type": "color" },
+    "onError": { "value": "{material.onError}", "type": "color" },
+    "focusRing": { "value": "{material.outline}", "type": "color" }
+  },
+  "space": {
+    "none": { "value": "0dp", "type": "dimension" },
+    "xs": { "value": "4dp", "type": "dimension" },
+    "sm": { "value": "8dp", "type": "dimension" },
+    "md": { "value": "12dp", "type": "dimension" },
+    "lg": { "value": "16dp", "type": "dimension" },
+    "xl": { "value": "20dp", "type": "dimension" },
+    "xxl": { "value": "24dp", "type": "dimension" },
+    "section": { "value": "32dp", "type": "dimension" }
+  },
+  "shape": {
+    "small": { "value": "6dp", "type": "dimension" },
+    "medium": { "value": "12dp", "type": "dimension" },
+    "large": { "value": "20dp", "type": "dimension" },
+    "extraLarge": { "value": "28dp", "type": "dimension" }
+  },
+  "motion": {
+    "short": { "value": "180ms", "type": "duration" },
+    "medium": { "value": "300ms", "type": "duration" },
+    "long": { "value": "500ms", "type": "duration" },
+    "reducedMotion": { "value": "instant", "type": "cubicBezier" }
+  },
+  "interaction": {
+    "minimumTarget": { "value": "48dp", "type": "dimension" },
+    "focusRingWidth": { "value": "2dp", "type": "dimension" }
+  }
+}

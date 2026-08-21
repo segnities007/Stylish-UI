@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.segnities007.stylishui.components.organisms
 
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A modal bottom sheet styled with the Stylish design language —
@@ -52,7 +55,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param tonalElevation Tonal elevation of the sheet surface.
  * @param scrimColor Color of the scrim that obscures content while
  *   the sheet is open. Defaults to
- *   [BottomSheetDefaults.ScrimColor].
+ *   [MaterialTheme.colorScheme.scrim].
  * @param dragHandle Optional drag handle composable. When `null`
  *   (the default), **no** drag handle is shown. Pass
  *   `@Composable { BottomSheetDefaults.DragHandle() }` for the M3
@@ -82,7 +85,7 @@ public fun StylishBottomSheet(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
-    scrimColor: Color = BottomSheetDefaults.ScrimColor,
+    scrimColor: Color = MaterialTheme.colorScheme.scrim,
     dragHandle: @Composable (() -> Unit)? = null,
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     properties: ModalBottomSheetProperties = ModalBottomSheetProperties(),
@@ -90,7 +93,7 @@ public fun StylishBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("bottom_sheet"),
         sheetState = sheetState,
         shape = shape,
         containerColor = containerColor,

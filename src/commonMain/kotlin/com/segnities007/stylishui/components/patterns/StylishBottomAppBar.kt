@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 import androidx.compose.ui.unit.Dp
 
 /**
@@ -71,7 +72,7 @@ public fun StylishBottomAppBar(
 ) {
     BottomAppBar(
         actions = actions,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("bottom_app_bar"),
         floatingActionButton = floatingActionButton,
         containerColor = containerColor,
         contentColor = contentColor,

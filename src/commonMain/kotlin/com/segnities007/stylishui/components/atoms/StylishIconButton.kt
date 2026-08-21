@@ -13,7 +13,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -22,10 +21,10 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.foundation.stylishFocusRing
-import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishInteractiveSurface
+import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A circular icon button rendered on an outlined surface with a
@@ -67,9 +66,9 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
  *   border.
  * @param minWidth Minimum width of the tappable surface.
- *   Defaults to [DefaultStylishDimensions.iconButtonMinSize].
+ *   Defaults to [StylishTheme.dimensions.iconButtonMinSize].
  * @param minHeight Minimum height of the tappable surface.
- *   Defaults to [DefaultStylishDimensions.iconButtonMinSize].
+ *   Defaults to [StylishTheme.dimensions.iconButtonMinSize].
  * @param interactionSource The [MutableInteractionSource] for the
  *   button, used to observe press/focus/hover interactions. When
  *   `null`, an internal one is remembered.
@@ -96,8 +95,8 @@ public fun StylishIconButton(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,
     ),
-    minWidth: Dp = DefaultStylishDimensions.iconButtonMinSize,
-    minHeight: Dp = DefaultStylishDimensions.iconButtonMinSize,
+    minWidth: Dp = StylishTheme.dimensions.iconButtonMinSize,
+    minHeight: Dp = StylishTheme.dimensions.iconButtonMinSize,
     interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
 ) {
@@ -116,10 +115,12 @@ public fun StylishIconButton(
     } else {
         resolvedContentColor.copy(alpha = 0.38f)
     }
-    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val resolvedInteractionSource = rememberStylishInteractionSource(interactionSource)
+    val resolvedShape = shape ?: CircleShape
 
     Surface(
         modifier = modifier
+            .stylishTestTag("icon_button")
             .sizeIn(minWidth = minWidth, minHeight = minHeight)
             .then(
                 if (!enabled) {
@@ -128,27 +129,8 @@ public fun StylishIconButton(
                     Modifier
                 },
             )
-            .then(
-                if (enabled) {
-                    Modifier.stylishStateLayer(
-                        interactionSource = resolvedInteractionSource,
-                        shape = shape ?: CircleShape,
-                    )
-                } else {
-                    Modifier
-                },
-            )
-            .then(
-                if (enabled) {
-                    Modifier.stylishFocusRing(
-                        interactionSource = resolvedInteractionSource,
-                        shape = shape ?: CircleShape,
-                    )
-                } else {
-                    Modifier
-                },
-            ),
-        shape = shape ?: CircleShape,
+            .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
+        shape = resolvedShape,
         color = resolvedContainerColor,
         border = border,
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,

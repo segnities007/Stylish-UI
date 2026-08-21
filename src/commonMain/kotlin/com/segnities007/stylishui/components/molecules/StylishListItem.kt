@@ -36,7 +36,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
+import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A standalone list item for one row of information with optional
@@ -119,13 +122,17 @@ public fun StylishListItem(
         hasClickAction = onClick != null,
         hasLongClickAction = onLongClick != null,
     )
+    val resolvedInteractionSource = rememberStylishInteractionSource()
     Surface(
         modifier = modifier
+            .stylishTestTag("list_item")
             .heightIn(min = 56.dp)
             .then(
                 if (actionable) {
                     Modifier
                         .combinedClickable(
+                            interactionSource = resolvedInteractionSource,
+                            indication = null,
                             onClick = onClick ?: {},
                             onLongClick = onLongClick?.let {
                                 {
@@ -148,7 +155,7 @@ public fun StylishListItem(
         color = containerColor,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
-        shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+        shadowElevation = stylishInteractiveElevation(resolvedInteractionSource, actionable),
     ) {
         val innerModifier = Modifier
             .fillMaxWidth()

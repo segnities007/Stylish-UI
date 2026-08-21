@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /** Default bullet character used to mask secure text input. */
 private const val StylishObfuscationCharacter: Char = '\u2022'
@@ -133,7 +134,7 @@ public fun StylishSecureTextField(
 ) {
     SecureTextField(
         state = state,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("secure_text_field"),
         enabled = enabled,
         textStyle = textStyle,
         labelPosition = labelPosition,

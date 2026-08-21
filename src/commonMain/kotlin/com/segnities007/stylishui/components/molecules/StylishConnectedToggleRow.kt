@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.structure.ConnectedToggleRow
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -77,6 +79,7 @@ public fun StylishConnectedToggleRow(
     unselectedContainerColor: Color = MaterialTheme.stylishComponentColors.groupedContainer,
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val reducedMotion = isStylishReducedMotionEnabled()
     val haptic = LocalHapticFeedback.current
     ConnectedToggleRow(
         items = items,
@@ -88,12 +91,12 @@ public fun StylishConnectedToggleRow(
     ) { item, index, isSelected, itemModifier, shape, _, _ ->
         val containerColor by animateColorAsState(
             targetValue = if (isSelected) selectedContainerColor else unselectedContainerColor,
-            animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
+            animationSpec = if (reducedMotion) snap() else tween(durationMillis = StylishTheme.animation.durationShort),
             label = "toggleContainer",
         )
         val contentColor by animateColorAsState(
             targetValue = if (isSelected) selectedContentColor else unselectedContentColor,
-            animationSpec = tween(durationMillis = StylishTheme.animation.durationShort),
+            animationSpec = if (reducedMotion) snap() else tween(durationMillis = StylishTheme.animation.durationShort),
             label = "toggleContent",
         )
         Surface(

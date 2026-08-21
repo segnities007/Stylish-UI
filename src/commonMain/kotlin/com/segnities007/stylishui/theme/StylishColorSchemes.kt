@@ -3,6 +3,7 @@ package com.segnities007.stylishui.theme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.graphics.Color
 
 /**
  * Light-mode [ColorScheme] for the Stylish UI design system.
@@ -106,4 +107,74 @@ public val StylishDarkColorScheme: ColorScheme = darkColorScheme(
     surfaceBright = StylishPalette.DarkSurfaceBright,
     surfaceDim = StylishPalette.DarkSurfaceDim,
     scrim = StylishPalette.Scrim,
+)
+
+/** High-contrast light semantic roles for users who need stronger separation. */
+public val StylishHighContrastLightColorScheme: ColorScheme = StylishLightColorScheme.copy(
+    primary = Color.Black,
+    onPrimary = Color.White,
+    primaryContainer = Color.White,
+    onPrimaryContainer = Color.Black,
+    secondary = Color.Black,
+    onSecondary = Color.White,
+    secondaryContainer = Color.White,
+    onSecondaryContainer = Color.Black,
+    tertiary = Color.Black,
+    onTertiary = Color.White,
+    tertiaryContainer = Color.White,
+    onTertiaryContainer = Color.Black,
+    error = Color(0xFF8B0000),
+    onError = Color.White,
+    errorContainer = Color.White,
+    onErrorContainer = Color(0xFF5C0000),
+    background = Color.White,
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Color.Black,
+    surfaceVariant = Color.White,
+    onSurfaceVariant = Color.Black,
+    outline = Color.Black,
+    outlineVariant = Color.Black,
+    surfaceContainerLowest = Color.White,
+    surfaceContainerLow = Color.White,
+    surfaceContainer = Color.White,
+    surfaceContainerHigh = Color.White,
+    surfaceContainerHighest = Color.White,
+    surfaceBright = Color.White,
+    surfaceDim = Color.White,
+)
+
+/** High-contrast dark semantic roles for users who need stronger separation. */
+public val StylishHighContrastDarkColorScheme: ColorScheme = StylishDarkColorScheme.copy(
+    primary = Color.White,
+    onPrimary = Color.Black,
+    primaryContainer = Color.Black,
+    onPrimaryContainer = Color.White,
+    secondary = Color.White,
+    onSecondary = Color.Black,
+    secondaryContainer = Color.Black,
+    onSecondaryContainer = Color.White,
+    tertiary = Color.White,
+    onTertiary = Color.Black,
+    tertiaryContainer = Color.Black,
+    onTertiaryContainer = Color.White,
+    error = Color(0xFFFF8A80),
+    onError = Color.Black,
+    errorContainer = Color.Black,
+    onErrorContainer = Color.White,
+    background = Color.Black,
+    onBackground = Color.White,
+    surface = Color.Black,
+    onSurface = Color.White,
+    surfaceVariant = Color.Black,
+    onSurfaceVariant = Color.White,
+    outline = Color.White,
+    outlineVariant = Color.White,
+    surfaceContainerLowest = Color.Black,
+    surfaceContainerLow = Color.Black,
+    surfaceContainer = Color.Black,
+    surfaceContainerHigh = Color.Black,
+    surfaceContainerHighest = Color.Black,
+    surfaceBright = Color.Black,
+    surfaceDim = Color.Black,
 )

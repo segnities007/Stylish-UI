@@ -190,7 +190,8 @@ public fun StylishPopover(
     val density = LocalDensity.current
     val offsetPx = with(density) { IntOffset(offset.x.toPx().roundToInt(), offset.y.toPx().roundToInt()) }
     val reducedMotion = isStylishReducedMotionEnabled()
-    val animationDuration = StylishTheme.animation.durationShort
+    // Reduced motion must remove both scale and fade interpolation.
+    val animationDuration = if (reducedMotion) 0 else StylishTheme.animation.durationShort
 
     val positionProvider = remember(placement, offsetPx) {
         PopoverPopupPositionProvider(

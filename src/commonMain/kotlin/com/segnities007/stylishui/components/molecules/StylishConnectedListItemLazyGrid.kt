@@ -25,7 +25,6 @@ import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.structure.ConnectedListItemContent
 import com.segnities007.stylishui.structure.ConnectedListItemLazyGrid
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A lazily-composed grid of connected list items laid out in equal-width cells across a fixed
@@ -52,7 +51,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param spacing The gap between adjacent items both horizontally and vertically. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding [PaddingValues] applied around the entire lazy grid. Defaults to
- *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ *   [StylishTheme.dimensions.controlPadding] horizontal padding.
+ * @param key Optional stable and unique key factory used to preserve item state across moves.
  * @param listState [LazyGridState] controlling scroll position. Defaults to
  *   [rememberLazyGridState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
@@ -97,7 +97,8 @@ public fun StylishConnectedListItemLazyGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.controlPadding),
+    key: ((StylishConnectedListItem) -> Any)? = null,
     listState: LazyGridState = rememberLazyGridState(),
     headlineMaxLines: Int = Int.MAX_VALUE,
     headlineOverflow: TextOverflow = TextOverflow.Ellipsis,
@@ -120,7 +121,16 @@ public fun StylishConnectedListItemLazyGrid(
         )
     },
 ) {
-    ConnectedListItemLazyGrid(items, columns, modifier, spacing, contentPadding, listState, listItem = listItem)
+    ConnectedListItemLazyGrid(
+        items = items,
+        columns = columns,
+        modifier = modifier,
+        spacing = spacing,
+        contentPadding = contentPadding,
+        key = key,
+        listState = listState,
+        listItem = listItem,
+    )
 }
 
 @Preview(name = "Connected list items lazy grid", showBackground = true, widthDp = 393, heightDp = 500)

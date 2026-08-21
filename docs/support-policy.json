@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "policyStatus": "defined-not-operationally-proven",
+  "artifact": "io.github.segnities007:stylish-ui",
+  "platforms": ["android", "jvm-desktop", "wasm-web", "ios"],
+  "supportWindow": {
+    "stable": "latest-and-previous-minor",
+    "security": "latest-and-previous-minor",
+    "preRelease": "best-effort-no-sla",
+    "eolNoticeBusinessDays": 30
+  },
+  "severity": {
+    "S0": {"firstHumanResponseBusinessDays": 1, "releaseAction": "stop-or-rollback"},
+    "S1": {"firstHumanResponseBusinessDays": 2, "releaseAction": "hotfix-or-rollback"},
+    "S2": {"firstHumanResponseBusinessDays": 5, "releaseAction": "next-patch-or-minor"},
+    "S3": {"firstHumanResponseBusinessDays": 10, "releaseAction": "triage-to-roadmap"}
+  },
+  "deprecation": {
+    "minimumMinorReleasesBeforeRemoval": 2,
+    "requiresMigrationGuide": true,
+    "requiresApiDumpAndApiCheck": true,
+    "preOneMajorExceptionMustBeDocumented": true
+  },
+  "incident": {
+    "requiredFields": ["impact", "firstBadVersion", "platform", "reproduction", "workaround", "owner"],
+    "requiredFollowUp": ["rootCause", "detectionGap", "regressionTest", "preventionGate"],
+    "rollbackArtifact": "previous-known-good-release",
+    "secretsPolicy": "never-store-credentials-or-user-data"
+  },
+  "evidence": {
+    "requiredReleaseInputs": ["checksum", "sbom", "license-review", "api-abi", "platform-matrix"],
+    "operationalEvidenceStatus": "not-yet-observed-in-this-repository"
+  }
+}

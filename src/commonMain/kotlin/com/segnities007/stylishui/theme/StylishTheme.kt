@@ -45,6 +45,10 @@ public object StylishTheme {
     /** The shape tokens provided by the current [StylishTheme] composition. */
     public val shapes: StylishShapes
         @Composable get() = LocalStylishShapes.current
+
+    /** Localized labels provided by the current [StylishTheme] composition. */
+    public val strings: StylishStrings
+        @Composable get() = LocalStylishStrings.current
 }
 
 /**
@@ -69,6 +73,10 @@ public object StylishTheme {
  * @param colorScheme The Material 3 [ColorScheme] to apply. Defaults to [StylishDarkColorScheme]
  *   when [darkTheme] is `true`, otherwise [StylishLightColorScheme]. Ignored when [seedColor]
  *   or [dynamicColor] resolves a dynamic scheme.
+ * @param highContrast When `true`, use an explicit high-contrast semantic role set. Pass
+ *   [highContrastColorScheme] to preserve product branding while retaining this mode contract.
+ * @param highContrastColorScheme Optional application-owned high-contrast scheme. When `null`,
+ *   Stylish's deterministic light or dark high-contrast scheme is selected.
  * @param typography The Material 3 [Typography] scale. Defaults to [StylishTypography].
  * @param materialShapes The Material 3 [Shapes] scale applied to M3 primitives that do not use
  *   an explicit shape parameter. Defaults to the Material 3 defaults. Use [shapes] to style
@@ -98,12 +106,15 @@ public fun StylishTheme(
     dynamicColor: Boolean = false,
     seedColor: Color? = null,
     colorScheme: ColorScheme = if (darkTheme) StylishDarkColorScheme else StylishLightColorScheme,
+    highContrast: Boolean = false,
+    highContrastColorScheme: ColorScheme? = null,
     typography: Typography = StylishTypography,
     materialShapes: Shapes = Shapes(),
     dimensions: StylishDimensions = DefaultStylishDimensions,
     shapes: StylishShapes = DefaultStylishShapes,
     animation: StylishAnimationTokens = DefaultStylishAnimationTokens,
     componentColors: StylishComponentColors? = null,
+    strings: StylishStrings = StylishStrings(),
     content: @Composable () -> Unit,
 ) {
     val resolvedColorScheme = when {
@@ -113,6 +124,8 @@ public fun StylishTheme(
         dynamicColor -> {
             rememberDynamicColorSchemes()?.let { if (darkTheme) it.second else it.first } ?: colorScheme
         }
+        highContrast -> highContrastColorScheme
+            ?: if (darkTheme) StylishHighContrastDarkColorScheme else StylishHighContrastLightColorScheme
         else -> colorScheme
     }
     val resolvedComponentColors = componentColors ?: stylishComponentColors(resolvedColorScheme)
@@ -121,6 +134,7 @@ public fun StylishTheme(
         LocalStylishAnimation provides animation,
         LocalStylishShapes provides shapes,
         LocalStylishComponentColors provides resolvedComponentColors,
+        LocalStylishStrings provides strings,
     ) {
         MaterialTheme(
             colorScheme = resolvedColorScheme,

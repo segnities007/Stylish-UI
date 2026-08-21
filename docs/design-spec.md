@@ -10,6 +10,14 @@ Simple（S2/S3: 最小の輪郭・標高）を、**トークンと機械的な�
 コンポーネントはハードコードせず、必ず `StylishTheme.animation` / `StylishTheme.dimensions` /
 `StylishTheme.shapes` 経由でトークンを参照すること。
 
+テーマ依存色の漏れは `scripts/verify-token-literals.sh` が監査する。Preview専用の例とQRの
+黒白符号化だけを明示的に許可し、実コンポーネントは`MaterialTheme.colorScheme`または
+Stylishのsemantic tokenを使う。allowlistの追加は、色がテーマ非依存である理由を同じPRの
+設計文書へ記録する。
+
+押下時の縮小表現は `Modifier.stylishPressScale` に統一し、`StylishAnimationTokens.pressedScale`
+と `springStiffness` でアプリ全体から調整できます。減少モーション時は即時切替になります。
+
 ---
 
 ## 1. モーション言語

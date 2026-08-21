@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.molecules.StylishPopover
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A text field with a filtered suggestion dropdown — the web
@@ -53,7 +53,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param errorMessage Optional supporting error text.
  * @param shape Corner shape of the field and popover. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param width Width of the suggestion popover. Defaults to 320 dp.
  */
 @Composable
@@ -72,7 +72,7 @@ public fun StylishAutocomplete(
     enabled: Boolean = true,
     isError: Boolean = false,
     errorMessage: String? = null,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     width: Dp = 320.dp,
 ) {
     val suggestions = remember(value, options) {
@@ -83,7 +83,7 @@ public fun StylishAutocomplete(
     StylishPopover(
         expanded = expanded && enabled && suggestions.isNotEmpty(),
         onExpandedChange = { expanded = it },
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.stylishTestTag("autocomplete").fillMaxWidth(),
         trigger = {
             StylishFormTextField(
                 value = value,

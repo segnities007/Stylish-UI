@@ -1,0 +1,4 @@
+public final class com/segnities007/stylishui/structureconsumer/StructureConsumerKt {
+	public static final fun structureConsumerRowCount (Ljava/util/List;I)I
+}
+

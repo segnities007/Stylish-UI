@@ -20,7 +20,6 @@ import com.segnities007.stylishui.foundation.ConnectedEdges
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.structure.ConnectedCardItemContent
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * The Finish-layer alias for the headless connected-card rendering contract.
@@ -72,11 +71,11 @@ public typealias StylishConnectedCardItemContent = ConnectedCardItemContent
  * @param supportingTextOverflow Overflow strategy for the card supporting
  *   text.
  * @param minHeight Minimum height of the card body. Defaults to
- *   [DefaultStylishDimensions.cardMinHeight] (77 dp).
+ *   [StylishTheme.dimensions.cardMinHeight] (77 dp).
  * @param horizontalPadding Horizontal padding inside the card. Defaults to
- *   [DefaultStylishDimensions.controlPadding] (16 dp).
+ *   [StylishTheme.dimensions.controlPadding] (16 dp).
  * @param verticalPadding Vertical padding inside the card. Defaults to
- *   [DefaultStylishDimensions.controlVerticalPadding] (12 dp).
+ *   [StylishTheme.dimensions.controlVerticalPadding] (12 dp).
  * @param contentSpacing Horizontal gap between slots inside the card.
  *   Defaults to [StylishTheme.dimensions.itemSpacing] (8 dp).
  * @param titleSpacing Vertical gap between title and supporting text. Defaults
@@ -104,9 +103,9 @@ public fun DefaultStylishConnectedCardItem(
     titleOverflow: TextOverflow = TextOverflow.Ellipsis,
     supportingTextMaxLines: Int = 1,
     supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
-    minHeight: Dp = DefaultStylishDimensions.cardMinHeight,
-    horizontalPadding: Dp = DefaultStylishDimensions.controlPadding,
-    verticalPadding: Dp = DefaultStylishDimensions.controlVerticalPadding,
+    minHeight: Dp = StylishTheme.dimensions.cardMinHeight,
+    horizontalPadding: Dp = StylishTheme.dimensions.controlPadding,
+    verticalPadding: Dp = StylishTheme.dimensions.controlVerticalPadding,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
     titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
 ) {

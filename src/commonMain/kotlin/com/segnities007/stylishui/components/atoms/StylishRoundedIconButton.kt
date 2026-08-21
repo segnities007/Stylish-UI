@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A pill-shaped icon button rendered on a wide rounded-rectangle
@@ -67,13 +67,13 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   `onSurfaceVariant`.
  * @param shape Shape of the surface. Defaults to
  *   `RoundedCornerShape` with
- *   [DefaultStylishDimensions.floatingCornerRadius].
+ *   [StylishTheme.dimensions.floatingCornerRadius].
  * @param border Border stroke drawn around the surface. Defaults to a
  *   hairline of [StylishTheme.dimensions.outlineWidth] using
  *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
  *   border.
  * @param minWidth Minimum width of the tappable surface.
- *   Defaults to [DefaultStylishDimensions.roundedIconButtonMinWidth].
+ *   Defaults to [StylishTheme.dimensions.roundedIconButtonMinWidth].
  * @param minHeight Minimum height of the tappable surface.
  *   Defaults to 48 dp.
  * @param interactionSource The [MutableInteractionSource] for the
@@ -97,12 +97,12 @@ public fun StylishRoundedIconButton(
     active: Boolean = false,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.floatingCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,
     ),
-    minWidth: Dp = DefaultStylishDimensions.roundedIconButtonMinWidth,
+    minWidth: Dp = StylishTheme.dimensions.roundedIconButtonMinWidth,
     minHeight: Dp = 48.dp,
     interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
@@ -121,6 +121,7 @@ public fun StylishRoundedIconButton(
 
     Surface(
         modifier = modifier
+            .stylishTestTag("rounded_icon_button")
             .sizeIn(minWidth = minWidth, minHeight = minHeight)
             .then(
                 if (enabled) {

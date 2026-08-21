@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishButton
 import com.segnities007.stylishui.components.molecules.StylishPopover
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * An inline confirmation anchored to a trigger — the web "Popconfirm"
@@ -54,7 +54,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   [MaterialTheme.typography.bodySmall].
  * @param shape Corner shape of the popover. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param width Width of the popover. Defaults to 260 dp.
  */
 @Composable
@@ -72,14 +72,14 @@ public fun StylishPopconfirm(
     confirmColors: ButtonColors? = null,
     titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
     descriptionStyle: TextStyle = MaterialTheme.typography.bodySmall,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     width: Dp = 260.dp,
 ) {
     StylishPopover(
         trigger = anchor,
         expanded = expanded,
         onExpandedChange = onExpandedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("popconfirm"),
         shape = shape,
         width = width,
         content = {

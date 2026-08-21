@@ -13,7 +13,7 @@ import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.components.molecules.StylishSection
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A page section that pairs a [StylishSection] heading with a
@@ -40,7 +40,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
  * @param chartHeight Total height of the chart area. Defaults to
- *   [DefaultStylishDimensions.lineChartHeight].
+ *   [StylishTheme.dimensions.lineChartHeight].
  * @param strokeWidth Thickness of the connecting line. Defaults to 2.5 dp.
  * @param pointRadius Outer radius of each data-point circle. Defaults to
  *   4 dp.
@@ -69,7 +69,7 @@ public fun LineChartSection(
     fillColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
     pointColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = DefaultStylishDimensions.lineChartHeight,
+    chartHeight: Dp = StylishTheme.dimensions.lineChartHeight,
     strokeWidth: Dp = 2.5.dp,
     pointRadius: Dp = 4.dp,
     pointInnerRadius: Dp = 2.dp,
@@ -79,7 +79,7 @@ public fun LineChartSection(
 ) {
     StylishSection(
         title = title,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("line_chart_section"),
     ) {
         SimpleLineChart(
             data = data,

@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A standard icon toggle button that switches between a checked and an
@@ -73,7 +74,7 @@ public fun StylishIconToggleButton(
     IconToggleButton(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("icon_toggle_button"),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,
@@ -124,7 +125,7 @@ public fun StylishFilledIconToggleButton(
     FilledIconToggleButton(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("filled_icon_toggle_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,
@@ -175,7 +176,7 @@ public fun StylishFilledTonalIconToggleButton(
     FilledTonalIconToggleButton(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("filled_tonal_icon_toggle_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,
@@ -231,7 +232,7 @@ public fun StylishOutlinedIconToggleButton(
     OutlinedIconToggleButton(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("outlined_icon_toggle_button"),
         enabled = enabled,
         shape = shape,
         colors = colors,

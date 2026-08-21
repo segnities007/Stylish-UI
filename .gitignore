@@ -17,3 +17,8 @@
 local.properties
 .kotlin/
 /kotlin-js-store
+.gradle-local/
+.gradle-perf/
+.gradle-structure/
+.gradle-catalog-gap/
+__pycache__/

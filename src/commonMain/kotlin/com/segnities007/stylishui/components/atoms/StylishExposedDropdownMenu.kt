@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A box that anchors an exposed dropdown menu to a text field, wrapping
@@ -64,7 +65,7 @@ public fun StylishExposedDropdownMenuBox(
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = onExpandedChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("exposed_dropdown_menu_box"),
         content = content,
     )
 }
@@ -121,7 +122,7 @@ public fun ExposedDropdownMenuBoxScope.StylishExposedDropdownMenu(
     ExposedDropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("exposed_dropdown_menu"),
         scrollState = scrollState,
         matchAnchorWidth = matchAnchorWidth,
         shape = shape,

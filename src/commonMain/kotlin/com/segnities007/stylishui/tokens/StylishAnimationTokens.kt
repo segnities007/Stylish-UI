@@ -36,6 +36,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
  * @property gentleEasing The easing curve for gentle, slow-feeling motion such as fade-in and
  *   decorative ambient animation. Default [LinearOutSlowInEasing] — slow start that settles
  *   into place.
+ * @property pressedScale Scale applied to press feedback. Default 0.98f.
+ * @property springStiffness Stiffness used by spring-based micro-interactions. Default 700f.
  * @see DefaultStylishAnimationTokens
  * @see com.segnities007.stylishui.theme.StylishTheme
  * @see com.segnities007.stylishui.theme.StylishTheme.animation
@@ -49,6 +51,8 @@ public data class StylishAnimationTokens(
     public val defaultEasing: Easing = FastOutSlowInEasing,
     public val emphasizedEasing: Easing = CubicBezierEasing(0.2f, 0f, 0f, 1f),
     public val gentleEasing: Easing = LinearOutSlowInEasing,
+    public val pressedScale: Float = 0.98f,
+    public val springStiffness: Float = 700f,
 )
 
 /**

@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A center-aligned Material 3 top app bar with Stylish theme defaults.
@@ -81,7 +82,7 @@ public fun StylishCenterAlignedTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = title,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("center_aligned_top_app_bar"),
         navigationIcon = navigationIcon ?: {},
         actions = actions,
         windowInsets = windowInsets,
@@ -150,7 +151,7 @@ public fun StylishMediumTopAppBar(
 ) {
     MediumTopAppBar(
         title = title,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("medium_top_app_bar"),
         navigationIcon = navigationIcon ?: {},
         actions = actions,
         windowInsets = windowInsets,
@@ -219,7 +220,7 @@ public fun StylishLargeTopAppBar(
 ) {
     LargeTopAppBar(
         title = title,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("large_top_app_bar"),
         navigationIcon = navigationIcon ?: {},
         actions = actions,
         windowInsets = windowInsets,
@@ -284,7 +285,7 @@ private fun StylishCenterAlignedTopAppBarPreview() {
                 title = { Text("設定") },
                 navigationIcon = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "戻る")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
                     }
                 },
                 actions = {
@@ -307,7 +308,7 @@ private fun StylishMediumTopAppBarPreview() {
                 title = { Text("設定") },
                 navigationIcon = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "戻る")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
                     }
                 },
                 actions = {
@@ -330,7 +331,7 @@ private fun StylishLargeTopAppBarPreview() {
                 title = { Text("設定") },
                 navigationIcon = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "戻る")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
                     }
                 },
                 actions = {

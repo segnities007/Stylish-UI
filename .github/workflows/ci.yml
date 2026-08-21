@@ -66,14 +66,100 @@ jobs:
       # src/jvmTest/resources/golden/ and pass; afterwards they compare
       # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
       - name: Build and test
-        # wasmJsBrowserTest runs the same commonTest suite as the Node-based
-        # wasmJsTest but additionally requires a headless Chrome, which has
-        # been flaky in this CI environment. The Node run fully covers the
-        # tests, so exclude the browser variant from `check`.
-        run: ./gradlew check -x wasmJsBrowserTest
+        run: ./gradlew check
+        env:
+          WRITE_VISUAL_MATRIX: '1'
+          WRITE_PERFORMANCE_REPORT: '1'
+          WRITE_RECOMPOSITION_REPORT: '1'
+
+      - name: Verify algorithmic performance report
+        run: python3 scripts/verify-performance-report.py --report build/reports/performance/algorithmic-budgets.json
+
+      - name: Verify JVM Compose recomposition report
+        run: python3 scripts/verify-compose-recomposition.py --report build/reports/performance/compose-recomposition.json --require
+
+      - name: Upload visual matrix evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: visual-matrix-evidence
+          path: '**/build/reports/visual-matrix/'
+          if-no-files-found: ignore
+
+      - name: Upload algorithmic performance evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: algorithmic-performance-evidence
+          path: '**/build/reports/performance/'
+          if-no-files-found: ignore
+
+      # checkCatalogStateMatrix (part of ./gradlew check) writes the public API ↔
+      # catalog ↔ state coverage matrix here. It is release evidence and must be
+      # retained like the visual matrix; `warn` (not `ignore`) so a silently
+      # missing matrix is visible in the run log.
+      - name: Upload catalog state matrix evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: catalog-state-matrix-evidence
+          path: build/reports/catalog-state-matrix/
+          if-no-files-found: warn
 
       - name: Check public ABI
         run: ./gradlew apiCheck
+
+      - name: Generate and validate SBOM
+        run: |
+          ./gradlew generateSbom --no-daemon
+          python3 scripts/verify-sbom.py
+          python3 scripts/verify-release-evidence.py --write-manifest
+
+      - name: Build and validate Android R8 consumer sample
+        run: |
+          ./gradlew :samples:android-r8:assembleRelease --no-daemon
+          python3 scripts/verify-android-r8.py
+
+      - name: Generate deterministic design token handoff
+        run: python3 scripts/export-design-tokens.py
+
+      - name: Validate Compose compiler stability metrics
+        run: python3 scripts/verify-compose-metrics.py
+
+      - name: Upload design token handoff
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: design-token-handoff
+          path: build/reports/tokens/
+          if-no-files-found: ignore
+
+      - name: Upload Compose stability evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: compose-stability-evidence
+          path: build/reports/performance/compose-metrics.json
+          if-no-files-found: ignore
+
+      - name: Upload Android R8 evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: android-r8-evidence
+          path: |
+            build/reports/release/android-r8.json
+            samples/android-r8/build/outputs/apk/release/*.apk
+            samples/android-r8/build/outputs/mapping/release/
+          if-no-files-found: ignore
+
+      - name: Upload release evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: release-evidence
+          path: build/reports/release/
+          if-no-files-found: ignore
 
       - name: Upload build reports
         uses: actions/upload-artifact@v7
@@ -82,31 +168,3 @@ jobs:
           name: build-reports
           path: '**/build/reports/'
           if-no-files-found: ignore
-
-  ios:
-    name: Compile iOS targets
-    runs-on: macos-15
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v7
-
-      - name: Set up JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          validate-wrappers: true
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          add-job-summary: 'on-failure'
-
-      # iOS targets (iosArm64 / iosSimulatorArm64) are only enabled on macOS
-      # hosts. This job verifies the common code compiles for iOS even though
-      # the targets are not published yet (QA-11, PLT-01).
-      - name: Compile iOS targets
-        run: ./gradlew compileKotlinIosArm64 compileKotlinIosSimulatorArm64

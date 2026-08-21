@@ -7,9 +7,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.MultiChoiceSegmentedButtonRowScope
@@ -253,7 +253,7 @@ private fun StylishSegmentedButtonsPreview() {
                     selected = selected == 0,
                     onClick = { selected = 0 },
                     shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                    icon = { Icon(Icons.Default.List, contentDescription = null) },
+                    icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = null) },
                     label = { Text("リスト") },
                 )
                 StylishSegmentedButton(

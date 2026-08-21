@@ -14,9 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A circular progress indicator styled with the Stylish theme.
@@ -50,10 +54,17 @@ public fun StylishCircularProgressIndicator(
     strokeCap: StrokeCap = StrokeCap.Round,
     progress: (() -> Float)? = null,
 ) {
+    val progressModifier = if (progress != null) {
+        modifier.stylishTestTag("circular_progress_indicator").semantics {
+            progressBarRangeInfo = ProgressBarRangeInfo(progress().coerceIn(0f, 1f), 0f..1f)
+        }
+    } else {
+        modifier.stylishTestTag("circular_progress_indicator")
+    }
     if (progress != null) {
         CircularProgressIndicator(
             progress = progress,
-            modifier = modifier,
+            modifier = progressModifier,
             color = color,
             trackColor = trackColor,
             strokeWidth = strokeWidth,
@@ -61,7 +72,7 @@ public fun StylishCircularProgressIndicator(
         )
     } else {
         CircularProgressIndicator(
-            modifier = modifier,
+            modifier = progressModifier,
             color = color,
             trackColor = trackColor,
             strokeWidth = strokeWidth,
@@ -110,11 +121,18 @@ public fun StylishLinearProgressIndicator(
     gapSize: Dp = 0.dp,
     drawStopIndicator: (DrawScope.() -> Unit)? = null,
 ) {
+    val progressModifier = if (progress != null) {
+        modifier.stylishTestTag("linear_progress_indicator").semantics {
+            progressBarRangeInfo = ProgressBarRangeInfo(progress().coerceIn(0f, 1f), 0f..1f)
+        }
+    } else {
+        modifier.stylishTestTag("linear_progress_indicator")
+    }
     if (progress != null) {
         if (drawStopIndicator != null) {
             LinearProgressIndicator(
                 progress = progress,
-                modifier = modifier,
+                modifier = progressModifier,
                 color = color,
                 trackColor = trackColor,
                 strokeCap = strokeCap,
@@ -124,7 +142,7 @@ public fun StylishLinearProgressIndicator(
         } else {
             LinearProgressIndicator(
                 progress = progress,
-                modifier = modifier,
+                modifier = progressModifier,
                 color = color,
                 trackColor = trackColor,
                 strokeCap = strokeCap,
@@ -133,7 +151,7 @@ public fun StylishLinearProgressIndicator(
         }
     } else {
         LinearProgressIndicator(
-            modifier = modifier,
+            modifier = progressModifier,
             color = color,
             trackColor = trackColor,
             strokeCap = strokeCap,

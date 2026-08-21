@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishInteractiveTarget
 
 /**
  * The visual style of a [StylishButton].
@@ -116,10 +116,9 @@ public enum class StylishButtonVariant {
  *   `null`, an internal one is remembered.
  * @param contentPadding Inner padding of the button. Defaults to the
  *   control padding tokens
- *   ([DefaultStylishDimensions.controlPadding] /
- *   [DefaultStylishDimensions.controlVerticalPadding]).
+ *   ([StylishTheme.dimensions]).
  * @param minHeight Minimum height of the button. Defaults to
- *   [DefaultStylishDimensions.buttonMinHeight].
+ *   [StylishTheme.dimensions].
  * @param contentArrangement Horizontal arrangement of the label row
  *   between the leading and trailing slots. Defaults to
  *   [Arrangement.Center].
@@ -150,10 +149,10 @@ public fun StylishButton(
     elevation: ButtonElevation? = null,
     interactionSource: MutableInteractionSource? = null,
     contentPadding: PaddingValues = PaddingValues(
-        horizontal = DefaultStylishDimensions.controlPadding,
-        vertical = DefaultStylishDimensions.controlVerticalPadding,
+        horizontal = StylishTheme.dimensions.controlPadding,
+        vertical = StylishTheme.dimensions.controlVerticalPadding,
     ),
-    minHeight: Dp = DefaultStylishDimensions.buttonMinHeight,
+    minHeight: Dp = StylishTheme.dimensions.buttonMinHeight,
     contentArrangement: Arrangement.Horizontal = Arrangement.Center,
     isLoading: Boolean = false,
     leadingContent: (@Composable RowScope.() -> Unit)? = null,
@@ -162,59 +161,14 @@ public fun StylishButton(
 ) {
     val resolvedEnabled = enabled && !isLoading
     val actionable = isActionable(enabled = resolvedEnabled, hasClickAction = true)
-    val resolvedColors = colors ?: when (variant) {
-        StylishButtonVariant.Filled -> ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        )
-        StylishButtonVariant.Tonal -> ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        )
-        StylishButtonVariant.Outlined -> ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        )
-        StylishButtonVariant.Text -> ButtonDefaults.textButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.primary,
-        )
-        StylishButtonVariant.Elevated -> ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-    val resolvedBorder = border ?: when (variant) {
-        StylishButtonVariant.Filled, StylishButtonVariant.Outlined -> BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        )
-        else -> null
-    }
-    val resolvedElevation = elevation ?: when (variant) {
-        StylishButtonVariant.Filled -> ButtonDefaults.buttonElevation(
-            defaultElevation = StylishTheme.dimensions.interactiveElevation,
-            pressedElevation = 0.dp,
-            disabledElevation = 0.dp,
-        )
-        StylishButtonVariant.Tonal,
-        StylishButtonVariant.Outlined,
-        StylishButtonVariant.Text,
-        -> ButtonDefaults.buttonElevation(
-            defaultElevation = 0.dp,
-            pressedElevation = 0.dp,
-            disabledElevation = 0.dp,
-        )
-        StylishButtonVariant.Elevated -> ButtonDefaults.buttonElevation(
-            defaultElevation = StylishTheme.dimensions.floatingElevation,
-            pressedElevation = 0.dp,
-            disabledElevation = 0.dp,
-        )
-    }
+    val resolvedColors = colors ?: StylishButtonDefaults.colors(variant)
+    val resolvedBorder = border ?: StylishButtonDefaults.border(variant)
+    val resolvedElevation = elevation ?: StylishButtonDefaults.elevation(variant)
     Button(
         onClick = onClick,
         enabled = actionable,
         modifier = modifier
+            .stylishInteractiveTarget()
             .testTag("stylish_button")
             .heightIn(min = minHeight),
         shape = shape,

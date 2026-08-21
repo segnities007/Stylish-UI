@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.segnities007.stylishui.components.molecules
 
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,10 +87,8 @@ private fun Long.toLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault(
  * @param placeholder The placeholder text shown when [value] is `null`.
  *   Ignored when [placeholderContent] is provided.
  * @param formatter A function that converts a [LocalDate] to its display
- *   string. Defaults to [defaultDateFormatter], a **locale-neutral**
- *   `yyyy/MM/dd` format (zero-padded Gregorian numbers with ASCII digits,
- *   independent of the device locale). Supply a custom formatter when a
- *   locale-aware format is required.
+ *   string. When omitted, the formatter from [StylishTheme.strings] is used;
+ *   supply a custom formatter when app-specific locale rules are required.
  * @param enabled Whether the field is interactive. When `false`, taps do not
  *   open the date-picker dialog and the field renders in a disabled state.
  *   Defaults to `true`.
@@ -137,7 +137,7 @@ public fun StylishDatePickerField(
     dismissLabel: String,
     placeholder: String,
     modifier: Modifier = Modifier,
-    formatter: (LocalDate) -> String = defaultDateFormatter,
+    formatter: ((LocalDate) -> String)? = null,
     enabled: Boolean = true,
     isError: Boolean = false,
     supportingText: String? = null,
@@ -153,6 +153,10 @@ public fun StylishDatePickerField(
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val strings = StylishTheme.strings
+    val resolvedFormatter = formatter ?: { date: LocalDate ->
+        strings.formatDate(date.year, date.monthNumber, date.dayOfMonth)
+    }
 
     Box(
         modifier = modifier
@@ -160,7 +164,7 @@ public fun StylishDatePickerField(
             .clickable(enabled = enabled) { showDialog = true },
     ) {
         OutlinedTextField(
-            value = value?.let(formatter) ?: "",
+            value = value?.let(resolvedFormatter) ?: "",
             onValueChange = {},
             label = labelContent ?: { Text(label) },
             placeholder = placeholderContent ?: { Text(placeholder) },

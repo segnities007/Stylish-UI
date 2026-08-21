@@ -23,10 +23,12 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 
 /**
  * A single data point in a [SimpleLineChart], pairing an X-axis label
@@ -97,7 +99,7 @@ public data class LineChartData(
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
  * @param chartHeight Total height of the chart area. Defaults to
- *   [DefaultStylishDimensions.lineChartHeight].
+ *   [StylishTheme.dimensions.lineChartHeight].
  * @param strokeWidth Thickness of the connecting line. Defaults to 2.5 dp.
  * @param pointRadius Outer radius of each data-point circle. Defaults to
  *   4 dp.
@@ -128,7 +130,7 @@ public fun SimpleLineChart(
     fillColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
     pointColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = DefaultStylishDimensions.lineChartHeight,
+    chartHeight: Dp = StylishTheme.dimensions.lineChartHeight,
     strokeWidth: Dp = 2.5.dp,
     pointRadius: Dp = 4.dp,
     pointInnerRadius: Dp = 2.dp,
@@ -137,35 +139,42 @@ public fun SimpleLineChart(
     maxLabelCount: Int = 6,
     animate: Boolean = true,
 ) {
+    // Keep the source list for axis/semantics fidelity, but cap Canvas work for dense series.
+    val renderedData = remember(data) {
+        downsampleStylishSeries(data, StylishChartMaxRenderedPoints)
+    }
     val values = data.map { it.value.coerceAtLeast(0f) }
     val axisRange = lineScaleRange(values)
     val axisMin = axisRange.start
     val axisMax = axisRange.endInclusive
     val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val strings = StylishTheme.strings
+    val scaledLabelTextSize = labelTextSize * LocalDensity.current.fontScale
     val pointInnerColor = MaterialTheme.colorScheme.surface
     val description = "$contentDescriptionPrefix: " +
-        data.joinToString(", ") { "${it.label}=${it.value}" }
+        data.joinToString(", ") { "${it.label}=${strings.formatDecimal(it.value.toDouble())}" }
     val textMeasurer = rememberTextMeasurer()
     val labelStyle = TextStyle(
-        fontSize = labelTextSize.value.sp,
+        fontSize = scaledLabelTextSize.value.sp,
         color = labelColor,
     )
-    val labelLayouts = remember(data, labelTextSize, labelColor) {
-        data.map { textMeasurer.measure(it.label, labelStyle) }
+    val labelLayouts = remember(renderedData, scaledLabelTextSize, labelColor) {
+        renderedData.map { textMeasurer.measure(it.label, labelStyle) }
     }
-    val gridLayouts = remember(data, gridLineCount, labelTextSize, labelColor, axisRange) {
+    val gridLayouts = remember(data, gridLineCount, scaledLabelTextSize, labelColor, axisRange) {
         List(gridLineCount) { i ->
             val gridValue = axisMax - (axisMax - axisMin) * i / (gridLineCount - 1).coerceAtLeast(1)
             textMeasurer.measure(gridValue.formatDecimal(1), labelStyle)
         }
     }
-    val emptyLayout = remember(emptyLabel, labelTextSize, labelColor) {
+    val emptyLayout = remember(emptyLabel, scaledLabelTextSize, labelColor) {
         textMeasurer.measure(emptyLabel, labelStyle)
     }
     val progress = remember { Animatable(0f) }
     val animationDuration = StylishTheme.animation.durationMedium
+    val shouldAnimate = animate && !isStylishReducedMotionEnabled()
     LaunchedEffect(Unit) {
-        if (animate) {
+        if (shouldAnimate) {
             progress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(animationDuration),
@@ -180,6 +189,7 @@ public fun SimpleLineChart(
         modifier = modifier
             .fillMaxWidth()
             .height(chartHeight)
+            .testTag("stylish_simple_line_chart")
             .semantics { contentDescription = description },
     ) {
         val chartWidth = size.width
@@ -210,17 +220,17 @@ public fun SimpleLineChart(
             )
         }
 
-        val points: List<Offset?> = if (data.size < 2) {
+        val points: List<Offset?> = if (renderedData.size < 2) {
             emptyList()
         }
         else {
-            val normalizedValues = lineNormalized(values, axisMin, axisMax)
-            data.mapIndexed { index, d ->
+            val normalizedValues = lineNormalized(renderedData.map { it.value.coerceAtLeast(0f) }, axisMin, axisMax)
+            renderedData.mapIndexed { index, d ->
                 if (!d.value.isFinite()) {
                     null
                 }
                 else {
-                    val x = leftPadding + usableWidth * index / (data.size - 1)
+                    val x = leftPadding + usableWidth * index / (renderedData.size - 1)
                     val targetY = topPadding + usableHeight * (1f - normalizedValues[index])
                     Offset(x, lerp(baselineY, targetY, animationProgress))
                 }
@@ -271,8 +281,8 @@ public fun SimpleLineChart(
                 )
             }
 
-            val step = (data.size + maxLabelCount - 1) / maxLabelCount
-            data.forEachIndexed { index, d ->
+            val step = (renderedData.size + maxLabelCount - 1) / maxLabelCount
+            renderedData.forEachIndexed { index, d ->
                 if (index % step == 0 || index == data.size - 1) {
                     val point = points[index] ?: return@forEachIndexed
                     val layout = labelLayouts[index]

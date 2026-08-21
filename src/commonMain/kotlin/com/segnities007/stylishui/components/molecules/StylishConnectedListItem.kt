@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,8 @@ import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
+import com.segnities007.stylishui.foundation.stylishInteractiveTarget
+import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -123,6 +126,8 @@ public fun DefaultStylishConnectedListItem(
             .then(
                 if (actionable) {
                     Modifier
+                        .focusable()
+                        .stylishInteractiveTarget()
                         .combinedClickable(
                             interactionSource = resolvedInteractionSource,
                             indication = null,
@@ -159,7 +164,7 @@ public fun DefaultStylishConnectedListItem(
         color = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
         contentColor = contentColor ?: if (item.enabled) MaterialTheme.colorScheme.onSurface
         else MaterialTheme.colorScheme.onSurfaceVariant,
-        shadowElevation = if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp,
+        shadowElevation = stylishInteractiveElevation(resolvedInteractionSource, actionable),
     ) {
         if (item.content != null) {
             Box(

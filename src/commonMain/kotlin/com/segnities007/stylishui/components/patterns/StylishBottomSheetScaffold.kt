@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A scaffold with a bottom sheet, wrapping the Material 3
@@ -105,7 +106,7 @@ public fun StylishBottomSheetScaffold(
 ) {
     BottomSheetScaffold(
         sheetContent = sheetContent,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("bottom_sheet_scaffold"),
         scaffoldState = scaffoldState,
         sheetPeekHeight = sheetPeekHeight,
         sheetMaxWidth = sheetMaxWidth,

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A dropdown menu that shows a list of choices on a temporary surface,
@@ -63,7 +64,7 @@ public fun StylishDropdownMenu(
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("dropdown_menu"),
         offset = offset,
         properties = properties,
         shape = shape,
@@ -101,7 +102,7 @@ public fun StylishDropdownMenuItem(
     DropdownMenuItem(
         text = text,
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("dropdown_menu_item"),
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         enabled = enabled,

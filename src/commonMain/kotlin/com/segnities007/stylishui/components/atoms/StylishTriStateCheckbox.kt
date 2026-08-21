@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A tri-state checkbox for expressing partial selection, wrapping the
@@ -54,7 +55,7 @@ public fun StylishTriStateCheckbox(
     TriStateCheckbox(
         state = state,
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("tri_state_checkbox"),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,

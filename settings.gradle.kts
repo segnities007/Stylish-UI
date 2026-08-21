@@ -19,36 +19,17 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        ivy {
-            name = "Binaryen"
-            url = uri("https://github.com/WebAssembly/binaryen/releases/download")
-            patternLayout {
-                artifact("version_[revision]/[artifact]-version_[revision]-[classifier].[ext]")
-            }
-            metadataSources { artifact() }
-            content { includeModule("com.github.webassembly", "binaryen") }
-        }
-        ivy {
-            name = "Node.js"
-            url = uri("https://nodejs.org/dist")
-            patternLayout {
-                artifact("v[revision]/[artifact]-v[revision]-[classifier].[ext]")
-            }
-            metadataSources { artifact() }
-            content { includeModule("org.nodejs", "node") }
-        }
-        ivy {
-            name = "Yarn"
-            url = uri("https://github.com/yarnpkg/yarn/releases/download")
-            patternLayout {
-                artifact("v[revision]/[artifact]-v[revision].[ext]")
-            }
-            metadataSources { artifact() }
-            content { includeModule("com.yarnpkg", "yarn") }
-        }
     }
 }
 
 rootProject.name = "Stylish-UI"
+include(":foundation")
+include(":structure")
 include(":website")
-include(":website-wasm")
+include(":catalog")
+include(":samples:android-r8")
+include(":samples:android-runtime")
+include(":samples:foundation-consumer")
+include(":samples:structure-consumer")
+include(":samples:migration-consumer")
+include(":samples:adapters")

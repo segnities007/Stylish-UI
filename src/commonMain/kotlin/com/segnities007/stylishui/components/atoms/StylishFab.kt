@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -36,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.isVisible
-import com.segnities007.stylishui.foundation.stylishFocusRing
-import com.segnities007.stylishui.foundation.stylishStateLayer
+import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
+import com.segnities007.stylishui.foundation.stylishInteractiveSurface
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
@@ -158,7 +157,8 @@ public fun StylishFab(
         StylishFabSize.Regular -> StylishTheme.dimensions.fabSize
         StylishFabSize.Large -> StylishTheme.dimensions.fabLargeSize
     }
-    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val resolvedInteractionSource = rememberStylishInteractionSource(interactionSource)
+    val resolvedShape = shape ?: CircleShape
     val isPressed by resolvedInteractionSource.collectIsPressedAsState()
     val reducedMotion = isStylishReducedMotionEnabled()
     val resolvedShadowElevation by animateDpAsState(
@@ -168,33 +168,15 @@ public fun StylishFab(
     )
     AnimatedVisibility(
         visible = visibilityState.isVisible(),
-        enter = fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
-        exit = fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
+        enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
+        exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
     ) {
-        Surface(            modifier = modifier
+        Surface(
+            modifier = modifier
             .testTag("stylish_fab")
             .size(resolvedSize)
-            .then(
-                if (enabled) {
-                    Modifier.stylishStateLayer(
-                        interactionSource = resolvedInteractionSource,
-                        shape = shape ?: CircleShape,
-                    )
-                } else {
-                    Modifier
-                },
-            )
-            .then(
-                if (enabled) {
-                    Modifier.stylishFocusRing(
-                        interactionSource = resolvedInteractionSource,
-                        shape = shape ?: CircleShape,
-                    )
-                } else {
-                    Modifier
-                },
-            ),
-        shape = shape ?: CircleShape,
+            .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
+        shape = resolvedShape,
         color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         border = border ?: BorderStroke(

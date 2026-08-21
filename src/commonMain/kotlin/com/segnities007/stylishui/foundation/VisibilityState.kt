@@ -4,14 +4,22 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.ScrollState
 import com.segnities007.stylishui.theme.StylishTheme
+import kotlin.math.sign
 
 /**
  * Describes the visibility behavior of a UI element that can be shown or
@@ -62,23 +70,90 @@ public sealed class VisibilityState {
     ) : VisibilityState()
 
     /**
-     * The element's visibility is determined by a [NestedScrollConnection].
+     * Visibility state driven by vertical nested-scroll gestures.
      *
-     * This variant is used when the element is part of a nested scroll hierarchy (e.g., a
-     * scrollable list inside a scrollable container). The caller provides a [NestedScrollConnection]
-     * that tracks scroll consumption and updates visibility accordingly.
+     * Attach [nestedScrollConnection] to the scrolling container with `Modifier.nestedScroll`.
+     * Upward content scrolling hides the element after [thresholdPx] has accumulated; downward
+     * content scrolling shows it again after the same distance. A direction change resets the
+     * accumulated distance so small opposing movements do not unexpectedly toggle visibility.
      *
-     * Note: The caller is responsible for creating a [NestedScrollConnection] that updates
-     * visibility state based on scroll consumption. This variant provides the connection as
-     * a parameter, but the actual visibility logic must be implemented by the caller or through
-     * a helper function.
+     * Create instances with [rememberNestedScrollAwareVisibilityState], which converts the public
+     * dp threshold to pixels for the current density.
      *
-     * @param nestedScrollConnection The [NestedScrollConnection] used to track nested scroll
-     *   behavior. The caller should ensure this connection updates visibility state appropriately.
+     * @property nestedScrollConnection Connection to attach to the scrolling container.
+     * @property visible Whether the controlled element is currently visible.
+     * @property thresholdPx Scroll distance in pixels required before visibility changes.
      */
-    public class NestedScrollAware(
-        public val nestedScrollConnection: NestedScrollConnection,
-    ) : VisibilityState()
+    @Stable
+    public class NestedScrollAware internal constructor(
+        public val thresholdPx: Float,
+        initiallyVisible: Boolean,
+    ) : VisibilityState() {
+        init {
+            require(thresholdPx > 0f) { "thresholdPx must be greater than zero" }
+        }
+
+        public var visible: Boolean by mutableStateOf(initiallyVisible)
+            private set
+
+        private var accumulatedScroll: Float = 0f
+
+        public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                updateFromScroll(available.y)
+                return Offset.Zero
+            }
+        }
+
+        internal fun updateFromScroll(deltaY: Float) {
+            if (deltaY == 0f) return
+
+            if (accumulatedScroll != 0f && deltaY.sign != accumulatedScroll.sign) {
+                accumulatedScroll = 0f
+            }
+            accumulatedScroll += deltaY
+
+            when {
+                visible && accumulatedScroll <= -thresholdPx -> {
+                    visible = false
+                    accumulatedScroll = 0f
+                }
+                !visible && accumulatedScroll >= thresholdPx -> {
+                    visible = true
+                    accumulatedScroll = 0f
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Creates a [VisibilityState.NestedScrollAware] for a nested-scrolling container.
+ *
+ * Apply the returned state's `nestedScrollConnection` to the scrolling parent:
+ *
+ * ```kotlin
+ * val visibility = rememberNestedScrollAwareVisibilityState()
+ * LazyColumn(Modifier.nestedScroll(visibility.nestedScrollConnection)) { /* ... */ }
+ * StylishFab(onClick = {}, visibilityState = visibility) { /* ... */ }
+ * ```
+ *
+ * @param threshold Distance of continuous scrolling in one direction before visibility changes.
+ * @param initiallyVisible Initial visibility before any scroll gesture is observed.
+ */
+@Composable
+public fun rememberNestedScrollAwareVisibilityState(
+    threshold: Dp = 48.dp,
+    initiallyVisible: Boolean = true,
+): VisibilityState.NestedScrollAware {
+    require(threshold > 0.dp) { "threshold must be greater than zero" }
+    val thresholdPx = with(LocalDensity.current) { threshold.toPx() }
+    return remember(thresholdPx, initiallyVisible) {
+        VisibilityState.NestedScrollAware(
+            thresholdPx = thresholdPx,
+            initiallyVisible = initiallyVisible,
+        )
+    }
 }
 
 /**
@@ -99,20 +174,15 @@ public fun VisibilityState.isVisible(): Boolean {
         is VisibilityState.AlwaysVisible -> true
         is VisibilityState.AlwaysHidden -> false
         is VisibilityState.ScrollAware -> {
-            val visible = remember(scrollState, threshold) {
+            val thresholdPx = with(LocalDensity.current) { threshold.toPx() }
+            val visible = remember(scrollState, thresholdPx) {
                 derivedStateOf {
-                    scrollState.value < threshold.value
+                    scrollState.value < thresholdPx
                 }
             }
             visible.value
         }
-        is VisibilityState.NestedScrollAware -> {
-            // NestedScrollAware requires the caller to track visibility separately.
-            // This is a placeholder that always returns true.
-            // In practice, the caller should use a helper to create both the connection
-            // and the visibility state, or observe the connection's behavior externally.
-            true
-        }
+        is VisibilityState.NestedScrollAware -> visible
     }
 }
 
@@ -152,10 +222,11 @@ public data class AnimatedVisibilityState(
 @Composable
 public fun rememberVisibilityAnimation(visibilityState: VisibilityState): AnimatedVisibilityState {
     val visible = visibilityState.isVisible()
+    val reducedMotion = isStylishReducedMotionEnabled()
     val animatedAlpha = animateFloatAsState(
         targetValue = if (visible) 1f else 0f,
         animationSpec = tween(
-            durationMillis = StylishTheme.animation.durationShort,
+            durationMillis = if (reducedMotion) 0 else StylishTheme.animation.durationShort,
             easing = StylishTheme.animation.defaultEasing,
         ),
         label = "visibilityAlpha",

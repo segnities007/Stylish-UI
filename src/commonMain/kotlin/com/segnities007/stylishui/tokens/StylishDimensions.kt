@@ -77,6 +77,8 @@ import androidx.compose.ui.unit.dp
  *   gives the compact card silhouette used across the design system.
  * @property iconButtonMinSize The minimum touch-target size for icon buttons. Default 48 dp
  *   matches Material touch-target guidance.
+ * @property focusRingWidth The width of the shared keyboard-focus indicator. Default 2 dp keeps
+ *   focus visible without changing layout geometry.
  * @property roundedIconButtonMinWidth The minimum width of rounded (label-carrying) icon
  *   buttons. Default 80 dp.
  * @property fabSize The size of the regular floating action button. Default 56 dp.
@@ -124,6 +126,7 @@ public data class StylishDimensions(
     public val buttonMinHeight: Dp = 52.dp,
     public val cardMinHeight: Dp = 77.dp,
     public val iconButtonMinSize: Dp = 48.dp,
+    public val focusRingWidth: Dp = 2.dp,
     public val roundedIconButtonMinWidth: Dp = 80.dp,
     public val fabSize: Dp = 56.dp,
     public val fabSmallSize: Dp = 40.dp,

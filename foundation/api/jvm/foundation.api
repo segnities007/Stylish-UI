@@ -1,0 +1,117 @@
+public final class com/segnities007/stylishui/foundation/headless/StylishLayoutDirection : java/lang/Enum {
+	public static final field Ltr Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+	public static final field Rtl Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+	public static fun values ()[Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+}
+
+public abstract interface class com/segnities007/stylishui/foundation/headless/StylishLayoutEngine {
+	public abstract fun layout (Ljava/lang/Object;Lcom/segnities007/stylishui/foundation/headless/StylishViewport;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;
+}
+
+public final class com/segnities007/stylishui/foundation/headless/StylishLayoutRect {
+	public fun <init> (FFFF)V
+	public final fun component1 ()F
+	public final fun component2 ()F
+	public final fun component3 ()F
+	public final fun component4 ()F
+	public final fun contains (FF)Z
+	public final fun copy (FFFF)Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;FFFFILjava/lang/Object;)Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBottomPx ()F
+	public final fun getHeightPx ()F
+	public final fun getLeftPx ()F
+	public final fun getRightPx ()F
+	public final fun getTopPx ()F
+	public final fun getWidthPx ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/foundation/headless/StylishReducer {
+	public abstract fun reduce (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/foundation/headless/StylishRenderNode {
+	public fun <init> (Ljava/lang/String;Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;Ljava/lang/String;Ljava/lang/String;ZZLjava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;Ljava/lang/String;Ljava/lang/String;ZZLjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;
+	public final fun component3 ()Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;Ljava/lang/String;Ljava/lang/String;ZZLjava/util/List;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderNode;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/foundation/headless/StylishRenderNode;Ljava/lang/String;Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;Ljava/lang/String;Ljava/lang/String;ZZLjava/util/List;ILjava/lang/Object;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderNode;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBounds ()Lcom/segnities007/stylishui/foundation/headless/StylishLayoutRect;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getEnabled ()Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getRole ()Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public final fun getSelected ()Z
+	public final fun getStateDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/foundation/headless/StylishRenderPlan {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFocusedNodeId ()Ljava/lang/String;
+	public final fun getNodes ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun node (Ljava/lang/String;)Lcom/segnities007/stylishui/foundation/headless/StylishRenderNode;
+	public final fun nodeIds ()Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/foundation/headless/StylishRenderer {
+	public abstract fun render (Lcom/segnities007/stylishui/foundation/headless/StylishRenderPlan;Ljava/lang/Object;)V
+}
+
+public final class com/segnities007/stylishui/foundation/headless/StylishSemanticRole : java/lang/Enum {
+	public static final field Button Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field Chart Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field Checkbox Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field Generic Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field Grid Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field GridCell Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field List Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field ListItem Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field Tree Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static final field TreeItem Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+	public static fun values ()[Lcom/segnities007/stylishui/foundation/headless/StylishSemanticRole;
+}
+
+public final class com/segnities007/stylishui/foundation/headless/StylishViewport {
+	public fun <init> (FFFLcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;)V
+	public synthetic fun <init> (FFFLcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()F
+	public final fun component2 ()F
+	public final fun component3 ()F
+	public final fun component4 ()Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+	public final fun copy (FFFLcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;)Lcom/segnities007/stylishui/foundation/headless/StylishViewport;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/foundation/headless/StylishViewport;FFFLcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;ILjava/lang/Object;)Lcom/segnities007/stylishui/foundation/headless/StylishViewport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDensity ()F
+	public final fun getHeightPx ()F
+	public final fun getLayoutDirection ()Lcom/segnities007/stylishui/foundation/headless/StylishLayoutDirection;
+	public final fun getWidthPx ()F
+	public fun hashCode ()I
+	public final fun normalized ()Lcom/segnities007/stylishui/foundation/headless/StylishViewport;
+	public fun toString ()Ljava/lang/String;
+}
+

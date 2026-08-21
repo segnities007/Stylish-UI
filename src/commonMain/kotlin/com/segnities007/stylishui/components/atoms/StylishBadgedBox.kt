@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -45,7 +46,7 @@ public fun StylishBadgedBox(
 ) {
     BadgedBox(
         badge = badge,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("badged_box"),
         content = content,
     )
 }

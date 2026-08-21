@@ -1,0 +1,104 @@
+{
+  "schema": "stylish-ui.catalog-state-policy.v1",
+  "description": "Machine-readable catalog/state requirements. This policy distinguishes visual components from composable factories and platform helpers. A public @Composable is counted as a visual API only when it renders UI on its own; everything matched by apiDocOnlyRules is documented via Dokka/API docs instead of a catalog card, and an existing genuine catalog mapping always wins over the api-doc-only classification.",
+  "minimumPublicComposableDeclarations": 220,
+  "minimumCatalogDemos": 140,
+  "apiDocOnlyRules": [
+    {
+      "match": "layer in {foundation, theme, tokens}",
+      "reason": "Value holders, geometry/interaction helpers, and theme entry points. They compute or resolve values and render no pixels; the Foundation layer contains no @Composable that renders UI."
+    },
+    {
+      "match": "layer in {atoms, molecules} and source file name contains 'Defaults'",
+      "reason": "Default parameter holders (StylishButtonDefaults/StylishCardDefaults/StylishControlDefaults object functions). They return style objects consumed by their component; the component's own demo carries the visual coverage."
+    },
+    {
+      "match": "layer in {atoms, molecules} and name in {colors, shape, elevation, border}",
+      "reason": "Parameter-default provider composables declared next to their component. They resolve style objects only and render nothing on their own, so a catalog card would show whatever the caller passes in, not the API itself."
+    },
+    {
+      "match": "layer == structure",
+      "reason": "Headless Structure-layer layout hosts (Connected*Column/Row/Grid/Lazy*, ConnectedToggleRow, DataTableLayout). They arrange children and compute connection geometry but apply no visual styling - every item is delegated to a slot lambda rendered by a Finish component. Their Finish counterparts (StylishConnected*) all carry catalog demos."
+    },
+    {
+      "match": "name starts with 'remember'",
+      "reason": "Composable state factories allocating hoisted state objects (e.g. rememberStylishDateRangePickerState, rememberStylishDismissState). They have no visual output. When a demo genuinely instantiates the factory to drive its component, the mapping is kept - coverage is never downgraded."
+    }
+  ],
+  "stateOrder": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "disabled",
+    "selected",
+    "focused",
+    "pressed",
+    "hovered",
+    "long_text",
+    "rtl"
+  ],
+  "families": {
+    "Buttons": {
+      "categories": ["Buttons"],
+      "requiredStates": ["default", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    },
+    "Selection": {
+      "categories": ["Selection"],
+      "requiredStates": ["default", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    },
+    "Inputs": {
+      "categories": ["Inputs"],
+      "requiredStates": ["default", "empty", "error", "loading", "disabled", "focused", "long_text", "rtl"]
+    },
+    "Navigation": {
+      "categories": ["Navigation", "WebParity"],
+      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    },
+    "WebParity": {
+      "categories": [],
+      "requiredStates": ["default", "empty", "error", "disabled", "selected", "focused", "hovered", "long_text", "rtl"]
+    },
+    "Feedback": {
+      "categories": ["Feedback"],
+      "requiredStates": ["default", "loading", "empty", "error", "disabled", "long_text", "rtl"]
+    },
+    "Connected": {
+      "categories": ["Connected"],
+      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    },
+    "Charts": {
+      "categories": ["Charts"],
+      "requiredStates": ["default", "loading", "empty", "error", "selected", "focused", "long_text", "rtl"]
+    },
+    "Advanced": {
+      "categories": ["Advanced"],
+      "requiredStates": ["default", "loading", "empty", "error", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    },
+    "Patterns": {
+      "categories": ["Patterns"],
+      "requiredStates": ["default", "loading", "empty", "error", "disabled", "selected", "focused", "hovered", "long_text", "rtl"]
+    },
+    "Foundation": {
+      "categories": [],
+      "requiredStates": ["default"]
+    },
+    "Structure": {
+      "categories": [],
+      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+    }
+  },
+  "stateEvidence": {
+    "default": ["__always__"],
+    "loading": ["\\bloading\\b", "isLoading", "loadingLabel", "処理中", "ローディング"],
+    "empty": ["\\bempty\\b", "emptyLabel", "emptyState", "no data", "データがありません", "空状態", "空"],
+    "error": ["\\berror\\b", "errorLabel", "invalid", "onError", "エラー", "失敗"],
+    "disabled": ["enabled\\s*=\\s*false", "disabled", "無効"],
+    "selected": ["\\bselected\\b", "selectedIndex", "selectedValue", "selectedKeys", "\\bchecked\\b", "indeterminate", "selection", "選択"],
+    "focused": ["\\bfocus(?:ed|ing)?\\b", "FocusRequester", "focusRestoration", "keyboard", "Tab", "矢印", "フォーカス"],
+    "pressed": ["\\bpressed\\b", "PressInteraction", "pressedState", "押下"],
+    "hovered": ["\\bhover(?:ed|ing)?\\b", "HoverInteraction", "Tooltip", "ホバー"],
+    "long_text": ["longText", "long text", "very long", "長文", "長い", "超長", "長い日本語"],
+    "rtl": ["\\bRTL\\b", "\\brtl\\b", "LayoutDirection.Rtl", "layoutDirection", "右から左"]
+  }
+}

@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.stylishComponentColors
 import kotlin.math.roundToInt
 
@@ -130,7 +131,7 @@ public fun StylishTabBar(
         }
     }
     Surface(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("tab_bar"),
         color = containerColor,
     ) {
         Row(
@@ -185,7 +186,7 @@ private fun StylishTabBarPreview() {
                 onSelectedChange = { selected = it },
                 tabIcons = listOf(
                     Icons.Default.Home,
-                    Icons.Default.List,
+                    Icons.AutoMirrored.Filled.List,
                     Icons.Default.Settings,
                     Icons.Default.Star,
                 ),

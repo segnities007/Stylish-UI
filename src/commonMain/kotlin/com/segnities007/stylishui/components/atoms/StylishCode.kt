@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.segnities007.stylishui.foundation.stylishTestTag
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -49,7 +50,7 @@ public fun StylishCode(
         shape = shape,
         color = containerColor,
         contentColor = contentColor,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("code"),
     ) {
         Text(
             text,

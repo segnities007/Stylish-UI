@@ -1,13 +1,11 @@
 # Stylish UI ロードマップ
 
 Stylish UI の公開ロードマップです。大きな方向性を共有するためのもので、
-状況に応じて変更される可能性があります。進行状況は
-[docs/quality-audit.md](docs/quality-audit.md) のステータスと同期しています。
+状況に応じて変更される可能性があります。
 
 ## 0.8.0 — 品質の固め込み（進行中）
 
-品質監査（[docs/quality-audit.md](docs/quality-audit.md)）で洗い出した
-欠点を、1.0.0 の前に解消するハードニングリリースです。
+1.0.0 の前に既知の欠点を解消するハードニングリリースです。
 
 - [ ] ゴールデンテスト基盤（明暗テーマの描画回帰検知）— 進行中
 - [ ] 検証基盤の拡充（WS1: QA-01〜QA-09）— 進行中
@@ -19,15 +17,15 @@ Stylish UI の公開ロードマップです。大きな方向性を共有する
 - [ ] ガバナンス整備（WS10: GOV-01〜GOV-06）— 進行中
 - [ ] ドキュメント / DX 整備（WS11: DOC-01〜DOC-07）— 進行中
 
-## 0.9.0 — プラットフォーム / アダプティブ
+## 0.10.0 — プラットフォーム / アダプティブ hardening
 
 マルチプラットフォームを本格化させ、画面サイズに応じた UI を提供します。
 
-- [ ] iOS ターゲット（`iosArm64` / `iosSimulatorArm64`）と CI での描画スモーク
-- [ ] アダプティブ対応（window-size-class ユーティリティと利用ガイド）
-- [ ] Dynamic Color の全プラットフォーム対応（MaterialKolor）
+- [x] iOS ターゲット（`iosArm64` / `iosSimulatorArm64`）と CI simulator test
+- [x] アダプティブ対応（window-size-class ユーティリティと利用ガイド）
+- [x] Dynamic Color の全プラットフォーム対応（MaterialKolor）
 - [ ] 追加コンポーネント（M3 パリティ: NavigationRail / Drawer / Picker 等）
-- [ ] マルチ系列チャート
+- [x] マルチ系列チャート
 
 ## 1.0.0 — 安定性の約束
 

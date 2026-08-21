@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * One entry of a [StylishBreadcrumb] navigation trail.
@@ -69,7 +70,7 @@ public fun StylishBreadcrumb(
     modifier: Modifier = Modifier,
     separator: @Composable () -> Unit = {
         Icon(
-            Icons.Default.KeyboardArrowRight,
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -91,7 +92,7 @@ public fun StylishBreadcrumb(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("breadcrumb"),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
     ) {
@@ -108,7 +109,7 @@ public fun StylishBreadcrumb(
                     }
                     .then(
                         if (clickable) {
-                            Modifier.clickable { item.onClick?.invoke() }
+                            Modifier.clickable { item.onClick() }
                         } else {
                             Modifier
                         },

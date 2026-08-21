@@ -1,0 +1,20 @@
+public final class com/segnities007/stylishui/migrationconsumer/MigrationConsumer {
+	public static final field INSTANCE Lcom/segnities007/stylishui/migrationconsumer/MigrationConsumer;
+	public final fun getSelectionReducer ()Lcom/segnities007/stylishui/foundation/headless/StylishReducer;
+	public final fun gridPlan (Ljava/util/List;I)Ljava/util/List;
+	public final fun normalizedViewport (FF)Lcom/segnities007/stylishui/foundation/headless/StylishViewport;
+}
+
+public final class com/segnities007/stylishui/migrationconsumer/MigrationTile {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/segnities007/stylishui/migrationconsumer/MigrationTile;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/migrationconsumer/MigrationTile;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/migrationconsumer/MigrationTile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

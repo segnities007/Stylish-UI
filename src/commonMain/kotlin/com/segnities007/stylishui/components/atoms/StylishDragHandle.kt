@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * The optional visual marker placed on top of a bottom sheet to
@@ -48,7 +49,7 @@ public fun StylishDragHandle(
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     BottomSheetDefaults.DragHandle(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("drag_handle"),
         width = width,
         height = height,
         shape = shape,

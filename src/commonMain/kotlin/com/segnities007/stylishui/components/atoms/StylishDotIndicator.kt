@@ -22,6 +22,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A horizontal row of dots indicating the current page in a paged
@@ -56,9 +58,11 @@ public fun StylishDotIndicator(
 ) {
     require(pageCount >= 1) { "pageCount must be at least 1, was $pageCount" }
     val clampedPage = currentPage.coerceIn(0, pageCount - 1)
+    val strings = StylishTheme.strings
+    val animate = !isStylishReducedMotionEnabled()
     Row(
-        modifier = modifier.semantics {
-            contentDescription = "Page ${clampedPage + 1} of $pageCount"
+        modifier = modifier.stylishTestTag("dot_indicator").semantics {
+            contentDescription = strings.pageOf(clampedPage + 1, pageCount)
         },
         horizontalArrangement = Arrangement.spacedBy(spacing),
     ) {
@@ -66,6 +70,11 @@ public fun StylishDotIndicator(
             val isActive = index == clampedPage
             val size by animateDpAsState(
                 targetValue = if (isActive) activeSize else inactiveSize,
+                animationSpec = if (animate) {
+                    androidx.compose.animation.core.spring()
+                } else {
+                    androidx.compose.animation.core.snap()
+                },
                 label = "DotSize",
             )
             Box(

@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
@@ -47,6 +48,7 @@ import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A bottom navigation bar that displays a row of
@@ -122,8 +124,10 @@ public fun StylishNavigationBar(
     windowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
     val haptic = LocalHapticFeedback.current
+    val strings = StylishTheme.strings
     Surface(
         modifier = modifier
+            .stylishTestTag("navigation_bar")
             .fillMaxWidth()
             .windowInsetsPadding(windowInsets),
         color = containerColor,
@@ -158,9 +162,13 @@ public fun StylishNavigationBar(
                     modifier = Modifier
                         .weight(1f)
                         .semantics {
+                            // Keep icon-only/custom-icon destinations discoverable when
+                            // labels are collapsed. The caller-owned label is the only
+                            // stable, localized name available at this layer.
+                            contentDescription = item.label
                             this.selected = item.selected
                             role = Role.Tab
-                            stateDescription = if (item.selected) "Selected" else ""
+                            stateDescription = if (item.selected) strings.selectedPage else ""
                             if (!item.enabled) disabled()
                         }
                         .then(

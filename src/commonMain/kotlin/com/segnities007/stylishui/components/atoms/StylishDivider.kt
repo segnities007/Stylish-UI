@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.segnities007.stylishui.foundation.stylishTestTag
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -37,7 +38,7 @@ public fun StylishHorizontalDivider(
     thickness: Dp = StylishTheme.dimensions.outlineWidth,
     color: Color = MaterialTheme.colorScheme.outlineVariant,
 ) {
-    HorizontalDivider(modifier = modifier, thickness = thickness, color = color)
+    HorizontalDivider(modifier = modifier.stylishTestTag("horizontal_divider"), thickness = thickness, color = color)
 }
 
 /**
@@ -61,7 +62,7 @@ public fun StylishVerticalDivider(
     thickness: Dp = StylishTheme.dimensions.outlineWidth,
     color: Color = MaterialTheme.colorScheme.outlineVariant,
 ) {
-    VerticalDivider(modifier = modifier, thickness = thickness, color = color)
+    VerticalDivider(modifier = modifier.stylishTestTag("vertical_divider"), thickness = thickness, color = color)
 }
 
 @Preview(name = "Stylish horizontal divider", showBackground = true, widthDp = 393)

@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key as runtimeKey
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -30,7 +31,6 @@ import com.segnities007.stylishui.foundation.connectedGridEdges
 import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A headless lazily-composed grid of connected cards laid out in equal-width cells across a
@@ -54,7 +54,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param spacing The gap between adjacent cards both horizontally and vertically. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding [PaddingValues] applied around the entire lazy grid. Defaults to
- *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ *   [StylishTheme.dimensions.controlPadding] horizontal padding.
+ * @param key Optional stable and unique key factory used to preserve item state across moves.
  * @param listState [LazyGridState] controlling scroll position. Defaults to
  *   [rememberLazyGridState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
@@ -72,7 +73,8 @@ public fun ConnectedCardLazyGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.controlPadding),
+    key: ((StylishConnectedCardItem) -> Any)? = null,
     listState: LazyGridState = rememberLazyGridState(),
     card: ConnectedCardItemContent,
 ) {
@@ -87,7 +89,8 @@ public fun ConnectedCardLazyGrid(
     ) {
         items.chunked(columns)
             .forEachIndexed { rowIndex, rowItems ->
-                item(span = { GridItemSpan(columns) }, key = rowIndex) {
+                val rowKey = key?.invoke(rowItems.first()) ?: rowIndex
+                item(span = { GridItemSpan(columns) }, key = rowKey) {
                     Row(
                         Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(spacing),
@@ -95,14 +98,16 @@ public fun ConnectedCardLazyGrid(
                         rowItems.forEachIndexed { columnIndex, item ->
                             val index = rowIndex * columns + columnIndex
                             val corners = connectedGridCorners(index, items.size, columns)
-                            Box(Modifier.weight(1f)) {
-                                card(
-                                    item,
-                                    Modifier.fillMaxWidth(),
-                                    connectedShape(corners, StylishTheme.dimensions.connectedCornerRadius),
-                                    connectedGridEdges(index, items.size, columns),
-                                    corners,
-                                )
+                            runtimeKey(key?.invoke(item) ?: index) {
+                                Box(Modifier.weight(1f)) {
+                                    card(
+                                        item,
+                                        Modifier.fillMaxWidth(),
+                                        connectedShape(corners, StylishTheme.dimensions.connectedCornerRadius),
+                                        connectedGridEdges(index, items.size, columns),
+                                        corners,
+                                    )
+                                }
                             }
                         }
                     }

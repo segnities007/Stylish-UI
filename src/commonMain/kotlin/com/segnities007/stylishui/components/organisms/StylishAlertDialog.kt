@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A modal alert dialog that prompts the user for a decision, wrapping
@@ -67,7 +68,7 @@ public fun StylishAlertDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("alert_dialog"),
         icon = icon,
         title = title,
         text = text,

@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishAnimationTokens
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 
 /**
  * A shimmering placeholder line used to indicate loading content.
@@ -47,7 +47,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishAnimationTokens
  * @param maxAlpha Maximum opacity during the shimmer cycle.
  * @param durationMillis Duration in milliseconds of one full shimmer
  *   half-cycle (fade up or down). Defaults to
- *   [DefaultStylishAnimationTokens.durationLong] (500 ms).
+ *   [StylishTheme.animation.durationLong] (500 ms).
  * @param animate When `true` (the default) the opacity oscillates to produce
  *   the shimmer. When `false` the line renders statically at the midpoint of
  *   [minAlpha] and [maxAlpha], for reduced-motion contexts.
@@ -62,10 +62,11 @@ public fun StylishSkeletonLine(
     shape: Shape = RoundedCornerShape(4.dp),
     minAlpha: Float = 0.3f,
     maxAlpha: Float = 0.7f,
-    durationMillis: Int = DefaultStylishAnimationTokens.durationLong,
+    durationMillis: Int = StylishTheme.animation.durationLong,
     animate: Boolean = true,
 ) {
-    val alpha = if (animate) {
+    val shouldAnimate = animate && !isStylishReducedMotionEnabled()
+    val alpha = if (shouldAnimate) {
         val transition = rememberInfiniteTransition(label = "skeleton")
         val animatedAlpha by transition.animateFloat(
             initialValue = minAlpha,

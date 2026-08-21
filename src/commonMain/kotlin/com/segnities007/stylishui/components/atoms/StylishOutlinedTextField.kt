@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * Default values and factory methods for [StylishOutlinedTextField].
@@ -228,7 +229,7 @@ public fun StylishOutlinedTextField(
     interactionSource: MutableInteractionSource? = null,
 ) {
     val resolvedSingleLine = singleLine || (minLines == 1 && maxLines == 1)
-    Column(modifier) {
+    Column(modifier.stylishTestTag("outlined_text_field")) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,

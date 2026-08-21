@@ -30,7 +30,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A numeric stepper input combining a text field with minus/plus
@@ -81,12 +80,14 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   `MaterialTheme.typography.bodyLarge`.
  * @param shape Shape of the field's outlined border. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param colors Color scheme for the field. Defaults to
  *   `OutlinedTextFieldDefaults.colors()`.
  * @param interactionSource The [MutableInteractionSource] for the field,
  *   used to observe focus/press/hover interactions. When `null`, an
  *   internal one is remembered.
+ * @param decrementContentDescription Localized accessibility label for the decrement button.
+ * @param incrementContentDescription Localized accessibility label for the increment button.
  */
 @Composable
 public fun StylishNumberInput(
@@ -102,10 +103,13 @@ public fun StylishNumberInput(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     colors: TextFieldColors? = null,
     interactionSource: MutableInteractionSource? = null,
+    decrementContentDescription: String? = null,
+    incrementContentDescription: String? = null,
 ) {
+    val strings = StylishTheme.strings
     val canDecrement = enabled && value > range.first
     val canIncrement = enabled && value < range.last
     Row(
@@ -118,7 +122,7 @@ public fun StylishNumberInput(
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
-                contentDescription = "減少",
+                contentDescription = decrementContentDescription ?: strings.decrease,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -149,7 +153,7 @@ public fun StylishNumberInput(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "増加",
+                contentDescription = incrementContentDescription ?: strings.increase,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

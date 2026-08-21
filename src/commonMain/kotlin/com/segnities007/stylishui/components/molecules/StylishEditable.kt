@@ -33,7 +33,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * An inline-editable text row — the web "Editable" pattern from Chakra
@@ -54,7 +53,7 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  *   Defaults to [MaterialTheme.typography.bodyLarge].
  * @param editShape Corner shape of the input field. Defaults to
  *   [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param singleLine Whether the value is a single line. When `true`, the
  *   IME done action commits the edit. Defaults to `true`.
  */
@@ -66,10 +65,11 @@ public fun StylishEditable(
     enabled: Boolean = true,
     onCommit: ((String) -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    editShape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    editShape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     singleLine: Boolean = true,
 ) {
     var editing by remember { mutableStateOf(false) }
+    val strings = StylishTheme.strings
 
     fun commit() {
         onCommit?.invoke(value)
@@ -94,10 +94,10 @@ public fun StylishEditable(
                 modifier = Modifier.weight(1f),
             )
             IconButton(onClick = { commit() }, enabled = enabled) {
-                Icon(Icons.Default.Check, contentDescription = "確定")
+                Icon(Icons.Default.Check, contentDescription = strings.confirm)
             }
             IconButton(onClick = { editing = false }, enabled = enabled) {
-                Icon(Icons.Default.Close, contentDescription = "キャンセル")
+                Icon(Icons.Default.Close, contentDescription = strings.cancel)
             }
         }
     } else {
@@ -129,7 +129,7 @@ public fun StylishEditable(
             if (enabled) {
                 Icon(
                     Icons.Default.Edit,
-                    contentDescription = "編集",
+                    contentDescription = strings.edit,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(18.dp),
                 )

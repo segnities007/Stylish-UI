@@ -26,7 +26,6 @@ import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.structure.ConnectedListItemContent
 import com.segnities007.stylishui.structure.ConnectedListItemLazyColumn
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A lazily-composed vertical group of connected list items that share outlines and corner
@@ -50,7 +49,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param spacing The vertical gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding [PaddingValues] applied around the entire lazy list. Defaults to
- *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ *   [StylishTheme.dimensions.controlPadding] horizontal padding.
+ * @param key Optional stable and unique key factory used to preserve item state across moves.
  * @param listState [LazyListState] controlling scroll position. Defaults to
  *   [rememberLazyListState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
@@ -93,7 +93,8 @@ public fun StylishConnectedListItemLazyColumn(
     items: List<StylishConnectedListItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.controlPadding),
+    key: ((StylishConnectedListItem) -> Any)? = null,
     listState: LazyListState = rememberLazyListState(),
     headlineMaxLines: Int = Int.MAX_VALUE,
     headlineOverflow: TextOverflow = TextOverflow.Ellipsis,
@@ -116,7 +117,15 @@ public fun StylishConnectedListItemLazyColumn(
         )
     },
 ) {
-    ConnectedListItemLazyColumn(items, modifier, spacing, contentPadding, listState, listItem = listItem)
+    ConnectedListItemLazyColumn(
+        items = items,
+        modifier = modifier,
+        spacing = spacing,
+        contentPadding = contentPadding,
+        key = key,
+        listState = listState,
+        listItem = listItem,
+    )
 }
 
 @Preview(name = "Connected list items lazy column", showBackground = true, widthDp = 393, heightDp = 500)

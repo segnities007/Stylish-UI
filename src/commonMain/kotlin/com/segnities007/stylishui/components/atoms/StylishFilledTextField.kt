@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A filled text field designed for form input, with built-in label,
@@ -138,7 +139,7 @@ public fun StylishFilledTextField(
         }
     val resolvedColors = colors ?: TextFieldDefaults.colors()
     val resolvedSingleLine = singleLine || (minLines == 1 && maxLines == 1)
-    Column(modifier) {
+    Column(modifier.stylishTestTag("filled_text_field")) {
         TextField(
             value = value,
             onValueChange = onValueChange,

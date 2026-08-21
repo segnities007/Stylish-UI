@@ -37,10 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 import kotlinx.coroutines.delay
 
 /**
@@ -119,7 +122,7 @@ public fun rememberStylishToastHostState(): StylishToastHostState =
  * @param modifier Modifier applied to the root box (fill the parent to
  *   anchor toasts at the bottom edge).
  * @param shape Corner shape of each toast. Defaults to [RoundedCornerShape]
- *   with [DefaultStylishDimensions.connectedCornerRadius].
+ *   with [StylishTheme.dimensions].
  * @param containerColor Background of each toast. Defaults to the inverse
  *   surface.
  * @param contentColor Foreground of each toast. Defaults to the inverse
@@ -129,10 +132,11 @@ public fun rememberStylishToastHostState(): StylishToastHostState =
 public fun StylishToastHost(
     hostState: StylishToastHostState,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
 ) {
+    val strings = StylishTheme.strings
     val reducedMotion = isStylishReducedMotionEnabled()
     val fadeSpec = if (reducedMotion) {
         tween<Float>(0)
@@ -146,7 +150,10 @@ public fun StylishToastHost(
     }
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .stylishTestTag("toast_host")
+            .fillMaxWidth()
+            .semantics { liveRegion = LiveRegionMode.Polite },
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -176,6 +183,7 @@ private fun StylishToast(
     contentColor: Color,
     onDismiss: () -> Unit,
 ) {
+    val strings = StylishTheme.strings
     val accentColor = when (toast.variant) {
         StylishToastVariant.Normal -> contentColor
         StylishToastVariant.Info -> MaterialTheme.colorScheme.inversePrimary
@@ -196,15 +204,15 @@ private fun StylishToast(
         color = containerColor,
         contentColor = contentColor,
         modifier = Modifier.padding(
-            horizontal = DefaultStylishDimensions.contentSpacing,
-            vertical = DefaultStylishDimensions.inlineSpacing,
+            horizontal = StylishTheme.dimensions.contentSpacing,
+            vertical = StylishTheme.dimensions.inlineSpacing,
         ),
-        shadowElevation = DefaultStylishDimensions.floatingElevation,
+        shadowElevation = StylishTheme.dimensions.floatingElevation,
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = DefaultStylishDimensions.controlPadding,
-                vertical = 10.dp,
+                horizontal = StylishTheme.dimensions.controlPadding,
+                vertical = StylishTheme.dimensions.controlVerticalPadding,
             ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.itemSpacing),
@@ -236,7 +244,7 @@ private fun StylishToast(
             ) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "閉じる",
+                    contentDescription = strings.close,
                     tint = contentColor,
                     modifier = Modifier.size(16.dp),
                 )

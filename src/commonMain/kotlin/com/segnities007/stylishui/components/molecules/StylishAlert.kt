@@ -28,7 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * Visual variants of a [StylishAlert].
@@ -61,7 +61,7 @@ public enum class StylishAlertVariant { Info, Success, Warning, Error }
  * @param containerColor Optional override for the alert background.
  * @param contentColor Optional override for the foreground.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
- *   [DefaultStylishDimensions.connectedCornerRadius].
+ *   [StylishTheme.dimensions.connectedCornerRadius].
  * @param icon Optional leading icon. Defaults to the variant icon.
  */
 @Composable
@@ -74,9 +74,10 @@ public fun StylishAlert(
     action: (@Composable () -> Unit)? = null,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(DefaultStylishDimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     icon: (@Composable () -> Unit)? = null,
 ) {
+    val strings = StylishTheme.strings
     val resolvedContainerColor = containerColor ?: when (variant) {
         StylishAlertVariant.Info -> MaterialTheme.colorScheme.primaryContainer
         StylishAlertVariant.Success -> MaterialTheme.colorScheme.primaryContainer
@@ -94,12 +95,12 @@ public fun StylishAlert(
         shape = shape,
         color = resolvedContainerColor,
         contentColor = resolvedContentColor,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("alert"),
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = DefaultStylishDimensions.controlPadding,
-                vertical = DefaultStylishDimensions.controlVerticalPadding,
+                horizontal = StylishTheme.dimensions.controlPadding,
+                vertical = StylishTheme.dimensions.controlVerticalPadding,
             ),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.itemSpacing),
@@ -149,7 +150,7 @@ public fun StylishAlert(
                 ) {
                     Icon(
                         Icons.Default.Close,
-                        contentDescription = "閉じる",
+                        contentDescription = strings.close,
                         tint = resolvedContentColor,
                         modifier = Modifier.size(18.dp),
                     )

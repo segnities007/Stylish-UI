@@ -17,8 +17,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.theme.stylishChartColors
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A single slice of a pie or donut chart, pairing a categorical label with
@@ -72,7 +72,7 @@ public data class PieChartData(
  *   description (e.g. "Expense breakdown").
  * @param modifier Modifier applied to the outer [Canvas].
  * @param chartSize Diameter of the chart. Defaults to
- *   [DefaultStylishDimensions.pieChartSize] (160 dp).
+ *   [StylishTheme.dimensions.pieChartSize] (160 dp).
  * @param holeRatio Radius of the center hole as a fraction of [chartSize].
  *   Defaults to 0.3.
  * @param skeletonRatio Radius of the skeleton ring shown when data is empty,
@@ -96,7 +96,7 @@ public fun SimplePieChart(
     data: List<PieChartData>,
     contentDescriptionPrefix: String,
     modifier: Modifier = Modifier,
-    chartSize: Dp = DefaultStylishDimensions.pieChartSize,
+    chartSize: Dp = StylishTheme.dimensions.pieChartSize,
     holeRatio: Float = 0.3f,
     skeletonRatio: Float = 0.4f,
     holeColor: Color = MaterialTheme.colorScheme.surface,
@@ -105,14 +105,16 @@ public fun SimplePieChart(
     animate: Boolean = true,
 ) {
     val sweepAngles = pieSweepAngles(data.map { it.value })
+    val strings = StylishTheme.strings
     val hasSlices = data.isNotEmpty() && sweepAngles.any { it > 0f }
     val description = data.joinToString(", ") {
-        "${it.label}: ${formatInteger(it.value.toInt())}"
+        "${it.label}: ${strings.formatInteger(it.value.toLong())}"
     }
     val progress = remember { Animatable(0f) }
     val animationDuration = StylishTheme.animation.durationMedium
+    val shouldAnimate = animate && !isStylishReducedMotionEnabled()
     LaunchedEffect(Unit) {
-        if (animate) {
+        if (shouldAnimate) {
             progress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(animationDuration),

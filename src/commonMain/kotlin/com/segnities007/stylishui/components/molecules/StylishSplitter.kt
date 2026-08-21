@@ -3,6 +3,7 @@ package com.segnities007.stylishui.components.molecules
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,15 +24,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * Layout direction of a [StylishSplitter].
@@ -69,6 +83,10 @@ public enum class StylishSplitterDirection { Horizontal, Vertical }
  *   [MaterialTheme.colorScheme.outlineVariant].
  * @param handleActiveColor Color of the handle while dragging. Defaults
  *   to [MaterialTheme.colorScheme.primary].
+ * @param keyboardStep Fraction to move per arrow-key press. Defaults to
+ *   `0.05` (five percent).
+ * @param handleContentDescription Accessible label announced for the
+ *   focusable resize handle.
  */
 @Composable
 public fun StylishSplitter(
@@ -83,25 +101,98 @@ public fun StylishSplitter(
     handleSize: Dp = 8.dp,
     handleColor: Color = MaterialTheme.colorScheme.outlineVariant,
     handleActiveColor: Color = MaterialTheme.colorScheme.primary,
+    keyboardStep: Float = 0.05f,
+    handleContentDescription: String = "Resize panels",
 ) {
-    var internalRatio by remember { mutableFloatStateOf(ratio) }
-    val resolvedRatio = onRatioChange?.let { ratio } ?: internalRatio
+    // A malformed bound must never produce a negative/zero weight. This is especially
+    // important for values loaded from persisted responsive-layout preferences.
+    val safeMinRatio = minRatio.takeIf { it.isFinite() }?.coerceIn(0f, 1f) ?: 0.1f
+    val safeMaxRatio = maxRatio.takeIf { it.isFinite() }
+        ?.coerceIn(safeMinRatio, 1f)
+        ?: 0.9f.coerceAtLeast(safeMinRatio)
+    val safeKeyboardStep = keyboardStep.takeIf { it.isFinite() }?.coerceIn(0.001f, 1f) ?: 0.05f
+    var internalRatio by remember {
+        mutableFloatStateOf(ratio.takeIf { it.isFinite() }?.coerceIn(safeMinRatio, safeMaxRatio) ?: 0.5f)
+    }
+    val resolvedRatio = (onRatioChange?.let { ratio } ?: internalRatio)
+        .takeIf { it.isFinite() }
+        ?.coerceIn(safeMinRatio, safeMaxRatio)
+        ?: ((safeMinRatio + safeMaxRatio) / 2f)
     var dragging by remember { mutableStateOf(false) }
 
     val density = androidx.compose.ui.platform.LocalDensity.current
-    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+    BoxWithConstraints(modifier = modifier.stylishTestTag("splitter").fillMaxSize()) {
         val totalSize = if (direction == StylishSplitterDirection.Horizontal) {
             maxWidth
         } else {
             maxHeight
         }
 
-        fun updateRatio(deltaPx: Float) {
+        fun updateRatioByDelta(deltaPx: Float) {
             val total = with(density) { totalSize.toPx() }
             if (total <= 0f) return
-            val next = (resolvedRatio + deltaPx / total).coerceIn(minRatio, maxRatio)
+            val next = (resolvedRatio + deltaPx / total).coerceIn(safeMinRatio, safeMaxRatio)
             onRatioChange?.invoke(next) ?: run { internalRatio = next }
         }
+
+        fun updateRatio(nextRatio: Float) {
+            val next = nextRatio.takeIf { it.isFinite() }?.coerceIn(safeMinRatio, safeMaxRatio)
+                ?: resolvedRatio
+            onRatioChange?.invoke(next) ?: run { internalRatio = next }
+        }
+
+        // Keep pointer input alive while the latest ratio/callback is replaced. Using
+        // pointerInput(Unit) with a directly captured ratio would otherwise drag from a
+        // stale value after the first pointer move.
+        val latestUpdateRatioByDelta = rememberUpdatedState<(Float) -> Unit>(
+            newValue = { deltaPx: Float -> updateRatioByDelta(deltaPx) },
+        )
+        val handleModifier = Modifier
+            .focusable()
+            .semantics {
+                contentDescription = handleContentDescription
+                stateDescription = "${(resolvedRatio * 100f).toInt()}%"
+                progressBarRangeInfo = ProgressBarRangeInfo(
+                    current = resolvedRatio,
+                    range = safeMinRatio..safeMaxRatio,
+                )
+                setProgress { target: Float ->
+                    updateRatio(target)
+                    true
+                }
+            }
+            .onPreviewKeyEvent { event ->
+                if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                val positiveKey = when (direction) {
+                    StylishSplitterDirection.Horizontal -> Key.DirectionRight
+                    StylishSplitterDirection.Vertical -> Key.DirectionDown
+                }
+                val negativeKey = when (direction) {
+                    StylishSplitterDirection.Horizontal -> Key.DirectionLeft
+                    StylishSplitterDirection.Vertical -> Key.DirectionUp
+                }
+                when (event.key) {
+                    positiveKey -> updateRatio(resolvedRatio + safeKeyboardStep)
+                    negativeKey -> updateRatio(resolvedRatio - safeKeyboardStep)
+                    Key.MoveHome -> updateRatio(safeMinRatio)
+                    Key.MoveEnd -> updateRatio(safeMaxRatio)
+                    else -> return@onPreviewKeyEvent false
+                }
+                true
+            }
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragStart = { dragging = true },
+                    onDragEnd = { dragging = false },
+                    onDragCancel = { dragging = false },
+                ) { change, dragAmount ->
+                    change.consume()
+                    latestUpdateRatioByDelta.value(
+                        if (direction == StylishSplitterDirection.Horizontal) dragAmount.x else dragAmount.y,
+                    )
+                }
+            }
+            .background(if (dragging) handleActiveColor else handleColor)
 
         if (direction == StylishSplitterDirection.Horizontal) {
             Row(Modifier.fillMaxSize()) {
@@ -116,17 +207,7 @@ public fun StylishSplitter(
                     Modifier
                         .width(handleSize)
                         .fillMaxHeight()
-                        .background(if (dragging) handleActiveColor else handleColor)
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = { dragging = true },
-                                onDragEnd = { dragging = false },
-                                onDragCancel = { dragging = false },
-                            ) { change, dragAmount ->
-                                change.consume()
-                                updateRatio(dragAmount.x)
-                            }
-                        },
+                        .then(handleModifier),
                 )
                 Box(
                     Modifier
@@ -137,7 +218,9 @@ public fun StylishSplitter(
                 }
             }
         } else {
-            Row(Modifier.fillMaxSize()) {
+            // The vertical variant must use a Column: Row weights divide width and make
+            // the allegedly vertical splitter render as a horizontal one.
+            androidx.compose.foundation.layout.Column(Modifier.fillMaxSize()) {
                 Box(
                     Modifier
                         .weight(resolvedRatio)
@@ -149,17 +232,7 @@ public fun StylishSplitter(
                     Modifier
                         .fillMaxWidth()
                         .height(handleSize)
-                        .background(if (dragging) handleActiveColor else handleColor)
-                        .pointerInput(Unit) {
-                            detectDragGestures(
-                                onDragStart = { dragging = true },
-                                onDragEnd = { dragging = false },
-                                onDragCancel = { dragging = false },
-                            ) { change, dragAmount ->
-                                change.consume()
-                                updateRatio(dragAmount.y)
-                            }
-                        },
+                        .then(handleModifier),
                 )
                 Box(
                     Modifier

@@ -23,9 +23,10 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.sp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 
 /**
  * A single segment within a stacked bar, representing one sub-category's
@@ -115,7 +116,7 @@ public data class BarChartData(
  * @param gridColor Color of horizontal grid lines. Defaults to
  *   `MaterialTheme.colorScheme.outlineVariant`.
  * @param chartHeight Total height of the chart area. Defaults to
- *   [DefaultStylishDimensions.barChartHeight].
+ *   [StylishTheme.dimensions.barChartHeight].
  * @param topRadius Corner radius applied to the top of each bar (or the
  *   topmost segment in stacked mode). Defaults to 4 dp.
  * @param labelTextSize Text size for axis and category labels. Defaults to
@@ -138,7 +139,7 @@ public fun SimpleBarChart(
     modifier: Modifier = Modifier,
     barColor: Color = MaterialTheme.colorScheme.primary,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
-    chartHeight: Dp = DefaultStylishDimensions.barChartHeight,
+    chartHeight: Dp = StylishTheme.dimensions.barChartHeight,
     topRadius: Dp = 4.dp,
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 4,
@@ -146,30 +147,33 @@ public fun SimpleBarChart(
 ) {
     val maxValue = barScaleMax(data.map { it.value })
     val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val strings = StylishTheme.strings
+    val scaledLabelTextSize = labelTextSize * LocalDensity.current.fontScale
     val description = "$contentDescriptionPrefix: " + data.joinToString(", ") {
-        "${it.label}=${formatInteger(it.value.toInt())}"
+        "${it.label}=${strings.formatInteger(it.value.toLong())}"
     }
     val textMeasurer = rememberTextMeasurer()
     val labelStyle = TextStyle(
-        fontSize = labelTextSize.value.sp,
+        fontSize = scaledLabelTextSize.value.sp,
         color = labelColor,
     )
-    val labelLayouts = remember(data, labelTextSize, labelColor) {
+    val labelLayouts = remember(data, scaledLabelTextSize, labelColor) {
         data.map { textMeasurer.measure(it.label, labelStyle) }
     }
-    val gridLayouts = remember(data, gridLineCount, labelTextSize, labelColor, maxValue) {
+    val gridLayouts = remember(data, gridLineCount, scaledLabelTextSize, labelColor, maxValue) {
         List(gridLineCount) { i ->
             val gridValue = maxValue * (gridLineCount - 1 - i) / (gridLineCount - 1).coerceAtLeast(1)
             textMeasurer.measure(formatCompact(gridValue), labelStyle)
         }
     }
-    val emptyLayout = remember(emptyLabel, labelTextSize, labelColor) {
+    val emptyLayout = remember(emptyLabel, scaledLabelTextSize, labelColor) {
         textMeasurer.measure(emptyLabel, labelStyle)
     }
     val progress = remember { Animatable(0f) }
     val animationDuration = StylishTheme.animation.durationMedium
+    val shouldAnimate = animate && !isStylishReducedMotionEnabled()
     LaunchedEffect(Unit) {
-        if (animate) {
+        if (shouldAnimate) {
             progress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(animationDuration),

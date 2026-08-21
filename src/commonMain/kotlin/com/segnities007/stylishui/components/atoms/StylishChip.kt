@@ -46,6 +46,7 @@ import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishInteractiveTarget
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -234,6 +235,7 @@ public fun StylishChip(
     }
     Surface(
         modifier = modifier
+            .stylishInteractiveTarget()
             .testTag("stylish_chip")
             .semantics {
                 this.selected = selected

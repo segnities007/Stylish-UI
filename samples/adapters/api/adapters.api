@@ -1,0 +1,329 @@
+public final class com/segnities007/stylishui/adapters/InMemoryFilePicker : com/segnities007/stylishui/adapters/StylishFilePickerAdapter {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterResult;)V
+	public fun pick (Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/InMemoryImageAdapter : com/segnities007/stylishui/adapters/StylishImageAdapter {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterResult;)V
+	public fun load (Lcom/segnities007/stylishui/adapters/StylishImageRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/InMemoryQrEncoder : com/segnities007/stylishui/adapters/StylishQrEncoderAdapter {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterResult;)V
+	public fun encode (Lcom/segnities007/stylishui/adapters/StylishQrRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterContractKt {
+	public static final fun validateImageResource (Lcom/segnities007/stylishui/adapters/StylishImageResource;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult;
+	public static final fun validatePickedFiles (Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;Ljava/util/List;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult;
+	public static final fun validateQrResult (Lcom/segnities007/stylishui/adapters/StylishQrRequest;Lcom/segnities007/stylishui/adapters/StylishQrMatrix;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterError {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;Ljava/lang/String;Z)V
+	public synthetic fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;Ljava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun copy (Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;Ljava/lang/String;Z)Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishAdapterError;Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;Ljava/lang/String;ZILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getRetryable ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterErrorCode : java/lang/Enum {
+	public static final field DecodeFailed Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static final field InvalidRequest Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static final field PermissionDenied Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static final field Transport Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static final field Unknown Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static final field Unsupported Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+	public static fun values ()[Lcom/segnities007/stylishui/adapters/StylishAdapterErrorCode;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishAdapterResult {
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterResult$Cancelled : com/segnities007/stylishui/adapters/StylishAdapterResult {
+	public static final field INSTANCE Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Cancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterResult$Failure : com/segnities007/stylishui/adapters/StylishAdapterResult {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterError;)V
+	public final fun component1 ()Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public final fun copy (Lcom/segnities007/stylishui/adapters/StylishAdapterError;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Failure;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Failure;Lcom/segnities007/stylishui/adapters/StylishAdapterError;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishAdapterResult$Success : com/segnities007/stylishui/adapters/StylishAdapterResult {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Success;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Success;Ljava/lang/Object;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishFilePickerAdapter {
+	public abstract fun pick (Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishFilePickerRequest {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;ZLcom/segnities007/stylishui/adapters/StylishPermissionStatus;)V
+	public synthetic fun <init> (Ljava/util/List;ZLcom/segnities007/stylishui/adapters/StylishPermissionStatus;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Z
+	public final fun component3 ()Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public final fun copy (Ljava/util/List;ZLcom/segnities007/stylishui/adapters/StylishPermissionStatus;)Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;Ljava/util/List;ZLcom/segnities007/stylishui/adapters/StylishPermissionStatus;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishFilePickerRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAllowMultiple ()Z
+	public final fun getMimeTypes ()Ljava/util/List;
+	public final fun getPermission ()Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishFlowAdapter {
+	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public final fun collect (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/Job;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishImageAdapter {
+	public abstract fun load (Lcom/segnities007/stylishui/adapters/StylishImageRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishImageRequest {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishImageRequest;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishImageRequest;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishImageRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentDescription ()Ljava/lang/String;
+	public final fun getSource ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishImageResource {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;II)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;II)Lcom/segnities007/stylishui/adapters/StylishImageResource;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishImageResource;Ljava/lang/String;Ljava/lang/String;IIILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishImageResource;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeightPx ()I
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getWidthPx ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishNavigationAdapter {
+	public abstract fun dispatch (Lcom/segnities007/stylishui/adapters/StylishNavigationState;Lcom/segnities007/stylishui/adapters/StylishNavigationIntent;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishNavigationIntent {
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationIntent$Back : com/segnities007/stylishui/adapters/StylishNavigationIntent {
+	public static final field INSTANCE Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Back;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationIntent$DeepLink : com/segnities007/stylishui/adapters/StylishNavigationIntent {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$DeepLink;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$DeepLink;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$DeepLink;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationIntent$Navigate : com/segnities007/stylishui/adapters/StylishNavigationIntent {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Navigate;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Navigate;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Navigate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationIntent$Reselect : com/segnities007/stylishui/adapters/StylishNavigationIntent {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Reselect;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Reselect;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Reselect;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationIntent$Restore : com/segnities007/stylishui/adapters/StylishNavigationIntent {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Restore;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Restore;Ljava/util/List;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishNavigationIntent$Restore;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackStack ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationReducer : com/segnities007/stylishui/adapters/StylishNavigationAdapter {
+	public static final field INSTANCE Lcom/segnities007/stylishui/adapters/StylishNavigationReducer;
+	public fun dispatch (Lcom/segnities007/stylishui/adapters/StylishNavigationState;Lcom/segnities007/stylishui/adapters/StylishNavigationIntent;)Lcom/segnities007/stylishui/adapters/StylishAdapterResult;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishNavigationState {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Z)Lcom/segnities007/stylishui/adapters/StylishNavigationState;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishNavigationState;Ljava/lang/String;Ljava/util/List;ZILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishNavigationState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackStack ()Ljava/util/List;
+	public final fun getCurrentRoute ()Ljava/lang/String;
+	public final fun getRestored ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishPermissionStatus : java/lang/Enum {
+	public static final field Denied Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public static final field Granted Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public static final field Restricted Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public static final field Unknown Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+	public static fun values ()[Lcom/segnities007/stylishui/adapters/StylishPermissionStatus;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishPickedFile {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()J
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)Lcom/segnities007/stylishui/adapters/StylishPickedFile;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishPickedFile;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishPickedFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getSizeBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishQrEncoderAdapter {
+	public abstract fun encode (Lcom/segnities007/stylishui/adapters/StylishQrRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishQrMatrix {
+	public fun <init> (ILjava/util/List;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (ILjava/util/List;)Lcom/segnities007/stylishui/adapters/StylishQrMatrix;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishQrMatrix;ILjava/util/List;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishQrMatrix;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (II)Z
+	public final fun getModules ()Ljava/util/List;
+	public final fun getSize ()I
+	public fun hashCode ()I
+	public final fun rows ()Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishQrRequest {
+	public fun <init> (Ljava/lang/String;C)V
+	public synthetic fun <init> (Ljava/lang/String;CILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()C
+	public final fun copy (Ljava/lang/String;C)Lcom/segnities007/stylishui/adapters/StylishQrRequest;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishQrRequest;Ljava/lang/String;CILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishQrRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorCorrection ()C
+	public final fun getPayload ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/segnities007/stylishui/adapters/StylishStreamState {
+}
+
+public final class com/segnities007/stylishui/adapters/StylishStreamState$Content : com/segnities007/stylishui/adapters/StylishStreamState {
+	public fun <init> (Ljava/lang/Object;Z)V
+	public synthetic fun <init> (Ljava/lang/Object;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Z
+	public final fun copy (Ljava/lang/Object;Z)Lcom/segnities007/stylishui/adapters/StylishStreamState$Content;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishStreamState$Content;Ljava/lang/Object;ZILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishStreamState$Content;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStale ()Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishStreamState$Empty : com/segnities007/stylishui/adapters/StylishStreamState {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/segnities007/stylishui/adapters/StylishStreamState$Empty;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishStreamState$Empty;Ljava/lang/String;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishStreamState$Empty;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishStreamState$Error : com/segnities007/stylishui/adapters/StylishStreamState {
+	public fun <init> (Lcom/segnities007/stylishui/adapters/StylishAdapterError;)V
+	public final fun component1 ()Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public final fun copy (Lcom/segnities007/stylishui/adapters/StylishAdapterError;)Lcom/segnities007/stylishui/adapters/StylishStreamState$Error;
+	public static synthetic fun copy$default (Lcom/segnities007/stylishui/adapters/StylishStreamState$Error;Lcom/segnities007/stylishui/adapters/StylishAdapterError;ILjava/lang/Object;)Lcom/segnities007/stylishui/adapters/StylishStreamState$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Lcom/segnities007/stylishui/adapters/StylishAdapterError;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/segnities007/stylishui/adapters/StylishStreamState$Loading : com/segnities007/stylishui/adapters/StylishStreamState {
+	public static final field INSTANCE Lcom/segnities007/stylishui/adapters/StylishStreamState$Loading;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

@@ -76,6 +76,7 @@ public data class StylishAvatarItem(
  *   indicator. Defaults to [MaterialTheme.colorScheme.primaryContainer].
  * @param overflowContentColor The content color of the overflow indicator.
  *   Defaults to [MaterialTheme.colorScheme.onPrimaryContainer].
+ * @param groupContentDescription Produces a localized accessibility description for the group.
  *
  * @see ConnectedAvatarRow
  * @see StylishAvatar
@@ -93,11 +94,12 @@ public fun StylishConnectedAvatarRow(
     border: BorderStroke = BorderStroke(2.dp, MaterialTheme.colorScheme.surface),
     overflowContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     overflowContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    groupContentDescription: (Int) -> String = { count -> "$count people" },
 ) {
     val totalPeople = items.size
     ConnectedAvatarRow(
         items = items,
-        modifier = modifier.semantics { contentDescription = "$totalPeople people" },
+        modifier = modifier.semantics { contentDescription = groupContentDescription(totalPeople) },
         maxVisible = maxVisible,
         overlap = overlap,
         avatar = { item, _, itemModifier ->

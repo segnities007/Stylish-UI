@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.structure.ConnectedCardLazyColumn
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
  * A lazily-composed vertical group of connected cards that share outlines and corner radii,
@@ -38,7 +37,8 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param spacing The vertical gap between adjacent cards. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding [PaddingValues] applied around the entire lazy list. Defaults to
- *   [DefaultStylishDimensions.controlPadding] horizontal padding.
+ *   [StylishTheme.dimensions.controlPadding] horizontal padding.
+ * @param key Optional stable and unique key factory used to preserve item state across moves.
  * @param listState [LazyListState] controlling scroll position. Defaults to
  *   [rememberLazyListState]. Supply a hoisted state to observe scroll offset or
  *   programmatically scroll.
@@ -62,11 +62,11 @@ import com.segnities007.stylishui.tokens.DefaultStylishDimensions
  * @param supportingTextOverflow The [TextOverflow] strategy for each card's
  *   supporting text. Defaults to [TextOverflow.Ellipsis].
  * @param minHeight Minimum height of each card body. Defaults to
- *   [DefaultStylishDimensions.cardMinHeight] (77 dp).
+ *   [StylishTheme.dimensions.cardMinHeight] (77 dp).
  * @param horizontalPadding Horizontal padding inside each card. Defaults to
- *   [DefaultStylishDimensions.controlPadding] (16 dp).
+ *   [StylishTheme.dimensions.controlPadding] (16 dp).
  * @param verticalPadding Vertical padding inside each card. Defaults to
- *   [DefaultStylishDimensions.controlVerticalPadding] (12 dp).
+ *   [StylishTheme.dimensions.controlVerticalPadding] (12 dp).
  * @param contentSpacing Horizontal gap between slots inside each card.
  *   Defaults to [StylishTheme.dimensions.itemSpacing] (8 dp).
  * @param titleSpacing Vertical gap between title and supporting text inside
@@ -87,7 +87,8 @@ public fun StylishConnectedCardLazyColumn(
     items: List<StylishConnectedCardItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    contentPadding: PaddingValues = PaddingValues(horizontal = DefaultStylishDimensions.controlPadding),
+    contentPadding: PaddingValues = PaddingValues(horizontal = StylishTheme.dimensions.controlPadding),
+    key: ((StylishConnectedCardItem) -> Any)? = null,
     listState: LazyListState = rememberLazyListState(),
     containerColor: Color? = null,
     contentColor: Color? = null,
@@ -99,9 +100,9 @@ public fun StylishConnectedCardLazyColumn(
     titleOverflow: TextOverflow = TextOverflow.Ellipsis,
     supportingTextMaxLines: Int = 1,
     supportingTextOverflow: TextOverflow = TextOverflow.Ellipsis,
-    minHeight: Dp = DefaultStylishDimensions.cardMinHeight,
-    horizontalPadding: Dp = DefaultStylishDimensions.controlPadding,
-    verticalPadding: Dp = DefaultStylishDimensions.controlVerticalPadding,
+    minHeight: Dp = StylishTheme.dimensions.cardMinHeight,
+    horizontalPadding: Dp = StylishTheme.dimensions.controlPadding,
+    verticalPadding: Dp = StylishTheme.dimensions.controlVerticalPadding,
     contentSpacing: Dp = StylishTheme.dimensions.itemSpacing,
     titleSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
     card: StylishConnectedCardItemContent = { item, itemModifier, shape, edges, corners ->
@@ -125,7 +126,15 @@ public fun StylishConnectedCardLazyColumn(
         )
     },
 ) {
-    ConnectedCardLazyColumn(items, modifier, spacing, contentPadding, listState, card = card)
+    ConnectedCardLazyColumn(
+        items = items,
+        modifier = modifier,
+        spacing = spacing,
+        contentPadding = contentPadding,
+        key = key,
+        listState = listState,
+        card = card,
+    )
 }
 
 @Preview(name = "Connected card lazy column", showBackground = true, widthDp = 393, heightDp = 500)

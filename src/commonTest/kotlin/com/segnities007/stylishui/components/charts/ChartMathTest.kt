@@ -2,8 +2,72 @@ package com.segnities007.stylishui.components.charts
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class ChartMathTest {
+
+    @Test
+    fun `downsampling is bounded and preserves endpoints`() {
+        val source = (0 until 10_000).toList()
+        val rendered = downsampleStylishSeries(source, StylishChartMaxRenderedPoints)
+        assertEquals(StylishChartMaxRenderedPoints, rendered.size)
+        assertEquals(0, rendered.first())
+        assertEquals(9_999, rendered.last())
+        assertEquals(rendered, downsampleStylishSeries(source, StylishChartMaxRenderedPoints))
+    }
+
+    @Test
+    fun `downsampling keeps a hundred thousand point workload bounded`() {
+        val source = (0 until 100_000).map { it.toFloat() }
+
+        val rendered = downsampleStylishSeries(source, StylishChartMaxRenderedPoints)
+
+        assertEquals(StylishChartMaxRenderedPoints, rendered.size)
+        assertEquals(0f, rendered.first())
+        assertEquals(99_999f, rendered.last())
+    }
+
+    @Test
+    fun `downsampling handles small limits deterministically`() {
+        val source = listOf("first", "middle", "last")
+        assertEquals(listOf("first"), downsampleStylishSeries(source, 1))
+        assertEquals(source, downsampleStylishSeries(source, 3))
+    }
+
+    @Test
+    fun `downsampling rejects an invalid visual budget`() {
+        assertFailsWith<IllegalArgumentException> {
+            downsampleStylishSeries(listOf(1, 2), 0)
+        }
+    }
+
+    @Test
+    fun `downsampling contract is shared by area and scatter workloads`() {
+        val source = (0 until 2_000).map { it.toFloat() }
+
+        val areaVisual = downsampleStylishSeries(source, StylishChartMaxRenderedPoints)
+        val scatterVisual = downsampleStylishSeries(source, StylishChartMaxRenderedPoints)
+
+        assertEquals(StylishChartMaxRenderedPoints, areaVisual.size)
+        assertEquals(areaVisual, scatterVisual)
+        assertEquals(source.first(), areaVisual.first())
+        assertEquals(source.last(), areaVisual.last())
+    }
+
+    @Test
+    fun `chart description retains every finite source point and omits invalid values`() {
+        val description = buildStylishChartDescription(
+            prefix = "Measurements",
+            points = listOf(
+                "A" to 1f,
+                "missing" to Float.NaN,
+                "B" to Float.POSITIVE_INFINITY,
+                "C" to -2.5f,
+            ),
+        )
+
+        assertEquals("Measurements. A=1.0. C=-2.5", description)
+    }
 
     @Test
     fun `pieSweepAngles is empty for empty input`() {

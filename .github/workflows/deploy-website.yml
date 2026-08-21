@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build site (gallery + API docs)
+    name: Build API docs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -35,12 +35,8 @@ jobs:
           validate-wrappers: true
           add-job-summary: 'on-failure'
 
-      # Clean before building: the webpack bundle keeps stale hashed
-      # artifacts, which previously produced an index.js referencing a wasm
-      # that was never uploaded (site broken with a 404 wasm).
-      - name: Build Wasm gallery
-        run: ./gradlew :website-wasm:clean :website-wasm:wasmJsBrowserProductionWebpack
-
+      # The interactive Wasm catalog was removed on 2026-08-21; Pages now
+      # publishes the Dokka API reference only.
       - name: Build Dokka API docs
         run: ./gradlew dokkaGeneratePublicationHtml
 
@@ -48,18 +44,6 @@ jobs:
         run: |
           rm -rf _site
           mkdir -p _site/api
-          # The webpack bundle (build/kotlin-webpack or legacy build/dist)
-          # contains the hashed wasm files but NOT index.html — CMP 1.11
-          # keeps the HTML template in build/processedResources instead.
-          # Copy all three so the published site is complete.
-          cp -r website-wasm/build/processedResources/wasmJs/main/* _site/
-          for dir in \
-            website-wasm/build/dist/wasmJs/productionExecutable \
-            website-wasm/build/kotlin-webpack/wasmJs/productionExecutable; do
-            if [ -d "$dir" ]; then
-              cp -r "$dir"/* _site/
-            fi
-          done
           cp -r build/dokka/html/* _site/api/
 
       - name: Upload artifact

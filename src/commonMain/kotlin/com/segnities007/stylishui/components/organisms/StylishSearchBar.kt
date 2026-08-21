@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.segnities007.stylishui.components.organisms
 
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A search bar with a collapsed input field and an expanded results
@@ -85,7 +88,7 @@ public fun StylishSearchBar(
         onSearch = onSearch,
         active = active,
         onActiveChange = onActiveChange,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("search_bar"),
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,

@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A modal dialog container that enters with a combined scale-and-fade
@@ -96,6 +98,7 @@ public fun StylishDialogSurface(
     windowInsets: WindowInsets = WindowInsets.safeDrawing,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val effectiveAnimate = animate && !isStylishReducedMotionEnabled()
     var entered by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { entered = true }
 
@@ -118,12 +121,12 @@ public fun StylishDialogSurface(
         properties = properties,
     ) {
         Card(
-            modifier = modifier
+            modifier = modifier.stylishTestTag("dialog_surface")
                 .windowInsetsPadding(windowInsets)
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding)
                 .then(
-                    if (animate) {
+                    if (effectiveAnimate) {
                         Modifier.graphicsLayer {
                             scaleX = dialogScale
                             scaleY = dialogScale

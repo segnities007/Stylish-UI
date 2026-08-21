@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A Material 3 navigation rail with Stylish theme defaults.
@@ -60,7 +61,7 @@ public fun StylishNavigationRail(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     NavigationRail(
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("navigation_rail"),
         containerColor = containerColor,
         contentColor = contentColor,
         header = header,
@@ -112,7 +113,7 @@ public fun StylishNavigationRailItem(
         selected = selected,
         onClick = onClick,
         icon = icon,
-        modifier = modifier,
+        modifier = modifier.stylishTestTag("navigation_rail_item"),
         enabled = enabled,
         label = label,
         alwaysShowLabel = alwaysShowLabel,

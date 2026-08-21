@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +36,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
+import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
+import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -114,12 +115,12 @@ public enum class StylishCardVariant {
  *   [stylishComponentColors.groupedContainer].
  * @param contentColor Default content color. Defaults to
  *   `MaterialTheme.colorScheme.onSurface`.
- * @param minHeight Minimum height of the card body. Defaults to 77.dp.
+ * @param minHeight Minimum height of the card body. Defaults to the theme's card size token.
  *   Applies in both modes.
  * @param horizontalPadding Horizontal padding inside the card.
- *   Defaults to 16.dp. Applies in both modes.
+ *   Defaults to the theme's content padding. Applies in both modes.
  * @param verticalPadding Vertical padding inside the card.
- *   Defaults to 12.dp. Applies in both modes.
+ *   Defaults to the theme's control vertical padding. Applies in both modes.
  * @param title Primary text displayed in the card body in structured
  *   mode. Ignored in content mode. Defaults to `""`.
  * @param supportingText Secondary text below the title in structured
@@ -169,12 +170,12 @@ public fun StylishCard(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     enabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = StylishCardDefaults.shape(),
     containerColor: Color? = null,
     contentColor: Color? = null,
-    minHeight: Dp = 77.dp,
-    horizontalPadding: Dp = 16.dp,
-    verticalPadding: Dp = 12.dp,
+    minHeight: Dp = StylishTheme.dimensions.cardMinHeight,
+    horizontalPadding: Dp = StylishTheme.dimensions.contentPadding,
+    verticalPadding: Dp = StylishTheme.dimensions.controlVerticalPadding,
     title: String = "",
     supportingText: String = "",
     titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
@@ -198,18 +199,12 @@ public fun StylishCard(
         hasClickAction = onClick != null,
         hasLongClickAction = onLongClick != null,
     )
-    val resolvedBorder = border ?: if (variant == StylishCardVariant.Outlined) {
-        BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        )
-    } else {
-        null
-    }
+    val resolvedInteractionSource = rememberStylishInteractionSource(interactionSource)
+    val resolvedBorder = border ?: StylishCardDefaults.border(variant)
     val resolvedElevation = if (variant == StylishCardVariant.Elevated) {
-        if (actionable) StylishTheme.dimensions.interactiveElevation else 0.dp
+        stylishInteractiveElevation(resolvedInteractionSource, actionable)
     } else {
-        0.dp
+        StylishCardDefaults.elevation(variant, actionable)
     }
     Card(
         modifier = modifier
@@ -222,7 +217,7 @@ public fun StylishCard(
                     Modifier
                         .semantics(mergeDescendants = true) { role = Role.Button }
                         .combinedClickable(
-                            interactionSource = interactionSource,
+                            interactionSource = resolvedInteractionSource,
                             indication = LocalIndication.current,
                             onClick = { onClick?.invoke() },
                             onLongClick = onLongClick?.let {
@@ -237,7 +232,9 @@ public fun StylishCard(
                 },
             ),
         shape = shape,
-        colors = CardDefaults.cardColors(
+        colors = if (containerColor == null && contentColor == null) {
+            StylishCardDefaults.colors()
+        } else CardDefaults.cardColors(
             containerColor = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         ),

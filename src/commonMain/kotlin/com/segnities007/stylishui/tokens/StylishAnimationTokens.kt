@@ -38,6 +38,15 @@ import androidx.compose.runtime.staticCompositionLocalOf
  *   into place.
  * @property pressedScale Scale applied to press feedback. Default 0.98f.
  * @property springStiffness Stiffness used by spring-based micro-interactions. Default 700f.
+ *
+ * Application policy: state-color changes always use [durationShort] with [defaultEasing] —
+ * never [durationMedium] or longer, or they read as laggy. Element enter/exit uses
+ * [durationMedium]; page-level surfaces use [durationLong]; emphasized transitions pair
+ * [durationEmphasized] with [emphasizedEasing]; decorative fades use [gentleEasing].
+ * Haptic feedback fires on press start, not release. Disabled⇄enabled switches animate color
+ * and elevation together instead of snapping. Every decorative animation must consult
+ * `isStylishReducedMotionEnabled` and snap to a zero-duration fade while it is enabled.
+ *
  * @see DefaultStylishAnimationTokens
  * @see com.segnities007.stylishui.theme.StylishTheme
  * @see com.segnities007.stylishui.theme.StylishTheme.animation

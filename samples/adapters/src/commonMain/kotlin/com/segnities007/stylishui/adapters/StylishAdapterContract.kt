@@ -7,7 +7,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-/** Stable error categories shared by every host adapter. */
+/**
+ * Platform adapter contract shared by every host integration (file/image/upload, navigation,
+ * Flow/store, DataTable query, QR/export). Stylish components never own OS permissions, files,
+ * images, navigation stacks, or streams: they expose visible state and user intent, and the host
+ * injects a platform adapter.
+ *
+ * Common rules:
+ * - The screen/feature owns the single source of truth; components render controlled state only.
+ * - UI events return intents (request/cancel/retry/remove/select) and never start IO themselves.
+ * - Adapters bind to the host lifecycle and must not double-subscribe across recompositions.
+ * - Failures carry a classifiable [StylishAdapterErrorCode] plus [StylishAdapterError.retryable];
+ *   cancellation is idempotent and late or duplicate callbacks are ignored.
+ * - Pass stable keys for files, uploads, and list items; display names are not identities.
+ * - Never log paths, tokens, credentials, or personal data at the component boundary.
+ * - Expose permission-denied, loading, error, and success as semantics state descriptions.
+ *
+ * Module boundary: `samples/adapters` may adopt only the Compose-free `:foundation` contracts;
+ * edges to `:structure`, the styled root, or a host are rejected by
+ * `scripts/verify-module-boundaries.py`.
+ */
 public enum class StylishAdapterErrorCode {
     /** The host has not granted the permission required for the operation. */
     PermissionDenied,

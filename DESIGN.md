@@ -172,4 +172,4 @@ StylishConnectedButtonRow(
 | `large` | 20.dp | ダイアログ・シート等の大きい角丸 |
 | `extraLarge` | 28.dp | カプセル・拡張FAB等の全丸角丸 |
 
-モーションの使い分けとインタラクションフィードバックの詳細は [docs/design-spec.md](docs/design-spec.md)（モーション & インタラクション仕様書）を参照。
+モーションの使い分けとインタラクションフィードバックの規則は、[StylishAnimationTokens.kt](src/commonMain/kotlin/com/segnities007/stylishui/tokens/StylishAnimationTokens.kt) の KDoc（適用ポリシー）を参照。

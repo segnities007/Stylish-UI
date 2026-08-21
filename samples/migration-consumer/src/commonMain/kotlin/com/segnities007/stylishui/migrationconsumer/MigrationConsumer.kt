@@ -12,8 +12,7 @@ import com.segnities007.stylishui.structure.stylishGridRows
  * It imports ONLY the two extracted physical artifacts (`:foundation` and
  * `:structure`) and never the styled root publication. A host that adopts this
  * surface today keeps compiling when the root stops shipping duplicated
- * headless packages in a future major release (stage 3 of
- * `docs/module-boundaries.md`).
+ * headless packages in a future major release.
  */
 
 /** Immutable domain value a host would render inside one grid cell. */

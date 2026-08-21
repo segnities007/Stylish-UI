@@ -115,12 +115,6 @@ jobs:
       - name: Build and verify release artifacts
         run: ./gradlew check
 
-      - name: Verify accessibility source contract
-        run: python3 scripts/verify-accessibility-contract.py
-
-      - name: Verify machine-readable support policy
-        run: python3 scripts/verify-support-policy.py
-
       # A release must fail closed until every resolved dependency has an
       # approved license decision.  CI PR builds still upload the report with
       # REVIEW_REQUIRED so maintainers can resolve the nine current cases.

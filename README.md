@@ -125,13 +125,7 @@ Stylish UI の品質管理に関するドキュメントです。
 | ドキュメント | 内容 |
 |---|---|
 | [DESIGN.md](DESIGN.md) | デザインチェックリスト（Clear / Simple / Modern） |
-| [docs/design-spec.md](docs/design-spec.md) | デザイン仕様書 |
-| [docs/quality-audit.md](docs/quality-audit.md) | 品質監査（欠点の列挙と進捗管理の作業ファイル） |
-| [docs/adaptive-and-data.md](docs/adaptive-and-data.md) | Adaptive layout / DataTable / 複数系列Chart 利用ガイド |
 | [docs/catalog.md](docs/catalog.md) | 92 interactive demos、追加規約、Linux受入チェック |
-| [docs/component-inventory.md](docs/component-inventory.md) | UI在庫、API品質契約、Linux inventory gate |
-| [docs/comparison-report.md](docs/comparison-report.md) | Web/iOS競合比較、100点ルーブリック、残存ギャップ |
-| [docs/implementation-roadmap.md](docs/implementation-roadmap.md) | 100点到達の実装規約、モジュール境界、品質ゲート、実行順序 |
 | [ROADMAP.md](ROADMAP.md) | 公開ロードマップ（0.8.0 / 0.9.0 / 1.0.0） |
 
 ゴールデンテスト（`src/jvmTest/.../visual/`）は、明暗テーマの描画を

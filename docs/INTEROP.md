@@ -104,10 +104,9 @@ StylishTheme(darkTheme = isSystemInDarkTheme()) {
 
 移行の詳細は [docs/MIGRATION.md](MIGRATION.md) を参照してください。
 
-## 判断ログ（品質監査の 6 判断）
+## 判断ログ（設計上の 6 判断）
 
-[docs/quality-audit.md](quality-audit.md) の「実装前に判断が必要な6点」に
-対する決定です。未確定の項目は 0.8.0 の実装中に確定します。
+主要な設計判断とその決定です。未確定の項目は 0.8.0 の実装中に確定します。
 
 | # | 判断 | 決定 | ステータス |
 |---|---|---|---|
@@ -122,4 +121,3 @@ StylishTheme(darkTheme = isSystemInDarkTheme()) {
 
 - [M3 → Stylish マイグレーションガイド](MIGRATION.md)
 - [デザインガイドライン](../DESIGN.md)
-- [品質監査](../docs/quality-audit.md)

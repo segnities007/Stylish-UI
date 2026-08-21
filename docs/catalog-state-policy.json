@@ -6,7 +6,7 @@
   "apiDocOnlyRules": [
     {
       "match": "layer in {foundation, theme, tokens}",
-      "reason": "Value holders, geometry/interaction helpers, and theme entry points. They compute or resolve values and render no pixels; per docs/headless-architecture.md the Foundation layer contains no @Composable that renders UI."
+      "reason": "Value holders, geometry/interaction helpers, and theme entry points. They compute or resolve values and render no pixels; the Foundation layer contains no @Composable that renders UI."
     },
     {
       "match": "layer in {atoms, molecules} and source file name contains 'Defaults'",
@@ -18,7 +18,7 @@
     },
     {
       "match": "layer == structure",
-      "reason": "Headless Structure-layer layout hosts (Connected*Column/Row/Grid/Lazy*, ConnectedToggleRow, DataTableLayout). They arrange children and compute connection geometry but apply no visual styling - every item is delegated to a slot lambda rendered by a Finish component. Their Finish counterparts (StylishConnected*) all carry catalog demos; see docs/headless-architecture.md."
+      "reason": "Headless Structure-layer layout hosts (Connected*Column/Row/Grid/Lazy*, ConnectedToggleRow, DataTableLayout). They arrange children and compute connection geometry but apply no visual styling - every item is delegated to a slot lambda rendered by a Finish component. Their Finish counterparts (StylishConnected*) all carry catalog demos."
     },
     {
       "match": "name starts with 'remember'",

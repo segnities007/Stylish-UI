@@ -127,7 +127,7 @@ StylishConnectedCardRow(
 ## interactionSource の利用
 
 連結ファミリーは現在 `interactionSource` を公開していません（0.8.0 で対応
-予定、[docs/quality-audit.md](quality-audit.md) API-07）。単体コンポーネント
+予定）。単体コンポーネント
 （`StylishButton` / `StylishChip` / `StylishCard` / `StylishSlider` /
 `StylishRangeSlider` など）は `interactionSource` パラメータで外部から
 `MutableInteractionSource` を渡せます。ホバー / フォーカス / プレス状態の

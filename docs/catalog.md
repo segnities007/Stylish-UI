@@ -118,7 +118,7 @@ GRADLE_USER_HOME=$PWD/.gradle-ci ./gradlew wasmJsBrowserTest --no-daemon
 - OS の file picker と QR encoder の実装そのもの（catalog は adapter をモックする）。
 - Android TalkBack と端末固有の haptic / insets。
 
-これらを「未検証なのに合格」と扱わず、`docs/quality-audit.md` の platform gate に記録します。
+これらを「未検証なのに合格」と扱わず、platform gate として明示的に記録します。
 
 ## API を探す順番
 
@@ -129,7 +129,5 @@ GRADLE_USER_HOME=$PWD/.gradle-ci ./gradlew wasmJsBrowserTest --no-daemon
 
 関連資料:
 
-- [adaptive-and-data.md](adaptive-and-data.md): Adaptive / DataTable / Chart の API レシピ
 - [MIGRATION.md](MIGRATION.md): M3 からの移行と混在ルール
 - [INTEROP.md](INTEROP.md): M3 / Stylish の相互運用
-- [quality-audit.md](quality-audit.md): a11y / QA / platform gate

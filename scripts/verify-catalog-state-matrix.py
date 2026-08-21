@@ -362,7 +362,7 @@ def build_report(declarations: list[Declaration], demos: list[Demo], policy: dic
         #   render nothing on their own.
         # - structure: headless layout/slot hosts.  They render no pixels and
         #   delegate every item to a Finish renderer whose demo carries the
-        #   visual coverage (see docs/headless-architecture.md).
+        #   visual coverage.
         # - remember*: composable state factories allocating hoisted state;
         #   they have no visual output.  Demos still win: an existing genuine
         #   mapping is never downgraded.

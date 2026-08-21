@@ -32,7 +32,6 @@ MODULE_SOURCE_ROOTS = {
     "structure": ROOT / "structure/src",
     "catalog": ROOT / "catalog/src",
     "website": ROOT / "website/src",
-    "website-wasm": ROOT / "website-wasm/src",
     "android-r8": ROOT / "samples/android-r8/src",
     "android-runtime": ROOT / "samples/android-runtime/src",
     "foundation-consumer": ROOT / "samples/foundation-consumer/src",
@@ -49,7 +48,6 @@ OWNER_MODULE = {
     "structure": ":structure",
     "catalog": ":catalog",
     "website": ":website",
-    "website-wasm": ":website-wasm",
     "android-r8": ":samples:android-r8",
     "android-runtime": ":samples:android-runtime",
     "foundation-consumer": ":samples:foundation-consumer",
@@ -65,7 +63,6 @@ EDGE_RULES = {
     "structure/build.gradle.kts": set(),
     "catalog/build.gradle.kts": {":"},
     "website/build.gradle.kts": {":catalog"},
-    "website-wasm/build.gradle.kts": {":catalog"},
     "samples/android-r8/build.gradle.kts": {":"},
     "samples/android-runtime/build.gradle.kts": {":"},
     "samples/foundation-consumer/build.gradle.kts": {":foundation"},
@@ -79,7 +76,6 @@ EDGE_RULES = {
 REQUIRED_EDGES = {
     "catalog/build.gradle.kts": {":"},
     "website/build.gradle.kts": {":catalog"},
-    "website-wasm/build.gradle.kts": {":catalog"},
     "samples/android-r8/build.gradle.kts": {":"},
     "samples/android-runtime/build.gradle.kts": {":"},
     "samples/foundation-consumer/build.gradle.kts": {":foundation"},
@@ -97,7 +93,6 @@ LAYER_RANK = {
     ":": 2,
     ":catalog": 3,
     ":website": 4,
-    ":website-wasm": 4,
     ":samples:adapters": 5,
     ":samples:android-r8": 5,
     ":samples:android-runtime": 5,
@@ -192,7 +187,6 @@ def check_module_graph(failures: list[str]) -> int:
         ":foundation",
         ":structure",
         ":website",
-        ":website-wasm",
         ":catalog",
         ":samples:android-r8",
         ":samples:android-runtime",
@@ -326,7 +320,7 @@ def check_source_boundaries(failures: list[str]) -> tuple[int, int]:
                 if any(f"{LIBRARY_PACKAGE}{suffix}" in line for line in lines for suffix in forbidden):
                     fail(f"published library source references a host/catalog package: {path.relative_to(ROOT)}", failures)
             elif owner == "catalog":
-                forbidden = (".website", ".websitewasm", ".androidruntime", ".r8sample", ".catalog")
+                forbidden = (".website", ".androidruntime", ".r8sample", ".catalog")
                 if any(f"{LIBRARY_PACKAGE}{suffix}" in line for line in lines for suffix in forbidden[:-1]):
                     fail(f"catalog source references a host/sample package: {path.relative_to(ROOT)}", failures)
             elif owner == "foundation-consumer":
@@ -351,12 +345,11 @@ def check_source_boundaries(failures: list[str]) -> tuple[int, int]:
                         f"{path.relative_to(ROOT)}",
                         failures,
                     )
-            elif owner in {"website", "website-wasm"}:
-                sibling = ".websitewasm." if owner == "website" else ".website."
-                # Require a dot after the sibling package segment so the
-                # website-wasm package name cannot match its own declaration.
-                if any(f"{LIBRARY_PACKAGE}{sibling}" in line for line in lines):
-                    fail(f"website host modules must not depend on one another: {path.relative_to(ROOT)}", failures)
+            elif owner == "website":
+                # The Wasm sibling module was removed on 2026-08-21; keep the
+                # guard so a reintroduced host cannot import this one.
+                if any(f"{LIBRARY_PACKAGE}.websitewasm." in line for line in lines):
+                    fail(f"website host must not depend on removed wasm hosts: {path.relative_to(ROOT)}", failures)
     print(f"source boundaries: {files_checked} Kotlin files checked, {package_errors} package errors")
     return files_checked, package_errors
 

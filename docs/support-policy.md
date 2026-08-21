@@ -15,7 +15,7 @@ deprecation、incident必須項目、release evidenceをfail-closedで検査し�
 | 項目 | 方針 |
 |---|---|
 | 対象 artifact | `io.github.segnities007:stylish-ui` |
-| 対象プラットフォーム | Android、JVM Desktop、Wasm Web、iOS（compile/simulator gate） |
+| 対象プラットフォーム | Android、JVM Desktop、iOS（compileのみ・検証gateなし）。Web(Wasm)は2026-08-21に削除 |
 | 対応バージョン | 最新の安定版を第一優先。pre-1.0 の旧 minor は原則サポート対象外 |
 | API 契約 | 公開 Kotlin API は `apiCheck` と deprecate-first 方針で管理 |
 | セキュリティ窓口 | GitHub Private Vulnerability Reporting（詳細は `SECURITY.md`） |

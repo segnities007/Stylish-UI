@@ -3,7 +3,7 @@
 Stylish-UI keeps the stable styled publication in one multiplatform library
 module (`:`), but the first visual-completeness layers are now physically
 extracted: a Compose-free `:foundation` contract module and a headless
-`:structure` arrangement module. The catalog, desktop host, Wasm host, and
+`:structure` arrangement module. The catalog, desktop host, and
 Android consumer samples remain separate Gradle modules. This is an intentional
 packaging boundary: the published artifact must never acquire a dependency on a
 demo or host application, while headless contracts can be adopted without
@@ -15,7 +15,6 @@ The permitted physical module graph is:
 library (:) ───► (compatibility copies; no runtime sibling edges)
 catalog ───────► library (:)
 website ───────► catalog ─────► library (:)
-website-wasm ──► catalog ─────► library (:)
 android-r8 ────► library (:)
 android-runtime ► library (:)
 foundation-consumer ───────────► foundation
@@ -59,7 +58,7 @@ dependency on an extracted module.
 | Rank | Module | May depend on | Enforced canary |
 |---|---|---|---|
 | 5 | `samples:*` (adapters, android-r8, android-runtime, foundation-consumer, migration-consumer, structure-consumer) | any lower physical module, per allowlist | each sample keeps its required edge(s); nothing may depend on a sample |
-| 4 | `website`, `website-wasm` | `:catalog` only | required `:catalog` edge |
+| 4 | `website` | `:catalog` only | required `:catalog` edge |
 | 3 | `catalog` | `:` (components/root publication) | required `:` edge |
 | 2 | root library `:` | **no sibling edges** while compatibility copies exist | zero-edge assertion |
 | 1 | `:structure` | `:foundation` (currently unused), Compose layout primitives | import guard stays headless/style-free |
@@ -72,7 +71,7 @@ Additional executable rules:
   be directly connected. Today the only shared packages are the intentional
   root↔`:foundation` and root↔`:structure` binary-compatibility copies, which
   are safe precisely because the root has zero sibling edges.
-- **Required edges:** catalog→`:`, website/website-wasm→`:catalog`,
+- **Required edges:** catalog→`:`, website→`:catalog`,
   android-r8/android-runtime→`:`, foundation-consumer→`:foundation`,
   structure-consumer→`:structure`, migration-consumer→`:foundation`+`:structure`.
 - **Adapter direction:** `samples/adapters` may adopt `:foundation`

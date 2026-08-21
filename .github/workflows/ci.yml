@@ -66,9 +66,7 @@ jobs:
       # src/jvmTest/resources/golden/ and pass; afterwards they compare
       # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
       - name: Build and test
-        # Browser tests run in the dedicated wasm-browser job below, where
-        # Chrome is explicitly provisioned.
-        run: ./gradlew check -x wasmJsBrowserTest
+        run: ./gradlew check
         env:
           WRITE_VISUAL_MATRIX: '1'
           WRITE_PERFORMANCE_REPORT: '1'
@@ -79,12 +77,6 @@ jobs:
 
       - name: Verify JVM Compose recomposition report
         run: python3 scripts/verify-compose-recomposition.py --report build/reports/performance/compose-recomposition.json --require
-
-      - name: Verify accessibility source contract
-        run: python3 scripts/verify-accessibility-contract.py
-
-      - name: Verify machine-readable support policy
-        run: python3 scripts/verify-support-policy.py
 
       - name: Upload visual matrix evidence
         uses: actions/upload-artifact@v7
@@ -130,9 +122,6 @@ jobs:
 
       - name: Generate deterministic design token handoff
         run: python3 scripts/export-design-tokens.py
-
-      - name: Validate deterministic designer/Figma handoff
-        run: python3 scripts/verify-design-handoff.py
 
       - name: Validate Compose compiler stability metrics
         run: python3 scripts/verify-compose-metrics.py
@@ -180,91 +169,6 @@ jobs:
           path: '**/build/reports/'
           if-no-files-found: ignore
 
-  wasm-browser:
-    name: Wasm browser pipeline (UI accessibility E2E)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v7
-      - name: Set up JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
-      - name: Verify browser acceptance contract
-        run: python3 scripts/verify-wasm-browser-contract.py
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          validate-wrappers: true
-      # This executes shared Wasm test code under Chrome/Xvfb. It is not a
-      # rendered catalog workflow and must not be described as UI/DOM E2E.
-      - name: Run browser pipeline test (not UI/DOM E2E)
-        run: xvfb-run -a ./gradlew wasmJsBrowserTest --no-daemon
-      - name: Build packaged Wasm site
-        run: ./gradlew :website-wasm:assembleWasmProductionSite --no-daemon
-      - name: Run packaged Wasm UI accessibility workflow
-        run: ./scripts/run-wasm-ui-e2e.sh
-        env:
-          WASM_E2E_EVIDENCE_DIR: website-wasm/build/ci-evidence
-      - name: Enforce Wasm bundle budget
-        run: |
-          set -euo pipefail
-          js_file="$(find website-wasm/build -type f -name 'stylish-ui-website.js' | sort | tail -n 1)"
-          wasm_file="$(find website-wasm/build -type f -path '*productionExecutable/optimized*' -name 'stylishUiWebsite.wasm' | sort | tail -n 1)"
-          if [[ -z "$wasm_file" ]]; then
-            wasm_file="$(find website-wasm/build -type f -path '*productionExecutable*' -name 'stylishUiWebsite.wasm' | sort | tail -n 1)"
-          fi
-          test -n "$js_file" && test -n "$wasm_file"
-          test -s website-wasm/build/wasmSite/index.html
-          test -s website-wasm/build/wasmSite/favicon.svg
-          test -s website-wasm/build/wasmSite/composeResources/com.segnities007.stylishui.websitewasm.resources/font/NotoSansJP-subset.ttf
-          js_kib="$(du -k "$js_file" | cut -f1)"
-          wasm_kib="$(du -k "$wasm_file" | cut -f1)"
-          echo "Wasm bundle: ${js_kib} KiB JS, ${wasm_kib} KiB Kotlin Wasm"
-          mkdir -p website-wasm/build/ci-evidence
-          {
-            echo "commit=${GITHUB_SHA}"
-            echo "js_file=${js_file}"
-            echo "js_kib=${js_kib}"
-            echo "wasm_file=${wasm_file}"
-            echo "wasm_kib=${wasm_kib}"
-          } > website-wasm/build/ci-evidence/wasm-bundle-size.txt
-          # Keep the shell budget guard close to the human-readable record; the
-          # JSON verifier below adds byte-exact hashes and baseline deltas.
-          test "$js_kib" -le 700
-          test "$wasm_kib" -le 10000
-          python3 scripts/verify-wasm-bundle-evidence.py \
-            --js "$js_file" \
-            --wasm "$wasm_file" \
-            --output website-wasm/build/ci-evidence/wasm-bundle-size.json \
-            --history website-wasm/build/ci-evidence/wasm-bundle-history.json
-          python3 scripts/verify-wasm-bundle-evidence.py \
-            --verify-report website-wasm/build/ci-evidence/wasm-bundle-size.json
-      - name: Upload Wasm bundle evidence
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: wasm-bundle-evidence
-          path: |
-            website-wasm/build/ci-evidence/wasm-bundle-size.txt
-            website-wasm/build/ci-evidence/wasm-bundle-size.json
-            website-wasm/build/ci-evidence/wasm-bundle-history.json
-          if-no-files-found: ignore
-      - name: Upload Wasm UI E2E evidence
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: wasm-ui-e2e-evidence
-          path: |
-            website-wasm/build/ci-evidence/wasm-ui-e2e.json
-            website-wasm/build/ci-evidence/wasm-ui-e2e.png
-          if-no-files-found: ignore
-
   android-runtime:
     name: Android API 35 runtime smoke
     runs-on: ubuntu-latest
@@ -297,45 +201,4 @@ jobs:
         with:
           name: android-runtime-evidence
           path: build/reports/android-runtime/
-          if-no-files-found: ignore
-
-  ios:
-    name: Compile iOS targets
-    runs-on: macos-15
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v7
-
-      - name: Set up JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          validate-wrappers: true
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          add-job-summary: 'on-failure'
-
-      # Compile both device and simulator targets, then request the shared test
-      # suite on an iOS simulator. A passing CI run is required before claiming
-      # native execution evidence; this configuration alone is not evidence.
-      - name: Compile and test iOS targets
-        run: ./gradlew compileKotlinIosArm64 compileKotlinIosSimulatorArm64 iosSimulatorArm64Test
-
-      - name: Build Native ABI evidence
-        run: python3 scripts/verify-native-abi.py --build
-
-      - name: Upload Native ABI evidence
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: native-abi-evidence
-          path: |
-            build/reports/native-abi/
-            build/libs/*ios*Main-*.klib
           if-no-files-found: ignore

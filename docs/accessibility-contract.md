@@ -35,9 +35,8 @@ window, or browser assistive technology.
 These invariants are covered by
 `src/jvmTest/kotlin/com/segnities007/stylishui/components/AccessibilityLayoutSmokeTest.kt`.
 The source-level regression gate is
-`scripts/verify-accessibility-contract.py`; Android API 35 UIAutomator and the
-packaged Wasm Chrome/CDP workflow are separate executable evidence recipes
-(`scripts/verify-android-runtime.sh` and `scripts/run-wasm-ui-e2e.sh`).
+`scripts/verify-accessibility-contract.py`; Android API 35 UIAutomator is a
+separate executable evidence recipe (`scripts/verify-android-runtime.sh`).
 
 ## Motion policy (reduced-motion)
 

@@ -459,3 +459,32 @@ ID/Name semantics、Tab後focusable nodeまで通過した。一方、同時収�
 startup p95 **2,449 ms**（budget 2,000 ms）、frame proxy p95 **300 ms**（budget 32 ms）で
 **FAIL**となった。これはemulator proxyの実測失敗をそのまま記録したものであり、実機SLOへ
 置き換えたり、PASSへ緩和したりしていない。Macrobenchmark/OEM複数端末・実UI traceが必要である。
+
+## 2026-08-21: Web(Wasm)対応の完全削除とゲートのスリム化
+
+オーナー判断により以下を決定・実施した。
+
+1. **Web(Wasm)対応を完全削除。** 理由は現時点でWeb需要がなく、wasmビルド/E2Eが繰り返し
+   エラー源になっていたため。KMP UIライブラリ10種の調査ではWeb維持が主流だったが、
+   実需を優先する。削除内容: 全モジュールの`wasmJs`ターゲット、`:website-wasm`モジュール、
+   `src/wasmJsTest/`、Wasm E2E/bundle/browser-contractスクリプト5本、関連CI job
+   （wasm-browser）とartifact upload、Binaryen/Node/Yarnリポジトリ定義。
+2. **プラットフォーム方針を確定。** Android/Desktopはフル対応（CI/CDあり）、iOSは
+   compileターゲットのみ（検証手段がないためCI/CDゲートなし）、Webは削除。
+   macOS CIのiOS jobも削除済み。
+3. **検証スクリプトをスリム化。** 構造ガード（module-boundaries/catalog-matrix/
+   component-contracts/architecture）と実測系（android-runtime/performance/
+   recomposition/metrics/sbom/release-evidence/r8/tokens-export）のみ残し、
+   ドキュメント整合監査・token/motion細目の14スクリプトを削除した。
+   `checkQualityEvidence`等のExecタスクとCI stepも削除。
+4. **GitHub PagesはDokka APIドキュメント専用に変更**（deploy-website.yml）。
+   対話型カタログはDesktopアプリ（`:website:run`）と`docs/catalog.md`、JVMゴールデン
+   テストで代替する。Storytale等の生成ツールは調査したが、いずれもalpha/Android限定/
+   移行コスト大のため不採用。
+
+検証: `./gradlew check --no-daemon --max-workers=1` が **BUILD SUCCESSFUL
+（219 actionable tasks）**。旧構成の340タスクから大幅削減。catalog matrix
+（220宣言/demo 140/visual API 175/175/missing 0）、module boundaries
+（11モジュール/8エッジ/0エラー）、component contracts（KDoc 220/220、Preview 194/194）
+はすべてPASS。Android性能proxyのbudget超過（FAIL）は従来どおり正直に記録されており、
+次回emulator実行時に新計測契約で再測定する。

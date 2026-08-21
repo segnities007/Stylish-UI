@@ -13,7 +13,7 @@ scripts/verify-quality-evidence.sh
 scripts/verify-release-contract.sh
 
 GRADLE_USER_HOME="${GRADLE_USER_HOME:-$ROOT/.gradle-ci}" \
-  ./gradlew check apiCheck wasmJsBrowserTest \
+  ./gradlew check apiCheck \
   --no-daemon --max-workers=1 \
   -Djava.net.preferIPv4Stack=true \
   -Dkotlin.incremental=false \

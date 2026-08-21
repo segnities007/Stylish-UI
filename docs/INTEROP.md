@@ -8,10 +8,10 @@
 
 | プラットフォーム | ステータス | 備考 |
 |---|---|---|
-| Android | ✅ 対応 | Dynamic Color（Material You）は Android 12+ で有効 |
-| JVM Desktop | ✅ 対応 | Windows / macOS / Linux |
-| Web（Wasm） | ✅ 対応 | カタログサイト（GitHub Pages）自体が Wasm 製 |
-| iOS | ✅ compile対応・macOS CI simulator-test job | `iosArm64` / `iosSimulatorArm64`。jobは構成済みだが、iOS固有のDynamic Type/VoiceOver実機QAと現リポジトリ内の実行artifactは未確認 |
+| Android | ✅ 対応（CI/CDあり） | Dynamic Color（Material You）は Android 12+ で有効 |
+| JVM Desktop | ✅ 対応（CI/CDあり） | Windows / macOS / Linux。カタログ閲覧は `:website:run` |
+| Web（Wasm） | ❌ 削除（2026-08-21） | 需要がないため削除。カタログはDesktopアプリと`docs/catalog.md`で代替 |
+| iOS | ⚠️ compile対応のみ | `iosArm64` / `iosSimulatorArm64`。検証手段がないためCI/CDゲートはなし |
 
 ## サポート環境
 

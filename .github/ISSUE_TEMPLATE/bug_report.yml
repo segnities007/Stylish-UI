@@ -51,7 +51,6 @@ body:
         - JVM Desktop（Windows）
         - JVM Desktop（macOS）
         - JVM Desktop（Linux）
-        - Web（Wasm）
         - iOS（in progress）
         - 不明
     validations:

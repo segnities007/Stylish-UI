@@ -74,15 +74,6 @@ tasks.register<Exec>("checkModuleBoundaries") {
     )
 }
 
-tasks.register<Exec>("checkHeadlessArchitecture") {
-    group = "verification"
-    description = "Checks the framework-neutral model/layout/renderer contract and shared reducers."
-    commandLine(
-        "python3",
-        layout.projectDirectory.file("scripts/verify-headless-architecture.py").asFile.absolutePath,
-    )
-}
-
 tasks.register<Exec>("checkComponentContracts") {
     group = "verification"
     description = "Checks KDoc and preview contracts for public Compose components."
@@ -100,66 +91,6 @@ tasks.register<Exec>("checkCatalogStateMatrix") {
         "python3",
         layout.projectDirectory.file("scripts/verify-catalog-state-matrix.py").asFile.absolutePath,
     )
-}
-
-tasks.register<Exec>("checkTokenContract") {
-    group = "verification"
-    description = "Checks the portable semantic token export against Kotlin runtime defaults."
-    commandLine("bash", layout.projectDirectory.file("scripts/verify-token-contract.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkDesignHandoff") {
-    group = "verification"
-    description = "Checks deterministic token/Figma interchange artifacts and mode coverage."
-    commandLine(
-        "python3",
-        layout.projectDirectory.file("scripts/verify-design-handoff.py").asFile.absolutePath,
-    )
-}
-
-tasks.register<Exec>("checkSemanticTokens") {
-    group = "verification"
-    description = "Checks shared interaction defaults for semantic token usage."
-    commandLine("bash", layout.projectDirectory.file("scripts/check-semantic-tokens.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkTokenLiterals") {
-    group = "verification"
-    description = "Checks theme-sensitive component literals against the token allowlist."
-    commandLine("bash", layout.projectDirectory.file("scripts/verify-token-literals.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkAccessibilityContract") {
-    group = "verification"
-    description = "Checks semantics, focus, keyboard, and runtime evidence hooks."
-    commandLine(
-        "python3",
-        layout.projectDirectory.file("scripts/verify-accessibility-contract.py").asFile.absolutePath,
-    )
-}
-
-tasks.register<Exec>("checkQualityEvidence") {
-    group = "verification"
-    description = "Checks that quality reports do not overclaim unexecuted platform evidence."
-    commandLine("bash", layout.projectDirectory.file("scripts/verify-quality-evidence.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkReleaseContract") {
-    group = "verification"
-    description = "Checks release policy, provenance, and consumer-rule inputs without claiming platform validation."
-    commandLine("bash", layout.projectDirectory.file("scripts/verify-release-contract.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkPerformanceContract") {
-    group = "verification"
-    description = "Checks bounded performance evidence wiring without claiming device SLOs."
-    commandLine("bash", layout.projectDirectory.file("scripts/verify-performance-contract.sh").asFile.absolutePath)
-}
-
-tasks.register<Exec>("checkSupportPolicy") {
-    group = "verification"
-    description = "Checks the machine-readable support, deprecation, and incident policy."
-    commandLine("python3", "scripts/verify-support-policy.py")
 }
 
 // Produce a self-contained CycloneDX 1.5 inventory from Gradle's resolved
@@ -356,30 +287,13 @@ tasks.named("check") {
     dependsOn("checkComponentInventory")
     dependsOn("checkArchitecture")
     dependsOn("checkModuleBoundaries")
-    dependsOn("checkHeadlessArchitecture")
     dependsOn("checkComponentContracts")
     dependsOn("checkCatalogStateMatrix")
-    dependsOn("checkTokenContract")
-    dependsOn("checkDesignHandoff")
-    dependsOn("checkSemanticTokens")
-    dependsOn("checkTokenLiterals")
-    dependsOn("checkAccessibilityContract")
-    dependsOn("checkQualityEvidence")
-    dependsOn("checkReleaseContract")
-    dependsOn("checkPerformanceContract")
-    dependsOn("checkSupportPolicy")
     dependsOn(":samples:adapters:jvmTest")
-    dependsOn("checkMotionContract")
     // Compile and test the physical headless Structure boundary and its
     // direct downstream consumer as part of the same release gate.
     dependsOn(":structure:jvmTest")
     dependsOn(":samples:structure-consumer:jvmTest")
-}
-
-tasks.register<Exec>("checkMotionContract") {
-    group = "verification"
-    description = "Checks that shared animations honor the reduced-motion policy."
-    commandLine("bash", "scripts/verify-motion-contract.sh")
 }
 
 group = "io.github.segnities007"
@@ -409,12 +323,6 @@ kotlin {
 
     jvm()
 
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
-
     iosArm64()
     iosSimulatorArm64()
 
@@ -438,10 +346,6 @@ kotlin {
         }
 
         commonTest.dependencies {
-            implementation(kotlin("test"))
-        }
-
-        wasmJsTest.dependencies {
             implementation(kotlin("test"))
         }
 

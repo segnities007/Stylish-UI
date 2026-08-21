@@ -13,8 +13,6 @@ not a frame-time or heap SLO.
 | Canvas charts | Line, area, and scatter render at most `StylishChartMaxRenderedPoints` (500) points per frame. Downsampling is deterministic and preserves the first/last source points, including a 100,000-point fixture. Accessibility text retains the original finite samples through the shared pure `buildStylishChartDescription` contract. | `ChartMathTest`, `ChartAreaScatterSemanticsSmokeTest`, chart implementations |
 | Invalid numeric input | NaN, infinities, negative bar values, and degenerate ranges have deterministic finite rendering rules. | `ChartMathTest` |
 | Linux algorithmic smoke | 10k DataTable sort, 100k Tree flatten, and 100k chart downsample run under broad deterministic smoke budgets (5,000/5,000/2,000 ms). With `WRITE_PERFORMANCE_REPORT=1`, measured values are emitted as JSON. | `src/jvmTest/kotlin/com/segnities007/stylishui/performance/PerformanceBudgetTest.kt`, `build/reports/performance/algorithmic-budgets.json`, CI `algorithmic-performance-evidence` artifact |
-| Wasm production bundle | Linux production webpack output stays within 700 KiB JavaScript and 10,000 KiB Kotlin Wasm budgets; the 2026-08-21 local run measured 528 KiB and 6,276 KiB. | `docs/wasm-browser-acceptance.md`, `.github/workflows/ci.yml` |
-| Wasm bundle evidence | Production JS/Wasm byte counts, SHA-256, committed baseline deltas, and a bounded per-run history artifact are generated and independently validated. The history explicitly disallows a multi-run trend claim until a prior hosted artifact is retained. | `scripts/verify-wasm-bundle-evidence.py`, `docs/wasm-bundle-baseline.json`, `website-wasm/build/ci-evidence/wasm-bundle-size.json` |
 | Android runtime performance proxy | API 35 emulator proxy with two explicitly separated measurement windows. (1) Cold-process startup: one unrecorded warmup launch after fresh install absorbs install-time dexopt/verification, then 5 `am force-stop` + `am start -W` `TotalTime` samples; with 5 samples the nearest-rank p95 equals the worst start, and the warmup value is retained in the report. (2) Post-warmup frame window: `dumpsys gfxinfo` counters are reset twice around a settle interval so startup frames are excluded, then one `KEYCODE_TAB` interaction window is sampled through machine-readable `FrameCompleted − IntendedVsync` durations (human-readable percentile is a compatibility fallback). Raw per-start and per-frame samples stay in `performance.json` next to derived min/median/max, deadline-miss counts against the budget, and a small-sample caveat: an idle window can hold fewer than 30 frames, where nearest-rank p95 approximates the worst single frame instead of a stable distribution estimate. Budgets are unchanged (startup p95 ≤ 2,000 ms, frame-proxy p95 ≤ 32 ms); the report records `environment.buildType=debug` and `scopeGuard.emulatorOnly=true`, so an emulator FAIL is a proxy verdict, never a production-device SLO claim — Macrobenchmark/OEM runs remain required before any device claim. | `scripts/verify-android-performance.py`, `scripts/verify-android-runtime.sh`, `build/reports/android-runtime/performance.json` |
 
 The 500-point chart limit is an allocation/drawing bound, not a frame-time SLO. Consumers that need
@@ -51,7 +49,7 @@ fixture. The required next evidence is:
 - 10,000-row DataTable: first composition, update, scroll p95 frame time, heap, and recomposition count.
 - 100,000-node Tree: expansion and scroll p95 frame time, heap, and focus restoration.
 - Multi-series charts: render/update p95 frame time, path allocation, heap, and bundle size.
-- Android, iOS, Desktop, and Wasm/JS runs with recorded toolchain/device versions.
+- Android, iOS, and Desktop runs with recorded toolchain/device versions.
 
 The Android runtime job now records a real API 35 emulator startup/frame proxy when the emulator
 is online. `status=PASS` is reserved for a measured `am start -W` p95 and a measured `gfxinfo`
@@ -68,11 +66,6 @@ scheduling latency already documented in the collector's parser — can land nea
 budgets are deliberately NOT relaxed to absorb emulator overhead: keeping 32 ms preserves
 comparability across runs and leaves production frame SLOs owned by Macrobenchmark. The value
 must be re-measured under the separated protocol above, not averaged away or reclassified.
-
-The Wasm job records byte-exact JS/Wasm sizes, SHA-256, and deltas against the committed
-`docs/wasm-bundle-baseline.json`. `trendClaimAllowed=false` on a clean checkout because one run
-plus a committed baseline is not a long-term performance history. A hosted workflow must retain
-and restore `wasm-bundle-history.json` across runs before using it as a regression trend.
 
 Until those measurements are stored and gated, the performance dimension remains partial in the
 GAFA adoption score even though the common deterministic contracts are complete.

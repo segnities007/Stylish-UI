@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/segnities007/Stylish-UI/compare/v0.11.1...v0.11.2) (2026-08-21)
+
+
+### Bug Fixes
+
+* **ci:** remove deleted design handoff verifier ([#48](https://github.com/segnities007/Stylish-UI/issues/48)) ([91eeb83](https://github.com/segnities007/Stylish-UI/commit/91eeb832f7554ebd6fbb34964797e5785a494e35))
+
 ## [0.11.1](https://github.com/segnities007/Stylish-UI/compare/v0.11.0...v0.11.1) (2026-08-21)
 
 

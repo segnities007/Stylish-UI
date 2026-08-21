@@ -32,10 +32,9 @@ reviewable interchange format with schema `stylish-ui.figma-variable-handoff.v1`
 - Dimensions and durations retain their source unit (`dp` or `ms`) instead of being flattened into
   an ambiguous number.
 
-Run `python3 scripts/verify-design-handoff.py` to verify source hash, mode coverage, alias
-inventory, CSS parity, and byte-for-byte deterministic output. The generated JSON is an adapter
-input, not a claim of a synchronized Figma file. A real adoption review still requires an
-export-from-Figma diff, component anatomy/state approval, and a design owner sign-off.
+The generated JSON is an adapter input, not a claim of a synchronized Figma file. A real adoption
+review still requires an export-from-Figma diff, component anatomy/state approval, and a design
+owner sign-off.
 
 Before adoption, a design owner must attach an export diff showing JSON ↔ Figma parity and approve
 the component anatomy/state matrix. Until that artifact exists, Figma synchronization remains an

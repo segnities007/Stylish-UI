@@ -36,13 +36,8 @@ not file-specific IDs from a real Figma document. Dimension values are emitted a
 custom properties using the documented 1dp baseline; native adapters continue to consume the
 original JSON `dp` values.
 
-Run `python3 scripts/verify-design-handoff.py` before handing the package to a designer. The gate
-re-exports twice into isolated directories and fails on a source-hash mismatch, duplicate token
-path/name, missing mode value, unsupported variable type, unresolved external alias declaration,
-missing CSS property, or byte-level nondeterminism. This makes a designer review diffable and
-repeatable without claiming that the package has already been imported into Figma.
 The 2026-08-21 Linux run exported 25 tokens across four modes. The package is uploaded by CI, but it
 does not claim that a real Figma file is synchronized; the Figma import/export diff and design-owner
-approval remain a separate adoption gate. The current verifier proves the repository-side handoff
+approval remain a separate adoption gate. The exporter produces the repository-side handoff
 contract only; it cannot produce a Figma file, Figma Code Connect mapping, or designer approval on
 Linux.

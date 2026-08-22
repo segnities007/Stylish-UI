@@ -87,7 +87,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param shape Shape of the card surface. Defaults to
  *   [connectedShape] with [ConnectedCorners.Standalone].
  * @param outlineEdges Which edges of the hairline outline to draw.
- *   Defaults to [ConnectedEdges.All].
+ *   Defaults to [ConnectedEdges.None]. Pass [ConnectedEdges.All] or a computed
+ *   edge set when an outline is required.
  * @param outlineCorners Which corners use the large (outer) radius.
  *   Defaults to [ConnectedCorners.Standalone].
  * @param containerColor Background color. Defaults to
@@ -167,7 +168,7 @@ public fun StylishConnectedCard(
     supportingText: String = "",
     modifier: Modifier = Modifier,
     shape: Shape = connectedShape(ConnectedCorners.Standalone),
-    outlineEdges: ConnectedEdges = ConnectedEdges.All,
+    outlineEdges: ConnectedEdges = ConnectedEdges.None,
     outlineCorners: ConnectedCorners = ConnectedCorners.Standalone,
     containerColor: Color? = null,
     contentColor: Color? = null,

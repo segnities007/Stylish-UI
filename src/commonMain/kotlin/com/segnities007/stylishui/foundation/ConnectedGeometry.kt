@@ -92,6 +92,13 @@ public data class ConnectedEdges(
          * Use for standalone items or when every side of the item should display a border.
          */
         public val All: ConnectedEdges = ConnectedEdges(true, true, true, true)
+
+        /**
+         * A [ConnectedEdges] with all four edges disabled.
+         *
+         * Use when the connected shape should be retained without drawing an outline.
+         */
+        public val None: ConnectedEdges = ConnectedEdges(false, false, false, false)
     }
 }
 

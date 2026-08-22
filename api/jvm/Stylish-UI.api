@@ -3272,6 +3272,7 @@ public final class com/segnities007/stylishui/foundation/ConnectedEdges {
 
 public final class com/segnities007/stylishui/foundation/ConnectedEdges$Companion {
 	public final fun getAll ()Lcom/segnities007/stylishui/foundation/ConnectedEdges;
+	public final fun getNone ()Lcom/segnities007/stylishui/foundation/ConnectedEdges;
 }
 
 public final class com/segnities007/stylishui/foundation/ConnectedGeometryKt {

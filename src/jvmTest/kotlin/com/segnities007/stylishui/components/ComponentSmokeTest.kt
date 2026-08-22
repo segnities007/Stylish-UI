@@ -1,13 +1,23 @@
 package com.segnities007.stylishui.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
+import com.segnities007.stylishui.components.atoms.StylishExtendedFab
+import com.segnities007.stylishui.components.atoms.StylishFab
 import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
@@ -22,8 +32,12 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedListItemC
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.organisms.StylishDialogActions
+import com.segnities007.stylishui.components.patterns.StylishFooter
+import com.segnities007.stylishui.components.patterns.StylishHeader
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
 class ComponentSmokeTest {
@@ -50,6 +64,89 @@ class ComponentSmokeTest {
         }
         onNodeWithText("カードタイトル").assertIsDisplayed()
         onNodeWithText("補足テキスト").assertIsDisplayed()
+    }
+
+    @Test
+    fun fabHonorsParentAlignmentThroughVisibilityAnimation() = runComposeUiTest {
+        setContent {
+            StylishTheme(darkTheme = false) {
+                Box(Modifier.size(200.dp)) {
+                    StylishFab(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "追加",
+                        onClick = {},
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                    )
+                }
+            }
+        }
+
+        val bounds = onNodeWithTag("stylish_fab").fetchSemanticsNode().boundsInRoot
+        assertEquals(144f, bounds.left)
+        assertEquals(144f, bounds.top)
+    }
+
+    @Test
+    fun extendedFabHonorsParentAlignmentThroughVisibilityAnimation() = runComposeUiTest {
+        setContent {
+            StylishTheme(darkTheme = false) {
+                Box(Modifier.size(240.dp)) {
+                    StylishExtendedFab(
+                        text = "追加",
+                        icon = Icons.Default.Add,
+                        contentDescription = "追加",
+                        onClick = {},
+                        modifier = Modifier
+                            .width(100.dp)
+                            .align(Alignment.BottomEnd),
+                    )
+                }
+            }
+        }
+
+        val bounds = onNodeWithTag("stylish_extended_fab").fetchSemanticsNode().boundsInRoot
+        assertEquals(140f, bounds.left)
+        assertTrue(bounds.top > 0f)
+    }
+
+    @Test
+    fun headerHonorsParentAlignmentThroughVisibilityAnimation() = runComposeUiTest {
+        setContent {
+            StylishTheme(darkTheme = false) {
+                Box(Modifier.size(240.dp)) {
+                    StylishHeader(
+                        title = { Text("ヘッダー") },
+                        modifier = Modifier
+                            .width(100.dp)
+                            .align(Alignment.BottomEnd),
+                    )
+                }
+            }
+        }
+
+        val bounds = onNodeWithText("ヘッダー").fetchSemanticsNode().boundsInRoot
+        assertTrue(bounds.left >= 140f)
+        assertTrue(bounds.top > 0f)
+    }
+
+    @Test
+    fun footerHonorsParentAlignmentThroughVisibilityAnimation() = runComposeUiTest {
+        setContent {
+            StylishTheme(darkTheme = false) {
+                Box(Modifier.size(240.dp)) {
+                    StylishFooter(
+                        content = { Text("フッター") },
+                        modifier = Modifier
+                            .width(100.dp)
+                            .align(Alignment.BottomEnd),
+                    )
+                }
+            }
+        }
+
+        val bounds = onNodeWithText("フッター").fetchSemanticsNode().boundsInRoot
+        assertTrue(bounds.left >= 140f)
+        assertTrue(bounds.top > 0f)
     }
 
     @Test

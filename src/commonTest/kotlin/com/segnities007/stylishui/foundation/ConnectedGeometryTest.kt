@@ -143,6 +143,10 @@ class ConnectedGeometryTest {
     @Test
     fun `edges suppress internal boundaries and validate their input`() {
         assertEquals(
+            ConnectedEdges(top = false, end = false, bottom = false, start = false),
+            ConnectedEdges.None,
+        )
+        assertEquals(
             ConnectedEdges(top = true, end = false, bottom = true, start = true),
             connectedRowEdges(0, 2),
         )

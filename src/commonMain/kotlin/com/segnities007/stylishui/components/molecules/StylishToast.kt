@@ -29,9 +29,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -85,19 +89,47 @@ public data class StylishToastData(
  * Toasts are displayed bottom-stacked and dismissed automatically after
  * their [StylishToastData.durationMillis].
  */
+internal class StylishToastEntry(
+    public val id: Long,
+    public val toast: StylishToastData,
+) {
+    public var visible: Boolean by mutableStateOf(true)
+        private set
+
+    public fun dismiss() {
+        visible = false
+    }
+}
+
 public class StylishToastHostState internal constructor() {
-    internal val toasts: SnapshotStateList<StylishToastData> = mutableStateListOf()
+    internal val toasts: SnapshotStateList<StylishToastEntry> = mutableStateListOf()
+
+    private var nextToastId: Long = 0L
+
+    internal fun addToast(toast: StylishToastData): StylishToastEntry {
+        val entry = StylishToastEntry(id = nextToastId++, toast = toast)
+        toasts.add(entry)
+        return entry
+    }
 
     /** Shows [toast] and dismisses it automatically after its duration. */
     public suspend fun showToast(toast: StylishToastData) {
-        toasts.add(toast)
+        val entry = addToast(toast)
         delay(toast.durationMillis)
-        dismiss(toast)
+        dismiss(entry)
     }
 
-    /** Removes [toast] from the stack immediately. */
+    /** Starts dismissing the newest visible stack entry equal to [toast]. */
     public fun dismiss(toast: StylishToastData) {
-        toasts.remove(toast)
+        toasts.lastOrNull { it.visible && it.toast == toast }?.let(::dismiss)
+    }
+
+    internal fun dismiss(entry: StylishToastEntry) {
+        if (entry in toasts) entry.dismiss()
+    }
+
+    internal fun remove(entry: StylishToastEntry) {
+        toasts.remove(entry)
     }
 }
 
@@ -148,6 +180,11 @@ public fun StylishToastHost(
     } else {
         tween<androidx.compose.ui.unit.IntSize>(StylishTheme.animation.durationShort)
     }
+    val dismissalDelayMillis = if (reducedMotion) {
+        0L
+    } else {
+        StylishTheme.animation.durationShort.toLong()
+    }
 
     Column(
         modifier = modifier
@@ -157,19 +194,27 @@ public fun StylishToastHost(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        hostState.toasts.forEach { toast ->
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn(fadeSpec) + expandVertically(sizeSpec),
-                exit = fadeOut(fadeSpec) + shrinkVertically(sizeSpec),
-            ) {
-                StylishToast(
-                    toast = toast,
-                    shape = shape,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    onDismiss = { hostState.dismiss(toast) },
-                )
+        hostState.toasts.asReversed().forEach { entry ->
+            key(entry.id) {
+                AnimatedVisibility(
+                    visible = entry.visible,
+                    enter = fadeIn(fadeSpec) + expandVertically(sizeSpec),
+                    exit = fadeOut(fadeSpec) + shrinkVertically(sizeSpec),
+                ) {
+                    StylishToast(
+                        toast = entry.toast,
+                        shape = shape,
+                        containerColor = containerColor,
+                        contentColor = contentColor,
+                        onDismiss = { hostState.dismiss(entry) },
+                    )
+                }
+                if (!entry.visible) {
+                    LaunchedEffect(entry.id) {
+                        delay(dismissalDelayMillis)
+                        hostState.remove(entry)
+                    }
+                }
             }
         }
     }
@@ -259,11 +304,9 @@ private fun StylishToastHostPreview() {
     StylishTheme(darkTheme = false) {
         val hostState = rememberStylishToastHostState()
         LaunchedEffect(Unit) {
-            hostState.toasts.addAll(
-                listOf(
-                    StylishToastData("保存しました", StylishToastVariant.Success),
-                    StylishToastData("エラーが発生しました", StylishToastVariant.Error, actionLabel = "再試行"),
-                ),
+            hostState.addToast(StylishToastData("保存しました", StylishToastVariant.Success))
+            hostState.addToast(
+                StylishToastData("エラーが発生しました", StylishToastVariant.Error, actionLabel = "再試行"),
             )
         }
         Surface {

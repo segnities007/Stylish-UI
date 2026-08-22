@@ -140,12 +140,13 @@ public fun StylishExtendedFab(
         label = "extendedFabShadowElevation",
     )
     AnimatedVisibility(
+        modifier = modifier,
         visible = visibilityState.isVisible(),
         enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
         exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
     ) {
         Surface(
-            modifier = modifier
+            modifier = Modifier
                 .testTag("stylish_extended_fab")
                 .heightIn(min = StylishTheme.dimensions.fabSize)
                 .semantics { role = Role.Button }

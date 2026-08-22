@@ -45,7 +45,7 @@ class WebParity2SmokeTest {
         setContent {
             StylishTheme(darkTheme = false) {
                 val hostState = rememberStylishToastHostState()
-                hostState.toasts.add(StylishToastData("保存しました", StylishToastVariant.Success))
+                hostState.addToast(StylishToastData("保存しました", StylishToastVariant.Success))
                 StylishToastHost(hostState)
             }
         }

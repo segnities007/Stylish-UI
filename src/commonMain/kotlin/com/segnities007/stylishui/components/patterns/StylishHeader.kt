@@ -115,12 +115,13 @@ public fun StylishHeader(
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()
     AnimatedVisibility(
+        modifier = modifier,
         visible = visibilityState.isVisible(),
         enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { -it },
         exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { -it },
     ) {
         Column(
-            modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .windowInsetsPadding(windowInsets)
                 .padding(top = topPadding, bottom = bottomPadding),

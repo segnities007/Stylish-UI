@@ -167,15 +167,16 @@ public fun StylishFab(
         label = "fabShadowElevation",
     )
     AnimatedVisibility(
+        modifier = modifier,
         visible = visibilityState.isVisible(),
         enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
         exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
     ) {
         Surface(
-            modifier = modifier
-            .testTag("stylish_fab")
-            .size(resolvedSize)
-            .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
+            modifier = Modifier
+                .testTag("stylish_fab")
+                .size(resolvedSize)
+                .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
         color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,

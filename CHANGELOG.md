@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.3](https://github.com/segnities007/Stylish-UI/compare/v0.11.2...v0.11.3) (2026-08-22)
+
+
+### Bug Fixes
+
+* stabilize animated component layout and toasts ([#50](https://github.com/segnities007/Stylish-UI/issues/50)) ([93962c1](https://github.com/segnities007/Stylish-UI/commit/93962c1da061a7861c9c49a4b11ac782bec01a2a))
+
 ## [0.11.2](https://github.com/segnities007/Stylish-UI/compare/v0.11.1...v0.11.2) (2026-08-21)
 
 

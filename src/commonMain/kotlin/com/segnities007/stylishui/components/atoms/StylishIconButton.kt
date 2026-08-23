@@ -27,8 +27,8 @@ import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
- * A circular icon button rendered on an outlined surface with a
- * subtle shadow. Supports an [active] state that inverts the color
+ * A circular icon button rendered on a tonal surface with a subtle
+ * shadow. It has no outline by default. Supports an [active] state that inverts the color
  * scheme to primary/onPrimary, suitable for toggle-style controls.
  *
  * When [active] is `true`, the container defaults to
@@ -61,10 +61,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   from [active] (see above). When [enabled] is `false`, the
  *   resolved content color is dimmed to 38 % opacity.
  * @param shape Shape of the surface. Defaults to [CircleShape].
- * @param border Border stroke drawn around the surface. Defaults to a
- *   hairline of [StylishTheme.dimensions.outlineWidth] using
- *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
- *   border.
+ * @param border Optional border stroke drawn around the surface. Defaults to
+ *   `null`; pass an explicit stroke when an outlined treatment is intentional.
  * @param minWidth Minimum width of the tappable surface.
  *   Defaults to [StylishTheme.dimensions.iconButtonMinSize].
  * @param minHeight Minimum height of the tappable surface.
@@ -91,10 +89,7 @@ public fun StylishIconButton(
     containerColor: Color? = null,
     contentColor: Color? = null,
     shape: Shape? = null,
-    border: BorderStroke? = BorderStroke(
-        StylishTheme.dimensions.outlineWidth,
-        MaterialTheme.colorScheme.outlineVariant,
-    ),
+    border: BorderStroke? = null,
     minWidth: Dp = StylishTheme.dimensions.iconButtonMinSize,
     minHeight: Dp = StylishTheme.dimensions.iconButtonMinSize,
     interactionSource: MutableInteractionSource? = null,

@@ -8,11 +8,9 @@ import androidx.compose.ui.test.runComposeUiTest
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlin.test.Test
 
@@ -73,12 +71,12 @@ class ConnectedGridSmokeTest {
     }
 
     @Test
-    fun listItemGridWithStretchedFinalRowRenders() = runComposeUiTest {
+    fun threeItemCardGridWithStretchedFinalRowRenders() = runComposeUiTest {
         setContent {
             StylishTheme(darkTheme = false) {
-                StylishConnectedListItemGrid(
+                StylishConnectedCardGrid(
                     items = List(3) { index ->
-                        StylishConnectedListItem("アイテム${index + 1}", onClick = {})
+                        StylishConnectedCardItem(title = "アイテム${index + 1}", onClick = {})
                     },
                     columns = 2,
                 )

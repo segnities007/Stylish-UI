@@ -23,12 +23,11 @@ import com.segnities007.stylishui.components.atoms.StylishSectionTitle
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
 import com.segnities007.stylishui.components.molecules.StylishEmptyState
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
 import com.segnities007.stylishui.components.organisms.StylishDialogActions
@@ -213,13 +212,13 @@ class ComponentSmokeTest {
     }
 
     @Test
-    fun connectedListItemColumnRenders() = runComposeUiTest {
+    fun connectedCardColumnRenders() = runComposeUiTest {
         setContent {
             StylishTheme(darkTheme = false) {
-                StylishConnectedListItemColumn(
+                StylishConnectedCardColumn(
                     items = listOf(
-                        StylishConnectedListItem("アイテム1", onClick = {}),
-                        StylishConnectedListItem("アイテム2", onClick = {}),
+                        StylishConnectedCardItem(title = "アイテム1", onClick = {}),
+                        StylishConnectedCardItem(title = "アイテム2", onClick = {}),
                     ),
                 )
             }

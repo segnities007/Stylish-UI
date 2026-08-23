@@ -17,7 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -96,10 +96,10 @@ private fun StylishSectionPreview() {
                 title = "通知",
                 supportingText = "受信する通知の種類を選択します",
             ) {
-                StylishConnectedListItemColumn(
+                StylishConnectedCardColumn(
                     listOf(
-                        StylishConnectedListItem("メール", onClick = {}),
-                        StylishConnectedListItem("プッシュ通知", onClick = {}),
+                        StylishConnectedCardItem(title = "メール", onClick = {}),
+                        StylishConnectedCardItem(title = "プッシュ通知", onClick = {}),
                     ),
                 )
             }

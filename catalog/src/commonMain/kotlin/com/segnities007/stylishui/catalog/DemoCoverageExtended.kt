@@ -60,20 +60,16 @@ import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedButton
 import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedCardItem
 import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedChip
-import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedListItem
 import com.segnities007.stylishui.components.molecules.StylishCarousel
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonGrid
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemLazyColumn
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemLazyGrid
 import com.segnities007.stylishui.components.molecules.StylishDateRangePicker
 import com.segnities007.stylishui.components.molecules.StylishSnackbarHost
 import com.segnities007.stylishui.components.molecules.StylishTimePicker
@@ -604,24 +600,24 @@ if (open) {
         },
     ),
     DemoComponent(
-        name = "Connected list item grid contacts",
+        name = "Connected card grid contacts",
         category = DemoCategory.Connected,
-        code = """StylishConnectedListItemGrid(
+        code = """StylishConnectedCardGrid(
     items = listOf(
-        StylishConnectedListItem("田中 太郎", "設計担当", onClick = {}),
-        StylishConnectedListItem("鈴木 花子", "開発担当", onClick = {}),
-        StylishConnectedListItem("佐藤 次郎", "テスト担当"),
-        StylishConnectedListItem("高橋美咲", "休職中", enabled = false),
+        StylishConnectedCardItem("田中 太郎", "設計担当", onClick = {}),
+        StylishConnectedCardItem("鈴木 花子", "開発担当", onClick = {}),
+        StylishConnectedCardItem("佐藤 次郎", "テスト担当"),
+        StylishConnectedCardItem("高橋美咲", "休職中", enabled = false),
     ),
     columns = 2,
 )""",
         preview = {
-            StylishConnectedListItemGrid(
+            StylishConnectedCardGrid(
                 items = listOf(
-                    StylishConnectedListItem("田中 太郎", "設計担当", onClick = {}),
-                    StylishConnectedListItem("鈴木 花子", "開発担当", onClick = {}),
-                    StylishConnectedListItem("佐藤 次郎", "テスト担当"),
-                    StylishConnectedListItem("高橋 美咲", "長期休職中のため無効", enabled = false),
+                    StylishConnectedCardItem("田中 太郎", "設計担当", onClick = {}),
+                    StylishConnectedCardItem("鈴木 花子", "開発担当", onClick = {}),
+                    StylishConnectedCardItem("佐藤 次郎", "テスト担当"),
+                    StylishConnectedCardItem("高橋 美咲", "長期休職中のため無効", enabled = false),
                 ),
                 columns = 2,
             )
@@ -672,47 +668,47 @@ if (open) {
         },
     ),
     DemoComponent(
-        name = "Connected list items lazy column scroll",
+        name = "Connected cards lazy column employees",
         category = DemoCategory.Connected,
-        code = """StylishConnectedListItemLazyColumn(
+        code = """StylishConnectedCardLazyColumn(
     items = employees.map {
-        StylishConnectedListItem(it.name, it.role, onClick = {})
+        StylishConnectedCardItem(it.name, it.role, onClick = {})
     },
 )""",
         preview = {
             Box(Modifier.fillMaxWidth().height(240.dp)) {
-                StylishConnectedListItemLazyColumn(
+                StylishConnectedCardLazyColumn(
                     items = listOf(
-                        StylishConnectedListItem("田中 太郎", "設計担当・東京オフィス", onClick = {}),
-                        StylishConnectedListItem("鈴木 花子", "開発担当・大阪オフィス", onClick = {}),
-                        StylishConnectedListItem("佐藤 次郎", "テスト担当・リモート"),
-                        StylishConnectedListItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
-                        StylishConnectedListItem("山本 一郎", "インフラ担当・休職中", enabled = false),
-                        StylishConnectedListItem("中村 桜", "データ分析担当", onClick = {}),
+                        StylishConnectedCardItem("田中 太郎", "設計担当・東京オフィス", onClick = {}),
+                        StylishConnectedCardItem("鈴木 花子", "開発担当・大阪オフィス", onClick = {}),
+                        StylishConnectedCardItem("佐藤 次郎", "テスト担当・リモート"),
+                        StylishConnectedCardItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
+                        StylishConnectedCardItem("山本 一郎", "インフラ担当・休職中", enabled = false),
+                        StylishConnectedCardItem("中村 桜", "データ分析担当", onClick = {}),
                     ),
                 )
             }
         },
     ),
     DemoComponent(
-        name = "Connected list items lazy grid scroll",
+        name = "Connected cards lazy grid scroll",
         category = DemoCategory.Connected,
-        code = """StylishConnectedListItemLazyGrid(
+        code = """StylishConnectedCardLazyGrid(
     items = employees.map {
-        StylishConnectedListItem(it.name, it.role, onClick = {})
+        StylishConnectedCardItem(it.name, it.role, onClick = {})
     },
     columns = 2,
 )""",
         preview = {
             Box(Modifier.fillMaxWidth().height(240.dp)) {
-                StylishConnectedListItemLazyGrid(
+                StylishConnectedCardLazyGrid(
                     items = listOf(
-                        StylishConnectedListItem("田中 太郎", "設計担当", onClick = {}),
-                        StylishConnectedListItem("鈴木 花子", "開発担当", onClick = {}),
-                        StylishConnectedListItem("佐藤 次郎", "テスト担当"),
-                        StylishConnectedListItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
-                        StylishConnectedListItem("山本 一郎", "休職中", enabled = false),
-                        StylishConnectedListItem("中村 桜", "データ分析担当", onClick = {}),
+                        StylishConnectedCardItem("田中 太郎", "設計担当", onClick = {}),
+                        StylishConnectedCardItem("鈴木 花子", "開発担当", onClick = {}),
+                        StylishConnectedCardItem("佐藤 次郎", "テスト担当"),
+                        StylishConnectedCardItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
+                        StylishConnectedCardItem("山本 一郎", "休職中", enabled = false),
+                        StylishConnectedCardItem("中村 桜", "データ分析担当", onClick = {}),
                     ),
                     columns = 2,
                 )
@@ -854,72 +850,6 @@ DefaultStylishConnectedButton(
                     unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
                     contentSpacing = 6.dp,
-                )
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Default connected list item renderer",
-        category = DemoCategory.Connected,
-        code = """DefaultStylishConnectedListItem(
-    item = StylishConnectedListItem("単体レンダラー", "クリック可能な行", onClick = {}),
-    modifier = Modifier.fillMaxWidth(),
-    shape = connectedShape(ConnectedCorners.Standalone),
-    outlineEdges = ConnectedEdges.All,
-    outlineCorners = ConnectedCorners.Standalone,
-    headlineMaxLines = Int.MAX_VALUE,
-    headlineOverflow = TextOverflow.Ellipsis,
-    headlineStyle = MaterialTheme.typography.titleMedium,
-    supportingTextMaxLines = Int.MAX_VALUE,
-    supportingTextOverflow = TextOverflow.Ellipsis,
-    supportingTextStyle = MaterialTheme.typography.bodyMedium,
-    containerColor = null,
-    contentColor = null,
-    horizontalPadding = 16.dp,
-    verticalPadding = 14.dp,
-)""",
-        preview = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                DefaultStylishConnectedListItem(
-                    item = StylishConnectedListItem(
-                        "単体レンダラー",
-                        "クリック可能な行のサンプル",
-                        onClick = {},
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = connectedShape(ConnectedCorners.Standalone),
-                    outlineEdges = ConnectedEdges.All,
-                    outlineCorners = ConnectedCorners.Standalone,
-                    headlineMaxLines = Int.MAX_VALUE,
-                    headlineOverflow = TextOverflow.Ellipsis,
-                    headlineStyle = MaterialTheme.typography.titleMedium,
-                    supportingTextMaxLines = Int.MAX_VALUE,
-                    supportingTextOverflow = TextOverflow.Ellipsis,
-                    supportingTextStyle = MaterialTheme.typography.bodyMedium,
-                    containerColor = null,
-                    contentColor = null,
-                    horizontalPadding = 16.dp,
-                    verticalPadding = 14.dp,
-                )
-                DefaultStylishConnectedListItem(
-                    item = StylishConnectedListItem(
-                        "表示専用の行",
-                        "クリックアクションなし",
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = connectedShape(ConnectedCorners.Standalone),
-                    outlineEdges = ConnectedEdges.All,
-                    outlineCorners = ConnectedCorners.Standalone,
-                    headlineMaxLines = Int.MAX_VALUE,
-                    headlineOverflow = TextOverflow.Ellipsis,
-                    headlineStyle = MaterialTheme.typography.titleMedium,
-                    supportingTextMaxLines = Int.MAX_VALUE,
-                    supportingTextOverflow = TextOverflow.Ellipsis,
-                    supportingTextStyle = MaterialTheme.typography.bodyMedium,
-                    containerColor = null,
-                    contentColor = null,
-                    horizontalPadding = 16.dp,
-                    verticalPadding = 14.dp,
                 )
             }
         },

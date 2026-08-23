@@ -48,10 +48,9 @@ import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.components.models.StylishNavigationItem
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
 import com.segnities007.stylishui.components.organisms.StylishNavigationBar
 import com.segnities007.stylishui.theme.StylishTheme
 import java.awt.image.BufferedImage
@@ -331,10 +330,10 @@ private fun GoldenScene() {
                     StylishConnectedCardItem("経費", "¥320,000"),
                 ),
             )
-            StylishConnectedListItemColumn(
+            StylishConnectedCardColumn(
                 items = listOf(
-                    StylishConnectedListItem(headline = "テーマ", supportingText = "システム設定を使用"),
-                    StylishConnectedListItem(headline = "通知", supportingText = "オン"),
+                    StylishConnectedCardItem(title = "テーマ", supportingText = "システム設定を使用"),
+                    StylishConnectedCardItem(title = "通知", supportingText = "オン"),
                 ),
             )
             StylishNavigationBar(

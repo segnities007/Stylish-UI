@@ -59,7 +59,7 @@ public object StylishButtonDefaults {
     /** Resolves the optional outline for a variant. */
     @Composable
     public fun border(variant: StylishButtonVariant): BorderStroke? = when (variant) {
-        StylishButtonVariant.Filled, StylishButtonVariant.Outlined -> BorderStroke(
+        StylishButtonVariant.Outlined -> BorderStroke(
             StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,
         )

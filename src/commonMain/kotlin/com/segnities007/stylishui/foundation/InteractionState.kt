@@ -19,7 +19,7 @@ package com.segnities007.stylishui.foundation
  *   `false`.
  * @return `true` if the component should render and respond as interactive.
  * @see com.segnities007.stylishui.components.models.StylishConnectedCardItem
- * @see com.segnities007.stylishui.components.models.StylishConnectedListItem
+ * @see com.segnities007.stylishui.components.models.StylishConnectedCardItem
  */
 public fun isActionable(
     enabled: Boolean = true,

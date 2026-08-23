@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
-import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
@@ -51,7 +50,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *
  * This is the Finish-layer rendering: it dresses a chip in the Stylish look —
  * animated selection colors (180 ms), `Role.Tab` semantics with the `selected`
- * state, a hairline connected outline, interactive elevation, and a haptic
+ * state, interactive elevation, and a haptic
  * pulse on tap. Items whose [StylishConnectedChipItem.onClick] is `null` or
  * whose [StylishConnectedChipItem.enabled] is `false` are non-interactive and
  * lose their elevation. Disabled chips drop the selection colors entirely:
@@ -79,6 +78,10 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param interactionSource The [MutableInteractionSource] used to observe
  *   press/hover/focus interactions for the state layer. When `null`, an
  *   internal one is remembered per chip.
+ * The outline geometry parameters are retained for the connected renderer
+ * contract and custom skins; this default skin intentionally does not draw a
+ * border. Supply a custom [ConnectedChipItemContent] when an outline is a
+ * deliberate part of a product-specific treatment.
  *
  * Focus: actionable chips draw the web "focus-visible ring"
  * ([Modifier.stylishFocusRing]) around [shape] while the chip holds keyboard
@@ -88,6 +91,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @see StylishConnectedChipColumn
  * @see StylishConnectedChipGrid
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 public fun DefaultStylishConnectedChip(
     item: StylishConnectedChipItem,
@@ -159,8 +163,7 @@ public fun DefaultStylishConnectedChip(
                 } else {
                     Modifier
                 },
-            )
-            .connectedOutline(outlineEdges, outlineCorners),
+            ),
         shape = shape,
         color = containerColor,
         contentColor = contentColor,
@@ -196,7 +199,7 @@ private fun DefaultStylishConnectedChipPreview() {
                 item = StylishConnectedChipItem("選択中", {}, selected = true),
                 modifier = Modifier,
                 shape = connectedShape(ConnectedCorners.Standalone),
-                outlineEdges = ConnectedEdges.All,
+                outlineEdges = ConnectedEdges.None,
                 outlineCorners = ConnectedCorners.Standalone,
                 labelMaxLines = 1,
                 labelOverflow = TextOverflow.Ellipsis,

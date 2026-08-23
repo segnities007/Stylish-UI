@@ -1,10 +1,16 @@
 package com.segnities007.stylishui.foundation
 
+import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
@@ -17,13 +23,19 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Draws a focus indicator ring around this component while the
- * [interactionSource] reports a focus interaction.
+ * [interactionSource] reports a focus interaction that qualifies under the
+ * web "focus-visible" contract.
  *
  * Implements the web "focus-visible ring" pattern used by shadcn/ui and
  * Radix UI for keyboard accessibility: an interactive element gains a
- * clearly visible outline only when it is focused, making keyboard
- * navigation discoverable without adding permanent visual noise. When
- * the source does not report focus, the modifier has no visual effect.
+ * clearly visible outline only when it is focused by a non-pointer input,
+ * making keyboard navigation discoverable without adding permanent visual
+ * noise. The ring is suppressed when the current focus session was entered
+ * through a pointer press (touch or mouse): a [PressInteraction.Press] on
+ * the observed source marks the session as pointer-driven, and the mark is
+ * cleared on [FocusInteraction.Unfocus] so a later keyboard/d-pad focus
+ * draws the ring again. When the source does not report focus, the modifier
+ * has no visual effect.
  *
  * The ring is drawn with [drawWithContent] — the component's content is
  * drawn first, then the ring on top — so it remains visible over any
@@ -60,9 +72,23 @@ public fun Modifier.stylishFocusRing(
     width: Dp = 2.dp,
 ): Modifier {
     val isFocused by interactionSource.collectIsFocusedAsState()
+    // "focus-visible" gating: a pointer press on the observed source marks the
+    // current focus session as touch/mouse driven and suppresses the ring until
+    // focus leaves the node, so taps never leave a stuck outline while a later
+    // keyboard/d-pad focus draws it again.
+    var pointerDrivenFocusSession by remember(interactionSource) { mutableStateOf(false) }
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            when (interaction) {
+                is PressInteraction.Press -> pointerDrivenFocusSession = true
+                is FocusInteraction.Unfocus -> pointerDrivenFocusSession = false
+                else -> Unit
+            }
+        }
+    }
     return drawWithContent {
         drawContent()
-        if (isFocused) {
+        if (isFocused && !pointerDrivenFocusSession) {
             val stroke = Stroke(width = width.toPx())
             when (val outline = shape.createOutline(size, layoutDirection, this)) {
                 is Outline.Rounded -> drawRoundRect(

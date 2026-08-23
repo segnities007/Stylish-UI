@@ -50,7 +50,9 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   [RoundedCornerShape] with
  *   [StylishTheme.dimensions.connectedCornerRadius] on the top
  *   corners only.
- * @param containerColor Background color of the sheet.
+ * @param containerColor Background color of the sheet. Defaults to
+ *   [BottomSheetDefaults.ContainerColor] (the M3 `surfaceContainerLow`
+ *   tone, so dark-theme sheets stay distinct from the surrounding chrome).
  * @param contentColor Default content color.
  * @param tonalElevation Tonal elevation of the sheet surface.
  * @param scrimColor Color of the scrim that obscures content while
@@ -82,7 +84,7 @@ public fun StylishBottomSheet(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
     ),
-    containerColor: Color = MaterialTheme.colorScheme.surface,
+    containerColor: Color = BottomSheetDefaults.ContainerColor,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
     scrimColor: Color = MaterialTheme.colorScheme.scrim,

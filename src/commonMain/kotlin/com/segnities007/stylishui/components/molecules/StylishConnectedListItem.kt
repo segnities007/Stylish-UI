@@ -5,7 +5,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedListItem
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
-import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.stylishFocusRing
@@ -50,8 +48,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [ConnectedListItemContent] is supplied.
  *
  * This is the Finish-layer rendering: it dresses a row in the Stylish look —
- * grouped-container surface, interactive elevation, a hairline connected
- * outline — and wires tap/long-press interaction with haptic feedback. Items
+ * grouped-container surface, interactive elevation, and wires tap/long-press
+ * interaction with haptic feedback. Items
  * whose [StylishConnectedListItem.onClick] and [StylishConnectedListItem.onLongClick]
  * are both `null`, or whose [StylishConnectedListItem.enabled] is `false`, are
  * rendered without elevation and do not respond to interaction. Actionable rows
@@ -84,15 +82,21 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param interactionSource The [MutableInteractionSource] used to observe
  *   press/hover/focus interactions for the state layer. When `null`, an
  *   internal one is remembered per item.
+ * The outline geometry parameters are retained for the connected renderer
+ * contract and custom skins; this default skin intentionally does not draw a
+ * border. Supply a custom [ConnectedListItemContent] when an outline is a
+ * deliberate part of a product-specific treatment.
  *
  * Focus: actionable rows draw the web "focus-visible ring"
- * ([Modifier.stylishFocusRing]) around [shape] while the row holds keyboard
- * or focus-ring focus.
+ * ([Modifier.stylishFocusRing]) around [shape] while the row holds focus from
+ * keyboard/d-pad navigation; a touch or mouse tap suppresses the ring for that
+ * focus session so no outline is left behind after tapping.
  *
  * @see StylishConnectedListItemRow
  * @see StylishConnectedListItemColumn
  * @see StylishConnectedListItemGrid
  */
+@Suppress("UNUSED_PARAMETER")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun DefaultStylishConnectedListItem(
@@ -126,7 +130,6 @@ public fun DefaultStylishConnectedListItem(
             .then(
                 if (actionable) {
                     Modifier
-                        .focusable()
                         .stylishInteractiveTarget()
                         .combinedClickable(
                             interactionSource = resolvedInteractionSource,
@@ -159,7 +162,7 @@ public fun DefaultStylishConnectedListItem(
             .semantics {
                 if (!item.enabled) disabled()
             }
-            .connectedOutline(outlineEdges, outlineCorners),
+            ,
         shape = shape,
         color = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
         contentColor = contentColor ?: if (item.enabled) MaterialTheme.colorScheme.onSurface
@@ -222,7 +225,7 @@ private fun DefaultStylishConnectedListItemPreview() {
                 item = StylishConnectedListItem("テーマ", supportingText = "システム設定", onClick = {}),
                 modifier = Modifier,
                 shape = connectedShape(ConnectedCorners.Standalone),
-                outlineEdges = ConnectedEdges.All,
+                outlineEdges = ConnectedEdges.None,
                 outlineCorners = ConnectedCorners.Standalone,
                 headlineMaxLines = Int.MAX_VALUE,
                 headlineOverflow = TextOverflow.Ellipsis,

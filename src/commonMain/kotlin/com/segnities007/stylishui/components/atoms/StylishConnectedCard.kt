@@ -236,26 +236,7 @@ public fun StylishConnectedCard(
             .then(if (actionable) Modifier.stylishStateLayer(resolvedInteractionSource, shape) else Modifier)
             .semantics {
                 if (!enabled) disabled()
-            }
-            .then(
-                if (actionable) {
-                    Modifier
-                        .semantics(mergeDescendants = true) { role = Role.Button }
-                        .combinedClickable(
-                            interactionSource = resolvedInteractionSource,
-                            indication = LocalIndication.current,
-                            onClick = { onClick?.invoke() },
-                            onLongClick = onLongClick?.let {
-                                {
-                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    it()
-                                }
-                            },
-                        )
-                } else {
-                    Modifier
-                },
-            ),
+            },
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = resolvedContainerColor,
@@ -266,46 +247,73 @@ public fun StylishConnectedCard(
         ),
         border = resolvedBorder,
     ) {
-        if (content != null) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .sizeIn(minHeight = minHeight)
-                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-            ) {
-                content()
-            }
-        } else {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .sizeIn(minHeight = minHeight)
-                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(contentSpacing),
-            ) {
-                leadingContent?.invoke()
-                Column(
-                    Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(titleSpacing, Alignment.CenterVertically),
+        // The click handling lives INSIDE the card surface (which clips to
+        // [shape]) so the bounded indication is clipped to the rounded
+        // corners instead of overflowing them.
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .then(
+                    if (actionable) {
+                        Modifier
+                            .semantics(mergeDescendants = true) { role = Role.Button }
+                            .combinedClickable(
+                                interactionSource = resolvedInteractionSource,
+                                indication = LocalIndication.current,
+                                onClick = { onClick?.invoke() },
+                                onLongClick = onLongClick?.let {
+                                    {
+                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        it()
+                                    }
+                                },
+                            )
+                    } else {
+                        Modifier
+                    },
+                ),
+        ) {
+            if (content != null) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .sizeIn(minHeight = minHeight)
+                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
                 ) {
-                    Text(
-                        title,
-                        style = titleStyle,
-                        maxLines = titleMaxLines,
-                        overflow = titleOverflow,
-                    )
-                    if (supportingText.isNotBlank()) {
-                        Text(
-                            supportingText,
-                            style = supportingTextStyle,
-                            color = supportingTextColor ?: MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = supportingTextMaxLines,
-                            overflow = supportingTextOverflow,
-                        )
-                    }
+                    content()
                 }
-                trailingContent?.invoke()
+            } else {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .sizeIn(minHeight = minHeight)
+                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(contentSpacing),
+                ) {
+                    leadingContent?.invoke()
+                    Column(
+                        Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(titleSpacing, Alignment.CenterVertically),
+                    ) {
+                        Text(
+                            title,
+                            style = titleStyle,
+                            maxLines = titleMaxLines,
+                            overflow = titleOverflow,
+                        )
+                        if (supportingText.isNotBlank()) {
+                            Text(
+                                supportingText,
+                                style = supportingTextStyle,
+                                color = supportingTextColor ?: MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = supportingTextMaxLines,
+                                overflow = supportingTextOverflow,
+                            )
+                        }
+                    }
+                    trailingContent?.invoke()
+                }
             }
         }
     }

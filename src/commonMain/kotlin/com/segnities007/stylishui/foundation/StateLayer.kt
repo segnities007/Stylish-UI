@@ -4,6 +4,8 @@ import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -53,14 +55,12 @@ public fun Modifier.stylishStateLayer(
         if (isPressed || isHovered) {
             val alpha = if (isPressed) PressedStateLayerAlpha else HoveredStateLayerAlpha
             val overlayColor = onSurface.copy(alpha = alpha)
-            val overlayOutline = shape.createOutline(size, layoutDirection, this)
-            when (overlayOutline) {
+            // Fill through the exact outline so per-corner radii are honored;
+            // reusing one corner's radius would overflow asymmetric shapes
+            // such as the end cards of a Connected group.
+            when (val outline = shape.createOutline(size, layoutDirection, this)) {
                 is Outline.Rectangle -> drawRect(color = overlayColor)
-                is Outline.Rounded -> drawRoundRect(
-                    color = overlayColor,
-                    cornerRadius = overlayOutline.roundRect.topLeftCornerRadius,
-                )
-                is Outline.Generic -> drawRect(color = overlayColor)
+                else -> drawPath(Path().apply { addOutline(outline) }, overlayColor)
             }
         }
     }

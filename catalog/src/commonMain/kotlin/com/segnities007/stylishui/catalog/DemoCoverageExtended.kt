@@ -83,6 +83,7 @@ import com.segnities007.stylishui.components.organisms.StylishPermanentNavigatio
 import com.segnities007.stylishui.components.organisms.StylishSegmentedButton
 import com.segnities007.stylishui.components.organisms.StylishSingleChoiceSegmentedButtonRow
 import com.segnities007.stylishui.components.patterns.BarChartSection
+import com.segnities007.stylishui.components.patterns.StylishScreenScaffold
 import com.segnities007.stylishui.components.patterns.LineChartSection
 import com.segnities007.stylishui.components.patterns.StylishAdaptiveNavigation
 import com.segnities007.stylishui.components.patterns.StylishBottomSheetScaffold
@@ -376,6 +377,40 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                 contentDescriptionPrefix = "折れ線グラフ",
                 emptyLabel = "データがありません",
             )
+        },
+    ),
+    DemoComponent(
+        name = "Screen scaffold pinned header",
+        category = DemoCategory.Patterns,
+        code = """StylishScreenScaffold(
+    header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+    floatingBottomCenter = { PagerDotPill() },
+    floatingActionButton = { Fab() },
+) { innerPadding ->
+    Content(Modifier.padding(innerPadding))
+}""",
+        preview = {
+            StylishScreenScaffold(
+                header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+                floatingBottomCenter = {
+                    Surface(
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                    ) {
+                        Text(
+                            "indicator",
+                            modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                Box(androidx.compose.ui.Modifier.padding(innerPadding)) {
+                    Text(
+                        "スクロールしてもヘッダーは固定されます",
+                        modifier = androidx.compose.ui.Modifier.padding(20.dp),
+                    )
+                }
+            }
         },
     ),
     DemoComponent(

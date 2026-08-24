@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -256,6 +257,12 @@ public fun StylishConnectedCard(
                 .then(
                     if (actionable) {
                         Modifier
+                            // Clip the press indication to the exact per-item
+                            // shape regardless of the card's shadow elevation:
+                            // Material surfaces only clip when elevated, which
+                            // would leak a rectangular ripple past the joined
+                            // corners of Connected groups.
+                            .clip(shape)
                             .semantics(mergeDescendants = true) { role = Role.Button }
                             .combinedClickable(
                                 interactionSource = resolvedInteractionSource,

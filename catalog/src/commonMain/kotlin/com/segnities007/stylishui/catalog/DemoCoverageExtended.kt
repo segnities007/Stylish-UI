@@ -386,8 +386,8 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
     header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
     floatingBottomCenter = { PagerDotPill() },
     floatingActionButton = { Fab() },
-) { innerPadding ->
-    Content(Modifier.padding(innerPadding))
+) {
+    Content()
 }""",
         preview = {
             StylishScreenScaffold(

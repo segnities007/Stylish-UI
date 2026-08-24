@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.12.0](https://github.com/segnities007/Stylish-UI/compare/v0.11.3...v0.12.0) (2026-08-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove StylishConnectedListItem family in favor of Connect… ([#53](https://github.com/segnities007/Stylish-UI/issues/53))
+
+### Bug Fixes
+
+* **components:** always clip card press indication to the item shape ([712d6af](https://github.com/segnities007/Stylish-UI/commit/712d6af1ce5ce13bc2d50c060db5f86735e30720))
+* **components:** clip card indication and state layer to exact per-corner shapes ([46863c8](https://github.com/segnities007/Stylish-UI/commit/46863c84765427ec2b41feee1391c0c9aa3b3464))
+* **components:** default bottom sheet scrim to M3 32% alpha ([42b69be](https://github.com/segnities007/Stylish-UI/commit/42b69be9b6bb1a7266241b4cf06a8600f6a353af))
+
+
+### Code Refactoring
+
+* remove StylishConnectedListItem family in favor of Connect… ([#53](https://github.com/segnities007/Stylish-UI/issues/53)) ([ca8de5a](https://github.com/segnities007/Stylish-UI/commit/ca8de5ab40c2acc4dc7a570eaaf57af2ab073e7d))
+
 ## [0.11.3](https://github.com/segnities007/Stylish-UI/compare/v0.11.2...v0.11.3) (2026-08-22)
 
 

@@ -691,7 +691,7 @@ if (open) {
         },
     ),
     DemoComponent(
-        name = "Connected cards lazy grid scroll",
+        name = "Connected cards lazy grid employees",
         category = DemoCategory.Connected,
         code = """StylishConnectedCardLazyGrid(
     items = employees.map {

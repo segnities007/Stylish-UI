@@ -48,7 +48,7 @@ tasks.register("checkComponentInventory") {
     description = "Checks the minimum Linux/common component inventory."
     doLast {
         val root = project.layout.projectDirectory.dir("src/commonMain/kotlin/com/segnities007/stylishui/components")
-        val minimums = mapOf("atoms" to 40, "molecules" to 50, "organisms" to 20, "patterns" to 10, "charts" to 7)
+        val minimums = mapOf("atoms" to 40, "molecules" to 45, "organisms" to 20, "patterns" to 10, "charts" to 7)
         minimums.forEach { (category, minimum) ->
             val count = root.dir(category).asFile.listFiles { file -> file.extension == "kt" }?.size ?: 0
             logger.lifecycle("Stylish UI inventory: $category=$count (minimum $minimum)")

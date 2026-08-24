@@ -45,7 +45,7 @@ import com.segnities007.stylishui.foundation.stylishInteractiveTarget
  * @see StylishButton
  */
 public enum class StylishButtonVariant {
-    /** High-emphasis button: grouped-container fill, hairline border, interactive elevation. */
+    /** High-emphasis button: grouped-container fill and interactive elevation. */
     Filled,
 
     /** Medium-emphasis button: secondary-container fill, no border, no elevation. */
@@ -64,7 +64,7 @@ public enum class StylishButtonVariant {
 /**
  * A standalone Stylish button with the same visual language as the
  * connected-button family — grouped-container colors, interactive
- * elevation, a hairline outline, and a 52 dp minimum height — but
+ * elevation, and a 52 dp minimum height — but
  * without any connected-group geometry. Use this when a single button
  * is needed outside a [StylishConnectedButtonRow],
  * [StylishConnectedButtonColumn], or [StylishConnectedButtonGrid].
@@ -103,9 +103,8 @@ public enum class StylishButtonVariant {
  *   (default), resolved from [variant]: a hairline of
  *   [StylishTheme.dimensions.outlineWidth] using
  *   `MaterialTheme.colorScheme.outlineVariant` for
- *   [StylishButtonVariant.Filled] and [StylishButtonVariant.Outlined],
- *   and no border for the other variants. Pass an explicit `BorderStroke`
- *   to override, or pass a non-null transparent stroke to remove it.
+ *   [StylishButtonVariant.Outlined], and no border for the other variants.
+ *   Pass an explicit `BorderStroke` to opt into an outlined treatment.
  * @param elevation Shadow elevation for the button. When `null`
  *   (default), resolved from [variant]: interactive elevation for
  *   [StylishButtonVariant.Filled], floating elevation

@@ -1,15 +1,21 @@
 package com.segnities007.stylishui.catalog
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import com.segnities007.stylishui.components.atoms.StylishAvatar
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.components.models.StylishConnectedIconButtonItem
 import com.segnities007.stylishui.components.molecules.StylishAvatarItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedAvatarRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
@@ -19,8 +25,7 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
+import com.segnities007.stylishui.components.molecules.StylishConnectedIconButtonRow
 import androidx.compose.material3.Text
 
 /**
@@ -115,28 +120,30 @@ internal fun getConnectedDemos(): List<DemoComponent> = listOf(
         },
     ),
     DemoComponent(
-        name = "Connected list items",
+        name = "Connected cards",
         category = DemoCategory.Connected,
-        code = """StylishConnectedListItemColumn(
+        code = """StylishConnectedCardColumn(
     items = listOf(
-        StylishConnectedListItem("見出し", "説明", onClick = {}),
-        StylishConnectedListItem("見出し", "説明", enabled = false),
+        StylishConnectedCardItem(title = "見出し", supportingText = "説明", onClick = {}),
+        StylishConnectedCardItem(title = "見出し", supportingText = "説明", enabled = false),
     ),
 )""",
         preview = {
-            StylishConnectedListItemColumn(
-                items = listOf(
-                    StylishConnectedListItem("Actionable", "クリック可能な項目", onClick = {}),
-                    StylishConnectedListItem("Read only", "表示専用の項目"),
-                    StylishConnectedListItem("Disabled", "無効な項目", enabled = false),
-                ),
-            )
-            StylishConnectedListItemRow(
-                items = listOf(
-                    StylishConnectedListItem("A", onClick = {}),
-                    StylishConnectedListItem("B", onClick = {}),
-                ),
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                StylishConnectedCardColumn(
+                    items = listOf(
+                        StylishConnectedCardItem(title = "Actionable", supportingText = "クリック可能な項目", onClick = {}),
+                        StylishConnectedCardItem(title = "Read only", supportingText = "表示専用の項目"),
+                        StylishConnectedCardItem(title = "Disabled", supportingText = "無効な項目", enabled = false),
+                    ),
+                )
+                StylishConnectedCardRow(
+                    items = listOf(
+                        StylishConnectedCardItem(title = "A", onClick = {}),
+                        StylishConnectedCardItem(title = "B", onClick = {}),
+                    ),
+                )
+            }
         },
     ),
     DemoComponent(
@@ -159,6 +166,28 @@ internal fun getConnectedDemos(): List<DemoComponent> = listOf(
                 items = listOf(
                     StylishConnectedButtonItem(onClick = {}) { Text("全項目") },
                     StylishConnectedButtonItem(onClick = {}) { Text("選択項目") },
+                ),
+            )
+        },
+    ),
+    DemoComponent(
+        name = "Connected icon buttons",
+        category = DemoCategory.Connected,
+        code = """StylishConnectedIconButtonRow(
+    items = listOf(
+        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
+        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
+        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
+        StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
+    ),
+)""",
+        preview = {
+            StylishConnectedIconButtonRow(
+                items = listOf(
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
                 ),
             )
         },

@@ -42,10 +42,11 @@ public typealias StylishConnectedCardItemContent = ConnectedCardItemContent
  * [StylishConnectedCardItemContent] is supplied.
  *
  * This is the Finish-layer rendering: it delegates to the [StylishConnectedCard]
- * atom, forwarding all connection geometry (shape, outline edges, outline
- * corners) and item data including title, supporting text, click/long-click
- * actions, enabled state, and leading/trailing slot content, dressed in the
- * Stylish look.
+ * atom, forwarding the connected shape and item data including title,
+ * supporting text, click/long-click actions, enabled state, and
+ * leading/trailing slot content, dressed in the Stylish look. The computed
+ * outline geometry remains available to custom renderers, but this default
+ * skin intentionally does not draw a border.
  *
  * @param item The [StylishConnectedCardItem] data for the card being rendered.
  * @param modifier A modifier carrying layout constraints from the parent
@@ -86,6 +87,7 @@ public typealias StylishConnectedCardItemContent = ConnectedCardItemContent
  * @see StylishConnectedCardColumn
  * @see StylishConnectedCardGrid
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 public fun DefaultStylishConnectedCardItem(
     item: StylishConnectedCardItem,
@@ -117,8 +119,6 @@ public fun DefaultStylishConnectedCardItem(
         enabled = item.enabled,
         modifier = modifier,
         shape = shape,
-        outlineEdges = outlineEdges,
-        outlineCorners = outlineCorners,
         containerColor = containerColor,
         contentColor = contentColor,
         disabledContainerColor = disabledContainerColor,
@@ -152,7 +152,7 @@ private fun DefaultStylishConnectedCardItemPreview() {
                 ),
                 modifier = Modifier,
                 shape = connectedShape(ConnectedCorners.Standalone),
-                outlineEdges = ConnectedEdges.All,
+                outlineEdges = ConnectedEdges.None,
                 outlineCorners = ConnectedCorners.Standalone,
             )
         }

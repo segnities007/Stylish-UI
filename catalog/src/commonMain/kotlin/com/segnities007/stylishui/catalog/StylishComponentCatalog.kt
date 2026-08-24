@@ -78,7 +78,7 @@ import com.segnities007.stylishui.components.charts.stylishChartColor
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishConnectedListItem
+import com.segnities007.stylishui.components.models.StylishConnectedIconButtonItem
 import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
@@ -93,10 +93,7 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemColumn
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemGrid
-import com.segnities007.stylishui.components.molecules.StylishConnectedListItemRow
-import com.segnities007.stylishui.components.molecules.StylishListItem
+import com.segnities007.stylishui.components.molecules.StylishConnectedIconButtonRow
 import com.segnities007.stylishui.components.molecules.StylishAccordion
 import com.segnities007.stylishui.components.molecules.StylishAccordionItem
 import com.segnities007.stylishui.components.molecules.StylishBreadcrumb
@@ -334,6 +331,16 @@ private fun ComponentCatalog() {
                 ),
             )
 
+            StylishSectionTitle("Connected Icon Buttons")
+            StylishConnectedIconButtonRow(
+                items = listOf(
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
+                    StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
+                ),
+            )
+
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 
             // ── Connected Chips ──
@@ -361,26 +368,26 @@ private fun ComponentCatalog() {
 
             StylishHorizontalDivider(Modifier.fillMaxWidth())
 
-            // ── Connected List Items ──
-            StylishSectionTitle("Connected List Items")
-            StylishConnectedListItemColumn(
+            // ── Connected Cards ──
+            StylishSectionTitle("Connected Cards")
+            StylishConnectedCardColumn(
                 items = listOf(
-                    StylishConnectedListItem("Actionable item", onClick = {}),
-                    StylishConnectedListItem("Read-only item"),
-                    StylishConnectedListItem("Disabled item", enabled = false),
+                    StylishConnectedCardItem(title = "Actionable item", onClick = {}),
+                    StylishConnectedCardItem(title = "Read-only item"),
+                    StylishConnectedCardItem(title = "Disabled item", enabled = false),
                 ),
             )
-            StylishConnectedListItemRow(
+            StylishConnectedCardRow(
                 items = listOf(
-                    StylishConnectedListItem("Item A", onClick = {}),
-                    StylishConnectedListItem("Item B", onClick = {}),
+                    StylishConnectedCardItem(title = "Item A", onClick = {}),
+                    StylishConnectedCardItem(title = "Item B", onClick = {}),
                 ),
             )
-            StylishConnectedListItemGrid(
+            StylishConnectedCardGrid(
                 items = listOf(
-                    StylishConnectedListItem("Item A", onClick = {}),
-                    StylishConnectedListItem("Item B", onClick = {}),
-                    StylishConnectedListItem("Item C", onClick = {}),
+                    StylishConnectedCardItem(title = "Item A", onClick = {}),
+                    StylishConnectedCardItem(title = "Item B", onClick = {}),
+                    StylishConnectedCardItem(title = "Item C", onClick = {}),
                 ),
                 columns = 2,
             )
@@ -405,13 +412,6 @@ private fun ComponentCatalog() {
                     StylishNavigationItem(Icons.Default.Search, "検索"),
                     StylishNavigationItem(Icons.Default.Settings, "設定"),
                 ),
-            )
-
-            StylishSectionTitle("StylishListItem", textStyle = MaterialTheme.typography.titleSmall)
-            StylishListItem(
-                headline = "プレーンなリスト項目",
-                supportingText = "Connected ではない単体の行",
-                onClick = {},
             )
 
             StylishSectionTitle("StylishAlertDialog", textStyle = MaterialTheme.typography.titleSmall)

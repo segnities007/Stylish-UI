@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishAvatar
+import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
 import com.segnities007.stylishui.components.atoms.StylishRangeSlider
@@ -21,12 +22,12 @@ import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.SimpleBarChart
 import com.segnities007.stylishui.components.charts.SimpleLineChart
+import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
-import com.segnities007.stylishui.components.molecules.StylishListItem
+import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.organisms.StylishAlertDialog
 import com.segnities007.stylishui.components.organisms.StylishSearchBar
 import com.segnities007.stylishui.components.patterns.StylishTopAppBar
-import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.tokens.StylishAnimationTokens
 import com.segnities007.stylishui.tokens.StylishDimensions
@@ -82,12 +83,13 @@ class NewComponentsSmokeTest {
     }
 
     @Test
-    fun listItemRenders() = runComposeUiTest {
+    fun connectedCardColumnRenders() = runComposeUiTest {
         setContent {
             StylishTheme(darkTheme = false) {
-                StylishListItem(
-                    headline = "リスト見出し",
-                    supportingText = "リスト説明",
+                StylishConnectedCardColumn(
+                    listOf(
+                        StylishConnectedCardItem(title = "リスト見出し", supportingText = "リスト説明"),
+                    ),
                 )
             }
         }
@@ -199,7 +201,7 @@ class ThemeAndTokensTest {
                 Column {
                     Text("ダークテーマ")
                     StylishAvatar(initials = "DK")
-                    StylishListItem(headline = "項目")
+                    StylishConnectedCard(title = "項目")
                 }
             }
         }

@@ -68,10 +68,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param shape Shape of the surface. Defaults to
  *   `RoundedCornerShape` with
  *   [StylishTheme.dimensions.floatingCornerRadius].
- * @param border Border stroke drawn around the surface. Defaults to a
- *   hairline of [StylishTheme.dimensions.outlineWidth] using
- *   `MaterialTheme.colorScheme.outlineVariant`. Pass `null` for no
- *   border.
+ * @param border Optional border stroke drawn around the surface. Defaults to
+ *   `null`; pass an explicit stroke when an outlined treatment is intentional.
  * @param minWidth Minimum width of the tappable surface.
  *   Defaults to [StylishTheme.dimensions.roundedIconButtonMinWidth].
  * @param minHeight Minimum height of the tappable surface.
@@ -98,10 +96,7 @@ public fun StylishRoundedIconButton(
     containerColor: Color? = null,
     contentColor: Color? = null,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-    border: BorderStroke? = BorderStroke(
-        StylishTheme.dimensions.outlineWidth,
-        MaterialTheme.colorScheme.outlineVariant,
-    ),
+    border: BorderStroke? = null,
     minWidth: Dp = StylishTheme.dimensions.roundedIconButtonMinWidth,
     minHeight: Dp = 48.dp,
     interactionSource: MutableInteractionSource? = null,

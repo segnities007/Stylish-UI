@@ -49,7 +49,7 @@ import com.segnities007.stylishui.components.charts.StylishScatterPoint
 import com.segnities007.stylishui.components.models.StylishContentState
 import com.segnities007.stylishui.components.molecules.StylishButtonGroup
 import com.segnities007.stylishui.components.molecules.StylishContentStateHost
-import com.segnities007.stylishui.components.molecules.StylishListItem
+import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.molecules.StylishMasonry
 import com.segnities007.stylishui.components.molecules.StylishPullToRefresh
 import com.segnities007.stylishui.components.molecules.StylishSkeletonAvatar
@@ -234,18 +234,18 @@ StylishSecureTextField(
         preview = { contentStateCoveragePreview() },
     ),
     DemoComponent(
-        name = "List item slots",
+        name = "Connected card slots",
         category = DemoCategory.WebParity,
-        code = """StylishListItem(
-    headline = \"Workspace\",
+        code = """StylishConnectedCard(
+    title = \"Workspace\",
     supportingText = \"Long supporting text\",
     leadingContent = { Icon(Icons.Default.Home, \"Workspace\") },
     trailingContent = { Icon(Icons.Default.Settings, \"Settings\") },
     onClick = onClick,
 )""",
         preview = {
-            StylishListItem(
-                headline = "Workspace",
+            StylishConnectedCard(
+                title = "Workspace",
                 supportingText = "Long supporting text",
                 leadingContent = { Icon(Icons.Default.Home, "Workspace") },
                 trailingContent = { Icon(Icons.Default.Settings, "Settings") },
@@ -261,7 +261,7 @@ StylishSecureTextField(
 }""",
         preview = {
             StylishMasonry(itemCount = 6, columns = 2) { index ->
-                StylishListItem(headline = "Tile $index", supportingText = "Masonry content")
+                StylishConnectedCard(title = "Tile $index", supportingText = "Masonry content")
             }
         },
     ),
@@ -503,6 +503,6 @@ private fun swipeToDismissCoveragePreview() {
         modifier = Modifier.fillMaxWidth(),
         onDismiss = {},
     ) {
-        StylishListItem(headline = "Swipe me", supportingText = "Dismissible row")
+        StylishConnectedCard(title = "Swipe me", supportingText = "Dismissible row")
     }
 }

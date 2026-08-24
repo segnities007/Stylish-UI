@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
-import com.segnities007.stylishui.foundation.connectedOutline
 import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
@@ -33,8 +32,8 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * [ConnectedButtonItemContent] is supplied.
  *
  * This is the Finish-layer rendering: it dresses a button in the Stylish look —
- * grouped-container colors, interactive elevation, a hairline connected
- * outline, and a 52 dp minimum height — and wires tap interaction. Items whose
+ * grouped-container colors, interactive elevation, and a 52 dp minimum height
+ * — and wires tap interaction. Items whose
  * [StylishConnectedButtonItem.onClick] is `null` or whose
  * [StylishConnectedButtonItem.enabled] is `false` are rendered in a disabled
  * state and do not respond to interaction.
@@ -60,11 +59,16 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param slotMinWidth The minimum width reserved for the leading/trailing slots
  *   so icons align consistently. Defaults to 24 dp (rows/grids); columns use
  *   40 dp.
+ * The outline geometry parameters are retained for the connected renderer
+ * contract and custom skins; this default skin intentionally does not draw a
+ * border. Supply a custom [ConnectedButtonItemContent] when an outline is a
+ * deliberate part of a product-specific treatment.
  *
  * @see StylishConnectedButtonRow
  * @see StylishConnectedButtonColumn
  * @see StylishConnectedButtonGrid
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 public fun DefaultStylishConnectedButton(
     item: StylishConnectedButtonItem,
@@ -84,9 +88,7 @@ public fun DefaultStylishConnectedButton(
     Button(
         onClick = { item.onClick?.invoke() },
         enabled = actionable,
-        modifier = modifier
-            .heightIn(min = 52.dp)
-            .connectedOutline(outlineEdges, outlineCorners, cornerRadius),
+        modifier = modifier.heightIn(min = 52.dp),
         shape = shape,
         colors = item.colors ?: defaultColors,
         elevation = ButtonDefaults.buttonElevation(
@@ -116,7 +118,7 @@ private fun DefaultStylishConnectedButtonPreview() {
                 item = StylishConnectedButtonItem(onClick = {}) { Text("編集") },
                 modifier = Modifier,
                 shape = connectedShape(ConnectedCorners.Standalone),
-                outlineEdges = ConnectedEdges.All,
+                outlineEdges = ConnectedEdges.None,
                 outlineCorners = ConnectedCorners.Standalone,
                 cornerRadius = 12.dp,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),

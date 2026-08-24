@@ -1,7 +1,7 @@
 {
   "schema": "stylish-ui.catalog-state-policy.v1",
   "description": "Machine-readable catalog/state requirements. This policy distinguishes visual components from composable factories and platform helpers. A public @Composable is counted as a visual API only when it renders UI on its own; everything matched by apiDocOnlyRules is documented via Dokka/API docs instead of a catalog card, and an existing genuine catalog mapping always wins over the api-doc-only classification.",
-  "minimumPublicComposableDeclarations": 220,
+  "minimumPublicComposableDeclarations": 210,
   "minimumCatalogDemos": 140,
   "apiDocOnlyRules": [
     {
@@ -40,65 +40,255 @@
   ],
   "families": {
     "Buttons": {
-      "categories": ["Buttons"],
-      "requiredStates": ["default", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Buttons"
+      ],
+      "requiredStates": [
+        "default",
+        "disabled",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Selection": {
-      "categories": ["Selection"],
-      "requiredStates": ["default", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Selection"
+      ],
+      "requiredStates": [
+        "default",
+        "disabled",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Inputs": {
-      "categories": ["Inputs"],
-      "requiredStates": ["default", "empty", "error", "loading", "disabled", "focused", "long_text", "rtl"]
+      "categories": [
+        "Inputs"
+      ],
+      "requiredStates": [
+        "default",
+        "empty",
+        "error",
+        "loading",
+        "disabled",
+        "focused",
+        "long_text",
+        "rtl"
+      ]
     },
     "Navigation": {
-      "categories": ["Navigation", "WebParity"],
-      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Navigation",
+        "WebParity"
+      ],
+      "requiredStates": [
+        "default",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "WebParity": {
       "categories": [],
-      "requiredStates": ["default", "empty", "error", "disabled", "selected", "focused", "hovered", "long_text", "rtl"]
+      "requiredStates": [
+        "default",
+        "empty",
+        "error",
+        "disabled",
+        "selected",
+        "focused",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Feedback": {
-      "categories": ["Feedback"],
-      "requiredStates": ["default", "loading", "empty", "error", "disabled", "long_text", "rtl"]
+      "categories": [
+        "Feedback"
+      ],
+      "requiredStates": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "long_text",
+        "rtl"
+      ]
     },
     "Connected": {
-      "categories": ["Connected"],
-      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Connected"
+      ],
+      "requiredStates": [
+        "default",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Charts": {
-      "categories": ["Charts"],
-      "requiredStates": ["default", "loading", "empty", "error", "selected", "focused", "long_text", "rtl"]
+      "categories": [
+        "Charts"
+      ],
+      "requiredStates": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "selected",
+        "focused",
+        "long_text",
+        "rtl"
+      ]
     },
     "Advanced": {
-      "categories": ["Advanced"],
-      "requiredStates": ["default", "loading", "empty", "error", "disabled", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Advanced"
+      ],
+      "requiredStates": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Patterns": {
-      "categories": ["Patterns"],
-      "requiredStates": ["default", "loading", "empty", "error", "disabled", "selected", "focused", "hovered", "long_text", "rtl"]
+      "categories": [
+        "Patterns"
+      ],
+      "requiredStates": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "selected",
+        "focused",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     },
     "Foundation": {
       "categories": [],
-      "requiredStates": ["default"]
+      "requiredStates": [
+        "default"
+      ]
     },
     "Structure": {
       "categories": [],
-      "requiredStates": ["default", "selected", "focused", "pressed", "hovered", "long_text", "rtl"]
+      "requiredStates": [
+        "default",
+        "selected",
+        "focused",
+        "pressed",
+        "hovered",
+        "long_text",
+        "rtl"
+      ]
     }
   },
   "stateEvidence": {
-    "default": ["__always__"],
-    "loading": ["\\bloading\\b", "isLoading", "loadingLabel", "処理中", "ローディング"],
-    "empty": ["\\bempty\\b", "emptyLabel", "emptyState", "no data", "データがありません", "空状態", "空"],
-    "error": ["\\berror\\b", "errorLabel", "invalid", "onError", "エラー", "失敗"],
-    "disabled": ["enabled\\s*=\\s*false", "disabled", "無効"],
-    "selected": ["\\bselected\\b", "selectedIndex", "selectedValue", "selectedKeys", "\\bchecked\\b", "indeterminate", "selection", "選択"],
-    "focused": ["\\bfocus(?:ed|ing)?\\b", "FocusRequester", "focusRestoration", "keyboard", "Tab", "矢印", "フォーカス"],
-    "pressed": ["\\bpressed\\b", "PressInteraction", "pressedState", "押下"],
-    "hovered": ["\\bhover(?:ed|ing)?\\b", "HoverInteraction", "Tooltip", "ホバー"],
-    "long_text": ["longText", "long text", "very long", "長文", "長い", "超長", "長い日本語"],
-    "rtl": ["\\bRTL\\b", "\\brtl\\b", "LayoutDirection.Rtl", "layoutDirection", "右から左"]
+    "default": [
+      "__always__"
+    ],
+    "loading": [
+      "\\bloading\\b",
+      "isLoading",
+      "loadingLabel",
+      "処理中",
+      "ローディング"
+    ],
+    "empty": [
+      "\\bempty\\b",
+      "emptyLabel",
+      "emptyState",
+      "no data",
+      "データがありません",
+      "空状態",
+      "空"
+    ],
+    "error": [
+      "\\berror\\b",
+      "errorLabel",
+      "invalid",
+      "onError",
+      "エラー",
+      "失敗"
+    ],
+    "disabled": [
+      "enabled\\s*=\\s*false",
+      "disabled",
+      "無効"
+    ],
+    "selected": [
+      "\\bselected\\b",
+      "selectedIndex",
+      "selectedValue",
+      "selectedKeys",
+      "\\bchecked\\b",
+      "indeterminate",
+      "selection",
+      "選択"
+    ],
+    "focused": [
+      "\\bfocus(?:ed|ing)?\\b",
+      "FocusRequester",
+      "focusRestoration",
+      "keyboard",
+      "Tab",
+      "矢印",
+      "フォーカス"
+    ],
+    "pressed": [
+      "\\bpressed\\b",
+      "PressInteraction",
+      "pressedState",
+      "押下"
+    ],
+    "hovered": [
+      "\\bhover(?:ed|ing)?\\b",
+      "HoverInteraction",
+      "Tooltip",
+      "ホバー"
+    ],
+    "long_text": [
+      "longText",
+      "long text",
+      "very long",
+      "長文",
+      "長い",
+      "超長",
+      "長い日本語"
+    ],
+    "rtl": [
+      "\\bRTL\\b",
+      "\\brtl\\b",
+      "LayoutDirection.Rtl",
+      "layoutDirection",
+      "右から左"
+    ]
   }
 }

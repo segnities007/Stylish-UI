@@ -55,7 +55,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param tonalElevation Tonal elevation of the sheet surface.
  * @param scrimColor Color of the scrim that obscures content while
  *   the sheet is open. Defaults to
- *   [MaterialTheme.colorScheme.scrim].
+ *   [BottomSheetDefaults.ScrimColor] (32% alpha scrim).
  * @param dragHandle Optional drag handle composable. When `null`
  *   (the default), **no** drag handle is shown. Pass
  *   `@Composable { BottomSheetDefaults.DragHandle() }` for the M3
@@ -85,7 +85,9 @@ public fun StylishBottomSheet(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
-    scrimColor: Color = MaterialTheme.colorScheme.scrim,
+    // M3's own default (BottomSheetDefaults.ScrimColor) carries 32% alpha;
+    // an opaque scrim color would black out everything behind the sheet.
+    scrimColor: Color = BottomSheetDefaults.ScrimColor,
     dragHandle: @Composable (() -> Unit)? = null,
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     properties: ModalBottomSheetProperties = ModalBottomSheetProperties(),

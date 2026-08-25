@@ -152,18 +152,15 @@ public fun StylishHeader(
                 // サイズは modifier で確定させる必要がある(高さ0防止)。
                 modifier = Modifier.fillMaxWidth().height(height),
                 shape = shape,
+                // ダイナミック カラー追従: 白/黒固定ではなく colorScheme から取る
                 tint = if (isDark) {
-                    containerColor.copy(alpha = 0.55f)
+                    containerColor.copy(alpha = 0.4f)
                 } else {
-                    Color.White.copy(alpha = 0.45f)
+                    MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
                 },
                 haze = 0.08f,
                 blurRadius = 8.dp,
-                borderColor = if (isDark) {
-                    Color.White.copy(alpha = 0.35f)
-                } else {
-                    Color.Black.copy(alpha = 0.15f)
-                },
+                borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
             ) {
                 Box(
                     Modifier

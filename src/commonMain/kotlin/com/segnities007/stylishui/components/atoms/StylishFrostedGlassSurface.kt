@@ -40,7 +40,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *
  * @param backdrop 静的モード用の背景コンテンツ(BoxScope)。サーフェス全面に描画される。
  * @param glassState 動的モード用の [StylishGlassState]。backdrop より優先される。
- * @param modifier Modifier applied to the surface.
+ * @param modifier Modifier applied to the surface. 内部レイヤーはすべて
+ *   matchParentSize のため、サイズはこの modifier で確定すること
+ *   (例: Modifier.fillMaxWidth().height(56.dp))。未指定だと高さ0になる。
  * @param shape Corner shape. Defaults to the floating corner radius.
  * @param tint ガラスの着色。白系なら明るく、墨系なら暗い色味になる。
  * @param haze 白濁ミルク層の強さ。大きいほど乳白に曇る(すりガラス度)。

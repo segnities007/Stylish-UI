@@ -146,7 +146,9 @@ public fun StylishHeader(
             StylishFrostedGlassSurface(
                 backdrop = backdrop ?: {},
                 glassState = glassState,
-                modifier = Modifier.fillMaxWidth(),
+                // サーフェス内部は matchParentSize のレイヤーで構成されるため、
+                // サイズは modifier で確定させる必要がある(高さ0防止)。
+                modifier = Modifier.fillMaxWidth().height(height),
                 shape = shape,
                 tint = Color.White.copy(alpha = 0.05f),
                 haze = 0.10f,

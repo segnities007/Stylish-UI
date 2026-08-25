@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.segnities007.stylishui.components.atoms.stylishGlassSource
 import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.coroutines.CoroutineScope
@@ -188,6 +189,7 @@ public fun StylishModernScreen(
     bottomContentPadding: Dp = 24.dp,
     floatingBottomCenter: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
+    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
     content: LazyListScope.() -> Unit,
 ) {
     // Largest header height ever measured. rememberSaveable so a pager-
@@ -275,7 +277,15 @@ public fun StylishModernScreen(
             val contentPlaceables = subcompose("content") {
                 LazyColumn(
                     state = listState,
-                    modifier = Modifier.fillMaxSize(),
+                    // 磨りガラスの録画対象はコンテンツのみ。ヘッダーや FAB を
+                    // 含めない(含めると RenderNode が自己参照し HWUI がクラッシュする)。
+                    modifier = if (glassState != null) {
+                        Modifier
+                            .fillMaxSize()
+                            .stylishGlassSource(glassState)
+                    } else {
+                        Modifier.fillMaxSize()
+                    },
                     // Measured header height keeps the first card clear at
                     // rest; scrolled items flow behind the floating header.
                     contentPadding = PaddingValues(

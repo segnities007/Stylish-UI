@@ -429,7 +429,7 @@ private fun ShowLiveGlassLightPreview() {
             // フローティング ヘッダー(動的すりガラス)
             StylishFrostedGlassSurface(
                 glassState = state,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
                 tint = Color.White.copy(alpha = 0.05f),
                 haze = 0.16f,
                 blurRadius = 13.dp,
@@ -482,7 +482,7 @@ private fun ShowLiveGlassDarkPreview() {
 
             StylishFrostedGlassSurface(
                 glassState = state,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
                 tint = Color.White.copy(alpha = 0.05f),
                 haze = 0.16f,
                 blurRadius = 13.dp,

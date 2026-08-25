@@ -18,10 +18,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -75,9 +78,19 @@ public fun StylishScreenScaffold(
             .background(containerColor)
             .stylishTestTag("screen_scaffold"),
     ) {
+        // Largest header height ever measured. Kept stable while the header
+        // slides away (AnimatedVisibility shrinks it to zero) so the
+        // content's top clearance does not collapse mid-animation.
+        var headerHeightPx by androidx.compose.runtime.mutableIntStateOf(0)
+
         SubcomposeLayout { constraints ->
             val loose = Constraints(maxWidth = constraints.maxWidth)
             val headerPlaceables = subcompose("header") {
+                Box(
+                    Modifier.onSizeChanged { size ->
+                        if (size.height > headerHeightPx) headerHeightPx = size.height
+                    }
+                ) {
                 Column {
                     // Subtle scrim: keeps the status-bar zone readable
                     // without hiding the content behind it.
@@ -104,9 +117,10 @@ public fun StylishScreenScaffold(
                         header()
                     }
                 }
+                }
             }.map { it.measure(loose) }
 
-            val headerHeight = with(this) { headerPlaceables.maxOf { it.height }.toDp() }
+            val headerHeight = with(this) { headerHeightPx.toDp() }
 
             val contentPlaceables = subcompose("content") {
                 content(headerHeight)

@@ -5,15 +5,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -131,13 +134,32 @@ public fun StylishGlassSurface(
     }
 }
 
+/** 透明度が分かるよう、ガラスの背後に置くカラフルなオブジェクト列。 */
+@Composable
+private fun VariantDemoObjects(modifier: Modifier = Modifier) {
+    Row(
+        modifier.padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(Modifier.size(40.dp).background(Color(0xFFD7003A), CircleShape))
+        Box(Modifier.size(40.dp).background(Color(0xFF165E83), RoundedCornerShape(10.dp)))
+        Box(Modifier.size(40.dp).background(Color(0xFFC9A86A), CircleShape))
+        Box(Modifier.size(40.dp).background(Color(0xFF6B8E3A), RoundedCornerShape(10.dp)))
+    }
+}
+
+/** ガラスの背後に [VariantDemoObjects] を敷いたサンプル。 */
 @Composable
 private fun GlassRow(variant: StylishGlassVariant, label: String, interactive: Boolean = false) {
-    StylishGlassSurface(
-        variant = variant,
-        interactive = interactive,
-    ) {
-        Text(label, modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp))
+    Box {
+        VariantDemoObjects(Modifier.matchParentSize())
+        StylishGlassSurface(
+            variant = variant,
+            interactive = interactive,
+        ) {
+            Text(label, modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp))
+        }
     }
 }
 
@@ -183,8 +205,11 @@ private fun GlassOnMediaPreview() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text("メディア背景", style = MaterialTheme.typography.titleMedium)
-        StylishGlassSurface(variant = StylishGlassVariant.Clear) {
-            Text("Clear(ディミングなし)", modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp))
+        Box {
+            VariantDemoObjects(Modifier.matchParentSize())
+            StylishGlassSurface(variant = StylishGlassVariant.Clear) {
+                Text("Clear(ディミングなし)", modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp))
+            }
         }
         Box {
             // ガラスの背後に 35% 黑ディミング層(HIG 推奨)
@@ -193,6 +218,7 @@ private fun GlassOnMediaPreview() {
                     .matchParentSize()
                     .background(Color.Black.copy(alpha = 0.35f), RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius)),
             )
+            VariantDemoObjects(Modifier.matchParentSize())
             StylishGlassSurface(variant = StylishGlassVariant.Clear) {
                 Text("Clear + dimming", modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp))
             }

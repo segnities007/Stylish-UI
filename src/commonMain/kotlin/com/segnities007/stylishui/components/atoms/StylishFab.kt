@@ -14,6 +14,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -128,6 +129,9 @@ public enum class StylishFabSize {
  * @param iconContent Optional slot that replaces the default [Icon].
  *   When `null` (default), [imageVector] and [contentDescription]
  *   are used instead.
+ * @param backdrop 磨りガラス用の背景コンテンツ。`null` 以外を渡すと FAB の
+ *   円形面が [StylishFrostedGlassSurface] (すりガラス) になり、
+ *   containerColor/border/tonalElevation は無視される。
  *
  * @see StylishIconButton
  * @see StylishRoundedIconButton
@@ -151,6 +155,7 @@ public fun StylishFab(
     interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
+    backdrop: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val resolvedSize = size ?: when (sizeVariant) {
         StylishFabSize.Small -> StylishTheme.dimensions.fabSmallSize
@@ -178,21 +183,44 @@ public fun StylishFab(
                 .size(resolvedSize)
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
-        color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = if (backdrop != null) Color.Transparent else {
+            containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh
+        },
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
-        border = border ?: BorderStroke(
-            StylishTheme.dimensions.outlineWidth,
-            MaterialTheme.colorScheme.outlineVariant,
-        ),
-        tonalElevation = tonalElevation,
+        border = if (backdrop != null) {
+            null
+        } else {
+            border ?: BorderStroke(
+                StylishTheme.dimensions.outlineWidth,
+                MaterialTheme.colorScheme.outlineVariant,
+            )
+        },
+        tonalElevation = if (backdrop != null) 0.dp else tonalElevation,
         shadowElevation = resolvedShadowElevation,
     ) {
-        IconButton(
-            onClick = onClick,
-            enabled = enabled,
-            interactionSource = resolvedInteractionSource,
-        ) {
-            iconContent?.invoke() ?: Icon(imageVector, contentDescription)
+        if (backdrop != null) {
+            // 磨りガラス FAB: 円形のすりガラス面にアイコンを載せる。
+            StylishFrostedGlassSurface(
+                backdrop = backdrop,
+                modifier = Modifier.size(resolvedSize),
+                shape = resolvedShape,
+            ) {
+                IconButton(
+                    onClick = onClick,
+                    enabled = enabled,
+                    interactionSource = resolvedInteractionSource,
+                ) {
+                    iconContent?.invoke() ?: Icon(imageVector, contentDescription)
+                }
+            }
+        } else {
+            IconButton(
+                onClick = onClick,
+                enabled = enabled,
+                interactionSource = resolvedInteractionSource,
+            ) {
+                iconContent?.invoke() ?: Icon(imageVector, contentDescription)
+            }
         }
     }
     }

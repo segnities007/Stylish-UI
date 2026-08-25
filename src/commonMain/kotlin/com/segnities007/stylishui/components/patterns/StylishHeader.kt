@@ -11,6 +11,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishFrostedGlassSurface
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
@@ -123,6 +125,7 @@ public fun StylishHeader(
     windowInsets: WindowInsets = WindowInsets(0.dp),
     glass: Boolean = false,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
+    backdrop: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()
     AnimatedVisibility(
@@ -137,6 +140,48 @@ public fun StylishHeader(
                 .windowInsetsPadding(windowInsets)
                 .padding(top = topPadding, bottom = bottomPadding),
         ) {
+        if (backdrop != null) {
+            // 磨りガラス ヘッダー: backdrop を下敷きにすりガラス面を作る。
+            StylishFrostedGlassSurface(
+                backdrop = backdrop,
+                modifier = Modifier.fillMaxWidth(),
+                shape = shape,
+                tint = Color.White.copy(alpha = 0.05f),
+                haze = 0.10f,
+                blurRadius = 8.dp,
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(height),
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        navigation?.let {
+                            Box(
+                                Modifier
+                                    .padding(start = StylishTheme.dimensions.inlineSpacing),
+                            ) { it() }
+                        }
+                        Box(
+                            Modifier
+                                .weight(1f)
+                                .semantics { heading() },
+                            contentAlignment = Alignment.Center,
+                        ) { title() }
+                        actions?.let {
+                            Row(
+                                Modifier
+                                    .padding(end = StylishTheme.dimensions.inlineSpacing),
+                                horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
+                            ) { it() }
+                        }
+                    }
+                }
+            }
+        } else {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = shape,
@@ -200,6 +245,7 @@ public fun StylishHeader(
                     ) { it() }
                 }
             }
+        }
         }
     }
     }

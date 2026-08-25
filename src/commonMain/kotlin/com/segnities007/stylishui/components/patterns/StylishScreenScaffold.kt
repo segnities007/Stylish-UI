@@ -116,22 +116,6 @@ public fun StylishScreenScaffold(
             }
         }
 
-        // Bottom scrim: a translucent dark gradient makes the navigation-bar
-        // zone visibly distinct from full-bleed content on any theme —
-        // fading into the container color would be invisible (same color).
-        Spacer(
-            Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .height(64.dp)
-                .background(
-                    Brush.verticalGradient(
-                        0f to Color.Black.copy(alpha = 0f),
-                        1f to Color.Black.copy(alpha = 0.3f),
-                    ),
-                ),
-        )
-
         floatingActionButton?.let { fab ->
             Box(
                 Modifier

@@ -1,6 +1,8 @@
 package com.segnities007.stylishui.components.patterns
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,12 +15,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -29,9 +29,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.drop
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,23 +42,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
- * Scroll-direction state for [StylishModernScreen]. [visible] flips as soon
- * as the content list scrolls against the current direction (1px consumed
- * is enough) and auto-shows when the list returns to the top.
+ * Scroll-direction state for [StylishModernScreen]. [progress] tracks the
+ * finger 1:1 while scrolling (0 = shown, 1 = hidden) and settles to the
+ * nearest edge when the gesture or fling ends.
  */
 @Stable
-public class StylishScrollHideState internal constructor() {
-    public var visible: Boolean by mutableStateOf(true)
-        internal set
-    private var accumulated = 0f
+public class StylishScrollHideState internal constructor(
+    private val scope: CoroutineScope,
+) {
+    private val animatable = Animatable(0f)
+
+    /** 0f = fully shown, 1f = fully hidden. */
+    public val progress: Float get() = animatable.value
+
+    public val visible: Boolean get() = progress < 0.5f
 
     internal val connection = object : NestedScrollConnection {
         override fun onPostScroll(
@@ -65,35 +77,35 @@ public class StylishScrollHideState internal constructor() {
             source: NestedScrollSource,
         ): Offset {
             // Count only scroll the list actually consumed: overscroll
-            // attempts at the edges must not toggle visibility.
+            // attempts at the edges must not move the floating layer.
             if (consumed.y != 0f) {
-                accumulated += consumed.y
-                when {
-                    !visible && accumulated > 1f -> {
-                        visible = true
-                        accumulated = 0f
-                    }
-                    visible && accumulated < -1f -> {
-                        visible = false
-                        accumulated = 0f
-                    }
-                }
+                val target = (animatable.value - consumed.y / 120f).coerceIn(0f, 1f)
+                scope.launch { animatable.snapTo(target) }
             }
             return Offset.Zero
         }
+
+        override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+            animatable.animateTo(
+                if (animatable.value > 0.5f) 1f else 0f,
+                tween(200),
+            )
+            return Velocity.Zero
+        }
     }
 
-    /** Forces the floating layer back to visible. */
-    public fun show(): Unit {
-        visible = true
-        accumulated = 0f
+    /** Forces the floating layer back to visible (e.g. on page switch). */
+    public fun show() {
+        scope.launch { animatable.animateTo(0f, tween(200)) }
     }
 }
 
 /** Remembers a [StylishScrollHideState]. */
 @Composable
-public fun rememberStylishScrollHideState(): StylishScrollHideState =
-    remember { StylishScrollHideState() }
+public fun rememberStylishScrollHideState(): StylishScrollHideState {
+    val scope = rememberCoroutineScope()
+    return remember { StylishScrollHideState(scope) }
+}
 
 /** The side a floating layer exits toward when hidden. */
 public enum class StylishSlideDirection { DOWN, UP }
@@ -110,7 +122,7 @@ public fun StylishScrollHideVisibility(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    AnimatedVisibility(
+    androidx.compose.animation.AnimatedVisibility(
         visible = visible,
         modifier = modifier,
         enter = fadeIn(tween(200)) +
@@ -130,18 +142,17 @@ public fun StylishScrollHideVisibility(
  * The modern full-screen page: a floating pinned header, a full-bleed lazy
  * content list, and floating overlays — with the scroll behavior built in.
  *
- * iOS-style scroll behavior:
- * - scrolling down slides the header and floating layers out 1:1 with the
- *   finger,
- * - any upward scroll brings them back,
- * - the floating layer is always visible while the list is at the top
- *   (including rubber-band bounce), and after navigation or pager page
- *   switches.
- * A hidden state can therefore never strand the user.
+ * The header height is measured synchronously (SubcomposeLayout) and
+ * applied as the list's initial top content padding, so content starts
+ * clear of the header and scrolls behind it.
  *
- * The header height is measured and applied as the list's initial top
- * content padding, so content starts clear of the header and scrolls
- * behind it. The status-bar zone is tinted with [statusBarScrimColor].
+ * iOS-style scroll behavior: scrolling down slides the header and floating
+ * layers out proportionally to the finger; any upward scroll brings them
+ * back; the floating layer is always visible while the list is at the top
+ * (including rubber-band bounce) and after pager page switches.
+ *
+ * The status-bar zone is tinted with [statusBarScrimColor] while content
+ * scrolls beneath the floating layers (automatic scroll edge effect).
  *
  * @param header Floating pinned top content. The scaffold owns the
  *   status-bar inset; header content must not add its own.
@@ -178,13 +189,28 @@ public fun StylishModernScreen(
     floatingActionButton: (@Composable () -> Unit)? = null,
     content: LazyListScope.() -> Unit,
 ) {
-    // iOS-style rule: the floating layer is ALWAYS visible while the list
-    // sits at the top (contentOffset <= 0). This also restores it after
-    // navigation/pager switches, where a hidden shared state could
-    // otherwise never receive an upward consumed scroll again.
+    // Largest header height ever measured. rememberSaveable so a pager-
+    // disposed and recreated page starts with the last known clearance.
+    val headerHeightPx = androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableIntStateOf(0) }
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val slideDistancePx = with(density) { 140.dp.toPx() }
+
+    // 0f = shown, 1f = hidden. Tracks the finger 1:1 via nested scroll and
+    // settles to the nearest edge when the gesture/fling ends.
+    val slide = remember(scrollHideState) { Animatable(0f) }
+    LaunchedEffect(slide, scrollHideState) {
+        snapshotFlow { scrollHideState.progress }.collect { target ->
+            if (slide.targetValue != target) {
+                slide.animateTo(target, tween(220))
+            }
+        }
+    }
+
+    // iOS-style guarantee: always visible while the list is at the top
+    // (also restores visibility after pager page switches).
     var atTop by androidx.compose.runtime.mutableStateOf(true)
-    LaunchedEffect(listState, scrollHideState) {
-        androidx.compose.runtime.snapshotFlow {
+    LaunchedEffect(listState) {
+        snapshotFlow {
             listState.firstVisibleItemIndex == 0 &&
                 listState.firstVisibleItemScrollOffset == 0
         }.collect { top ->
@@ -193,21 +219,13 @@ public fun StylishModernScreen(
         }
     }
 
-    // Automatic scroll edge effect (iOS scrollEdgeEffectStyle(.automatic)):
-    // the scrim over the header zone is transparent at the top edge and
-    // fades in as content scrolls beneath the floating layers.
-    val edgeProgress by androidx.compose.animation.core.animateFloatAsState(
+    // Automatic scroll edge effect: transparent at the top edge, fades in
+    // as content scrolls beneath the floating layers.
+    val edgeProgress by animateFloatAsState(
         targetValue = if (atTop) 0f else 1f,
         animationSpec = tween(200),
         label = "scrollEdge",
     )
-
-    val headerVisible = !hideOnScroll || scrollHideState.visible
-    val floatingVisible = !hideOnScroll || scrollHideState.visible
-    // rememberSaveable: survives pager page disposal, so a recreated
-    // page starts with the last known header clearance instead of 0.
-    val headerHeightPx = androidx.compose.runtime.saveable.rememberSaveable { mutableIntStateOf(0) }
-    val density = androidx.compose.ui.platform.LocalDensity.current
 
     Box(
         modifier
@@ -216,19 +234,65 @@ public fun StylishModernScreen(
             .nestedScroll(scrollHideState.connection)
             .stylishTestTag("modern_screen"),
     ) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                start = horizontalContentPadding,
-                end = horizontalContentPadding,
-                top = with(density) { headerHeightPx.intValue.toDp() } + 8.dp,
-                bottom = bottomContentPadding,
-            ),
-            content = content,
-        )
+        SubcomposeLayout { constraints ->
+            val loose = Constraints(maxWidth = constraints.maxWidth)
 
-        // Status-bar tint strip (kept under the header layer).
+            // Header: slides UP as progress grows. Measured synchronously so
+            // the content's top clearance is correct from the first frame.
+            val headerPlaceables = subcompose("header") {
+                val slideOffset = -(scrollHideState.progress * slideDistancePx)
+                Box(Modifier.offset(y = with(this@SubcomposeLayout) { slideOffset.toDp() })) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .onSizeChanged { size ->
+                                if (size.height > headerHeightPx.intValue) {
+                                    headerHeightPx.intValue = size.height
+                                }
+                            },
+                    ) {
+                        Spacer(Modifier.statusBarsPadding())
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = StylishTheme.dimensions.screenPadding,
+                                    vertical = 8.dp,
+                                ),
+                        ) {
+                            header()
+                        }
+                    }
+                }
+            }.map { it.measure(loose) }
+
+            val headerHeight = headerPlaceables.maxOf { it.height }
+            val headerHeightDp = with(this@SubcomposeLayout) { headerHeight.toDp() }
+
+            val contentPlaceables = subcompose("content") {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    // Measured header height keeps the first card clear at
+                    // rest; scrolled items flow behind the floating header.
+                    contentPadding = PaddingValues(
+                        start = horizontalContentPadding,
+                        end = horizontalContentPadding,
+                        top = headerHeightDp + 8.dp,
+                        bottom = bottomContentPadding,
+                    ),
+                    content = content,
+                )
+            }.map { it.measure(constraints) }
+
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                contentPlaceables.forEach { it.place(0, 0) }
+                headerPlaceables.forEach { it.place(0, 0) }
+            }
+        }
+
+        // Status-bar tint strip: appears only while scrolled (automatic
+        // scroll edge effect).
         Box(
             Modifier
                 .align(Alignment.TopCenter)
@@ -241,73 +305,35 @@ public fun StylishModernScreen(
                 .statusBarsPadding(),
         )
 
-        // Floating pinned header. onSizeChanged keeps the LARGEST measured
-        // height so the content's clearance never collapses while the
-        // header slides away.
-        StylishScrollHideVisibility(
-            visible = headerVisible,
-            direction = StylishSlideDirection.UP,
-            modifier = Modifier.align(Alignment.TopCenter),
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    // Soft scroll edge effect (iOS scrollEdgeEffectStyle(.soft)):
-                    // transparent at the top edge, fades in as content scrolls
-                    // beneath the floating header so the title stays legible.
-                    .background(
-                        androidx.compose.ui.graphics.Brush.verticalGradient(
-                            0f to containerColor.copy(alpha = 0.9f * edgeProgress),
-                            1f to containerColor.copy(alpha = 0f),
-                        ),
-                    )
-                    .onSizeChanged { size ->
-                        if (size.height > headerHeightPx.intValue) {
-                            headerHeightPx.intValue = size.height
-                        }
-                    },
-            ) {
-                Spacer(Modifier.statusBarsPadding())
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = StylishTheme.dimensions.screenPadding,
-                            vertical = 8.dp,
-                        )
-                        // The scaffold already cleared the status bar above;
-                        // consume the inset so self-insetting headers
-                        // (StylishHeader) don't add it a second time.
-                        .consumeWindowInsets(
-                            androidx.compose.foundation.layout.WindowInsets.statusBars,
-                        ),
-                ) {
-                    header()
-                }
-            }
-        }
-
         floatingBottomCenter?.let { overlay ->
-            StylishScrollHideVisibility(
-                visible = floatingVisible,
-                direction = StylishSlideDirection.DOWN,
-                modifier = Modifier
+            val slideOffset by animateDpAsState(
+                targetValue = with(density) { 140.dp * scrollHideState.progress },
+                animationSpec = tween(220),
+                label = "bottomSlide",
+            )
+            Box(
+                Modifier
                     .align(Alignment.BottomCenter)
                     .navigationBarsPadding()
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = 24.dp)
+                    .offset(y = slideOffset),
             ) {
                 overlay()
             }
         }
 
         floatingActionButton?.let { fab ->
-            StylishScrollHideVisibility(
-                visible = floatingVisible,
-                direction = StylishSlideDirection.DOWN,
-                modifier = Modifier
+            val fabSlide by animateDpAsState(
+                targetValue = with(density) { 160.dp * scrollHideState.progress },
+                animationSpec = tween(220),
+                label = "fabSlide",
+            )
+            Box(
+                Modifier
                     .align(Alignment.BottomEnd)
                     .navigationBarsPadding()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .offset(y = fabSlide),
             ) {
                 fab()
             }
@@ -315,6 +341,7 @@ public fun StylishModernScreen(
     }
 }
 
+@Preview(name = "Stylish modern screen", showBackground = true, widthDp = 393, heightDp = 700)
 @Composable
 private fun StylishModernScreenPreview() {
     MaterialTheme {
@@ -323,33 +350,9 @@ private fun StylishModernScreenPreview() {
             floatingBottomCenter = { Text("indicator") },
         ) {
             items(20) { index ->
-                Text(
-                    "項目 $index",
-                    modifier = Modifier.padding(vertical = 8.dp),
-                )
+                Text("項目 $index", modifier = Modifier.padding(vertical = 8.dp))
             }
         }
     }
 }
 
-@Preview(name = "Stylish scroll hide visibility", showBackground = true, widthDp = 200)
-@Composable
-private fun StylishScrollHideVisibilityPreview() {
-    StylishTheme(darkTheme = false) {
-        StylishScrollHideVisibility(
-            visible = true,
-            direction = StylishSlideDirection.DOWN,
-        ) {
-            Text("floating content", modifier = Modifier.padding(12.dp))
-        }
-    }
-}
-
-@Preview(name = "Remember stylish scroll hide state", showBackground = true, widthDp = 200)
-@Composable
-private fun RememberStylishScrollHideStatePreview() {
-    StylishTheme(darkTheme = false) {
-        val state = rememberStylishScrollHideState()
-        Text("visible = ${state.visible}", modifier = Modifier.padding(12.dp))
-    }
-}

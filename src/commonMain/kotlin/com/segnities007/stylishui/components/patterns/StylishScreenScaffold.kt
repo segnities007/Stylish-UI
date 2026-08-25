@@ -3,6 +3,9 @@ package com.segnities007.stylishui.components.patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +44,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * full-bleed from pixel zero.
  *
  * @param header Pinned floating top content (title, navigation, actions).
+ *   The scaffold owns the status-bar inset: it clears and consumes it, so
+ *   header content must not add its own top status-bar padding.
  * @param modifier Modifier applied to the root.
  * @param containerColor Page background, also used for the header scrim.
  * @param floatingBottomCenter Optional overlay anchored to the bottom center
@@ -78,16 +83,20 @@ public fun StylishScreenScaffold(
                             ),
                         ),
                 ) {
-                    // No status-bar spacer here: headers such as
-                    // StylishHeader consume the status-bar inset themselves.
-                    // Adding one would push the header a full bar too low.
+                    // The scaffold OWNS the status-bar inset: it pads here
+                    // and marks the inset consumed, so self-insetting
+                    // headers (StylishHeader et al.) resolve zero remaining
+                    // inset instead of double-padding. Separation of
+                    // concerns: placement lives here, looks live in the
+                    // header slot.
                     Box(
                         Modifier
                             .fillMaxWidth()
                             .padding(
                                 horizontal = StylishTheme.dimensions.screenPadding,
                                 vertical = 8.dp,
-                            ),
+                            )
+                            .consumeWindowInsets(WindowInsets.statusBars),
                     ) {
                         header()
                     }

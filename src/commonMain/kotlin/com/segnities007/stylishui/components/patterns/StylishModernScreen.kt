@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -260,6 +262,12 @@ public fun StylishModernScreen(
                         .padding(
                             horizontal = StylishTheme.dimensions.screenPadding,
                             vertical = 8.dp,
+                        )
+                        // The scaffold already cleared the status bar above;
+                        // consume the inset so self-insetting headers
+                        // (StylishHeader) don't add it a second time.
+                        .consumeWindowInsets(
+                            androidx.compose.foundation.layout.WindowInsets.statusBars,
                         ),
                 ) {
                     header()

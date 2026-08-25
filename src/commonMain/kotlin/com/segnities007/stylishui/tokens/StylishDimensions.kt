@@ -99,7 +99,7 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 public data class StylishDimensions(
-    public val connectedSpacing: Dp = 3.dp,
+    public val connectedSpacing: Dp = 4.dp,
     public val outlineWidth: Dp = 0.4.dp,
     public val interactiveElevation: Dp = 1.dp,
     public val focusedElevation: Dp = 1.dp,

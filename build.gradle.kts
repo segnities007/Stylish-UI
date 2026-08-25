@@ -350,6 +350,8 @@ kotlin {
 
         androidMain.dependencies {
             // Android-specific dependencies are kept here.
+            // @Preview のレンダリングに必要(ui-tooling-preview はアノテーションのみ)
+            implementation(libs.compose.multiplatform.ui.tooling)
         }
 
         jvmMain.dependencies {

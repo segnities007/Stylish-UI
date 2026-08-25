@@ -22,6 +22,7 @@ compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", v
 compose-ui = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "composeMultiplatform" }
 compose-ui-test = { group = "org.jetbrains.compose.ui", name = "ui-test", version.ref = "composeMultiplatform" }
 compose-multiplatform-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "composeMultiplatform" }
+compose-multiplatform-ui-tooling = { group = "org.jetbrains.compose.ui", name = "ui-tooling", version.ref = "composeMultiplatform" }
 compose-ui-util = { group = "org.jetbrains.compose.ui", name = "ui-util", version.ref = "composeMultiplatform" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }

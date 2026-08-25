@@ -204,7 +204,9 @@ public fun StylishModernScreen(
 
     val headerVisible = !hideOnScroll || scrollHideState.visible
     val floatingVisible = !hideOnScroll || scrollHideState.visible
-    val headerHeightPx = remember { mutableIntStateOf(0) }
+    // rememberSaveable: survives pager page disposal, so a recreated
+    // page starts with the last known header clearance instead of 0.
+    val headerHeightPx = androidx.compose.runtime.saveable.rememberSaveable { mutableIntStateOf(0) }
     val density = androidx.compose.ui.platform.LocalDensity.current
 
     Box(

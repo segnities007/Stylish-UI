@@ -92,7 +92,7 @@ public fun StylishScaffold(
         // Largest header height ever measured. Kept stable while the header
         // slides away (AnimatedVisibility shrinks it to zero) so the
         // content's top clearance does not collapse mid-animation.
-        var headerHeightPx by androidx.compose.runtime.mutableIntStateOf(0)
+        var headerHeightPx by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableIntStateOf(0) }
 
         SubcomposeLayout { constraints ->
             val loose = Constraints(maxWidth = constraints.maxWidth)

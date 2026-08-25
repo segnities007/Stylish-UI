@@ -116,9 +116,9 @@ public fun StylishScreenScaffold(
             }
         }
 
-        // Bottom scrim: scrolled content fades into the container color
-        // across the navigation-bar zone instead of colliding with the
-        // gesture pill / cutout.
+        // Bottom scrim: a translucent dark gradient makes the navigation-bar
+        // zone visibly distinct from full-bleed content on any theme —
+        // fading into the container color would be invisible (same color).
         Spacer(
             Modifier
                 .align(Alignment.BottomCenter)
@@ -126,8 +126,8 @@ public fun StylishScreenScaffold(
                 .height(64.dp)
                 .background(
                     Brush.verticalGradient(
-                        0f to containerColor.copy(alpha = 0f),
-                        1f to containerColor,
+                        0f to Color.Black.copy(alpha = 0f),
+                        1f to Color.Black.copy(alpha = 0.3f),
                     ),
                 ),
         )

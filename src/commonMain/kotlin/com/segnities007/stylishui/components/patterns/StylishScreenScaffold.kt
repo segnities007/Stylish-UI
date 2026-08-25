@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -114,6 +115,22 @@ public fun StylishScreenScaffold(
                 headerPlaceables.forEach { it.place(0, 0) }
             }
         }
+
+        // Bottom scrim: scrolled content fades into the container color
+        // across the navigation-bar zone instead of colliding with the
+        // gesture pill / cutout.
+        Spacer(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(64.dp)
+                .background(
+                    Brush.verticalGradient(
+                        0f to containerColor.copy(alpha = 0f),
+                        1f to containerColor,
+                    ),
+                ),
+        )
 
         floatingActionButton?.let { fab ->
             Box(

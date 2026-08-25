@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.unit.Constraints
@@ -76,20 +75,21 @@ public fun StylishScreenScaffold(
         SubcomposeLayout { constraints ->
             val loose = Constraints(maxWidth = constraints.maxWidth)
             val headerPlaceables = subcompose("header") {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        // Option A: a visibly distinct band in a raised
-                        // surface tone, with soft bottom corners matching
-                        // the floating design language.
-                        .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
-                ) {
-                    // The scaffold OWNS the status-bar inset: it clears the
-                    // bar here (padding) and then marks the inset consumed,
-                    // so self-insetting headers (StylishHeader et al.)
-                    // resolve zero remaining inset instead of double-padding.
-                    Spacer(Modifier.statusBarsPadding())
+                Column {
+                    // A thin strip in a raised surface tone so the status bar
+                    // reads as a distinct band instead of blending into the
+                    // page background.
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+                            .statusBarsPadding(),
+                    )
+
+                    // The scaffold owns the status-bar inset: it cleared the
+                    // bar above and marks the inset consumed, so self-
+                    // insetting headers (StylishHeader et al.) resolve zero
+                    // remaining inset instead of double-padding.
                     Box(
                         Modifier
                             .fillMaxWidth()

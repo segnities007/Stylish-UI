@@ -3123,16 +3123,16 @@ public final class com/segnities007/stylishui/components/patterns/ComposableSing
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/patterns/ComposableSingletons$StylishModernScreenKt;
 	public fun <init> ()V
 	public final fun getLambda$-1157590129$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1203096447$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-1240404726$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1497124240$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1650716793$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-2140921245$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-441754650$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-57050472$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-947402750$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1102490108$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1116929474$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$1395492084$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$882746368$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/segnities007/stylishui/components/patterns/ComposableSingletons$StylishPageContentKt {
@@ -3229,7 +3229,7 @@ public final class com/segnities007/stylishui/components/patterns/StylishHeaderK
 }
 
 public final class com/segnities007/stylishui/components/patterns/StylishModernScreenKt {
-	public static final fun StylishModernScreen-VTd60F4 (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJZLcom/segnities007/stylishui/components/patterns/StylishScrollHideState;Landroidx/compose/foundation/lazy/LazyListState;FFLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishModernScreen-2Ro-qBE (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJZLcom/segnities007/stylishui/components/patterns/StylishScrollHideState;Landroidx/compose/foundation/lazy/LazyListState;FFLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 	public static final fun StylishScrollHideVisibility (ZLcom/segnities007/stylishui/components/patterns/StylishSlideDirection;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberStylishScrollHideState (Landroidx/compose/runtime/Composer;I)Lcom/segnities007/stylishui/components/patterns/StylishScrollHideState;
 }

@@ -414,6 +414,53 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
         },
     ),
     DemoComponent(
+        name = "Modern screen scroll page",
+        category = DemoCategory.Patterns,
+        code = """StylishModernScreen(
+    header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+    floatingBottomCenter = { IndicatorPill() },
+    floatingActionButton = { Fab() },
+) {
+    items(20) { index -> Card("項目 $index") }
+}""",
+        preview = {
+            StylishModernScreen(
+                header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+            ) {
+                items(8) { index ->
+                    Text(
+                        "項目 $index",
+                        modifier = androidx.compose.ui.Modifier.padding(vertical = 8.dp),
+                    )
+                }
+            }
+        },
+    ),
+    DemoComponent(
+        name = "Scroll hide visibility",
+        category = DemoCategory.Patterns,
+        code = """StylishScrollHideVisibility(
+    visible = scrollHideState.visible,
+    direction = StylishSlideDirection.DOWN,
+) { FloatingPill() }""",
+        preview = {
+            StylishScrollHideVisibility(
+                visible = true,
+                direction = StylishSlideDirection.DOWN,
+            ) {
+                Surface(
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                ) {
+                    Text(
+                        "floating",
+                        modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    )
+                }
+            }
+        },
+    ),
+    DemoComponent(
         name = "Adaptive navigation scaffold",
         category = DemoCategory.Patterns,
         code = """StylishAdaptiveNavigation(

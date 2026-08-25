@@ -76,9 +76,14 @@ public fun StylishScreenScaffold(
             val loose = Constraints(maxWidth = constraints.maxWidth)
             val headerPlaceables = subcompose("header") {
                 Column {
-                    // Fully transparent: the status bar floats over
-                    // full-bleed content like the rest of the design.
-                    Spacer(Modifier.statusBarsPadding())
+                    // Subtle scrim: keeps the status-bar zone readable
+                    // without hiding the content behind it.
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(Color.Black.copy(alpha = 0.1f))
+                            .statusBarsPadding(),
+                    )
 
                     // The scaffold owns the status-bar inset: it cleared the
                     // bar above and marks the inset consumed, so self-

@@ -11,19 +11,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
@@ -81,24 +77,19 @@ public fun StylishFrostedGlassSurface(
                 backdrop?.invoke(this@Box)
             }
         } else {
-            // 1') 動的モード: 録画済み背景を自分の位置に合わせて再生し、ぼかす。
-            var effectPos by remember { mutableStateOf(Offset.Zero) }
+            // 1') 動的モード: 録画済み背景を自分の位置に合わせて再生する。
+            // ぼかしは外側の Modifier.blur が担当。録画完了時に効果ノードへ
+            // 直接 invalidateDraw されるため、描画フェーズ中の状態書き込みはない。
+            val density = LocalDensity.current
             Box(
                 Modifier
                     .matchParentSize()
-                    .onGloballyPositioned { effectPos = it.positionInRoot() }
                     .clip(shape)
                     .blur(blurRadius)
-                    .drawBehind {
-                        // revision を読んで依存登録: ソースが再録画したら再描画される
-                        glassState.revision.intValue
-                        for (area in glassState.areas) {
-                            val p = area.position.value
-                            translate(p.x - effectPos.x, p.y - effectPos.y) {
-                                area.layer?.let(::drawLayer)
-                            }
-                        }
-                    },
+                    .stylishGlassEffect(
+                        state = glassState,
+                        blurRadiusPx = with(density) { blurRadius.toPx() },
+                    ),
             )
         }
 

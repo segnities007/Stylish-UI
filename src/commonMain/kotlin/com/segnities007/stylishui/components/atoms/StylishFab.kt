@@ -156,6 +156,7 @@ public fun StylishFab(
     iconContent: (@Composable () -> Unit)? = null,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
     backdrop: (@Composable BoxScope.() -> Unit)? = null,
+    glassState: StylishGlassState? = null,
 ) {
     val resolvedSize = size ?: when (sizeVariant) {
         StylishFabSize.Small -> StylishTheme.dimensions.fabSmallSize
@@ -183,11 +184,11 @@ public fun StylishFab(
                 .size(resolvedSize)
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
-        color = if (backdrop != null) Color.Transparent else {
+        color = if (backdrop != null || glassState != null) Color.Transparent else {
             containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh
         },
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
-        border = if (backdrop != null) {
+        border = if (backdrop != null || glassState != null) {
             null
         } else {
             border ?: BorderStroke(
@@ -195,13 +196,14 @@ public fun StylishFab(
                 MaterialTheme.colorScheme.outlineVariant,
             )
         },
-        tonalElevation = if (backdrop != null) 0.dp else tonalElevation,
+        tonalElevation = if (backdrop != null || glassState != null) 0.dp else tonalElevation,
         shadowElevation = resolvedShadowElevation,
     ) {
-        if (backdrop != null) {
+        if (backdrop != null || glassState != null) {
             // 磨りガラス FAB: 円形のすりガラス面にアイコンを載せる。
             StylishFrostedGlassSurface(
-                backdrop = backdrop,
+                backdrop = backdrop ?: {},
+                glassState = glassState,
                 modifier = Modifier.size(resolvedSize),
                 shape = resolvedShape,
             ) {

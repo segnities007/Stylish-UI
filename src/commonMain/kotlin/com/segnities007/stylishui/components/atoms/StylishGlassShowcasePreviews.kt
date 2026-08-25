@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -380,6 +382,116 @@ private fun ShowFrostedFabDarkPreview() {
                         }
                     })
                 }
+            }
+        }
+    }
+}
+
+// 動的すりガラス(stylishGlassSource 録画方式) -------------------------------
+
+@Preview(name = "Live ground glass / light", showBackground = true, widthDp = 400, heightDp = 420)
+@Composable
+private fun ShowLiveGlassLightPreview() {
+    StylishTheme(darkTheme = false) {
+        val state = remember { StylishGlassState() }
+        Box(Modifier.fillMaxWidth().height(400.dp)) {
+            // 背景(ソース): スクロールするリスト
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .stylishGlassSource(state),
+            ) {
+                repeat(12) { i ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Box(
+                            Modifier
+                                .size(36.dp)
+                                .background(
+                                    listOf(Color(0xFFD7003A), Color(0xFF165E83), Color(0xFF6B8E3A))[i % 3],
+                                    androidx.compose.foundation.shape.CircleShape,
+                                ),
+                        )
+                        Text(
+                            "アイテム " + i,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(start = 14.dp),
+                        )
+                    }
+                }
+            }
+
+            // フローティング ヘッダー(動的すりガラス)
+            StylishFrostedGlassSurface(
+                glassState = state,
+                modifier = Modifier.fillMaxWidth(),
+                tint = Color.White.copy(alpha = 0.05f),
+                haze = 0.16f,
+                blurRadius = 13.dp,
+            ) {
+                Text(
+                    "磨りガラス ヘッダー",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 14.dp),
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "Live ground glass / dark", showBackground = true, widthDp = 400, heightDp = 420)
+@Composable
+private fun ShowLiveGlassDarkPreview() {
+    StylishTheme(darkTheme = true) {
+        val state = remember { StylishGlassState() }
+        Box(Modifier.fillMaxWidth().height(400.dp)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .stylishGlassSource(state),
+            ) {
+                repeat(12) { i ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Box(
+                            Modifier
+                                .size(36.dp)
+                                .background(
+                                    listOf(Color(0xFFD7003A), Color(0xFF165E83), Color(0xFF6B8E3A))[i % 3],
+                                    androidx.compose.foundation.shape.CircleShape,
+                                ),
+                        )
+                        Text(
+                            "アイテム " + i,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(start = 14.dp),
+                        )
+                    }
+                }
+            }
+
+            StylishFrostedGlassSurface(
+                glassState = state,
+                modifier = Modifier.fillMaxWidth(),
+                tint = Color.White.copy(alpha = 0.05f),
+                haze = 0.16f,
+                blurRadius = 13.dp,
+            ) {
+                Text(
+                    "磨りガラス ヘッダー",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 14.dp),
+                )
             }
         }
     }

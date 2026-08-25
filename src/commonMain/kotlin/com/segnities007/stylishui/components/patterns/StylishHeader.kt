@@ -126,6 +126,7 @@ public fun StylishHeader(
     glass: Boolean = false,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
     backdrop: (@Composable BoxScope.() -> Unit)? = null,
+    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()
     AnimatedVisibility(
@@ -140,10 +141,11 @@ public fun StylishHeader(
                 .windowInsetsPadding(windowInsets)
                 .padding(top = topPadding, bottom = bottomPadding),
         ) {
-        if (backdrop != null) {
+        if (backdrop != null || glassState != null) {
             // 磨りガラス ヘッダー: backdrop を下敷きにすりガラス面を作る。
             StylishFrostedGlassSurface(
-                backdrop = backdrop,
+                backdrop = backdrop ?: {},
+                glassState = glassState,
                 modifier = Modifier.fillMaxWidth(),
                 shape = shape,
                 tint = Color.White.copy(alpha = 0.05f),

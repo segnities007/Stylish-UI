@@ -85,7 +85,7 @@ public fun StylishScreenScaffold(
                             // Dark + translucent: system icons stay
                             // readable while scrolled content remains
                             // visible behind them, on any theme.
-                            .background(Color.Black.copy(alpha = 0.3f))
+                            .background(Color.Black.copy(alpha = 0.15f))
                             .statusBarsPadding(),
                     )
 

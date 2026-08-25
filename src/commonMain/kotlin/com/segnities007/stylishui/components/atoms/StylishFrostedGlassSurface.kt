@@ -46,6 +46,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param tint ガラスの着色。白系なら明るく、墨系なら暗い色味になる。
  * @param haze 白濁ミルク層の強さ。大きいほど乳白に曇る(すりガラス度)。
  * @param blurRadius 背景のぼかし半径。小さいほど背景が透ける。
+ * @param borderColor ヘアライン ボーダーの色。
  * @param content Content placed inside the glass.
  */
 @Composable
@@ -57,6 +58,7 @@ public fun StylishFrostedGlassSurface(
     tint: Color = Color.White.copy(alpha = 0.02f),
     haze: Float = 0.06f,
     blurRadius: Dp = 5.dp,
+    borderColor: Color = Color.White.copy(alpha = 0.35f),
     content: @Composable BoxScope.() -> Unit,
 ) {
     val liveMode = glassState != null && isGlassBlurSupported()
@@ -122,7 +124,7 @@ public fun StylishFrostedGlassSurface(
                 .matchParentSize()
                 .border(
                     width = StylishTheme.dimensions.outlineWidth,
-                    color = Color.White.copy(alpha = 0.35f),
+                    color = borderColor,
                     shape = shape,
                 ),
         )

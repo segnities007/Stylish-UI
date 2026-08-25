@@ -143,6 +143,8 @@ public fun StylishHeader(
         ) {
         if (backdrop != null || glassState != null) {
             // 磨りガラス ヘッダー: backdrop を下敷きにすりガラス面を作る。
+            // ライト モードでも輪郭と面が分かるようテーマ連動させる
+            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
             StylishFrostedGlassSurface(
                 backdrop = backdrop ?: {},
                 glassState = glassState,
@@ -150,9 +152,18 @@ public fun StylishHeader(
                 // サイズは modifier で確定させる必要がある(高さ0防止)。
                 modifier = Modifier.fillMaxWidth().height(height),
                 shape = shape,
-                tint = Color.White.copy(alpha = 0.05f),
+                tint = if (isDark) {
+                    containerColor.copy(alpha = 0.55f)
+                } else {
+                    Color.White.copy(alpha = 0.70f)
+                },
                 haze = 0.10f,
                 blurRadius = 8.dp,
+                borderColor = if (isDark) {
+                    Color.White.copy(alpha = 0.35f)
+                } else {
+                    Color.Black.copy(alpha = 0.15f)
+                },
             ) {
                 Box(
                     Modifier

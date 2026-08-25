@@ -84,8 +84,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param actionsSpacing Horizontal gap between items inside the [actions]
  *   slot. Defaults to [StylishTheme.dimensions.inlineSpacing].
  * @param windowInsets [WindowInsets] consumed above the surface via
- *   [Modifier.windowInsetsPadding], typically the status-bar insets.
- *   Defaults to [WindowInsets.statusBars] so the bar clears the system
+ *   [Modifier.windowInsetsPadding]. Defaults to zero — status-bar
+ *   clearance is provided by the container (StylishScaffold /
+ *   StylishModernScreen). Pass [WindowInsets.statusBars] only when the
+ *   header is used WITHOUT such a container
  *   status area.
  *
  * @see StylishScaffold
@@ -110,7 +112,10 @@ public fun StylishHeader(
     topPadding: Dp = StylishTheme.dimensions.itemSpacing,
     bottomPadding: Dp = StylishTheme.dimensions.contentSpacing,
     actionsSpacing: Dp = StylishTheme.dimensions.inlineSpacing,
-    windowInsets: WindowInsets = WindowInsets.statusBars,
+    // Status-bar clearance is the CONTAINER's responsibility
+    // (StylishScaffold / StylishModernScreen provide it). Pass a real
+    // inset here only when the header is used without such a container.
+    windowInsets: WindowInsets = WindowInsets(0.dp),
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()

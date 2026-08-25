@@ -251,6 +251,8 @@ public fun StylishModernScreen(
                                 }
                             },
                     ) {
+                        // The scaffold owns the status-bar clearance
+                        // (B-style inset ownership).
                         Spacer(Modifier.statusBarsPadding())
                         Box(
                             Modifier

@@ -22,6 +22,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.foundation.stylishTestTag
@@ -69,7 +70,37 @@ public fun StylishBottomAppBar(
     tonalElevation: Dp = BottomAppBarDefaults.ContainerElevation,
     contentPadding: PaddingValues = BottomAppBarDefaults.ContentPadding,
     windowInsets: WindowInsets = BottomAppBarDefaults.windowInsets,
+    glass: Boolean = false,
+    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
 ) {
+    // 磨りガラス モード: テーマ連動ティント+outlineVariant ヘアライン。
+    // glassState 指定時は録画済み背景を再生する本物のすりガラスになる。
+    if (glass || glassState != null) {
+        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+        com.segnities007.stylishui.components.atoms.StylishFrostedGlassSurface(
+            glassState = glassState,
+            modifier = modifier.stylishTestTag("bottom_app_bar"),
+            tint = if (isDark) {
+                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f)
+            } else {
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.60f)
+            },
+            haze = 0.08f,
+            blurRadius = 8.dp,
+            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.60f),
+        ) {
+            BottomAppBar(
+                actions = actions,
+                modifier = Modifier.matchParentSize(),
+                floatingActionButton = floatingActionButton,
+                containerColor = Color.Transparent,
+                contentColor = contentColor,
+                tonalElevation = 0.dp,
+                contentPadding = contentPadding,
+                windowInsets = windowInsets,
+            )
+        }
+    } else {
     BottomAppBar(
         actions = actions,
         modifier = modifier.stylishTestTag("bottom_app_bar"),
@@ -80,6 +111,7 @@ public fun StylishBottomAppBar(
         contentPadding = contentPadding,
         windowInsets = windowInsets,
     )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

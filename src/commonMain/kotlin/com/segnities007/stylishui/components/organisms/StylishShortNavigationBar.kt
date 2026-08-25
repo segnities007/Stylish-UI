@@ -21,6 +21,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import com.segnities007.stylishui.theme.StylishTheme
 
@@ -56,8 +60,36 @@ public fun StylishShortNavigationBar(
     contentColor: Color = ShortNavigationBarDefaults.contentColor,
     windowInsets: WindowInsets = ShortNavigationBarDefaults.windowInsets,
     arrangement: ShortNavigationBarArrangement = ShortNavigationBarDefaults.arrangement,
+    glass: Boolean = false,
+    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
     content: @Composable () -> Unit,
 ) {
+    // 磨りガラス モード: ヘッダーと同一パターン(テーマ連動ティント+ヘアライン)
+    if (glass || glassState != null) {
+        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+        com.segnities007.stylishui.components.atoms.StylishFrostedGlassSurface(
+            glassState = glassState,
+            modifier = modifier,
+            shape = androidx.compose.ui.graphics.RectangleShape,
+            tint = if (isDark) {
+                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f)
+            } else {
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.60f)
+            },
+            haze = 0.08f,
+            blurRadius = 8.dp,
+            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.60f),
+        ) {
+            ShortNavigationBar(
+                modifier = Modifier.matchParentSize(),
+                containerColor = Color.Transparent,
+                contentColor = contentColor,
+                windowInsets = WindowInsets(0.dp),
+                arrangement = arrangement,
+                content = content,
+            )
+        }
+    } else {
     ShortNavigationBar(
         modifier = modifier,
         containerColor = containerColor,
@@ -66,6 +98,7 @@ public fun StylishShortNavigationBar(
         arrangement = arrangement,
         content = content,
     )
+    }
 }
 
 /**

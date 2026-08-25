@@ -179,14 +179,25 @@ public fun StylishModernScreen(
     // sits at the top (contentOffset <= 0). This also restores it after
     // navigation/pager switches, where a hidden shared state could
     // otherwise never receive an upward consumed scroll again.
+    var atTop by androidx.compose.runtime.mutableStateOf(true)
     LaunchedEffect(listState, scrollHideState) {
         androidx.compose.runtime.snapshotFlow {
             listState.firstVisibleItemIndex == 0 &&
                 listState.firstVisibleItemScrollOffset == 0
-        }.collect { atTop ->
-            if (atTop) scrollHideState.show()
+        }.collect { top ->
+            atTop = top
+            if (top) scrollHideState.show()
         }
     }
+
+    // Automatic scroll edge effect (iOS scrollEdgeEffectStyle(.automatic)):
+    // the scrim over the header zone is transparent at the top edge and
+    // fades in as content scrolls beneath the floating layers.
+    val edgeProgress by androidx.compose.animation.core.animateFloatAsState(
+        targetValue = if (atTop) 0f else 1f,
+        animationSpec = tween(200),
+        label = "scrollEdge",
+    )
 
     val headerVisible = !hideOnScroll || scrollHideState.visible
     val floatingVisible = !hideOnScroll || scrollHideState.visible
@@ -217,7 +228,11 @@ public fun StylishModernScreen(
             Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .background(statusBarScrimColor)
+                .background(
+                    statusBarScrimColor.copy(
+                        alpha = statusBarScrimColor.alpha * edgeProgress,
+                    ),
+                )
                 .statusBarsPadding(),
         )
 
@@ -232,6 +247,12 @@ public fun StylishModernScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
+                    .background(
+                        androidx.compose.ui.graphics.Brush.verticalGradient(
+                            0f to containerColor.copy(alpha = 0.92f * edgeProgress),
+                            1f to containerColor.copy(alpha = 0f),
+                        ),
+                    )
                     .onSizeChanged { size ->
                         if (size.height > headerHeightPx.intValue) {
                             headerHeightPx.intValue = size.height

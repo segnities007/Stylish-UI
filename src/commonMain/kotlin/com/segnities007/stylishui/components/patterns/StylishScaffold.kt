@@ -15,6 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.Arrangement
+import com.segnities007.stylishui.components.atoms.StylishIconButton
+import com.segnities007.stylishui.components.atoms.StylishConnectedCard
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -177,13 +183,39 @@ public fun StylishScaffold(
 private fun StylishScaffoldPreview() {
     StylishTheme(darkTheme = false) {
         StylishScaffold(
-            header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+            header = {
+                StylishHeader(
+                    title = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
+                    navigation = {
+                        StylishIconButton(
+                            Icons.Filled.ArrowBack,
+                            "戻る",
+                            {},
+                        )
+                    },
+                    actions = {
+                        StylishIconButton(
+                            Icons.Filled.Settings,
+                            "設定",
+                            {},
+                        )
+                    },
+                )
+            },
         ) { headerHeight ->
-            Surface(
-                Modifier.padding(top = headerHeight).padding(horizontal = 20.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant,
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = headerHeight + 8.dp)
+                    .padding(horizontal = 20.dp),
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
             ) {
-                Text("フルブリードのコンテンツ", modifier = Modifier.padding(20.dp))
+                StylishConnectedCard(
+                    title = "カード 1",
+                    supportingText = "フルブリードのコンテンツ。スクロールするとヘッダーの後ろを流れます。",
+                )
+                StylishConnectedCard(title = "カード 2", supportingText = "本文テキスト")
+                StylishConnectedCard(title = "カード 3", supportingText = "本文テキスト")
             }
         }
     }

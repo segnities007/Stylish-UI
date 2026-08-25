@@ -42,6 +42,27 @@ private fun MediaBackdrop(modifier: Modifier = Modifier, content: @Composable ()
     Box(modifier.background(MediaBackground), contentAlignment = Alignment.Center) { content() }
 }
 
+
+/** ガラスの背後に置くカラフルなオブジェクト列(透明度確認用)。 */
+@Composable
+private fun BackdropObjects(modifier: Modifier = Modifier) {
+    Row(
+        modifier.padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(Modifier.size(44.dp).background(Color(0xFFD7003A), CircleShape))
+        Box(Modifier.size(44.dp).background(Color(0xFF165E83), RoundedCornerShape(10.dp)))
+        Box(Modifier.size(44.dp).background(Color(0xFFC9A86A), CircleShape))
+        Box(Modifier.size(44.dp).background(Color(0xFF6B8E3A), RoundedCornerShape(10.dp)))
+        Text(
+            "背景オブジェクト",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.padding(start = 4.dp),
+        )
+    }
+}
+
 @Composable
 private fun GlassLabel(text: String, modifier: Modifier = Modifier) {
     Text(text, modifier = modifier.padding(horizontal = 20.dp, vertical = 12.dp))
@@ -222,8 +243,12 @@ private fun JapaneseGlassSumiBackdropPreview() {
             "金箔 Kinpaku" to StylishJapaneseGlass.Kinpaku,
         )
         presets.forEach { (label, preset) ->
-            StylishGlassSurface(preset = preset) {
-                GlassLabel(label)
+            Box {
+                // 背後のオブジェクトが透けて見え、透明度が分かる
+                BackdropObjects(Modifier.matchParentSize())
+                StylishGlassSurface(preset = preset) {
+                    GlassLabel(label)
+                }
             }
         }
     }
@@ -247,8 +272,11 @@ private fun JapaneseGlassWashiBackdropPreview() {
             "紅 Beni" to StylishJapaneseGlass.Beni,
         )
         presets.forEach { (label, preset) ->
-            StylishGlassSurface(preset = preset) {
-                GlassLabel(label)
+            Box {
+                BackdropObjects(Modifier.matchParentSize())
+                StylishGlassSurface(preset = preset) {
+                    GlassLabel(label)
+                }
             }
         }
     }

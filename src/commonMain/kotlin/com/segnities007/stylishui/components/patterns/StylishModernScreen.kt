@@ -247,12 +247,6 @@ public fun StylishModernScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .background(
-                        androidx.compose.ui.graphics.Brush.verticalGradient(
-                            0f to containerColor.copy(alpha = 0.92f * edgeProgress),
-                            1f to containerColor.copy(alpha = 0f),
-                        ),
-                    )
                     .onSizeChanged { size ->
                         if (size.height > headerHeightPx.intValue) {
                             headerHeightPx.intValue = size.height

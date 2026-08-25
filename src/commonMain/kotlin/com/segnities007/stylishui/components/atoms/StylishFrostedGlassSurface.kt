@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
@@ -117,30 +116,13 @@ public fun StylishFrostedGlassSurface(
         // 3) ティント
         Box(Modifier.matchParentSize().clip(shape).background(tint))
 
-        // 4) シーン(左上からのハイライト)
-        Box(
-            Modifier
-                .matchParentSize()
-                .clip(shape)
-                .background(
-                    Brush.linearGradient(
-                        0f to Color.White.copy(alpha = 0.30f),
-                        0.45f to Color.Transparent,
-                        start = Offset.Zero,
-                        end = Offset.Infinite,
-                    ),
-                ),
-        )
-
-        // 5) ヘアライン ボーダー
+        // 5) ヘアライン ボーダー(単色)
         Box(
             Modifier
                 .matchParentSize()
                 .border(
                     width = StylishTheme.dimensions.outlineWidth,
-                    brush = Brush.linearGradient(
-                        listOf(Color.White.copy(alpha = 0.55f), Color.White.copy(alpha = 0.12f)),
-                    ),
+                    color = Color.White.copy(alpha = 0.35f),
                     shape = shape,
                 ),
         )

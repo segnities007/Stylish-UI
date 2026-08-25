@@ -49,7 +49,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   The scaffold owns the status-bar inset: it clears and consumes it, so
  *   header content must not add its own top status-bar padding.
  * @param modifier Modifier applied to the root.
- * @param containerColor Page background, also used for the header scrim.
+ * @param containerColor Page background.
+ * @param statusBarScrimColor Scrim drawn across the status-bar zone. The
+ *   scaffold owns this inset, so one value styles every screen consistently.
  * @param floatingBottomCenter Optional overlay anchored to the bottom center
  *   (e.g. a pager indicator pill), above the navigation-bar inset.
  * @param floatingActionButton Optional FAB anchored to the bottom end, above
@@ -62,6 +64,7 @@ public fun StylishScreenScaffold(
     modifier: Modifier = Modifier,
     header: @Composable () -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.background,
+    statusBarScrimColor: Color = Color.Black.copy(alpha = 0.1f),
     floatingBottomCenter: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
     content: @Composable (headerHeight: Dp) -> Unit,
@@ -81,7 +84,7 @@ public fun StylishScreenScaffold(
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .background(Color.Black.copy(alpha = 0.1f))
+                            .background(statusBarScrimColor)
                             .statusBarsPadding(),
                     )
 

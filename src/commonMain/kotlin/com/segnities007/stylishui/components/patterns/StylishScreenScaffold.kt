@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -79,7 +78,9 @@ public fun StylishScreenScaffold(
                             ),
                         ),
                 ) {
-                    Spacer(Modifier.statusBarsPadding())
+                    // No status-bar spacer here: headers such as
+                    // StylishHeader consume the status-bar inset themselves.
+                    // Adding one would push the header a full bar too low.
                     Box(
                         Modifier
                             .fillMaxWidth()

@@ -9,14 +9,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.rememberWindowState
 import androidx.compose.ui.window.application
 import com.segnities007.stylishui.catalog.StylishPlayground
 import com.segnities007.stylishui.theme.StylishTheme
 
 fun main() = application {
+    // Window に初期サイズを与えないとコンテンツが無限高さで測定され、
+    // Playground 内の LazyList がクラッシュする。
+    val windowState = rememberWindowState(width = 1280.dp, height = 860.dp)
     Window(
         onCloseRequest = ::exitApplication,
+        state = windowState,
         title = "Stylish UI - Official Website",
     ) {
         var darkTheme by remember { mutableStateOf(true) }

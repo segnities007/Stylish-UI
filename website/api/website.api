@@ -1,0 +1,14 @@
+public final class com/segnities007/stylishui/website/ComposableSingletons$MainKt {
+	public static final field INSTANCE Lcom/segnities007/stylishui/website/ComposableSingletons$MainKt;
+	public fun <init> ()V
+	public final fun getLambda$-1095709050$Stylish_UI_website ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1766974616$Stylish_UI_website ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-291080403$Stylish_UI_website ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1851606424$Stylish_UI_website ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/segnities007/stylishui/website/MainKt {
+	public static final fun main ()V
+	public static synthetic fun main ([Ljava/lang/String;)V
+}
+

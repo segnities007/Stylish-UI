@@ -72,6 +72,23 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
         },
     ),
     DemoComponent(
+        name = "Glass surface",
+        category = DemoCategory.Patterns,
+        code = """StylishGlassSurface {
+    Text("ガラス風コンテンツ", modifier = Modifier.padding(16.dp))
+}""",
+        preview = {
+            Box(Modifier.padding(20.dp)) {
+                StylishGlassSurface {
+                    Text(
+                        "ガラス風サーフェス",
+                        modifier = androidx.compose.ui.Modifier.padding(16.dp),
+                    )
+                }
+            }
+        },
+    ),
+    DemoComponent(
         name = "Scaffold",
         category = DemoCategory.Patterns,
         code = """StylishScaffold(

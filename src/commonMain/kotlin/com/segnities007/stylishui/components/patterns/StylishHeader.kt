@@ -140,24 +140,30 @@ public fun StylishHeader(
             tonalElevation = tonalElevation,
             shadowElevation = shadowElevation,
         ) {
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(height),
-                contentAlignment = Alignment.Center,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(Modifier.semantics { heading() }) { title() }
                 navigation?.let {
                     Box(
                         Modifier
-                            .align(Alignment.CenterStart)
                             .padding(start = StylishTheme.dimensions.inlineSpacing)
                     ) { it() }
                 }
+                // Title is constrained to the space BETWEEN navigation and
+                // actions, so long text can never slide behind the buttons.
+                // Center it within that space (M3 TopAppBar behavior).
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .semantics { heading() },
+                    contentAlignment = Alignment.Center,
+                ) { title() }
                 actions?.let {
                     Row(
                         Modifier
-                            .align(Alignment.CenterEnd)
                             .padding(end = StylishTheme.dimensions.inlineSpacing),
                         horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
                     ) { it() }

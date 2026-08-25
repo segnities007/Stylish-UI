@@ -75,24 +75,27 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
         name = "Scaffold",
         category = DemoCategory.Patterns,
         code = """StylishScaffold(
-    topBar = { StylishTopAppBar(title = { Text("タイトル") }) },
+    header = { Text("タイトル", style = MaterialTheme.typography.titleLarge) },
     floatingActionButton = { StylishFab(Icons.Default.Add, "追加", {}) },
-) { padding -> content(padding) }""",
+) { headerHeight ->
+    Content(Modifier.padding(top = headerHeight))
+}""",
         preview = {
             StylishScaffold(
-                topBar = {
-                    StylishTopAppBar(
-                        title = { Text("Scaffold") },
-                    )
+                header = {
+                    Text("Scaffold", style = MaterialTheme.typography.titleLarge)
                 },
                 floatingActionButton = {
                     StylishFab(Icons.Default.Add, "追加", {})
                 },
-                modifier = Modifier.padding(0.dp),
-            ) { padding ->
-                Column(Modifier.padding(padding).padding(16.dp)) {
+            ) { headerHeight ->
+                Column(
+                    Modifier
+                        .padding(top = headerHeight)
+                        .padding(horizontal = 16.dp),
+                ) {
                     Text(
-                        "Scaffold はトップバー・FAB・コンテンツ領域をまとめるページ骨組みです。",
+                        "Scaffold は浮遊ヘッダー・FAB・コンテンツ領域をまとめるページ骨組みです。",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }

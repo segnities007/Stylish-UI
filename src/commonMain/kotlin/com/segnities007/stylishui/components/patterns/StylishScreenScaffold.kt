@@ -82,12 +82,10 @@ public fun StylishScreenScaffold(
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            // Semi-transparent: scrolled content stays
-                            // faintly visible behind the system icons.
-                            .background(
-                                MaterialTheme.colorScheme.surfaceContainer
-                                    .copy(alpha = 0.6f),
-                            )
+                            // Dark + translucent: system icons stay
+                            // readable while scrolled content remains
+                            // visible behind them, on any theme.
+                            .background(Color.Black.copy(alpha = 0.3f))
                             .statusBarsPadding(),
                     )
 

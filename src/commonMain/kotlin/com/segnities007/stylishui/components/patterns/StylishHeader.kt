@@ -155,9 +155,9 @@ public fun StylishHeader(
                 tint = if (isDark) {
                     containerColor.copy(alpha = 0.55f)
                 } else {
-                    Color.White.copy(alpha = 0.70f)
+                    Color.White.copy(alpha = 0.45f)
                 },
-                haze = 0.10f,
+                haze = 0.08f,
                 blurRadius = 8.dp,
                 borderColor = if (isDark) {
                     Color.White.copy(alpha = 0.35f)

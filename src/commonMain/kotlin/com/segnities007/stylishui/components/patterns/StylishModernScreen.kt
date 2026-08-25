@@ -127,9 +127,14 @@ public fun StylishScrollHideVisibility(
  * The modern full-screen page: a floating pinned header, a full-bleed lazy
  * content list, and floating overlays — with the scroll behavior built in.
  *
- * Scrolling down slides the header and floating layers out; scrolling up
- * brings them back. When the list returns to the top the floating layer
- * always re-appears, so a hidden state can never strand the user.
+ * iOS-style scroll behavior:
+ * - scrolling down slides the header and floating layers out 1:1 with the
+ *   finger,
+ * - any upward scroll brings them back,
+ * - the floating layer is always visible while the list is at the top
+ *   (including rubber-band bounce), and after navigation or pager page
+ *   switches.
+ * A hidden state can therefore never strand the user.
  *
  * The header height is measured and applied as the list's initial top
  * content padding, so content starts clear of the header and scrolls
@@ -170,6 +175,19 @@ public fun StylishModernScreen(
     floatingActionButton: (@Composable () -> Unit)? = null,
     content: LazyListScope.() -> Unit,
 ) {
+    // iOS-style rule: the floating layer is ALWAYS visible while the list
+    // sits at the top (contentOffset <= 0). This also restores it after
+    // navigation/pager switches, where a hidden shared state could
+    // otherwise never receive an upward consumed scroll again.
+    LaunchedEffect(listState, scrollHideState) {
+        androidx.compose.runtime.snapshotFlow {
+            listState.firstVisibleItemIndex == 0 &&
+                listState.firstVisibleItemScrollOffset == 0
+        }.collect { atTop ->
+            if (atTop) scrollHideState.show()
+        }
+    }
+
     val headerVisible = !hideOnScroll || scrollHideState.visible
     val floatingVisible = !hideOnScroll || scrollHideState.visible
     val headerHeightPx = remember { mutableIntStateOf(0) }

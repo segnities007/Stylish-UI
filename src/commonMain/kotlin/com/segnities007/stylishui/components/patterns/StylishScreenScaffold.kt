@@ -57,6 +57,11 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   Defaults to transparent — system bar icon contrast is expected to be
  *   handled by the host activity (e.g. enableEdgeToEdge styles synced with
  *   the app theme).
+ * @param hideOnScroll When `true`, the header slides away on downward
+ *   scrolls of ANY nested scrollable inside the content and returns on
+ *   upward scrolls.
+ * @param scrollHideState State backing [hideOnScroll]; hoist to observe or
+ *   reset it.
  * @param floatingBottomCenter Optional overlay anchored to the bottom center
  *   (e.g. a pager indicator pill), above the navigation-bar inset.
  * @param floatingActionButton Optional FAB anchored to the bottom end, above
@@ -70,6 +75,8 @@ public fun StylishScreenScaffold(
     header: @Composable () -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.background,
     statusBarScrimColor: Color = Color.Transparent,
+    hideOnScroll: Boolean = false,
+    scrollHideState: StylishScrollHideState = rememberStylishScrollHideState(),
     floatingBottomCenter: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
     content: @Composable (headerHeight: Dp) -> Unit,
@@ -78,6 +85,7 @@ public fun StylishScreenScaffold(
         modifier
             .fillMaxSize()
             .background(containerColor)
+            .nestedScroll(scrollHideState.connection)
             .stylishTestTag("screen_scaffold"),
     ) {
         // Largest header height ever measured. Kept stable while the header
@@ -88,6 +96,10 @@ public fun StylishScreenScaffold(
         SubcomposeLayout { constraints ->
             val loose = Constraints(maxWidth = constraints.maxWidth)
             val headerPlaceables = subcompose("header") {
+                StylishScrollHideVisibility(
+                    visible = !hideOnScroll || scrollHideState.visible,
+                    direction = StylishSlideDirection.UP,
+                ) {
                 Box(
                     Modifier.onSizeChanged { size ->
                         if (size.height > headerHeightPx) headerHeightPx = size.height
@@ -118,6 +130,7 @@ public fun StylishScreenScaffold(
                     ) {
                         header()
                     }
+                }
                 }
                 }
             }.map { it.measure(loose) }

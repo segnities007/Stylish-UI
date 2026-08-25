@@ -67,7 +67,7 @@ public fun StylishScreenScaffold(
     modifier: Modifier = Modifier,
     header: @Composable () -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.background,
-    statusBarScrimColor: Color = Color.Black.copy(alpha = 0.1f),
+    statusBarScrimColor: Color = Color.Black,
     floatingBottomCenter: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
     content: @Composable (headerHeight: Dp) -> Unit,

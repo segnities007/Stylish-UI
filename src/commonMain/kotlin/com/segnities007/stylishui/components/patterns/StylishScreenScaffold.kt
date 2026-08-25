@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -83,12 +84,11 @@ public fun StylishScreenScaffold(
                             ),
                         ),
                 ) {
-                    // The scaffold OWNS the status-bar inset: it pads here
-                    // and marks the inset consumed, so self-insetting
-                    // headers (StylishHeader et al.) resolve zero remaining
-                    // inset instead of double-padding. Separation of
-                    // concerns: placement lives here, looks live in the
-                    // header slot.
+                    // The scaffold OWNS the status-bar inset: it clears the
+                    // bar here (padding) and then marks the inset consumed,
+                    // so self-insetting headers (StylishHeader et al.)
+                    // resolve zero remaining inset instead of double-padding.
+                    Spacer(Modifier.statusBarsPadding())
                     Box(
                         Modifier
                             .fillMaxWidth()

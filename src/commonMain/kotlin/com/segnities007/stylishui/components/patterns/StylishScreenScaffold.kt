@@ -81,7 +81,7 @@ public fun StylishScreenScaffold(
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .background(Color.Black.copy(alpha = 0.1f))
+                            .background(Color.Black.copy(alpha = 0.01f))
                             .statusBarsPadding(),
                     )
 

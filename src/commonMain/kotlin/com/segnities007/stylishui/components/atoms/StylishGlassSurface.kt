@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,9 +50,17 @@ import com.segnities007.stylishui.theme.StylishTheme
 public fun StylishGlassSurface(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-    tint: Color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f),
+    tint: Color = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
+        MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f)
+    } else {
+        Color.White.copy(alpha = 0.6f)
+    },
     sheen: Color = Color.White.copy(alpha = 0.15f),
-    borderColor: Color = Color.White.copy(alpha = 0.22f),
+    borderColor: Color = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
+        Color.White.copy(alpha = 0.22f)
+    } else {
+        Color.Black.copy(alpha = 0.12f)
+    },
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(

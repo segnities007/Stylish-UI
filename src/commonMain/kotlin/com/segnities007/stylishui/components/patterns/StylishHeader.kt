@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -139,15 +140,24 @@ public fun StylishHeader(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = shape,
-            color = if (glass) containerColor.copy(alpha = 0.55f) else containerColor,
+            color = if (glass) {
+                val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+                if (isDark) containerColor.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.6f)
+            } else {
+                containerColor
+            },
             contentColor = contentColor,
             border = if (glass) {
-                BorderStroke(StylishTheme.dimensions.outlineWidth, Color.White.copy(alpha = 0.22f))
+                val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+                BorderStroke(
+                    StylishTheme.dimensions.outlineWidth,
+                    if (isDark) Color.White.copy(alpha = 0.22f) else Color.Black.copy(alpha = 0.12f),
+                )
             } else {
                 border
             },
             tonalElevation = tonalElevation,
-            shadowElevation = shadowElevation,
+            shadowElevation = if (glass) 0.dp else shadowElevation,
         ) {
             Box(Modifier.fillMaxWidth().height(height)) {
             if (glass) {

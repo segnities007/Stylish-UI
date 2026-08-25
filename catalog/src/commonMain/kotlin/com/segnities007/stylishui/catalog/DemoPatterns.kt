@@ -3,6 +3,8 @@ package com.segnities007.stylishui.catalog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -17,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishButton
 import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishGlassSurface
+import com.segnities007.stylishui.components.atoms.StylishGlassVariant
+import com.segnities007.stylishui.components.atoms.StylishJapaneseGlass
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
 import com.segnities007.stylishui.components.patterns.StylishFooter
 import com.segnities007.stylishui.components.patterns.StylishHeader
@@ -84,6 +89,62 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
                         "ガラス風サーフェス",
                         modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     )
+                }
+            }
+        },
+    ),
+    DemoComponent(
+        name = "Glass variants",
+        category = DemoCategory.Patterns,
+        code = """StylishGlassSurface(variant = StylishGlassVariant.Regular) {
+    Text("Regular: 可読性優先", modifier = Modifier.padding(16.dp))
+}
+StylishGlassSurface(variant = StylishGlassVariant.Clear) {
+    Text("Clear: 高透過", modifier = Modifier.padding(16.dp))
+}""",
+        preview = {
+            Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                StylishGlassSurface(variant = StylishGlassVariant.Regular) {
+                    Text(
+                        "Regular: 可読性優先",
+                        modifier = androidx.compose.ui.Modifier.padding(16.dp),
+                    )
+                }
+                StylishGlassSurface(variant = StylishGlassVariant.Clear) {
+                    Text(
+                        "Clear: 高透過",
+                        modifier = androidx.compose.ui.Modifier.padding(16.dp),
+                    )
+                }
+            }
+        },
+    ),
+    DemoComponent(
+        name = "Japanese glass presets",
+        category = DemoCategory.Patterns,
+        code = """StylishGlassSurface(preset = StylishJapaneseGlass.Sumi) {
+    Text("墨", modifier = Modifier.padding(16.dp))
+}
+StylishGlassSurface(preset = StylishJapaneseGlass.Sakura) {
+    Text("桜", modifier = Modifier.padding(16.dp))
+}""",
+        preview = {
+            Row(
+                Modifier.padding(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                listOf(
+                    "墨" to StylishJapaneseGlass.Sumi,
+                    "藍" to StylishJapaneseGlass.Ai,
+                    "桜" to StylishJapaneseGlass.Sakura,
+                    "紅" to StylishJapaneseGlass.Beni,
+                ).forEach { (label, preset) ->
+                    StylishGlassSurface(preset = preset) {
+                        Text(
+                            label,
+                            modifier = androidx.compose.ui.Modifier.padding(16.dp),
+                        )
+                    }
                 }
             }
         },

@@ -83,7 +83,10 @@ import com.segnities007.stylishui.components.organisms.StylishPermanentNavigatio
 import com.segnities007.stylishui.components.organisms.StylishSegmentedButton
 import com.segnities007.stylishui.components.organisms.StylishSingleChoiceSegmentedButtonRow
 import com.segnities007.stylishui.components.patterns.BarChartSection
-import com.segnities007.stylishui.components.patterns.StylishScreenScaffold
+import com.segnities007.stylishui.components.patterns.StylishScaffold
+import com.segnities007.stylishui.components.patterns.StylishSlideDirection
+import com.segnities007.stylishui.components.patterns.StylishScrollHideVisibility
+import com.segnities007.stylishui.components.patterns.StylishModernScreen
 import com.segnities007.stylishui.components.patterns.LineChartSection
 import com.segnities007.stylishui.components.patterns.StylishAdaptiveNavigation
 import com.segnities007.stylishui.components.patterns.StylishBottomSheetScaffold
@@ -382,7 +385,7 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
     DemoComponent(
         name = "Screen scaffold pinned header",
         category = DemoCategory.Patterns,
-        code = """StylishScreenScaffold(
+        code = """StylishScaffold(
     header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
     floatingBottomCenter = { PagerDotPill() },
     floatingActionButton = { Fab() },
@@ -390,7 +393,7 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
     LazyColumn(contentPadding = PaddingValues(top = headerHeight)) { Items() }
 }""",
         preview = {
-            StylishScreenScaffold(
+            StylishScaffold(
                 header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
                 floatingBottomCenter = {
                     Surface(
@@ -421,7 +424,7 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
     floatingBottomCenter = { IndicatorPill() },
     floatingActionButton = { Fab() },
 ) {
-    items(20) { index -> Card("項目 $index") }
+    items(20) { index -> Card("項目 ${'$'}index") }
 }""",
         preview = {
             StylishModernScreen(

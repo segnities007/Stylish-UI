@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -358,3 +359,51 @@ private fun StylishModernScreenPreview() {
     }
 }
 
+@Preview(name = "Modern screen / glass floating family on media", showBackground = true, widthDp = 340, heightDp = 560)
+@Composable
+private fun GlassFloatingFamilyPreview() {
+    // メディア背景の上に、ガラス化したヘッダー/FAB/インジケーターを
+    // 浮かべた実使用イメージ(atoms の StylishGlassSurface を使用)。
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(
+                Brush.horizontalGradient(
+                    listOf(Color(0xFF7EC8E3), Color(0xFFB8E3C8), Color(0xFFF2D9A0)),
+                ),
+            ),
+    ) {
+        StylishModernScreen(
+            containerColor = Color.Transparent,
+            header = {
+                com.segnities007.stylishui.components.atoms.StylishGlassSurface {
+                    Text(
+                        "ヘッダー(タイトル+アクション)",
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                    )
+                }
+            },
+            floatingBottomCenter = {
+                com.segnities007.stylishui.components.atoms.StylishGlassSurface(
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                ) {
+                    Text(
+                        "● ○",
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                    )
+                }
+            },
+            floatingActionButton = {
+                com.segnities007.stylishui.components.atoms.StylishGlassSurface(
+                    shape = androidx.compose.foundation.shape.CircleShape,
+                ) {
+                    Text("+", modifier = Modifier.padding(16.dp))
+                }
+            },
+        ) {
+            items(6) { index ->
+                Text("コンテンツ $index", modifier = Modifier.padding(vertical = 12.dp))
+            }
+        }
+    }
+}

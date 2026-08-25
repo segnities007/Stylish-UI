@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.components.patterns.StylishModernScreen
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -119,8 +118,10 @@ private fun GlassTintStrengthPreview() {
                 }
             }
             tints.forEach { (alpha, label) ->
-                StylishGlassSurface(tint = Color.Black.copy(alpha = alpha * 0.6f)) {
-                    GlassLabel("$label (黒 ${"%.2f".format(alpha * 0.6f)})")
+                val black = alpha * 0.6f
+                val pct = (black * 100).toInt()
+                StylishGlassSurface(tint = Color.Black.copy(alpha = black)) {
+                    GlassLabel("$label (黒 $pct%)")
                 }
             }
         }
@@ -185,45 +186,6 @@ private fun StylishMemoLikeBackdrop(content: @Composable () -> Unit) {
         content()
     }
 }
-
-// 5. フローティング ファミリー(実使用イメージ) -----------------------------
-
-@Preview(name = "Glass / floating family on media", showBackground = true, widthDp = 340, heightDp = 560)
-@Composable
-private fun GlassFloatingFamilyPreview() {
-    MediaBackdrop(Modifier.padding(16.dp)) {
-        Box(Modifier.fillMaxWidth().height(520.dp)) {
-            // ヘッダー ピル
-            StylishGlassSurface(
-                shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-                modifier = Modifier.align(Alignment.TopCenter),
-            ) {
-                GlassLabel("ヘッダー(タイトル+アクション)")
-            }
-            // FAB
-            StylishGlassSurface(
-                shape = CircleShape,
-                interactive = true,
-                modifier = Modifier
-                    .size(64.dp)
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 64.dp),
-            ) {
-                Text("+", modifier = Modifier.align(Alignment.Center))
-            }
-            // ページ インジケーター
-            StylishGlassSurface(
-                shape = RoundedCornerShape(50),
-                modifier = Modifier.align(Alignment.BottomCenter),
-            ) {
-                GlassLabel("● ○")
-            }
-        }
-    }
-}
-
-
-// 6. 和風ガラス -----------------------------------------------------------
 
 @Preview(name = "Glass / Japanese / Sumi backdrop", showBackground = true, widthDp = 340, heightDp = 460)
 @Composable

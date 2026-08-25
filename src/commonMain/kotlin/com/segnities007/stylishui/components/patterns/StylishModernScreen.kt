@@ -250,6 +250,15 @@ public fun StylishModernScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
+                    // Soft scroll edge effect (iOS scrollEdgeEffectStyle(.soft)):
+                    // transparent at the top edge, fades in as content scrolls
+                    // beneath the floating header so the title stays legible.
+                    .background(
+                        androidx.compose.ui.graphics.Brush.verticalGradient(
+                            0f to containerColor.copy(alpha = 0.9f * edgeProgress),
+                            1f to containerColor.copy(alpha = 0f),
+                        ),
+                    )
                     .onSizeChanged { size ->
                         if (size.height > headerHeightPx.intValue) {
                             headerHeightPx.intValue = size.height

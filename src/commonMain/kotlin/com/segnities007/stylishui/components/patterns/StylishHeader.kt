@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.heading
@@ -116,6 +120,7 @@ public fun StylishHeader(
     // (StylishScaffold / StylishModernScreen provide it). Pass a real
     // inset here only when the header is used without such a container.
     windowInsets: WindowInsets = WindowInsets(0.dp),
+    glass: Boolean = false,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()
@@ -134,16 +139,32 @@ public fun StylishHeader(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = shape,
-            color = containerColor,
+            color = if (glass) containerColor.copy(alpha = 0.55f) else containerColor,
             contentColor = contentColor,
-            border = border,
+            border = if (glass) {
+                BorderStroke(StylishTheme.dimensions.outlineWidth, Color.White.copy(alpha = 0.22f))
+            } else {
+                border
+            },
             tonalElevation = tonalElevation,
             shadowElevation = shadowElevation,
         ) {
+            Box(Modifier.fillMaxWidth().height(height)) {
+            if (glass) {
+                // ガラスのシーン: 左上から対角方向のハイライト
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .background(
+                            Brush.linearGradient(
+                                0f to Color.White.copy(alpha = 0.18f),
+                                1f to Color.Transparent,
+                            ),
+                        ),
+                )
+            }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height),
+                modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 navigation?.let {
@@ -173,7 +194,7 @@ public fun StylishHeader(
     }
     }
 }
-
+}
 @Preview(name = "Stylish header", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishHeaderPreview() {

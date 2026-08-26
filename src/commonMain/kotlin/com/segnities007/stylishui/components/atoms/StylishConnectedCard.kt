@@ -49,6 +49,7 @@ import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishCardContainerColor
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -220,7 +221,7 @@ public fun StylishConnectedCard(
     val resolvedContainerColor = if (!enabled) {
         disabledContainerColor
     } else {
-        containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+        containerColor ?: stylishCardContainerColor()
     }
     val resolvedContentColor = if (!enabled) {
         disabledContentColor

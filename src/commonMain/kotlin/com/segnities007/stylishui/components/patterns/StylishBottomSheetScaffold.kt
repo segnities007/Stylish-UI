@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
@@ -92,7 +93,7 @@ public fun StylishBottomSheetScaffold(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
     ),
-    sheetContainerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    sheetContainerColor: Color = stylishModalContainerColor(),
     sheetContentColor: Color = contentColorFor(sheetContainerColor),
     sheetTonalElevation: Dp = 0.dp,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,

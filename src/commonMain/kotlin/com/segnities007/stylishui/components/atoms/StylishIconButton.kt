@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishElevatedControlContainerColor
 import com.segnities007.stylishui.foundation.stylishInteractiveSurface
 import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.foundation.stylishTestTag
@@ -98,7 +99,7 @@ public fun StylishIconButton(
     val resolvedContainerColor = containerColor ?: if (active) {
         MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
     } else {
-        MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+        stylishElevatedControlContainerColor()
     }
     val resolvedContentColor = contentColor ?: if (active) {
         MaterialTheme.colorScheme.onPrimary

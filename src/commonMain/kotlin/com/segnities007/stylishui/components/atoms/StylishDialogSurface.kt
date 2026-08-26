@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.stylishTestTag
 
@@ -143,12 +144,12 @@ public fun StylishDialogSurface(
             shape = shape,
             colors = if (contentColor != null) {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                    containerColor = containerColor ?: stylishModalContainerColor(),
                     contentColor = contentColor,
                 )
             } else {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                    containerColor = containerColor ?: stylishModalContainerColor(),
                 )
             },
             content = content,

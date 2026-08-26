@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishCardContainerColor
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /** Theme-aware defaults for standalone and connected Stylish cards. */
@@ -21,7 +22,7 @@ public object StylishCardDefaults {
     /** Resolves card colors while preserving the active component color overrides. */
     @Composable
     public fun colors(): CardColors = CardDefaults.cardColors(
-        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+        containerColor = stylishCardContainerColor(),
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
 

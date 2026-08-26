@@ -28,20 +28,24 @@ cd /home/segnities007/Projects/Stylish-UI
 - テーマ色は必ず `MaterialTheme.colorScheme` から。`Color.White/Black` 固定禁止（ダイナミック カラー破壊）
 - 同一パッケージの別ファイルに private 同名 top-level 関数を作らない（解決エラーになる。ヘルパーは接頭辞等で一意化）
 
-## Floating / モーダルの透過ルール（必須）
+## Floating / モーダルの透過・レイヤー色ルール（必須）
 
 Floating系とモーダル系は、背景と完全に同化しない程度の透過を既定にする。
 
 - TopBar / FloatingTopBar / FAB / FloatingBottomBar / PageIndicator: `containerColor.copy(alpha = 0.9f)`
-- Dialog / AlertDialog / DialogSurface / BottomSheet / BottomSheetScaffold: `containerColor.copy(alpha = 0.9f)`
-- Card / ConnectedCard: TopBarと同じ`surface`ロールを90%で使う
-- `containerColor` を呼び出し側で Override する場合も、上記の alpha を維持する。`Color` を不透明のまま渡さない
-- `contentColor` は必ず対応する `on...` ロールを使う（例: `onSurface`, `onPrimaryContainer`）
-- TopBar上のIconButton/ConnectedIconButtonは、Outlineを既定で付けず、`interactiveElevation` の影で浮かせる。Outlineが必要な例外だけ明示指定する
-- PageIndicatorとFABをTopBarと同じ浮遊面にする場合は、TopBarの実際の既定色とalphaを参照し、独自の青/緑を追加しない
-- 透過率だけで視認性を補おうとせず、Surfaceの役割色、`on...` の文字色、Elevationの順に調整する
+- Dialog / AlertDialog / DialogSurface / BottomSheet / BottomSheetScaffold: 90%。ダークでは通常のFloating面より明るい`surfaceContainerHigh`を使う
+- Card / ConnectedCard: ライトは既存の明るい`surface`、ダークは上位面の`surfaceContainerHighest`を90%で使う
+- **ライト/ダーク共通原則**: 視覚レイヤーが上がるほど最終描画色のluminanceを下げない。ダークでも上位レイヤーを暗くしない
+- ダークの標準階層: `background` < Floating/Card < Modal < Modal上のCard/Control（明るさ順）
+- TopBar上のIconButton/ConnectedIconButtonは、ライトの既存色を維持し、ダークではTopBarより明るいContainerを使う
+- Outlineを既定で付けず、`interactiveElevation`の影で浮かせる。Outlineが必要な例外だけ明示指定する
+- alphaの適用元は1レイヤーだけにする。親Surfaceと子InputFormへ同じ半透明色を重ねて二重合成しない
+- 呼び出し側で`containerColor`をOverrideする場合も、同じalphaとレイヤー階層を維持する
+- `contentColor`は対応する`on...`ロールを使う（例: `onSurface`, `onPrimaryContainer`）
+- PageIndicatorとFABはTopBarの実際の既定色とalphaを参照し、独自の青/緑を追加しない
+- 完了条件はrole名の一致ではなく、ライト/ダーク実画面で背景→面→上位面のピクセルluminanceが単調に上がること
 
-このルールは、呼び出し側の明示的な `containerColor` 指定にも適用する。変更後はStylish-UIのAPI/構造チェックと消費側のコンパイルを実行する。
+変更後はStylish-UIのAPI/構造チェック、消費側コンパイル、可能ならライト/ダーク両方の実画面確認を実行する。
 
 ## コンポーネント新規作成
 

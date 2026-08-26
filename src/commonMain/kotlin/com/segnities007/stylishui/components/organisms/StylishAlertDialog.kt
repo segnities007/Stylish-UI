@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
@@ -61,7 +62,7 @@ public fun StylishAlertDialog(
     text: @Composable (() -> Unit)? = null,
     confirmButton: @Composable () -> Unit,
     dismissButton: @Composable (() -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    containerColor: Color = stylishModalContainerColor(),
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     tonalElevation: Dp = 1.dp,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = true),

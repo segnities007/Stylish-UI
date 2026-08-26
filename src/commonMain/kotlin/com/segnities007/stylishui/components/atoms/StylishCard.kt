@@ -39,6 +39,7 @@ import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishCardContainerColor
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -235,7 +236,7 @@ public fun StylishCard(
         colors = if (containerColor == null && contentColor == null) {
             StylishCardDefaults.colors()
         } else CardDefaults.cardColors(
-            containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+            containerColor = containerColor ?: stylishCardContainerColor(),
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         ),
         elevation = CardDefaults.cardElevation(

@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
@@ -82,7 +83,7 @@ public fun StylishBottomSheet(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
     ),
-    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    containerColor: Color = stylishModalContainerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
     // M3's own default (BottomSheetDefaults.ScrimColor) carries 32% alpha;

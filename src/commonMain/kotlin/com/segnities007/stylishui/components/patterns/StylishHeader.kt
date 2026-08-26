@@ -107,9 +107,9 @@ public fun StylishHeader(
     actions: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-    // フローティング要素共通の透過率(PagerIndicator と同一)
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    // フローティング要素共通の透過率 + primaryContainer のアクセント色
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,

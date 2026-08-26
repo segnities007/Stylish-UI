@@ -52,7 +52,7 @@ import com.segnities007.stylishui.components.atoms.StylishChipVariant
 import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndicator
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
-import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishFloatingFab
 import com.segnities007.stylishui.components.atoms.StylishFilledIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTextField
@@ -305,7 +305,7 @@ private fun ComponentCatalogCardsAndSelection() {
         StylishIconButton(Icons.Default.Add, "追加", {})
         StylishIconButton(Icons.Default.Add, "アクティブ", {}, active = true)
         StylishRoundedIconButton(Icons.Default.Add, "追加", {})
-        StylishFab(Icons.Default.Add, "追加", {})
+        StylishFloatingFab(Icons.Default.Add, "追加", {})
     }
 
     StylishSectionTitle("Progress", textStyle = MaterialTheme.typography.titleSmall)

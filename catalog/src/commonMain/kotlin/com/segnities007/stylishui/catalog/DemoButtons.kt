@@ -33,7 +33,7 @@ import com.segnities007.stylishui.components.atoms.StylishDragHandle
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
 import com.segnities007.stylishui.components.atoms.StylishExtendedFab
-import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishFloatingFab
 import com.segnities007.stylishui.components.atoms.StylishFabSize
 import com.segnities007.stylishui.components.atoms.StylishFilledIconToggleButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconToggleButton
@@ -149,7 +149,7 @@ StylishRoundedIconButton(Icons.Default.Add, "追加", {})""",
     DemoComponent(
         name = "Floating action button",
         category = DemoCategory.Buttons,
-        code = """StylishFab(
+        code = """StylishFloatingFab(
     imageVector = Icons.Default.Add,
     contentDescription = "追加",
     sizeVariant = StylishFabSize.Large,
@@ -167,7 +167,7 @@ StylishRoundedIconButton(Icons.Default.Add, "追加", {})""",
                         selected = size == s,
                     )
                 }
-                StylishFab(
+                StylishFloatingFab(
                     imageVector = Icons.Default.Add,
                     contentDescription = "追加",
                     sizeVariant = size,

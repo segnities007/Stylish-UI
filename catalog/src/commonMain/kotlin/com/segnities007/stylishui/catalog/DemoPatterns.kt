@@ -18,10 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishButton
-import com.segnities007.stylishui.components.atoms.StylishFab
+import com.segnities007.stylishui.components.atoms.StylishFloatingFab
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
 import com.segnities007.stylishui.components.patterns.StylishFooter
-import com.segnities007.stylishui.components.patterns.StylishHeader
+import com.segnities007.stylishui.components.patterns.StylishFloatingTopBar
 import com.segnities007.stylishui.components.patterns.StylishPageContent
 import com.segnities007.stylishui.components.patterns.StylishScaffold
 import com.segnities007.stylishui.components.patterns.StylishTopAppBar
@@ -34,13 +34,13 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Header",
         category = DemoCategory.Patterns,
-        code = """StylishHeader(
+        code = """StylishFloatingTopBar(
     title = { Text("タイトル") },
     navigation = { IconButton(onClick = {}) { Icon(Icons.Default.Menu, null) } },
     actions = { IconButton(onClick = {}) { Icon(Icons.Default.Add, null) } },
 )""",
         preview = {
-            StylishHeader(
+            StylishFloatingTopBar(
                 title = { Text("Stylish Header") },
                 navigation = {
                     IconButton(onClick = {}) {
@@ -78,7 +78,7 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
         category = DemoCategory.Patterns,
         code = """StylishScaffold(
     header = { Text("タイトル", style = MaterialTheme.typography.titleLarge) },
-    floatingActionButton = { StylishFab(Icons.Default.Add, "追加", {}) },
+    floatingActionButton = { StylishFloatingFab(Icons.Default.Add, "追加", {}) },
 ) { headerHeight ->
     Content(Modifier.padding(top = headerHeight))
 }""",
@@ -88,7 +88,7 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
                     Text("Scaffold", style = MaterialTheme.typography.titleLarge)
                 },
                 floatingActionButton = {
-                    StylishFab(Icons.Default.Add, "追加", {})
+                    StylishFloatingFab(Icons.Default.Add, "追加", {})
                 },
             ) { headerHeight ->
                 Column(
@@ -108,14 +108,14 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
         name = "Page content",
         category = DemoCategory.Patterns,
         code = """StylishPageContent(
-    header = { StylishHeader(title = { Text("ページ") }) },
+    header = { StylishFloatingTopBar(title = { Text("ページ") }) },
 ) {
     item { Text("コンテンツ") }
 }""",
         preview = {
             StylishPageContent(
                 header = {
-                    StylishHeader(title = { Text("Page Content") })
+                    StylishFloatingTopBar(title = { Text("Page Content") })
                 },
             ) {
                 item {

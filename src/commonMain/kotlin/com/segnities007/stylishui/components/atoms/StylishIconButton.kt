@@ -96,9 +96,9 @@ public fun StylishIconButton(
     iconContent: (@Composable () -> Unit)? = null,
 ) {
     val resolvedContainerColor = containerColor ?: if (active) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHighest
+        MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.9f)
     }
     val resolvedContentColor = contentColor ?: if (active) {
         MaterialTheme.colorScheme.onPrimary

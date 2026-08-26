@@ -3111,10 +3111,10 @@ public final class com/segnities007/stylishui/components/patterns/ComposableSing
 public final class com/segnities007/stylishui/components/patterns/ComposableSingletons$StylishHeaderKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/patterns/ComposableSingletons$StylishHeaderKt;
 	public fun <init> ()V
+	public final fun getLambda$-1321222921$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1747913229$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1882495918$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-2017078607$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-245258716$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1725052258$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$995414567$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }

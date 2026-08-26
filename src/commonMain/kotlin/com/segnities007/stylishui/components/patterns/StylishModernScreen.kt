@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import com.segnities007.stylishui.components.atoms.stylishGlassSource
 import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlinx.coroutines.CoroutineScope
@@ -189,7 +188,6 @@ public fun StylishModernScreen(
     bottomContentPadding: Dp = 24.dp,
     floatingBottomCenter: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
-    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
     content: LazyListScope.() -> Unit,
 ) {
     // Largest header height ever measured. rememberSaveable so a pager-
@@ -277,15 +275,7 @@ public fun StylishModernScreen(
             val contentPlaceables = subcompose("content") {
                 LazyColumn(
                     state = listState,
-                    // 磨りガラスの録画対象はコンテンツのみ。ヘッダーや FAB を
-                    // 含めない(含めると RenderNode が自己参照し HWUI がクラッシュする)。
-                    modifier = if (glassState != null) {
-                        Modifier
-                            .fillMaxSize()
-                            .stylishGlassSource(glassState)
-                    } else {
-                        Modifier.fillMaxSize()
-                    },
+                    modifier = Modifier.fillMaxSize(),
                     // Measured header height keeps the first card clear at
                     // rest; scrolled items flow behind the floating header.
                     contentPadding = PaddingValues(
@@ -364,55 +354,6 @@ private fun StylishModernScreenPreview() {
         ) {
             items(20) { index ->
                 Text("項目 $index", modifier = Modifier.padding(vertical = 8.dp))
-            }
-        }
-    }
-}
-
-@Preview(name = "Modern screen / glass floating family on media", showBackground = true, widthDp = 340, heightDp = 560)
-@Composable
-private fun GlassFloatingFamilyPreview() {
-    // メディア背景の上に、ガラス化したヘッダー/FAB/インジケーターを
-    // 浮かべた実使用イメージ(atoms の StylishGlassSurface を使用)。
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(
-                Brush.horizontalGradient(
-                    listOf(Color(0xFF7EC8E3), Color(0xFFB8E3C8), Color(0xFFF2D9A0)),
-                ),
-            ),
-    ) {
-        StylishModernScreen(
-            containerColor = Color.Transparent,
-            header = {
-                com.segnities007.stylishui.components.atoms.StylishGlassSurface {
-                    Text(
-                        "ヘッダー(タイトル+アクション)",
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
-                    )
-                }
-            },
-            floatingBottomCenter = {
-                com.segnities007.stylishui.components.atoms.StylishGlassSurface(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
-                ) {
-                    Text(
-                        "● ○",
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
-                    )
-                }
-            },
-            floatingActionButton = {
-                com.segnities007.stylishui.components.atoms.StylishGlassSurface(
-                    shape = androidx.compose.foundation.shape.CircleShape,
-                ) {
-                    Text("+", modifier = Modifier.padding(16.dp))
-                }
-            },
-        ) {
-            items(6) { index ->
-                Text("コンテンツ $index", modifier = Modifier.padding(vertical = 12.dp))
             }
         }
     }

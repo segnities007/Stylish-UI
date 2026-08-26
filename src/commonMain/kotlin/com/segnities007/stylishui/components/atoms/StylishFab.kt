@@ -129,9 +129,6 @@ public enum class StylishFabSize {
  * @param iconContent Optional slot that replaces the default [Icon].
  *   When `null` (default), [imageVector] and [contentDescription]
  *   are used instead.
- * @param backdrop 磨りガラス用の背景コンテンツ。`null` 以外を渡すと FAB の
- *   円形面が [StylishFrostedGlassSurface] (すりガラス) になり、
- *   containerColor/border/tonalElevation は無視される。
  *
  * @see StylishIconButton
  * @see StylishRoundedIconButton
@@ -155,8 +152,6 @@ public fun StylishFab(
     interactionSource: MutableInteractionSource? = null,
     iconContent: (@Composable () -> Unit)? = null,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
-    backdrop: (@Composable BoxScope.() -> Unit)? = null,
-    glassState: StylishGlassState? = null,
 ) {
     val resolvedSize = size ?: when (sizeVariant) {
         StylishFabSize.Small -> StylishTheme.dimensions.fabSmallSize
@@ -184,45 +179,21 @@ public fun StylishFab(
                 .size(resolvedSize)
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
-        color = if (backdrop != null || glassState != null) Color.Transparent else {
-            containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh
-        },
+        color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
-        border = if (backdrop != null || glassState != null) {
-            null
-        } else {
-            border ?: BorderStroke(
-                StylishTheme.dimensions.outlineWidth,
-                MaterialTheme.colorScheme.outlineVariant,
-            )
-        },
-        tonalElevation = if (backdrop != null || glassState != null) 0.dp else tonalElevation,
+        border = border ?: BorderStroke(
+            StylishTheme.dimensions.outlineWidth,
+            MaterialTheme.colorScheme.outlineVariant,
+        ),
+        tonalElevation = tonalElevation,
         shadowElevation = resolvedShadowElevation,
     ) {
-        if (backdrop != null || glassState != null) {
-            // 磨りガラス FAB: 円形のすりガラス面にアイコンを載せる。
-            StylishFrostedGlassSurface(
-                backdrop = backdrop ?: {},
-                glassState = glassState,
-                modifier = Modifier.size(resolvedSize),
-                shape = resolvedShape,
-            ) {
-                IconButton(
-                    onClick = onClick,
-                    enabled = enabled,
-                    interactionSource = resolvedInteractionSource,
-                ) {
-                    iconContent?.invoke() ?: Icon(imageVector, contentDescription)
-                }
-            }
-        } else {
-            IconButton(
-                onClick = onClick,
-                enabled = enabled,
-                interactionSource = resolvedInteractionSource,
-            ) {
-                iconContent?.invoke() ?: Icon(imageVector, contentDescription)
-            }
+        IconButton(
+            onClick = onClick,
+            enabled = enabled,
+            interactionSource = resolvedInteractionSource,
+        ) {
+            iconContent?.invoke() ?: Icon(imageVector, contentDescription)
         }
     }
     }

@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
@@ -94,12 +93,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param windowInsets [WindowInsets] consumed by the bar via
  *   [Modifier.windowInsetsPadding]. Defaults to
  *   [WindowInsets.navigationBars] so content stays clear of the system
- *   navigation bar. * @param glass When `true`, renders as ground glass (theme-aware tint +
- *   outline-variant hairline). Requires a backdrop to be visible.
- * @param glassState Live ground glass via
- *   [com.segnities007.stylishui.components.atoms.Modifier.stylishGlassSource].
- *   Takes precedence over [glass].
- *
+ *   navigation bar. *
  * ## Accessibility
  *
  * Each destination is exposed with `Role.Tab` semantics, marks
@@ -127,8 +121,6 @@ public fun StylishNavigationBar(
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
     windowInsets: WindowInsets = WindowInsets.navigationBars,
-    glass: Boolean = false,
-    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
 ) {
     val haptic = LocalHapticFeedback.current
     val strings = StylishTheme.strings
@@ -224,29 +216,7 @@ public fun StylishNavigationBar(
             }
         }
     }
-    // 磨りガラス モード: ヘッダーと同一パターン(テーマ連動ティント+ヘアライン)。
-    if (glass || glassState != null) {
-        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-        com.segnities007.stylishui.components.atoms.StylishFrostedGlassSurface(
-            glassState = glassState,
-            modifier = modifier
-                .stylishTestTag("navigation_bar")
-                .fillMaxWidth()
-                .windowInsetsPadding(windowInsets),
-            shape = androidx.compose.ui.graphics.RectangleShape,
-            tint = if (isDark) {
-                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f)
-            } else {
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.60f)
-            },
-            haze = 0.08f,
-            blurRadius = 8.dp,
-            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.60f),
-        ) {
-            rowContent()
-        }
-    } else {
-        Surface(
+    Surface(
             modifier = modifier
                 .stylishTestTag("navigation_bar")
                 .fillMaxWidth()
@@ -255,7 +225,6 @@ public fun StylishNavigationBar(
         ) {
             rowContent()
         }
-    }
 }
 
 @Preview(name = "Stylish navigation bar", showBackground = true, widthDp = 393)

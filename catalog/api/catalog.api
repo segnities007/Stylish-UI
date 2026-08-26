@@ -114,6 +114,7 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$DemoC
 	public final fun getLambda$-1718995248$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1726182421$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1781171857$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-180122903$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-1815733267$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1858470540$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1928766636$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
@@ -153,7 +154,6 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$DemoC
 	public final fun getLambda$1898104950$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2003512330$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2031099474$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$2109353514$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$220383482$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$237395676$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$359847881$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
@@ -289,37 +289,37 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$DemoN
 	public final fun getLambda$-1047541869$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-121010648$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1234561226$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1239255102$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1317376191$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1332625620$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1423499287$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1670081607$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1712490752$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1790611841$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-182951679$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1941362728$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1960349970$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-2105601988$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-210696655$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-356774966$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-383599302$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-392534351$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-424648992$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-819119683$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-821256955$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-830010616$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-832560347$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-950263637$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1037558098$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1057973424$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1065947247$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1284781162$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1338403384$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1381579419$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1405034183$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1408050707$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1753844927$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1762053347$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1878269833$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2003750660$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2024522793$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$467362622$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$51921079$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$559458910$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$811545512$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$902883003$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 }
 
@@ -328,29 +328,23 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$DemoP
 	public fun <init> ()V
 	public final fun getLambda$-1118941762$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1164931306$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1237333138$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-118170781$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1320956979$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1400609481$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1584654004$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1636287656$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1871965831$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-2037344908$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-222218606$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-255951233$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-457896781$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-693574956$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-420812439$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-59547415$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-88146421$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-929253131$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1351302673$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1590616535$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1550587863$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$167959230$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$27470637$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$286222086$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$291167662$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$54284573$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$554864687$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$588863744$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$618888104$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$647487110$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$761319098$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$874993755$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$644268148$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/segnities007/stylishui/catalog/ComposableSingletons$DemoSelectionKt {
@@ -394,7 +388,6 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$Styli
 	public final fun getLambda$-373055089$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-428405241$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-449949489$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-458156292$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-473617163$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-477010485$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-532694477$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
@@ -409,6 +402,7 @@ public final class com/segnities007/stylishui/catalog/ComposableSingletons$Styli
 	public final fun getLambda$1277209108$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$129571358$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1302706910$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1351747293$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1427319406$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1517394775$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1527405368$Stylish_UI_catalog ()Lkotlin/jvm/functions/Function3;

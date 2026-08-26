@@ -167,7 +167,6 @@ public final class com/segnities007/stylishui/components/atoms/ComposableSinglet
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/atoms/ComposableSingletons$StylishFabKt;
 	public fun <init> ()V
 	public final fun getLambda$-1617082543$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1698475646$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1123644233$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1662706917$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
@@ -200,46 +199,6 @@ public final class com/segnities007/stylishui/components/atoms/ComposableSinglet
 	public final fun getLambda$1754471935$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2004573214$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$956243684$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/segnities007/stylishui/components/atoms/ComposableSingletons$StylishGlassShowcasePreviewsKt {
-	public static final field INSTANCE Lcom/segnities007/stylishui/components/atoms/ComposableSingletons$StylishGlassShowcasePreviewsKt;
-	public fun <init> ()V
-	public final fun getLambda$-1087006908$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1669454832$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1719870990$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1968224880$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-213968930$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-266136835$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-335499822$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-463137614$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-475666090$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-570165827$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-83891587$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-972295522$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-974677832$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1145044234$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1172841789$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$169726468$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1880231650$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1977646102$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$2025166044$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$219913480$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$254080232$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$386111294$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$481787964$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$558109224$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$573384138$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$595873148$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/segnities007/stylishui/components/atoms/ComposableSingletons$StylishGlassSurfaceKt {
-	public static final field INSTANCE Lcom/segnities007/stylishui/components/atoms/ComposableSingletons$StylishGlassSurfaceKt;
-	public fun <init> ()V
-	public final fun getLambda$-1055486464$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-597661410$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-807766327$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$666977978$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/segnities007/stylishui/components/atoms/ComposableSingletons$StylishIconButtonKt {
@@ -280,13 +239,6 @@ public final class com/segnities007/stylishui/components/atoms/ComposableSinglet
 	public final fun getLambda$-321185899$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-585224665$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1917120339$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/segnities007/stylishui/components/atoms/ComposableSingletons$StylishJapaneseGlassKt {
-	public static final field INSTANCE Lcom/segnities007/stylishui/components/atoms/ComposableSingletons$StylishJapaneseGlassKt;
-	public fun <init> ()V
-	public final fun getLambda$-1116993369$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-851651710$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/segnities007/stylishui/components/atoms/ComposableSingletons$StylishKbdKt {
@@ -611,7 +563,7 @@ public final class com/segnities007/stylishui/components/atoms/StylishExtendedFa
 }
 
 public final class com/segnities007/stylishui/components/atoms/StylishFabKt {
-	public static final fun StylishFab-YPUGZ2g (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/components/atoms/StylishFabSize;Landroidx/compose/ui/unit/Dp;Landroidx/compose/foundation/BorderStroke;FFLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lcom/segnities007/stylishui/foundation/VisibilityState;Lkotlin/jvm/functions/Function3;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishFab-GhcLy_g (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/components/atoms/StylishFabSize;Landroidx/compose/ui/unit/Dp;Landroidx/compose/foundation/BorderStroke;FFLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lcom/segnities007/stylishui/foundation/VisibilityState;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/atoms/StylishFabSize : java/lang/Enum {
@@ -629,32 +581,6 @@ public final class com/segnities007/stylishui/components/atoms/StylishFilledText
 
 public final class com/segnities007/stylishui/components/atoms/StylishFormTextFieldKt {
 	public static final fun StylishFormTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;IIZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/TextFieldColors;ZZLandroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Brush;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;IIII)V
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishFrostedGlassSurfaceKt {
-	public static final fun StylishFrostedGlassSurface-PnMFiU4 (Lkotlin/jvm/functions/Function3;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JFFJLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishGlassState {
-	public static final field $stable I
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishGlassStateKt {
-	public static final fun rememberStylishGlassState (Landroidx/compose/runtime/Composer;I)Lcom/segnities007/stylishui/components/atoms/StylishGlassState;
-	public static final fun stylishGlassEffect (Landroidx/compose/ui/Modifier;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;F)Landroidx/compose/ui/Modifier;
-	public static final fun stylishGlassSource (Landroidx/compose/ui/Modifier;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;)Landroidx/compose/ui/Modifier;
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishGlassSurfaceKt {
-	public static final fun StylishGlassSurface-_8q-z2c (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lcom/segnities007/stylishui/components/atoms/StylishGlassVariant;ZLandroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishGlassVariant : java/lang/Enum {
-	public static final field Clear Lcom/segnities007/stylishui/components/atoms/StylishGlassVariant;
-	public static final field Regular Lcom/segnities007/stylishui/components/atoms/StylishGlassVariant;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/segnities007/stylishui/components/atoms/StylishGlassVariant;
-	public static fun values ()[Lcom/segnities007/stylishui/components/atoms/StylishGlassVariant;
 }
 
 public final class com/segnities007/stylishui/components/atoms/StylishIconButtonDefaults {
@@ -678,38 +604,6 @@ public final class com/segnities007/stylishui/components/atoms/StylishIconToggle
 	public static final fun StylishFilledTonalIconToggleButton (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/IconToggleButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun StylishIconToggleButton (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/material3/IconToggleButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun StylishOutlinedIconToggleButton (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/IconToggleButtonColors;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishJapaneseGlass {
-	public static final field $stable I
-	public static final field Companion Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass$Companion;
-	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun copy-ysEtTa8 (JJJ)Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public static synthetic fun copy-ysEtTa8$default (Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;JJJILjava/lang/Object;)Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBorder-0d7_KjU ()J
-	public final fun getSheen-0d7_KjU ()J
-	public final fun getTint-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishJapaneseGlass$Companion {
-	public final fun getAi ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getBeni ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getKasumi ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getKinpaku ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getMatcha ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getMizu ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getSakura ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-	public final fun getSumi ()Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;
-}
-
-public final class com/segnities007/stylishui/components/atoms/StylishJapaneseGlassKt {
-	public static final fun StylishGlassSurface (Lcom/segnities007/stylishui/components/atoms/StylishJapaneseGlass;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/segnities007/stylishui/components/atoms/StylishKbdKt {
@@ -2118,11 +2012,11 @@ public final class com/segnities007/stylishui/components/organisms/ComposableSin
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishNavigationBarKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/organisms/ComposableSingletons$StylishNavigationBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-695213358$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-753920645$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1033259109$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1822833248$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1843701706$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1969451555$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishNavigationDrawerKt {
@@ -2199,13 +2093,13 @@ public final class com/segnities007/stylishui/components/organisms/ComposableSin
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishSearchBarKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/organisms/ComposableSingletons$StylishSearchBarKt;
 	public fun <init> ()V
+	public final fun getLambda$-1072457169$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1382961743$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-254997418$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-88542896$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1630927415$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1901361482$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$221961678$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$238150885$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$452392923$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishSegmentedButtonsKt {
@@ -2228,19 +2122,19 @@ public final class com/segnities007/stylishui/components/organisms/ComposableSin
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishShortNavigationBarKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/organisms/ComposableSingletons$StylishShortNavigationBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-137562740$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-162183624$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1637382558$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1815679627$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-2049022205$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-389404614$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-550468947$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1821801215$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-323247957$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-612031645$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-685436262$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-839252635$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1053842050$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$238326023$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$464520528$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$580071396$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$826621060$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$807292386$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$858924367$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$89658250$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/segnities007/stylishui/components/organisms/ComposableSingletons$StylishTabBarKt {
@@ -2701,7 +2595,7 @@ public final class com/segnities007/stylishui/components/organisms/StylishMenuba
 }
 
 public final class com/segnities007/stylishui/components/organisms/StylishNavigationBarKt {
-	public static final fun StylishNavigationBar-xFz1GfY (Ljava/util/List;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;FJJJJZIILandroidx/compose/foundation/layout/WindowInsets;ZLcom/segnities007/stylishui/components/atoms/StylishGlassState;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishNavigationBar-H7XjEvs (Ljava/util/List;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;FJJJJZIILandroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/organisms/StylishNavigationDrawerKt {
@@ -2732,7 +2626,7 @@ public final class com/segnities007/stylishui/components/organisms/StylishScroll
 }
 
 public final class com/segnities007/stylishui/components/organisms/StylishSearchBarKt {
-	public static final fun StylishSearchBar (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;ZLandroidx/compose/material3/SearchBarColors;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishSearchBar (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/SearchBarColors;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/organisms/StylishSegmentedButtonsKt {
@@ -2743,7 +2637,7 @@ public final class com/segnities007/stylishui/components/organisms/StylishSegmen
 }
 
 public final class com/segnities007/stylishui/components/organisms/StylishShortNavigationBarKt {
-	public static final fun StylishShortNavigationBar-vcKr1OI (Landroidx/compose/ui/Modifier;JJLandroidx/compose/foundation/layout/WindowInsets;IZLcom/segnities007/stylishui/components/atoms/StylishGlassState;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun StylishShortNavigationBar-kQ6Tpik (Landroidx/compose/ui/Modifier;JJLandroidx/compose/foundation/layout/WindowInsets;ILkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun StylishShortNavigationBarItem-6ZDA4I0 (ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;ZILandroidx/compose/material3/NavigationItemColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -3091,27 +2985,9 @@ public final class com/segnities007/stylishui/components/patterns/ComposableSing
 	public final fun getLambda$50197979$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/segnities007/stylishui/components/patterns/ComposableSingletons$StylishFrostedFloatingPreviewsKt {
-	public static final field INSTANCE Lcom/segnities007/stylishui/components/patterns/ComposableSingletons$StylishFrostedFloatingPreviewsKt;
-	public fun <init> ()V
-	public final fun getLambda$-1061753635$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1205346318$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-125459349$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1267806934$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-177239599$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-178511306$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-2114790402$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-8716868$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1002746854$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1016888236$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1049516098$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1628025911$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-}
-
 public final class com/segnities007/stylishui/components/patterns/ComposableSingletons$StylishHeaderKt {
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/patterns/ComposableSingletons$StylishHeaderKt;
 	public fun <init> ()V
-	public final fun getLambda$-1321222921$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1747913229$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1882495918$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-2017078607$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
@@ -3123,16 +2999,9 @@ public final class com/segnities007/stylishui/components/patterns/ComposableSing
 	public static final field INSTANCE Lcom/segnities007/stylishui/components/patterns/ComposableSingletons$StylishModernScreenKt;
 	public fun <init> ()V
 	public final fun getLambda$-1157590129$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1203096447$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda$-1240404726$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1497124240$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1650716793$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-441754650$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-57050472$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-947402750$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1102490108$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1116929474$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda$1395492084$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$882746368$io_github_segnities007_Stylish_UI ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/segnities007/stylishui/components/patterns/ComposableSingletons$StylishPageContentKt {
@@ -3213,7 +3082,7 @@ public final class com/segnities007/stylishui/components/patterns/StylishAdaptiv
 }
 
 public final class com/segnities007/stylishui/components/patterns/StylishBottomAppBarKt {
-	public static final fun StylishBottomAppBar-DCx6k1U (Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/WindowInsets;ZLcom/segnities007/stylishui/components/atoms/StylishGlassState;Landroidx/compose/runtime/Composer;II)V
+	public static final fun StylishBottomAppBar-Snr_uVM (Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/segnities007/stylishui/components/patterns/StylishBottomSheetScaffoldKt {
@@ -3225,11 +3094,11 @@ public final class com/segnities007/stylishui/components/patterns/StylishFooterK
 }
 
 public final class com/segnities007/stylishui/components/patterns/StylishHeaderKt {
-	public static final fun StylishHeader-OIuJ11o (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JJLandroidx/compose/foundation/BorderStroke;FFFFFFLandroidx/compose/foundation/layout/WindowInsets;ZLcom/segnities007/stylishui/foundation/VisibilityState;Lkotlin/jvm/functions/Function3;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishHeader-WH7bXfM (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JJLandroidx/compose/foundation/BorderStroke;FFFFFFLandroidx/compose/foundation/layout/WindowInsets;Lcom/segnities007/stylishui/foundation/VisibilityState;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/segnities007/stylishui/components/patterns/StylishModernScreenKt {
-	public static final fun StylishModernScreen-2Ro-qBE (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJZLcom/segnities007/stylishui/components/patterns/StylishScrollHideState;Landroidx/compose/foundation/lazy/LazyListState;FFLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lcom/segnities007/stylishui/components/atoms/StylishGlassState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun StylishModernScreen-VTd60F4 (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;JJZLcom/segnities007/stylishui/components/patterns/StylishScrollHideState;Landroidx/compose/foundation/lazy/LazyListState;FFLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 	public static final fun StylishScrollHideVisibility (ZLcom/segnities007/stylishui/components/patterns/StylishSlideDirection;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberStylishScrollHideState (Landroidx/compose/runtime/Composer;I)Lcom/segnities007/stylishui/components/patterns/StylishScrollHideState;
 }

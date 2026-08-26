@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.foundation.stylishTestTag
@@ -78,19 +77,8 @@ public fun StylishSearchBar(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
-    glass: Boolean = false,
     colors: SearchBarColors = SearchBarDefaults.colors(
-        containerColor = if (glass) {
-            // 磨りガラス: テーマ連動の半透明+影なし
-            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-            if (isDark) {
-                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.55f)
-            } else {
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.60f)
-            }
-        } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
-        },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
     ),
     content: @Composable ColumnScope.() -> Unit = {},
 ) {

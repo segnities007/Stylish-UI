@@ -42,7 +42,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.components.atoms.StylishFrostedGlassSurface
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
@@ -124,10 +123,7 @@ public fun StylishHeader(
     // (StylishScaffold / StylishModernScreen provide it). Pass a real
     // inset here only when the header is used without such a container.
     windowInsets: WindowInsets = WindowInsets(0.dp),
-    glass: Boolean = false,
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
-    backdrop: (@Composable BoxScope.() -> Unit)? = null,
-    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState? = null,
 ) {
     val reducedMotion = isStylishReducedMotionEnabled()
     AnimatedVisibility(
@@ -142,87 +138,33 @@ public fun StylishHeader(
                 .windowInsetsPadding(windowInsets)
                 .padding(top = topPadding, bottom = bottomPadding),
         ) {
-            // ヘッダーの内容(navigation/title/actions の行)。表面モード間で共有。
-            val headerRow: @Composable () -> Unit = {
-                HeaderRow(
-                    navigation = navigation,
-                    title = title,
-                    actions = actions,
-                    actionsSpacing = actionsSpacing,
-                )
-            }
-
-            if (backdrop != null || glassState != null) {
-                FrostedHeaderSurface(
-                    backdrop = backdrop,
-                    glassState = glassState,
-                    modifier = Modifier.fillMaxWidth().height(height),
-                    shape = shape,
-                    containerColor = containerColor,
-                    height = height,
-                    content = headerRow,
-                )
-            } else {
-                PlainHeaderSurface(
-                    glass = glass,
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = shape,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
-                    border = border,
-                    tonalElevation = tonalElevation,
-                    shadowElevation = shadowElevation,
-                    height = height,
-                    content = headerRow,
-                )
-            }
+            PlainHeaderSurface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = shape,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                border = border,
+                tonalElevation = tonalElevation,
+                shadowElevation = shadowElevation,
+                height = height,
+                content = {
+                    HeaderRow(
+                        navigation = navigation,
+                        title = title,
+                        actions = actions,
+                        actionsSpacing = actionsSpacing,
+                    )
+                },
+            )
         }
     }
 }
 
 /**
- * 磨りガラス モードのヘッダー面。
- * テーマ連動のティント/ボーダー([StylishFrostedGlassSurface])で描画する。
- */
-@Composable
-private fun FrostedHeaderSurface(
-    backdrop: (@Composable BoxScope.() -> Unit)?,
-    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState?,
-    modifier: Modifier,
-    shape: Shape,
-    containerColor: Color,
-    height: Dp,
-    content: @Composable () -> Unit,
-) {
-    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    StylishFrostedGlassSurface(
-        backdrop = backdrop ?: {},
-        glassState = glassState,
-        // サーフェス内部は matchParentSize のレイヤーで構成されるため、
-        // サイズは modifier で確定させる必要がある(高さ0防止)。
-        modifier = modifier,
-        shape = shape,
-        // ダイナミック カラー追従: 白/黒固定ではなく colorScheme から取る
-        tint = if (isDark) {
-            containerColor.copy(alpha = 0.4f)
-        } else {
-            MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
-        },
-        haze = 0.08f,
-        blurRadius = 8.dp,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
-    ) {
-        Box(Modifier.fillMaxWidth().height(height)) { content() }
-    }
-}
-
-/**
- * 通常/簡易ガラス モードのヘッダー面([Surface])。
- * [glass] が `true` の場合は半透明+シーン+ヘアラインの簡易ガラス表現。
+ * ヘッダー面([Surface])。タイトル行を指定の高さで描画する。
  */
 @Composable
 private fun PlainHeaderSurface(
-    glass: Boolean,
     modifier: Modifier,
     shape: Shape,
     containerColor: Color,
@@ -236,39 +178,13 @@ private fun PlainHeaderSurface(
     Surface(
         modifier = modifier,
         shape = shape,
-        color = if (glass) {
-            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-            if (isDark) containerColor.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.6f)
-        } else {
-            containerColor
-        },
+        color = containerColor,
         contentColor = contentColor,
-        border = if (glass) {
-            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-            BorderStroke(
-                StylishTheme.dimensions.outlineWidth,
-                if (isDark) Color.White.copy(alpha = 0.22f) else Color.Black.copy(alpha = 0.12f),
-            )
-        } else {
-            border
-        },
+        border = border,
         tonalElevation = tonalElevation,
-        shadowElevation = if (glass) 0.dp else shadowElevation,
+        shadowElevation = shadowElevation,
     ) {
         Box(Modifier.fillMaxWidth().height(height)) {
-            if (glass) {
-                // ガラスのシーン: 左上から対角方向のハイライト
-                Box(
-                    Modifier
-                        .matchParentSize()
-                        .background(
-                            Brush.linearGradient(
-                                0f to Color.White.copy(alpha = 0.18f),
-                                1f to Color.Transparent,
-                            ),
-                        ),
-                )
-            }
             content()
         }
     }

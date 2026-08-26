@@ -28,6 +28,20 @@ cd /home/segnities007/Projects/Stylish-UI
 - テーマ色は必ず `MaterialTheme.colorScheme` から。`Color.White/Black` 固定禁止（ダイナミック カラー破壊）
 - 同一パッケージの別ファイルに private 同名 top-level 関数を作らない（解決エラーになる。ヘルパーは接頭辞等で一意化）
 
+## Floating / モーダルの透過ルール（必須）
+
+Floating系とモーダル系は、背景と完全に同化しない程度の透過を既定にする。
+
+- TopBar / FloatingTopBar / FAB / FloatingBottomBar / PageIndicator: `containerColor.copy(alpha = 0.9f)`
+- Dialog / AlertDialog / DialogSurface / BottomSheet / BottomSheetScaffold: `containerColor.copy(alpha = 0.8f)`
+- `containerColor` を呼び出し側で Override する場合も、上記の alpha を維持する。`Color` を不透明のまま渡さない
+- `contentColor` は必ず対応する `on...` ロールを使う（例: `onSurface`, `onPrimaryContainer`）
+- TopBar上のIconButton/ConnectedIconButtonは、Outlineを既定で付けず、`interactiveElevation` の影で浮かせる。Outlineが必要な例外だけ明示指定する
+- PageIndicatorとFABをTopBarと同じ浮遊面にする場合は、TopBarの実際の既定色とalphaを参照し、独自の青/緑を追加しない
+- 透過率だけで視認性を補おうとせず、Surfaceの役割色、`on...` の文字色、Elevationの順に調整する
+
+このルールは、呼び出し側の明示的な `containerColor` 指定にも適用する。変更後はStylish-UIのAPI/構造チェックと消費側のコンパイルを実行する。
+
 ## コンポーネント新規作成
 
 1. 配置レイヤを決定（atoms/molecules/organisms/patterns）

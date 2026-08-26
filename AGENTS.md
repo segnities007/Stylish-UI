@@ -286,3 +286,7 @@ UI コードは**意味単位**で関数に分割すること。行数は基準�
 
 違反したままコミットしないこと。
 
+## Stylish-UI Development Skill
+
+開発手順・ガラス システム・検証コマンド・リリース手順の詳細は
+`.prime/agent/skills/stylish-ui/SKILL.md` を参照（Prime Agent は自動読込）。

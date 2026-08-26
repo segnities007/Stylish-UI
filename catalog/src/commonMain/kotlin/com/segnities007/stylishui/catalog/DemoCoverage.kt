@@ -77,7 +77,14 @@ import com.segnities007.stylishui.theme.StylishTheme
  * name-only alias.  Platform-dependent behavior (for example file pickers)
  * remains in the adapter demos.
  */
-internal fun getCoverageDemos(): List<DemoComponent> = listOf(
+internal fun getCoverageDemos(): List<DemoComponent> =
+    coverageControlDemos() +
+        coverageChartAndParityDemos() +
+        coverageFeedbackDemos() +
+        coverageInteractionDemos() +
+        coverageNavigationAndAdvancedDemos()
+
+private fun coverageControlDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Connected card anatomy",
         category = DemoCategory.Buttons,
@@ -176,6 +183,9 @@ StylishSecureTextField(
 ) { index -> TextButton(onClick = { onActionClick(index) }) { Text(\"Action \${'$'}index\") } }""",
         preview = { speedDialCoveragePreview() },
     ),
+)
+
+private fun coverageChartAndParityDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Area chart",
         category = DemoCategory.Charts,
@@ -274,6 +284,9 @@ StylishSecureTextField(
 ) { ListContent() }""",
         preview = { pullToRefreshCoveragePreview() },
     ),
+)
+
+private fun coverageFeedbackDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Skeleton loading",
         category = DemoCategory.Feedback,
@@ -301,6 +314,9 @@ StylishSkeletonLine(Modifier.width(180.dp).height(16.dp), animate = isLoading)""
             ) { Text("Saved", Modifier.padding(horizontal = 12.dp)) }
         },
     ),
+)
+
+private fun coverageInteractionDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Resizable splitter",
         category = DemoCategory.WebParity,
@@ -330,6 +346,9 @@ StylishSwipeToDismissBox(
 ) { ListItem() }""",
         preview = { swipeToDismissCoveragePreview() },
     ),
+)
+
+private fun coverageNavigationAndAdvancedDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Toolbar slots",
         category = DemoCategory.Navigation,

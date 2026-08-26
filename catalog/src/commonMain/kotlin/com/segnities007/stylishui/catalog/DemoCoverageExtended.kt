@@ -116,7 +116,22 @@ import kotlinx.coroutines.launch
  * - Spacers: default rhythm steps.
  * - Visually hidden: screen-reader-only content.
  */
-internal fun getExtendedCoverageDemos(): List<DemoComponent> = listOf(
+internal fun getExtendedCoverageDemos(): List<DemoComponent> =
+    extendedOrganismDemos() +
+        extendedNavigationDrawerDemos() +
+        extendedSegmentedButtonDemos() +
+        extendedPatternChartDemos() +
+        extendedScreenScaffoldDemos() +
+        extendedScrollAdaptiveDemos() +
+        extendedBottomSheetDemos() +
+        extendedMoleculeDemos() +
+        extendedConnectedGridDemos() +
+        extendedConnectedLazyDemos() +
+        extendedDefaultRenderersDemos() +
+        extendedChipRendererDemos() +
+        extendedAtomDemos()
+
+private fun extendedOrganismDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Organisms
     // ------------------------------------------------------------------
@@ -171,6 +186,9 @@ if (expanded) {
             }
         },
     ),
+)
+
+private fun extendedNavigationDrawerDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Dismissible navigation drawer",
         category = DemoCategory.Navigation,
@@ -261,6 +279,9 @@ StylishDismissibleNavigationDrawer(
             }
         },
     ),
+)
+
+private fun extendedSegmentedButtonDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Segmented button rows",
         category = DemoCategory.Selection,
@@ -333,6 +354,9 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             }
         },
     ),
+)
+
+private fun extendedPatternChartDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Patterns
     // ------------------------------------------------------------------
@@ -382,6 +406,9 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             )
         },
     ),
+)
+
+private fun extendedScreenScaffoldDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Screen scaffold pinned header",
         category = DemoCategory.Patterns,
@@ -439,6 +466,9 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             }
         },
     ),
+)
+
+private fun extendedScrollAdaptiveDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Scroll hide visibility",
         category = DemoCategory.Patterns,
@@ -504,6 +534,9 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             }
         },
     ),
+)
+
+private fun extendedBottomSheetDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Bottom sheet scaffold",
         category = DemoCategory.Patterns,
@@ -539,6 +572,9 @@ StylishMultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             }
         },
     ),
+)
+
+private fun extendedMoleculeDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Molecules
     // ------------------------------------------------------------------
@@ -624,6 +660,9 @@ if (open) {
 }""",
         preview = { timePickerDialogCoveragePreview() },
     ),
+)
+
+private fun extendedConnectedGridDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Connected button grid layout",
         category = DemoCategory.Connected,
@@ -708,6 +747,9 @@ if (open) {
             )
         },
     ),
+)
+
+private fun extendedConnectedLazyDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Connected cards lazy column scroll",
         category = DemoCategory.Connected,
@@ -800,6 +842,9 @@ if (open) {
             }
         },
     ),
+)
+
+private fun extendedDefaultRenderersDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Default connected button renderer",
         category = DemoCategory.Connected,
@@ -867,6 +912,9 @@ DefaultStylishConnectedButton(
             )
         },
     ),
+)
+
+private fun extendedChipRendererDemos(): List<DemoComponent> = listOf(
     DemoComponent(
         name = "Default connected chip renderer",
         category = DemoCategory.Connected,
@@ -939,6 +987,9 @@ DefaultStylishConnectedButton(
             }
         },
     ),
+)
+
+private fun extendedAtomDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Atoms
     // ------------------------------------------------------------------

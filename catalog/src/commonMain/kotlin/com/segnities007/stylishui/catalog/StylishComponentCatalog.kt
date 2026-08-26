@@ -149,684 +149,755 @@ private fun ComponentCatalog() {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            // ── Atoms ──
-            StylishSectionTitle("Atoms")
+            ComponentCatalogAtoms()
 
-            StylishSectionTitle("StylishButton", textStyle = MaterialTheme.typography.titleSmall)
-            StylishButton(onClick = {}) { Text("保存する") }
-            StylishButton(onClick = {}, enabled = false) { Text("無効") }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishButton(onClick = {}, variant = StylishButtonVariant.Tonal) { Text("Tonal") }
-                StylishButton(onClick = {}, variant = StylishButtonVariant.Outlined) { Text("Outlined") }
-                StylishButton(onClick = {}, variant = StylishButtonVariant.Text) { Text("Text") }
-                StylishButton(onClick = {}, variant = StylishButtonVariant.Elevated) { Text("Elevated") }
-            }
-            var loading by remember { mutableStateOf(false) }
-            StylishButton(onClick = { loading = !loading }, isLoading = loading) {
-                Text(if (loading) "処理中…" else "非同期処理")
-            }
+            ComponentCatalogCardsAndSelection()
 
-            StylishSectionTitle("StylishChip", textStyle = MaterialTheme.typography.titleSmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishChip(label = "通常", onClick = {})
-                StylishChip(label = "選択中", onClick = {}, selected = true)
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishChip(label = "Filter", onClick = {}, variant = StylishChipVariant.Filter, selected = true)
-                StylishChip(label = "Input", onClick = {}, variant = StylishChipVariant.Input)
-                StylishChip(label = "Suggestion", onClick = {}, variant = StylishChipVariant.Suggestion)
-            }
+            ComponentCatalogConnected()
 
-            StylishSectionTitle("StylishSlider / StylishRangeSlider", textStyle = MaterialTheme.typography.titleSmall)
-            var sliderValue by remember { mutableStateOf(0.5f) }
-            StylishSlider(value = sliderValue, onValueChange = { sliderValue = it })
-            var rangeValue by remember { mutableStateOf(0.2f..0.8f) }
-            StylishRangeSlider(value = rangeValue, onValueChange = { rangeValue = it })
+            ComponentCatalogConnectedCards()
 
-            StylishSectionTitle("StylishAvatar", textStyle = MaterialTheme.typography.titleSmall)
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                StylishAvatar(initials = "SM")
-                StylishAvatar(initials = "SM", size = 56.dp)
-            }
+            ComponentCatalogOrganisms()
 
-            StylishSectionTitle("StylishDropdownMenu", textStyle = MaterialTheme.typography.titleSmall)
-            var menuExpanded by remember { mutableStateOf(false) }
-            Box {
-                StylishButton(onClick = { menuExpanded = true }, variant = StylishButtonVariant.Outlined) {
-                    Text("メニューを開く")
-                }
-                StylishDropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
-                    StylishDropdownMenuItem(text = { Text("編集") }, onClick = { menuExpanded = false })
-                    StylishDropdownMenuItem(text = { Text("削除") }, onClick = { menuExpanded = false })
-                    StylishDropdownMenuItem(text = { Text("無効") }, onClick = {}, enabled = false)
-                }
-            }
+            ComponentCatalogCharts()
 
-            StylishSectionTitle("StylishCard", textStyle = MaterialTheme.typography.titleSmall)
-            StylishCard(
+            ComponentCatalogM3Parity()
+
+            ComponentCatalogWebParity()
+
+            ComponentCatalogWebParityOverlays()
+
+            ComponentCatalogWebParity2()
+
+            ComponentCatalogWebParity3()
+
+            ComponentCatalogSkeleton()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogAtoms() {
+    StylishSectionTitle("Atoms")
+
+    StylishSectionTitle("StylishButton", textStyle = MaterialTheme.typography.titleSmall)
+    StylishButton(onClick = {}) { Text("保存する") }
+    StylishButton(onClick = {}, enabled = false) { Text("無効") }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishButton(onClick = {}, variant = StylishButtonVariant.Tonal) { Text("Tonal") }
+        StylishButton(onClick = {}, variant = StylishButtonVariant.Outlined) { Text("Outlined") }
+        StylishButton(onClick = {}, variant = StylishButtonVariant.Text) { Text("Text") }
+        StylishButton(onClick = {}, variant = StylishButtonVariant.Elevated) { Text("Elevated") }
+    }
+    var loading by remember { mutableStateOf(false) }
+    StylishButton(onClick = { loading = !loading }, isLoading = loading) {
+        Text(if (loading) "処理中…" else "非同期処理")
+    }
+
+    StylishSectionTitle("StylishChip", textStyle = MaterialTheme.typography.titleSmall)
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishChip(label = "通常", onClick = {})
+        StylishChip(label = "選択中", onClick = {}, selected = true)
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishChip(label = "Filter", onClick = {}, variant = StylishChipVariant.Filter, selected = true)
+        StylishChip(label = "Input", onClick = {}, variant = StylishChipVariant.Input)
+        StylishChip(label = "Suggestion", onClick = {}, variant = StylishChipVariant.Suggestion)
+    }
+
+    StylishSectionTitle("StylishSlider / StylishRangeSlider", textStyle = MaterialTheme.typography.titleSmall)
+    var sliderValue by remember { mutableStateOf(0.5f) }
+    StylishSlider(value = sliderValue, onValueChange = { sliderValue = it })
+    var rangeValue by remember { mutableStateOf(0.2f..0.8f) }
+    StylishRangeSlider(value = rangeValue, onValueChange = { rangeValue = it })
+
+    StylishSectionTitle("StylishAvatar", textStyle = MaterialTheme.typography.titleSmall)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        StylishAvatar(initials = "SM")
+        StylishAvatar(initials = "SM", size = 56.dp)
+    }
+
+    StylishSectionTitle("StylishDropdownMenu", textStyle = MaterialTheme.typography.titleSmall)
+    var menuExpanded by remember { mutableStateOf(false) }
+    Box {
+        StylishButton(onClick = { menuExpanded = true }, variant = StylishButtonVariant.Outlined) {
+            Text("メニューを開く")
+        }
+        StylishDropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
+            StylishDropdownMenuItem(text = { Text("編集") }, onClick = { menuExpanded = false })
+            StylishDropdownMenuItem(text = { Text("削除") }, onClick = { menuExpanded = false })
+            StylishDropdownMenuItem(text = { Text("無効") }, onClick = {}, enabled = false)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogCardsAndSelection() {
+    StylishSectionTitle("StylishCard", textStyle = MaterialTheme.typography.titleSmall)
+    StylishCard(
+        title = "Actionable",
+        supportingText = "Click and elevation",
+        onClick = {},
+    )
+    StylishCard(
+        title = "Read only",
+        supportingText = "No click or elevation",
+    )
+    StylishCard(
+        onClick = {},
+        minHeight = 96.dp,
+    ) {
+        Column(
+            Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
+        ) {
+            Text("Content mode", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "自由にレイアウトできるコンテンツモード",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+
+    StylishSectionTitle("Selection Controls", textStyle = MaterialTheme.typography.titleSmall)
+    var switchChecked by remember { mutableStateOf(true) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        StylishSwitch(checked = switchChecked, onCheckedChange = { switchChecked = it })
+        StylishSwitch(checked = false, onCheckedChange = null, enabled = false)
+    }
+    var checkboxChecked by remember { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        StylishCheckbox(checked = checkboxChecked, onCheckedChange = { checkboxChecked = it })
+        StylishCheckbox(checked = true, onCheckedChange = null, enabled = false)
+    }
+    var radioSelected by remember { mutableIntStateOf(0) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        StylishRadioButton(selected = radioSelected == 0, onClick = { radioSelected = 0 })
+        StylishRadioButton(selected = radioSelected == 1, onClick = { radioSelected = 1 })
+    }
+
+    StylishSectionTitle("Badge", textStyle = MaterialTheme.typography.titleSmall)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        StylishBadge { Text("99+") }
+        StylishBadge { Text("3") }
+    }
+
+    StylishSectionTitle("Icon Buttons", textStyle = MaterialTheme.typography.titleSmall)
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishIconButton(Icons.Default.Add, "追加", {})
+        StylishIconButton(Icons.Default.Add, "アクティブ", {}, active = true)
+        StylishRoundedIconButton(Icons.Default.Add, "追加", {})
+        StylishFab(Icons.Default.Add, "追加", {})
+    }
+
+    StylishSectionTitle("Progress", textStyle = MaterialTheme.typography.titleSmall)
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        StylishCircularProgressIndicator(Modifier.size(32.dp))
+    }
+    StylishLinearProgressIndicator(Modifier.fillMaxWidth())
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogConnected() {
+    // ── Connected Cards ──
+    StylishSectionTitle("Connected Cards")
+    StylishConnectedCardColumn(
+        items = listOf(
+            StylishConnectedCardItem(
                 title = "Actionable",
                 supportingText = "Click and elevation",
                 onClick = {},
-            )
-            StylishCard(
+            ),
+            StylishConnectedCardItem(
                 title = "Read only",
                 supportingText = "No click or elevation",
-            )
-            StylishCard(
-                onClick = {},
-                minHeight = 96.dp,
-            ) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
-                ) {
-                    Text("Content mode", style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        "自由にレイアウトできるコンテンツモード",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
+            ),
+        ),
+    )
+    StylishConnectedCardRow(
+        items = listOf(
+            StylishConnectedCardItem(title = "Row A", onClick = {}),
+            StylishConnectedCardItem(title = "Row B"),
+        ),
+    )
+    StylishConnectedCardGrid(
+        items = listOf(
+            StylishConnectedCardItem(title = "Grid 1", onClick = {}),
+            StylishConnectedCardItem(title = "Grid 2"),
+            StylishConnectedCardItem(title = "Grid 3", onClick = {}),
+            StylishConnectedCardItem(title = "Grid 4"),
+        ),
+        columns = 2,
+    )
 
-            StylishSectionTitle("Selection Controls", textStyle = MaterialTheme.typography.titleSmall)
-            var switchChecked by remember { mutableStateOf(true) }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                StylishSwitch(checked = switchChecked, onCheckedChange = { switchChecked = it })
-                StylishSwitch(checked = false, onCheckedChange = null, enabled = false)
-            }
-            var checkboxChecked by remember { mutableStateOf(false) }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                StylishCheckbox(checked = checkboxChecked, onCheckedChange = { checkboxChecked = it })
-                StylishCheckbox(checked = true, onCheckedChange = null, enabled = false)
-            }
-            var radioSelected by remember { mutableIntStateOf(0) }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                StylishRadioButton(selected = radioSelected == 0, onClick = { radioSelected = 0 })
-                StylishRadioButton(selected = radioSelected == 1, onClick = { radioSelected = 1 })
-            }
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
 
-            StylishSectionTitle("Badge", textStyle = MaterialTheme.typography.titleSmall)
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                StylishBadge { Text("99+") }
-                StylishBadge { Text("3") }
-            }
+    // ── Connected Buttons ──
+    StylishSectionTitle("Connected Buttons")
+    StylishConnectedButtonRow(
+        items = listOf(
+            StylishConnectedButtonItem(onClick = {}) { Text("Enabled") },
+            StylishConnectedButtonItem { Text("No action") },
+        ),
+    )
+    StylishConnectedButtonColumn(
+        items = listOf(
+            StylishConnectedButtonItem(onClick = {}) { Text("Column A") },
+            StylishConnectedButtonItem(onClick = {}) { Text("Column B") },
+        ),
+    )
 
-            StylishSectionTitle("Icon Buttons", textStyle = MaterialTheme.typography.titleSmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishIconButton(Icons.Default.Add, "追加", {})
-                StylishIconButton(Icons.Default.Add, "アクティブ", {}, active = true)
-                StylishRoundedIconButton(Icons.Default.Add, "追加", {})
-                StylishFab(Icons.Default.Add, "追加", {})
-            }
+    StylishSectionTitle("Connected Icon Buttons")
+    StylishConnectedIconButtonRow(
+        items = listOf(
+            StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
+            StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
+            StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
+            StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
+        ),
+    )
 
-            StylishSectionTitle("Progress", textStyle = MaterialTheme.typography.titleSmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                StylishCircularProgressIndicator(Modifier.size(32.dp))
-            }
-            StylishLinearProgressIndicator(Modifier.fillMaxWidth())
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
 
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
+    // ── Connected Chips ──
+    StylishSectionTitle("Connected Chips")
+    StylishConnectedChipRow(
+        items = listOf(
+            StylishConnectedChipItem("Selected", {}, selected = true),
+            StylishConnectedChipItem("Read only"),
+        ),
+    )
+    StylishConnectedChipColumn(
+        items = listOf(
+            StylishConnectedChipItem("Selected", {}, selected = true),
+            StylishConnectedChipItem("Read only"),
+        ),
+    )
+    StylishConnectedChipGrid(
+        items = listOf(
+            StylishConnectedChipItem("A", {}, selected = true),
+            StylishConnectedChipItem("B", {}),
+            StylishConnectedChipItem("C", {}),
+        ),
+        columns = 2,
+    )
 
-            // ── Connected Cards ──
-            StylishSectionTitle("Connected Cards")
-            StylishConnectedCardColumn(
-                items = listOf(
-                    StylishConnectedCardItem(
-                        title = "Actionable",
-                        supportingText = "Click and elevation",
-                        onClick = {},
-                    ),
-                    StylishConnectedCardItem(
-                        title = "Read only",
-                        supportingText = "No click or elevation",
-                    ),
-                ),
-            )
-            StylishConnectedCardRow(
-                items = listOf(
-                    StylishConnectedCardItem(title = "Row A", onClick = {}),
-                    StylishConnectedCardItem(title = "Row B"),
-                ),
-            )
-            StylishConnectedCardGrid(
-                items = listOf(
-                    StylishConnectedCardItem(title = "Grid 1", onClick = {}),
-                    StylishConnectedCardItem(title = "Grid 2"),
-                    StylishConnectedCardItem(title = "Grid 3", onClick = {}),
-                    StylishConnectedCardItem(title = "Grid 4"),
-                ),
-                columns = 2,
-            )
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
 
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogConnectedCards() {
+    // ── Connected Cards ──
+    StylishSectionTitle("Connected Cards")
+    StylishConnectedCardColumn(
+        items = listOf(
+            StylishConnectedCardItem(title = "Actionable item", onClick = {}),
+            StylishConnectedCardItem(title = "Read-only item"),
+            StylishConnectedCardItem(title = "Disabled item", enabled = false),
+        ),
+    )
+    StylishConnectedCardRow(
+        items = listOf(
+            StylishConnectedCardItem(title = "Item A", onClick = {}),
+            StylishConnectedCardItem(title = "Item B", onClick = {}),
+        ),
+    )
+    StylishConnectedCardGrid(
+        items = listOf(
+            StylishConnectedCardItem(title = "Item A", onClick = {}),
+            StylishConnectedCardItem(title = "Item B", onClick = {}),
+            StylishConnectedCardItem(title = "Item C", onClick = {}),
+        ),
+        columns = 2,
+    )
 
-            // ── Connected Buttons ──
-            StylishSectionTitle("Connected Buttons")
-            StylishConnectedButtonRow(
-                items = listOf(
-                    StylishConnectedButtonItem(onClick = {}) { Text("Enabled") },
-                    StylishConnectedButtonItem { Text("No action") },
-                ),
-            )
-            StylishConnectedButtonColumn(
-                items = listOf(
-                    StylishConnectedButtonItem(onClick = {}) { Text("Column A") },
-                    StylishConnectedButtonItem(onClick = {}) { Text("Column B") },
-                ),
-            )
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
 
-            StylishSectionTitle("Connected Icon Buttons")
-            StylishConnectedIconButtonRow(
-                items = listOf(
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
-                ),
-            )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogOrganisms() {
+    // ── Organisms ──
+    StylishSectionTitle("Organisms")
 
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
+    StylishSectionTitle("StylishTabBar", textStyle = MaterialTheme.typography.titleSmall)
+    var selectedTab by remember { mutableIntStateOf(0) }
+    StylishTabBar(
+        tabs = listOf("概要", "記録", "統計"),
+        selectedIndex = selectedTab,
+        onSelectedChange = { selectedTab = it },
+    )
 
-            // ── Connected Chips ──
-            StylishSectionTitle("Connected Chips")
-            StylishConnectedChipRow(
-                items = listOf(
-                    StylishConnectedChipItem("Selected", {}, selected = true),
-                    StylishConnectedChipItem("Read only"),
-                ),
-            )
-            StylishConnectedChipColumn(
-                items = listOf(
-                    StylishConnectedChipItem("Selected", {}, selected = true),
-                    StylishConnectedChipItem("Read only"),
-                ),
-            )
-            StylishConnectedChipGrid(
-                items = listOf(
-                    StylishConnectedChipItem("A", {}, selected = true),
-                    StylishConnectedChipItem("B", {}),
-                    StylishConnectedChipItem("C", {}),
-                ),
-                columns = 2,
-            )
+    StylishSectionTitle("StylishNavigationBar", textStyle = MaterialTheme.typography.titleSmall)
+    StylishNavigationBar(
+        items = listOf(
+            StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
+            StylishNavigationItem(Icons.Default.Search, "検索"),
+            StylishNavigationItem(Icons.Default.Settings, "設定"),
+        ),
+    )
 
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
+    StylishSectionTitle("StylishAlertDialog", textStyle = MaterialTheme.typography.titleSmall)
+    var showDialog by remember { mutableStateOf(false) }
+    StylishButton(onClick = { showDialog = true }, variant = StylishButtonVariant.Outlined) {
+        Text("ダイアログを開く")
+    }
+    if (showDialog) {
+        StylishAlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("車両を削除") },
+            text = { Text("この操作は取り消せません。") },
+            confirmButton = {
+                StylishButton(onClick = { showDialog = false }) { Text("削除") }
+            },
+            dismissButton = {
+                StylishButton(
+                    onClick = { showDialog = false },
+                    variant = StylishButtonVariant.Text,
+                ) { Text("キャンセル") }
+            },
+        )
+    }
 
-            // ── Connected Cards ──
-            StylishSectionTitle("Connected Cards")
-            StylishConnectedCardColumn(
-                items = listOf(
-                    StylishConnectedCardItem(title = "Actionable item", onClick = {}),
-                    StylishConnectedCardItem(title = "Read-only item"),
-                    StylishConnectedCardItem(title = "Disabled item", enabled = false),
-                ),
-            )
-            StylishConnectedCardRow(
-                items = listOf(
-                    StylishConnectedCardItem(title = "Item A", onClick = {}),
-                    StylishConnectedCardItem(title = "Item B", onClick = {}),
-                ),
-            )
-            StylishConnectedCardGrid(
-                items = listOf(
-                    StylishConnectedCardItem(title = "Item A", onClick = {}),
-                    StylishConnectedCardItem(title = "Item B", onClick = {}),
-                    StylishConnectedCardItem(title = "Item C", onClick = {}),
-                ),
-                columns = 2,
-            )
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── Organisms ──
-            StylishSectionTitle("Organisms")
-
-            StylishSectionTitle("StylishTabBar", textStyle = MaterialTheme.typography.titleSmall)
-            var selectedTab by remember { mutableIntStateOf(0) }
-            StylishTabBar(
-                tabs = listOf("概要", "記録", "統計"),
-                selectedIndex = selectedTab,
-                onSelectedChange = { selectedTab = it },
-            )
-
-            StylishSectionTitle("StylishNavigationBar", textStyle = MaterialTheme.typography.titleSmall)
-            StylishNavigationBar(
-                items = listOf(
-                    StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
-                    StylishNavigationItem(Icons.Default.Search, "検索"),
-                    StylishNavigationItem(Icons.Default.Settings, "設定"),
-                ),
-            )
-
-            StylishSectionTitle("StylishAlertDialog", textStyle = MaterialTheme.typography.titleSmall)
-            var showDialog by remember { mutableStateOf(false) }
-            StylishButton(onClick = { showDialog = true }, variant = StylishButtonVariant.Outlined) {
-                Text("ダイアログを開く")
-            }
-            if (showDialog) {
-                StylishAlertDialog(
-                    onDismissRequest = { showDialog = false },
-                    title = { Text("車両を削除") },
-                    text = { Text("この操作は取り消せません。") },
-                    confirmButton = {
-                        StylishButton(onClick = { showDialog = false }) { Text("削除") }
-                    },
-                    dismissButton = {
-                        StylishButton(
-                            onClick = { showDialog = false },
-                            variant = StylishButtonVariant.Text,
-                        ) { Text("キャンセル") }
-                    },
-                )
-            }
-
-            StylishSectionTitle("StylishSearchBar", textStyle = MaterialTheme.typography.titleSmall)
-            var query by remember { mutableStateOf("") }
-            var searchActive by remember { mutableStateOf(false) }
-            StylishSearchBar(
-                query = query,
-                onQueryChange = { query = it },
-                onSearch = { searchActive = false },
-                active = searchActive,
-                onActiveChange = { searchActive = it },
-                placeholder = { Text("検索") },
-                leadingIcon = {
-                    androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = null)
-                },
-            ) {
-                Column {
-                    Text("Stylish UI")
-                    Text("Compose Multiplatform")
-                }
-            }
-
-            StylishSectionTitle("StylishTopAppBar", textStyle = MaterialTheme.typography.titleSmall)
-            StylishTopAppBar(
-                title = { Text("設定") },
-                navigationIcon = {
-                    androidx.compose.material3.IconButton(onClick = {}) {
-                        androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "戻る")
-                    }
-                },
-            )
-
-            StylishSectionTitle("Lazy Connected List", textStyle = MaterialTheme.typography.titleSmall)
-            StylishConnectedCardLazyColumn(
-                items = List(20) { index ->
-                    StylishConnectedCardItem(
-                        title = "項目 $index",
-                        supportingText = "遅延描画される Connected カード",
-                        onClick = {},
-                    )
-                },
-            )
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── Charts ──
-            StylishSectionTitle("Charts")
-            SimplePieChart(
-                contentDescriptionPrefix = "円グラフ",
-                data = listOf(
-                    PieChartData("燃料費", 35000f, stylishChartColor(0)),
-                    PieChartData("保険", 15000f, stylishChartColor(1)),
-                    PieChartData("メンテナンス", 8000f, stylishChartColor(2)),
-                ),
-            )
-            SimpleBarChart(
-                contentDescriptionPrefix = "棒グラフ",
-                emptyLabel = "データがありません",
-                data = listOf(
-                    BarChartData("1月", 30000f),
-                    BarChartData("2月", 45000f),
-                    BarChartData("3月", 28000f),
-                ),
-            )
-            SimpleLineChart(
-                contentDescriptionPrefix = "折れ線グラフ",
-                emptyLabel = "データがありません",
-                data = listOf(
-                    LineChartData("1月", 30000f),
-                    LineChartData("2月", 45000f),
-                    LineChartData("3月", 28000f),
-                    LineChartData("4月", 52000f),
-                ),
-            )
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── M3 Parity (0.8) ──
-            StylishSectionTitle("M3 Parity")
-
-            StylishSectionTitle("BadgedBox / TriStateCheckbox", textStyle = MaterialTheme.typography.titleSmall)
-            var triState by remember { mutableStateOf(ToggleableState.Indeterminate) }
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                StylishBadgedBox(badge = { StylishBadge { Text("3") } }) {
-                    androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "通知")
-                }
-                StylishTriStateCheckbox(state = triState, onClick = {
-                    triState = when (triState) {
-                        ToggleableState.On -> ToggleableState.Off
-                        else -> ToggleableState.On
-                    }
-                })
-            }
-
-            StylishSectionTitle("Icon Button Variants", textStyle = MaterialTheme.typography.titleSmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishFilledIconButton(onClick = {}) {
-                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
-                }
-                StylishFilledTonalIconButton(onClick = {}) {
-                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
-                }
-                StylishOutlinedIconButton(onClick = {}) {
-                    androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
-                }
-            }
-
-            StylishSectionTitle("Filled / Secure TextField", textStyle = MaterialTheme.typography.titleSmall)
-            var filledValue by remember { mutableStateOf("") }
-            StylishFilledTextField(value = filledValue, onValueChange = { filledValue = it }, label = "フィールド")
-
-            StylishSectionTitle("ToggleButton", textStyle = MaterialTheme.typography.titleSmall)
-            var toggleChecked by remember { mutableStateOf(false) }
-            androidx.compose.material3.SingleChoiceSegmentedButtonRow {
-                StylishSegmentedButton(selected = !toggleChecked, onClick = { toggleChecked = false }) { Text("オフ") }
-                StylishSegmentedButton(selected = toggleChecked, onClick = { toggleChecked = true }) { Text("オン") }
-            }
-
-            StylishSectionTitle("NavigationRail", textStyle = MaterialTheme.typography.titleSmall)
-            var railSelected by remember { mutableIntStateOf(0) }
-            StylishNavigationRail {
-                StylishNavigationRailItem(selected = railSelected == 0, onClick = { railSelected = 0 }, icon = { androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "ホーム") }, label = { Text("ホーム") })
-                StylishNavigationRailItem(selected = railSelected == 1, onClick = { railSelected = 1 }, icon = { androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索") }, label = { Text("検索") })
-            }
-
-            StylishSectionTitle("TopAppBar Variants", textStyle = MaterialTheme.typography.titleSmall)
-            StylishCenterAlignedTopAppBar(title = { Text("中央寄せ") })
-            StylishLargeTopAppBar(title = { Text("ラージ") })
-
-            StylishSectionTitle("BottomAppBar", textStyle = MaterialTheme.typography.titleSmall)
-            StylishBottomAppBar(actions = {
-                androidx.compose.material3.IconButton(onClick = {}) {
-                    androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索")
-                }
-            })
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── Web Parity (0.9) ──
-            StylishSectionTitle("Web Parity")
-
-            StylishSectionTitle("Accordion", textStyle = MaterialTheme.typography.titleSmall)
-            StylishAccordion(
-                items = listOf(
-                    StylishAccordionItem(
-                        title = "車両情報",
-                        content = { Text("ナンバー・年式・色などの基本情報を表示します。", style = MaterialTheme.typography.bodyMedium) },
-                    ),
-                    StylishAccordionItem(
-                        title = "メンテナンス",
-                        content = { Text("整備履歴の一覧です。", style = MaterialTheme.typography.bodyMedium) },
-                    ),
-                ),
-            )
-
-            StylishSectionTitle("Stepper / Breadcrumb", textStyle = MaterialTheme.typography.titleSmall)
-            StylishStepper(
-                steps = listOf("情報入力", "確認", "完了"),
-                currentStep = 1,
-                completedSteps = setOf(0),
-            )
-            StylishBreadcrumb(
-                items = listOf(
-                    StylishBreadcrumbItem("ホーム", onClick = {}),
-                    StylishBreadcrumbItem("車両管理", onClick = {}),
-                    StylishBreadcrumbItem("詳細"),
-                ),
-            )
-
-            StylishSectionTitle("Pagination / Rating / Kbd", textStyle = MaterialTheme.typography.titleSmall)
-            var page by remember { mutableIntStateOf(3) }
-            StylishPagination(page = page, onPageChange = { page = it }, pageCount = 12)
-            var rating by remember { mutableIntStateOf(4) }
-            StylishRating(value = rating, onValueChange = { rating = it })
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                StylishKbd("Ctrl")
-                StylishKbd("K")
-            }
-
-            StylishSectionTitle("NumberInput / PinInput", textStyle = MaterialTheme.typography.titleSmall)
-            var numberValue by remember { mutableStateOf(5) }
-            StylishNumberInput(
-                value = numberValue,
-                onValueChange = { numberValue = it },
-                label = "台数",
-                range = 1..10,
-            )
-            var pinValue by remember { mutableStateOf("") }
-            StylishPinInput(value = pinValue, onValueChange = { pinValue = it })
-
-            StylishSectionTitle("Editable / Statistic / Timeline", textStyle = MaterialTheme.typography.titleSmall)
-            var editableValue by remember { mutableStateOf("Stylish UI") }
-            StylishEditable(value = editableValue, onValueChange = { editableValue = it })
-            Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-                StylishStatistic(label = "燃費", value = "15.2 km/L", delta = "+1.3%")
-                StylishStatistic(label = "経費", value = "¥32,000", delta = "-8%", deltaPositive = false)
-            }
-            StylishTimeline(
-                items = listOf(
-                    StylishTimelineItem("オイル交換", "エンジンオイル交換", "2026/08/10"),
-                    StylishTimelineItem("車検", "ユーザー車検にて合格", "2026/06/01"),
-                ),
-            )
-
-            StylishSectionTitle("Table", textStyle = MaterialTheme.typography.titleSmall)
-            StylishTable(
-                columns = listOf("項目", "金額", "日付"),
-                rows = listOf(
-                    listOf("オイル交換", "¥12,000", "2026/08/10"),
-                    listOf("タイヤ", "¥48,000", "2026/07/22"),
-                ),
-            )
-
-            StylishSectionTitle("Popover / SpeedDial", textStyle = MaterialTheme.typography.titleSmall)
-            var popoverExpanded by remember { mutableStateOf(false) }
-            StylishPopover(
-                expanded = popoverExpanded,
-                onExpandedChange = { popoverExpanded = it },
-                trigger = {
-                    StylishButton(onClick = { popoverExpanded = true }, variant = StylishButtonVariant.Outlined) {
-                        Text("フィルター")
-                    }
-                },
-                content = {
-                    Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
-                    Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
-                },
-            )
-            Box(Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.BottomEnd) {
-                var speedDialExpanded by remember { mutableStateOf(false) }
-                StylishSpeedDial(
-                    expanded = speedDialExpanded,
-                    onExpandedChange = { speedDialExpanded = it },
-                    actionCount = 2,
-                    onActionClick = {},
-                    fabIcon = {
-                        androidx.compose.material3.Icon(
-                            if (speedDialExpanded) Icons.Default.Close else Icons.Default.Add,
-                            contentDescription = "アクション",
-                        )
-                    },
-                ) { index ->
-                    androidx.compose.material3.Icon(
-                        if (index == 0) Icons.Default.Edit else Icons.Default.Share,
-                        contentDescription = null,
-                    )
-                }
-            }
-
-            // ── Web Parity 2 (0.9) ──
-            StylishSectionTitle("Web Parity 2")
-
-            StylishSectionTitle("Alert / Toast", textStyle = MaterialTheme.typography.titleSmall)
-            StylishAlert(
-                title = "お知らせ",
-                message = "新しいバージョンが利用可能です。",
-                onDismiss = {},
-            )
-            var toastVisible by remember { mutableStateOf(false) }
-            StylishButton(onClick = { toastVisible = true }, variant = StylishButtonVariant.Outlined) {
-                Text("トーストを表示")
-            }
-            val toastHostState = rememberStylishToastHostState()
-            LaunchedEffect(toastVisible) {
-                if (toastVisible) {
-                    toastHostState.showToast(StylishToastData("保存しました", StylishToastVariant.Success))
-                    toastVisible = false
-                }
-            }
-            StylishToastHost(toastHostState)
-
-            StylishSectionTitle("Result / Popconfirm", textStyle = MaterialTheme.typography.titleSmall)
-            StylishResult(
-                title = "送信が完了しました",
-                description = "お問い合わせを受け付けました。",
-                variant = StylishResultVariant.Success,
-            )
-            var confirmExpanded by remember { mutableStateOf(false) }
-            StylishPopconfirm(
-                expanded = confirmExpanded,
-                onExpandedChange = { confirmExpanded = it },
-                anchor = {
-                    StylishButton(
-                        onClick = { confirmExpanded = true },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                            contentColor = MaterialTheme.colorScheme.onError,
-                        ),
-                    ) { Text("削除") }
-                },
-                title = "この記録を削除しますか?",
-                confirmLabel = "削除",
-                onConfirm = {},
-            )
-
-            StylishSectionTitle("Descriptions / Autocomplete", textStyle = MaterialTheme.typography.titleSmall)
-            StylishDescriptions(
-                items = listOf(
-                    StylishDescriptionItem("車両名", "Stylish Car"),
-                    StylishDescriptionItem("年式", "2026"),
-                    StylishDescriptionItem("色", "ホワイト"),
-                    StylishDescriptionItem("走行距離", "12,000 km"),
-                ),
-            )
-            var autocompleteValue by remember { mutableStateOf("") }
-            StylishAutocomplete(
-                value = autocompleteValue,
-                onValueChange = { autocompleteValue = it },
-                options = listOf("Stylish UI", "Compose Multiplatform", "Material 3", "Kotlin"),
-                label = "ライブラリ検索",
-            )
-
-            StylishSectionTitle("Code / VisuallyHidden", textStyle = MaterialTheme.typography.titleSmall)
-            StylishCode("implementation(\"io.github.segnities007:stylish-ui:0.8.0\")")
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── Web Parity 3 (0.9) ──
-            StylishSectionTitle("Web Parity 3")
-
-            StylishSectionTitle("Splitter / Masonry", textStyle = MaterialTheme.typography.titleSmall)
-            StylishSplitter(
-                modifier = Modifier.fillMaxWidth().height(140.dp),
-                first = {
-                    Box(
-                        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer),
-                        contentAlignment = Alignment.Center,
-                    ) { Text("パネルA") }
-                },
-                second = {
-                    Box(
-                        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.secondaryContainer),
-                        contentAlignment = Alignment.Center,
-                    ) { Text("パネルB") }
-                },
-            )
-            StylishMasonry(itemCount = 4, columns = 2) { index ->
-                Box(
-                    Modifier.fillMaxWidth().height(if (index % 2 == 0) 64.dp else 96.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)),
-                    contentAlignment = Alignment.Center,
-                ) { Text("項目 $index") }
-            }
-
-            StylishSectionTitle("FormField / AvatarGroup", textStyle = MaterialTheme.typography.titleSmall)
-            StylishFormField(
-                label = "車両名",
-                required = true,
-                supportingText = "登録する車両の名前を入力してください。",
-            ) {
-                StylishFormTextField(
-                    value = "Stylish Car",
-                    onValueChange = {},
-                    label = "車両名",
-                )
-            }
-            StylishAvatarGroup(count = 4, size = 40.dp) { index ->
-                StylishAvatar(initials = "U$index", size = 36.dp)
-            }
-
-            StylishSectionTitle("HoverCard / CommandPalette", textStyle = MaterialTheme.typography.titleSmall)
-            StylishHoverCard(
-                trigger = { Text("ホバーして詳細表示", style = MaterialTheme.typography.bodyLarge) },
-            ) {
-                Text("詳細情報", style = MaterialTheme.typography.titleSmall)
-                Text("ホバーで表示されるカードです。", style = MaterialTheme.typography.bodySmall)
-            }
-            var paletteQuery by remember { mutableStateOf("") }
-            StylishButton(
-                onClick = { paletteQuery = "palette" },
-                variant = StylishButtonVariant.Outlined,
-            ) { Text("コマンドパレット") }
-            if (paletteQuery == "palette") {
-                StylishCommandPalette(
-                    expanded = true,
-                    onDismiss = { paletteQuery = "" },
-                    query = "",
-                    onQueryChange = {},
-                    items = listOf(
-                        StylishCommandItem("ダッシュボードを開く", { paletteQuery = "" }),
-                        StylishCommandItem("給油記録を追加", { paletteQuery = "" }),
-                        StylishCommandItem("設定を開く", { paletteQuery = "" }),
-                    ),
-                )
-            }
-
-            StylishHorizontalDivider(Modifier.fillMaxWidth())
-
-            // ── Skeleton ──
-            StylishSectionTitle("Skeleton")
-            StylishSkeletonCard(Modifier.fillMaxWidth())
+    StylishSectionTitle("StylishSearchBar", textStyle = MaterialTheme.typography.titleSmall)
+    var query by remember { mutableStateOf("") }
+    var searchActive by remember { mutableStateOf(false) }
+    StylishSearchBar(
+        query = query,
+        onQueryChange = { query = it },
+        onSearch = { searchActive = false },
+        active = searchActive,
+        onActiveChange = { searchActive = it },
+        placeholder = { Text("検索") },
+        leadingIcon = {
+            androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = null)
+        },
+    ) {
+        Column {
+            Text("Stylish UI")
+            Text("Compose Multiplatform")
         }
     }
+
+    StylishSectionTitle("StylishTopAppBar", textStyle = MaterialTheme.typography.titleSmall)
+    StylishTopAppBar(
+        title = { Text("設定") },
+        navigationIcon = {
+            androidx.compose.material3.IconButton(onClick = {}) {
+                androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "戻る")
+            }
+        },
+    )
+
+    StylishSectionTitle("Lazy Connected List", textStyle = MaterialTheme.typography.titleSmall)
+    StylishConnectedCardLazyColumn(
+        items = List(20) { index ->
+            StylishConnectedCardItem(
+                title = "項目 $index",
+                supportingText = "遅延描画される Connected カード",
+                onClick = {},
+            )
+        },
+    )
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogCharts() {
+    // ── Charts ──
+    StylishSectionTitle("Charts")
+    SimplePieChart(
+        contentDescriptionPrefix = "円グラフ",
+        data = listOf(
+            PieChartData("燃料費", 35000f, stylishChartColor(0)),
+            PieChartData("保険", 15000f, stylishChartColor(1)),
+            PieChartData("メンテナンス", 8000f, stylishChartColor(2)),
+        ),
+    )
+    SimpleBarChart(
+        contentDescriptionPrefix = "棒グラフ",
+        emptyLabel = "データがありません",
+        data = listOf(
+            BarChartData("1月", 30000f),
+            BarChartData("2月", 45000f),
+            BarChartData("3月", 28000f),
+        ),
+    )
+    SimpleLineChart(
+        contentDescriptionPrefix = "折れ線グラフ",
+        emptyLabel = "データがありません",
+        data = listOf(
+            LineChartData("1月", 30000f),
+            LineChartData("2月", 45000f),
+            LineChartData("3月", 28000f),
+            LineChartData("4月", 52000f),
+        ),
+    )
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogM3Parity() {
+    // ── M3 Parity (0.8) ──
+    StylishSectionTitle("M3 Parity")
+
+    StylishSectionTitle("BadgedBox / TriStateCheckbox", textStyle = MaterialTheme.typography.titleSmall)
+    var triState by remember { mutableStateOf(ToggleableState.Indeterminate) }
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        StylishBadgedBox(badge = { StylishBadge { Text("3") } }) {
+            androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "通知")
+        }
+        StylishTriStateCheckbox(state = triState, onClick = {
+            triState = when (triState) {
+                ToggleableState.On -> ToggleableState.Off
+                else -> ToggleableState.On
+            }
+        })
+    }
+
+    StylishSectionTitle("Icon Button Variants", textStyle = MaterialTheme.typography.titleSmall)
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        StylishFilledIconButton(onClick = {}) {
+            androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+        }
+        StylishFilledTonalIconButton(onClick = {}) {
+            androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+        }
+        StylishOutlinedIconButton(onClick = {}) {
+            androidx.compose.material3.Icon(Icons.Default.Add, contentDescription = "追加")
+        }
+    }
+
+    StylishSectionTitle("Filled / Secure TextField", textStyle = MaterialTheme.typography.titleSmall)
+    var filledValue by remember { mutableStateOf("") }
+    StylishFilledTextField(value = filledValue, onValueChange = { filledValue = it }, label = "フィールド")
+
+    StylishSectionTitle("ToggleButton", textStyle = MaterialTheme.typography.titleSmall)
+    var toggleChecked by remember { mutableStateOf(false) }
+    androidx.compose.material3.SingleChoiceSegmentedButtonRow {
+        StylishSegmentedButton(selected = !toggleChecked, onClick = { toggleChecked = false }) { Text("オフ") }
+        StylishSegmentedButton(selected = toggleChecked, onClick = { toggleChecked = true }) { Text("オン") }
+    }
+
+    StylishSectionTitle("NavigationRail", textStyle = MaterialTheme.typography.titleSmall)
+    var railSelected by remember { mutableIntStateOf(0) }
+    StylishNavigationRail {
+        StylishNavigationRailItem(selected = railSelected == 0, onClick = { railSelected = 0 }, icon = { androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "ホーム") }, label = { Text("ホーム") })
+        StylishNavigationRailItem(selected = railSelected == 1, onClick = { railSelected = 1 }, icon = { androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索") }, label = { Text("検索") })
+    }
+
+    StylishSectionTitle("TopAppBar Variants", textStyle = MaterialTheme.typography.titleSmall)
+    StylishCenterAlignedTopAppBar(title = { Text("中央寄せ") })
+    StylishLargeTopAppBar(title = { Text("ラージ") })
+
+    StylishSectionTitle("BottomAppBar", textStyle = MaterialTheme.typography.titleSmall)
+    StylishBottomAppBar(actions = {
+        androidx.compose.material3.IconButton(onClick = {}) {
+            androidx.compose.material3.Icon(Icons.Default.Search, contentDescription = "検索")
+        }
+    })
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogWebParity() {
+    // ── Web Parity (0.9) ──
+    StylishSectionTitle("Web Parity")
+
+    StylishSectionTitle("Accordion", textStyle = MaterialTheme.typography.titleSmall)
+    StylishAccordion(
+        items = listOf(
+            StylishAccordionItem(
+                title = "車両情報",
+                content = { Text("ナンバー・年式・色などの基本情報を表示します。", style = MaterialTheme.typography.bodyMedium) },
+            ),
+            StylishAccordionItem(
+                title = "メンテナンス",
+                content = { Text("整備履歴の一覧です。", style = MaterialTheme.typography.bodyMedium) },
+            ),
+        ),
+    )
+
+    StylishSectionTitle("Stepper / Breadcrumb", textStyle = MaterialTheme.typography.titleSmall)
+    StylishStepper(
+        steps = listOf("情報入力", "確認", "完了"),
+        currentStep = 1,
+        completedSteps = setOf(0),
+    )
+    StylishBreadcrumb(
+        items = listOf(
+            StylishBreadcrumbItem("ホーム", onClick = {}),
+            StylishBreadcrumbItem("車両管理", onClick = {}),
+            StylishBreadcrumbItem("詳細"),
+        ),
+    )
+
+    StylishSectionTitle("Pagination / Rating / Kbd", textStyle = MaterialTheme.typography.titleSmall)
+    var page by remember { mutableIntStateOf(3) }
+    StylishPagination(page = page, onPageChange = { page = it }, pageCount = 12)
+    var rating by remember { mutableIntStateOf(4) }
+    StylishRating(value = rating, onValueChange = { rating = it })
+    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        StylishKbd("Ctrl")
+        StylishKbd("K")
+    }
+
+    StylishSectionTitle("NumberInput / PinInput", textStyle = MaterialTheme.typography.titleSmall)
+    var numberValue by remember { mutableStateOf(5) }
+    StylishNumberInput(
+        value = numberValue,
+        onValueChange = { numberValue = it },
+        label = "台数",
+        range = 1..10,
+    )
+    var pinValue by remember { mutableStateOf("") }
+    StylishPinInput(value = pinValue, onValueChange = { pinValue = it })
+
+    StylishSectionTitle("Editable / Statistic / Timeline", textStyle = MaterialTheme.typography.titleSmall)
+    var editableValue by remember { mutableStateOf("Stylish UI") }
+    StylishEditable(value = editableValue, onValueChange = { editableValue = it })
+    Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+        StylishStatistic(label = "燃費", value = "15.2 km/L", delta = "+1.3%")
+        StylishStatistic(label = "経費", value = "¥32,000", delta = "-8%", deltaPositive = false)
+    }
+    StylishTimeline(
+        items = listOf(
+            StylishTimelineItem("オイル交換", "エンジンオイル交換", "2026/08/10"),
+            StylishTimelineItem("車検", "ユーザー車検にて合格", "2026/06/01"),
+        ),
+    )
+
+    StylishSectionTitle("Table", textStyle = MaterialTheme.typography.titleSmall)
+    StylishTable(
+        columns = listOf("項目", "金額", "日付"),
+        rows = listOf(
+            listOf("オイル交換", "¥12,000", "2026/08/10"),
+            listOf("タイヤ", "¥48,000", "2026/07/22"),
+        ),
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogWebParityOverlays() {
+    StylishSectionTitle("Popover / SpeedDial", textStyle = MaterialTheme.typography.titleSmall)
+    var popoverExpanded by remember { mutableStateOf(false) }
+    StylishPopover(
+        expanded = popoverExpanded,
+        onExpandedChange = { popoverExpanded = it },
+        trigger = {
+            StylishButton(onClick = { popoverExpanded = true }, variant = StylishButtonVariant.Outlined) {
+                Text("フィルター")
+            }
+        },
+        content = {
+            Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
+            Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
+        },
+    )
+    Box(Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.BottomEnd) {
+        var speedDialExpanded by remember { mutableStateOf(false) }
+        StylishSpeedDial(
+            expanded = speedDialExpanded,
+            onExpandedChange = { speedDialExpanded = it },
+            actionCount = 2,
+            onActionClick = {},
+            fabIcon = {
+                androidx.compose.material3.Icon(
+                    if (speedDialExpanded) Icons.Default.Close else Icons.Default.Add,
+                    contentDescription = "アクション",
+                )
+            },
+        ) { index ->
+            androidx.compose.material3.Icon(
+                if (index == 0) Icons.Default.Edit else Icons.Default.Share,
+                contentDescription = null,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogWebParity2() {
+    // ── Web Parity 2 (0.9) ──
+    StylishSectionTitle("Web Parity 2")
+
+    StylishSectionTitle("Alert / Toast", textStyle = MaterialTheme.typography.titleSmall)
+    StylishAlert(
+        title = "お知らせ",
+        message = "新しいバージョンが利用可能です。",
+        onDismiss = {},
+    )
+    var toastVisible by remember { mutableStateOf(false) }
+    StylishButton(onClick = { toastVisible = true }, variant = StylishButtonVariant.Outlined) {
+        Text("トーストを表示")
+    }
+    val toastHostState = rememberStylishToastHostState()
+    LaunchedEffect(toastVisible) {
+        if (toastVisible) {
+            toastHostState.showToast(StylishToastData("保存しました", StylishToastVariant.Success))
+            toastVisible = false
+        }
+    }
+    StylishToastHost(toastHostState)
+
+    StylishSectionTitle("Result / Popconfirm", textStyle = MaterialTheme.typography.titleSmall)
+    StylishResult(
+        title = "送信が完了しました",
+        description = "お問い合わせを受け付けました。",
+        variant = StylishResultVariant.Success,
+    )
+    var confirmExpanded by remember { mutableStateOf(false) }
+    StylishPopconfirm(
+        expanded = confirmExpanded,
+        onExpandedChange = { confirmExpanded = it },
+        anchor = {
+            StylishButton(
+                onClick = { confirmExpanded = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                ),
+            ) { Text("削除") }
+        },
+        title = "この記録を削除しますか?",
+        confirmLabel = "削除",
+        onConfirm = {},
+    )
+
+    StylishSectionTitle("Descriptions / Autocomplete", textStyle = MaterialTheme.typography.titleSmall)
+    StylishDescriptions(
+        items = listOf(
+            StylishDescriptionItem("車両名", "Stylish Car"),
+            StylishDescriptionItem("年式", "2026"),
+            StylishDescriptionItem("色", "ホワイト"),
+            StylishDescriptionItem("走行距離", "12,000 km"),
+        ),
+    )
+    var autocompleteValue by remember { mutableStateOf("") }
+    StylishAutocomplete(
+        value = autocompleteValue,
+        onValueChange = { autocompleteValue = it },
+        options = listOf("Stylish UI", "Compose Multiplatform", "Material 3", "Kotlin"),
+        label = "ライブラリ検索",
+    )
+
+    StylishSectionTitle("Code / VisuallyHidden", textStyle = MaterialTheme.typography.titleSmall)
+    StylishCode("implementation(\"io.github.segnities007:stylish-ui:0.8.0\")")
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogWebParity3() {
+    // ── Web Parity 3 (0.9) ──
+    StylishSectionTitle("Web Parity 3")
+
+    StylishSectionTitle("Splitter / Masonry", textStyle = MaterialTheme.typography.titleSmall)
+    StylishSplitter(
+        modifier = Modifier.fillMaxWidth().height(140.dp),
+        first = {
+            Box(
+                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center,
+            ) { Text("パネルA") }
+        },
+        second = {
+            Box(
+                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.secondaryContainer),
+                contentAlignment = Alignment.Center,
+            ) { Text("パネルB") }
+        },
+    )
+    StylishMasonry(itemCount = 4, columns = 2) { index ->
+        Box(
+            Modifier.fillMaxWidth().height(if (index % 2 == 0) 64.dp else 96.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center,
+        ) { Text("項目 $index") }
+    }
+
+    StylishSectionTitle("FormField / AvatarGroup", textStyle = MaterialTheme.typography.titleSmall)
+    StylishFormField(
+        label = "車両名",
+        required = true,
+        supportingText = "登録する車両の名前を入力してください。",
+    ) {
+        StylishFormTextField(
+            value = "Stylish Car",
+            onValueChange = {},
+            label = "車両名",
+        )
+    }
+    StylishAvatarGroup(count = 4, size = 40.dp) { index ->
+        StylishAvatar(initials = "U$index", size = 36.dp)
+    }
+
+    StylishSectionTitle("HoverCard / CommandPalette", textStyle = MaterialTheme.typography.titleSmall)
+    StylishHoverCard(
+        trigger = { Text("ホバーして詳細表示", style = MaterialTheme.typography.bodyLarge) },
+    ) {
+        Text("詳細情報", style = MaterialTheme.typography.titleSmall)
+        Text("ホバーで表示されるカードです。", style = MaterialTheme.typography.bodySmall)
+    }
+    var paletteQuery by remember { mutableStateOf("") }
+    StylishButton(
+        onClick = { paletteQuery = "palette" },
+        variant = StylishButtonVariant.Outlined,
+    ) { Text("コマンドパレット") }
+    if (paletteQuery == "palette") {
+        StylishCommandPalette(
+            expanded = true,
+            onDismiss = { paletteQuery = "" },
+            query = "",
+            onQueryChange = {},
+            items = listOf(
+                StylishCommandItem("ダッシュボードを開く", { paletteQuery = "" }),
+                StylishCommandItem("給油記録を追加", { paletteQuery = "" }),
+                StylishCommandItem("設定を開く", { paletteQuery = "" }),
+            ),
+        )
+    }
+
+    StylishHorizontalDivider(Modifier.fillMaxWidth())
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ComponentCatalogSkeleton() {
+    // ── Skeleton ──
+    StylishSectionTitle("Skeleton")
+    StylishSkeletonCard(Modifier.fillMaxWidth())
 }
 
 @Preview(name = "StylishUI catalog · Light", showBackground = true, widthDp = 393)

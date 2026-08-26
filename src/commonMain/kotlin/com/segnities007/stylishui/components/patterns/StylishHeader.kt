@@ -108,8 +108,8 @@ public fun StylishHeader(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
     // フローティング要素共通の透過率 + primaryContainer のアクセント色
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,

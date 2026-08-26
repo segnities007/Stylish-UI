@@ -21,8 +21,8 @@ public fun StylishFloatingTopBar(
     actions: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,

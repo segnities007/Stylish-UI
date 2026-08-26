@@ -84,6 +84,21 @@ tasks.register<Exec>("checkComponentContracts") {
     )
 }
 
+// Enforce semantic decomposition: no Composable/function over 80 lines.
+// New violations fail `check`; pre-existing ones live in the baseline file
+// and must shrink over time (never grow).
+tasks.register<Exec>("checkComposableSize") {
+    group = "verification"
+    description = "Fails when a Kotlin function exceeds 80 lines (baseline ratchet)."
+    commandLine(
+        "python3",
+        layout.projectDirectory.file("scripts/verify-composable-size.py").asFile.absolutePath,
+        "src", "catalog/src",
+        "--max-lines", "80",
+        "--baseline", layout.projectDirectory.file("scripts/composable-size-baseline.txt").asFile.absolutePath,
+    )
+}
+
 tasks.register<Exec>("checkCatalogStateMatrix") {
     group = "verification"
     description = "Builds the public Compose API ↔ catalog ↔ state coverage matrix."
@@ -283,6 +298,7 @@ tasks.register("generateSbom") {
 }
 
 tasks.named("check") {
+    dependsOn("checkComposableSize")
     dependsOn("checkComponentInventory")
     dependsOn("checkArchitecture")
     dependsOn("checkModuleBoundaries")

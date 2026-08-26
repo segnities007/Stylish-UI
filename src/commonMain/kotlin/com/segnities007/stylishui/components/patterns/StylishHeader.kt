@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -141,82 +142,120 @@ public fun StylishHeader(
                 .windowInsetsPadding(windowInsets)
                 .padding(top = topPadding, bottom = bottomPadding),
         ) {
-        if (backdrop != null || glassState != null) {
-            // 磨りガラス ヘッダー: backdrop を下敷きにすりガラス面を作る。
-            // ライト モードでも輪郭と面が分かるようテーマ連動させる
-            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-            StylishFrostedGlassSurface(
-                backdrop = backdrop ?: {},
-                glassState = glassState,
-                // サーフェス内部は matchParentSize のレイヤーで構成されるため、
-                // サイズは modifier で確定させる必要がある(高さ0防止)。
-                modifier = Modifier.fillMaxWidth().height(height),
-                shape = shape,
-                // ダイナミック カラー追従: 白/黒固定ではなく colorScheme から取る
-                tint = if (isDark) {
-                    containerColor.copy(alpha = 0.4f)
-                } else {
-                    MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
-                },
-                haze = 0.08f,
-                blurRadius = 8.dp,
-                borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
-            ) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(height),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        navigation?.let {
-                            Box(
-                                Modifier
-                                    .padding(start = StylishTheme.dimensions.inlineSpacing),
-                            ) { it() }
-                        }
-                        Box(
-                            Modifier
-                                .weight(1f)
-                                .semantics { heading() },
-                            contentAlignment = Alignment.Center,
-                        ) { title() }
-                        actions?.let {
-                            Row(
-                                Modifier
-                                    .padding(end = StylishTheme.dimensions.inlineSpacing),
-                                horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
-                            ) { it() }
-                        }
-                    }
-                }
+            // ヘッダーの内容(navigation/title/actions の行)。表面モード間で共有。
+            val headerRow: @Composable () -> Unit = {
+                HeaderRow(
+                    navigation = navigation,
+                    title = title,
+                    actions = actions,
+                    actionsSpacing = actionsSpacing,
+                )
             }
-        } else {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = shape,
-            color = if (glass) {
-                val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-                if (isDark) containerColor.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.6f)
-            } else {
-                containerColor
-            },
-            contentColor = contentColor,
-            border = if (glass) {
-                val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-                BorderStroke(
-                    StylishTheme.dimensions.outlineWidth,
-                    if (isDark) Color.White.copy(alpha = 0.22f) else Color.Black.copy(alpha = 0.12f),
+
+            if (backdrop != null || glassState != null) {
+                FrostedHeaderSurface(
+                    backdrop = backdrop,
+                    glassState = glassState,
+                    modifier = Modifier.fillMaxWidth().height(height),
+                    shape = shape,
+                    containerColor = containerColor,
+                    height = height,
+                    content = headerRow,
                 )
             } else {
-                border
-            },
-            tonalElevation = tonalElevation,
-            shadowElevation = if (glass) 0.dp else shadowElevation,
-        ) {
-            Box(Modifier.fillMaxWidth().height(height)) {
+                PlainHeaderSurface(
+                    glass = glass,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = shape,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    border = border,
+                    tonalElevation = tonalElevation,
+                    shadowElevation = shadowElevation,
+                    height = height,
+                    content = headerRow,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 磨りガラス モードのヘッダー面。
+ * テーマ連動のティント/ボーダー([StylishFrostedGlassSurface])で描画する。
+ */
+@Composable
+private fun FrostedHeaderSurface(
+    backdrop: (@Composable BoxScope.() -> Unit)?,
+    glassState: com.segnities007.stylishui.components.atoms.StylishGlassState?,
+    modifier: Modifier,
+    shape: Shape,
+    containerColor: Color,
+    height: Dp,
+    content: @Composable () -> Unit,
+) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    StylishFrostedGlassSurface(
+        backdrop = backdrop ?: {},
+        glassState = glassState,
+        // サーフェス内部は matchParentSize のレイヤーで構成されるため、
+        // サイズは modifier で確定させる必要がある(高さ0防止)。
+        modifier = modifier,
+        shape = shape,
+        // ダイナミック カラー追従: 白/黒固定ではなく colorScheme から取る
+        tint = if (isDark) {
+            containerColor.copy(alpha = 0.4f)
+        } else {
+            MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)
+        },
+        haze = 0.08f,
+        blurRadius = 8.dp,
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+    ) {
+        Box(Modifier.fillMaxWidth().height(height)) { content() }
+    }
+}
+
+/**
+ * 通常/簡易ガラス モードのヘッダー面([Surface])。
+ * [glass] が `true` の場合は半透明+シーン+ヘアラインの簡易ガラス表現。
+ */
+@Composable
+private fun PlainHeaderSurface(
+    glass: Boolean,
+    modifier: Modifier,
+    shape: Shape,
+    containerColor: Color,
+    contentColor: Color,
+    border: BorderStroke?,
+    tonalElevation: Dp,
+    shadowElevation: Dp,
+    height: Dp,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        shape = shape,
+        color = if (glass) {
+            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+            if (isDark) containerColor.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.6f)
+        } else {
+            containerColor
+        },
+        contentColor = contentColor,
+        border = if (glass) {
+            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+            BorderStroke(
+                StylishTheme.dimensions.outlineWidth,
+                if (isDark) Color.White.copy(alpha = 0.22f) else Color.Black.copy(alpha = 0.12f),
+            )
+        } else {
+            border
+        },
+        tonalElevation = tonalElevation,
+        shadowElevation = if (glass) 0.dp else shadowElevation,
+    ) {
+        Box(Modifier.fillMaxWidth().height(height)) {
             if (glass) {
                 // ガラスのシーン: 左上から対角方向のハイライト
                 Box(
@@ -230,39 +269,48 @@ public fun StylishHeader(
                         ),
                 )
             }
+            content()
+        }
+    }
+}
+
+/** ヘッダー共通の1行: navigation / タイトル(中央・headingセマンティクス) / actions。 */
+@Composable
+private fun HeaderRow(
+    navigation: (@Composable () -> Unit)?,
+    title: @Composable () -> Unit,
+    actions: (@Composable () -> Unit)?,
+    actionsSpacing: Dp,
+) {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        navigation?.let {
+            Box(
+                Modifier
+                    .padding(start = StylishTheme.dimensions.inlineSpacing),
+            ) { it() }
+        }
+        // Title is constrained to the space BETWEEN navigation and
+        // actions, so long text can never slide behind the buttons.
+        // Center it within that space (M3 TopAppBar behavior).
+        Box(
+            Modifier
+                .weight(1f)
+                .semantics { heading() },
+            contentAlignment = Alignment.Center,
+        ) { title() }
+        actions?.let {
             Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                navigation?.let {
-                    Box(
-                        Modifier
-                            .padding(start = StylishTheme.dimensions.inlineSpacing)
-                    ) { it() }
-                }
-                // Title is constrained to the space BETWEEN navigation and
-                // actions, so long text can never slide behind the buttons.
-                // Center it within that space (M3 TopAppBar behavior).
-                Box(
-                    Modifier
-                        .weight(1f)
-                        .semantics { heading() },
-                    contentAlignment = Alignment.Center,
-                ) { title() }
-                actions?.let {
-                    Row(
-                        Modifier
-                            .padding(end = StylishTheme.dimensions.inlineSpacing),
-                        horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
-                    ) { it() }
-                }
-            }
-        }
+                Modifier
+                    .padding(end = StylishTheme.dimensions.inlineSpacing),
+                horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
+            ) { it() }
         }
     }
-    }
 }
-}
+
 @Preview(name = "Stylish header", showBackground = true, widthDp = 393)
 @Composable
 private fun StylishHeaderPreview() {

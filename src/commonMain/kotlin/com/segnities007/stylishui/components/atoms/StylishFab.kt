@@ -179,8 +179,9 @@ public fun StylishFab(
                 .size(resolvedSize)
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
-        color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
-        contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
+        // M3 FAB 規範: primaryContainer + onPrimaryContainer(アクセント色)
+        color = containerColor ?: MaterialTheme.colorScheme.primaryContainer,
+        contentColor = contentColor ?: MaterialTheme.colorScheme.onPrimaryContainer,
         border = border ?: BorderStroke(
             StylishTheme.dimensions.outlineWidth,
             MaterialTheme.colorScheme.outlineVariant,

@@ -82,7 +82,7 @@ public fun StylishBottomSheet(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
     ),
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.7f),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = 1.dp,
     // M3's own default (BottomSheetDefaults.ScrimColor) carries 32% alpha;

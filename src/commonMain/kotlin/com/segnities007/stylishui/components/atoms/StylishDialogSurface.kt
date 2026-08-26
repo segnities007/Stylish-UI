@@ -139,12 +139,12 @@ public fun StylishDialogSurface(
             shape = shape,
             colors = if (contentColor != null) {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.7f),
                     contentColor = contentColor,
                 )
             } else {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.7f),
                 )
             },
             content = content,

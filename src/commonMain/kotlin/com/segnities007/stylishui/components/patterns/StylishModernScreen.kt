@@ -79,9 +79,13 @@ public class StylishScrollHideState internal constructor(
         ): Offset {
             // Count only scroll the list actually consumed: overscroll
             // attempts at the edges must not move the floating layer.
+            // 方向を検知した時点で完全にスライドイン/アウトする
+            // (指の移動量に比例させない)。
             if (consumed.y != 0f) {
-                val target = (animatable.value - consumed.y / 120f).coerceIn(0f, 1f)
-                scope.launch { animatable.snapTo(target) }
+                val target = if (consumed.y < 0f) 1f else 0f
+                if (animatable.targetValue != target) {
+                    scope.launch { animatable.animateTo(target, tween(200)) }
+                }
             }
             return Offset.Zero
         }
@@ -147,9 +151,9 @@ public fun StylishScrollHideVisibility(
  * applied as the list's initial top content padding, so content starts
  * clear of the header and scrolls behind it.
  *
- * iOS-style scroll behavior: scrolling down slides the header and floating
- * layers out proportionally to the finger; any upward scroll brings them
- * back; the floating layer is always visible while the list is at the top
+ * Scroll behavior: detecting a downward scroll fully slides the header and
+ * floating layers out (200 ms); any upward scroll slides them fully back in.
+ * The floating layer is always visible while the list is at the top
  * (including rubber-band bounce) and after pager page switches.
  *
  * The status-bar zone is tinted with [statusBarScrimColor] while content
@@ -194,18 +198,9 @@ public fun StylishModernScreen(
     // disposed and recreated page starts with the last known clearance.
     val headerHeightPx = androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableIntStateOf(0) }
     val density = androidx.compose.ui.platform.LocalDensity.current
-    val slideDistancePx = with(density) { 140.dp.toPx() }
 
     // 0f = shown, 1f = hidden. Tracks the finger 1:1 via nested scroll and
     // settles to the nearest edge when the gesture/fling ends.
-    val slide = remember(scrollHideState) { Animatable(0f) }
-    LaunchedEffect(slide, scrollHideState) {
-        snapshotFlow { scrollHideState.progress }.collect { target ->
-            if (slide.targetValue != target) {
-                slide.animateTo(target, tween(220))
-            }
-        }
-    }
 
     // iOS-style guarantee: always visible while the list is at the top
     // (also restores visibility after pager page switches).
@@ -241,7 +236,8 @@ public fun StylishModernScreen(
             // Header: slides UP as progress grows. Measured synchronously so
             // the content's top clearance is correct from the first frame.
             val headerPlaceables = subcompose("header") {
-                val slideOffset = -(scrollHideState.progress * slideDistancePx)
+                // 自身の高さ分スライドして完全に画面外へ出る
+                val slideOffset = -(scrollHideState.progress * headerHeightPx.intValue)
                 Box(Modifier.offset(y = with(this@SubcomposeLayout) { slideOffset.toDp() })) {
                     Column(
                         Modifier

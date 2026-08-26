@@ -199,34 +199,37 @@ private fun HeaderRow(
     actions: (@Composable () -> Unit)?,
     actionsSpacing: Dp,
 ) {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        navigation?.let {
-            Box(
-                Modifier
-                    .padding(start = StylishTheme.dimensions.inlineSpacing),
-            ) { it() }
-        }
-        // Title is constrained to the space BETWEEN navigation and
-        // actions, so long text can never slide behind the buttons.
-        // Center it within that space (M3 TopAppBar behavior).
+    // タイトルはバー全体の真ん中に配置する。navigation/actions は左右に重ね、
+    // 長いタイトルは内側パディング(64dp = 標準アイコンボタン2個分)で保護する。
+    // MemoEditor のインライン タイトル編集と同じ方式。
+    Box(Modifier.fillMaxSize()) {
         Box(
             Modifier
-                .weight(1f)
+                .fillMaxSize()
+                .padding(horizontal = HeaderTitleHorizontalPadding)
                 .semantics { heading() },
             contentAlignment = Alignment.Center,
         ) { title() }
+        navigation?.let {
+            Box(
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = StylishTheme.dimensions.inlineSpacing),
+            ) { it() }
+        }
         actions?.let {
             Row(
                 Modifier
+                    .align(Alignment.CenterEnd)
                     .padding(end = StylishTheme.dimensions.inlineSpacing),
                 horizontalArrangement = Arrangement.spacedBy(actionsSpacing),
             ) { it() }
         }
     }
 }
+
+/** タイトルの左右の保護余白。標準アイコンボタン2個分。 */
+private val HeaderTitleHorizontalPadding = 64.dp
 
 @Preview(name = "Stylish header", showBackground = true, widthDp = 393)
 @Composable

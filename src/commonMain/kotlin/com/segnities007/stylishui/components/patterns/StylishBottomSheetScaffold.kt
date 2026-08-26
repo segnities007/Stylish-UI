@@ -92,7 +92,7 @@ public fun StylishBottomSheetScaffold(
         topStart = StylishTheme.dimensions.connectedCornerRadius,
         topEnd = StylishTheme.dimensions.connectedCornerRadius,
     ),
-    sheetContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.8f),
+    sheetContainerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
     sheetContentColor: Color = contentColorFor(sheetContainerColor),
     sheetTonalElevation: Dp = 0.dp,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,

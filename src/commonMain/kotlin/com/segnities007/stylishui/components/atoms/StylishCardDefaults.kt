@@ -21,7 +21,7 @@ public object StylishCardDefaults {
     /** Resolves card colors while preserving the active component color overrides. */
     @Composable
     public fun colors(): CardColors = CardDefaults.cardColors(
-        containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
+        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
 

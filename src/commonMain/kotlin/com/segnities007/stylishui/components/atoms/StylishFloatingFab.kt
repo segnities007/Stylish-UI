@@ -21,7 +21,7 @@ public fun StylishFloatingFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     shape: Shape? = null,
     sizeVariant: StylishFabSize = StylishFabSize.Regular,

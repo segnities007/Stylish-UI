@@ -180,7 +180,7 @@ public fun StylishFab(
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
         // TopBarと同じsurfaceContainerHigh・透過率のフローティング要素
-        color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+        color = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         border = border ?: BorderStroke(
             StylishTheme.dimensions.outlineWidth,

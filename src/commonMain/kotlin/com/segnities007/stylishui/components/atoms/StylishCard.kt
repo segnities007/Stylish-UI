@@ -235,7 +235,7 @@ public fun StylishCard(
         colors = if (containerColor == null && contentColor == null) {
             StylishCardDefaults.colors()
         } else CardDefaults.cardColors(
-            containerColor = containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer,
+            containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         ),
         elevation = CardDefaults.cardElevation(

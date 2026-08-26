@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -95,7 +97,9 @@ public fun StylishDialogSurface(
     horizontalPadding: Dp = 16.dp,
     contentColor: Color? = null,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
-    windowInsets: WindowInsets = WindowInsets.safeDrawing,
+    // safeDrawing includes IME. Exclude it here because the Dialog window
+    // already adjusts for the keyboard; applying both moves the dialog too far.
+    windowInsets: WindowInsets = WindowInsets.safeDrawing.exclude(WindowInsets.ime),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val effectiveAnimate = animate && !isStylishReducedMotionEnabled()
@@ -139,12 +143,12 @@ public fun StylishDialogSurface(
             shape = shape,
             colors = if (contentColor != null) {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.8f),
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                     contentColor = contentColor,
                 )
             } else {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.8f),
+                    containerColor = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                 )
             },
             content = content,

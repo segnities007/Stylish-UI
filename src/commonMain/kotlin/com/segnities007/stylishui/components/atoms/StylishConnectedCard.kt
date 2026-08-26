@@ -220,7 +220,7 @@ public fun StylishConnectedCard(
     val resolvedContainerColor = if (!enabled) {
         disabledContainerColor
     } else {
-        containerColor ?: MaterialTheme.stylishComponentColors.groupedContainer
+        containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
     }
     val resolvedContentColor = if (!enabled) {
         disabledContentColor

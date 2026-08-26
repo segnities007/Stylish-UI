@@ -19,7 +19,7 @@ public fun StylishFloatingBottomBar(
     actions: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     floatingActionButton: @Composable (() -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f),
+    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     tonalElevation: Dp = BottomAppBarDefaults.ContainerElevation,
     contentPadding: PaddingValues = BottomAppBarDefaults.ContentPadding,

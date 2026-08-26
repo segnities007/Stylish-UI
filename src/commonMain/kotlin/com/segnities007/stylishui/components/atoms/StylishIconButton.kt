@@ -98,7 +98,7 @@ public fun StylishIconButton(
     val resolvedContainerColor = containerColor ?: if (active) {
         MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.9f)
+        MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
     }
     val resolvedContentColor = contentColor ?: if (active) {
         MaterialTheme.colorScheme.onPrimary

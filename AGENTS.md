@@ -250,3 +250,23 @@ Always run tests before considering a change complete:
 ## Documentation
 
 When adding new public components or APIs, update the README.md with usage examples.
+
+## Semantic Decomposition (MANDATORY)
+
+UI コードは**意味単位の関数**に分割すること。1関数 = 1つの意味的責務。
+
+- **80行ルール**: 関数は 80 行を超えてはならない。超えたら即座に分解する。
+  - `scripts/verify-composable-size.py` が `check` で失敗を検出する（ベースライン・ラチェット方式: 既存違反は `scripts/composable-size-baseline.txt` に登録、**新規違反のみ失敗**。減らすのは自由、増やすのは禁止、しきい値の緩和や `size:allow` の乱用は禁止）。
+- **画面 Composable = オーケストレーター**: 状態 + コールバック + パーツ組み立てのみに専念する。描画ロジックを書かない。
+- **切り出し単位（役割名の private 関数）**:
+  - `FooHeader` / `FooTopBar` — ヘッダー
+  - `FooFloatingAction` / `FooFab` — FAB
+  - `LazyListScope.fooItems(...)` — リスト本体（読み込み中/空/項目列の分岐も含む）
+  - `FooCard` / `FooItem` — 1項目
+  - `FooDialog` — ダイアログ（入力状態はダイアログ内に閉じ込める）
+  - `FooSection` — その他の意味的セクション
+- **状態ホルダー**: 関連する状態が 3 つ以上並ぶなら `XxxState` クラス + `rememberXxxState()` に集約する。
+- **テーマ色は `colorScheme` から**: `Color.White` / `Color.Black` 固定は禁止（ダイナミック カラーを壊す）。
+- **リファクタリングは挙動を変えない**: 純粋な切り出し・再配置のみ。検証はコンパイル + 既存テスト。
+
+違反したままコミットしないこと。`check` が失敗したら分解して解消する。

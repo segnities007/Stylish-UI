@@ -61,7 +61,7 @@ public fun StylishAlertDialog(
     text: @Composable (() -> Unit)? = null,
     confirmButton: @Composable () -> Unit,
     dismissButton: @Composable (() -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.7f),
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.8f),
     shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
     tonalElevation: Dp = 1.dp,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = true),

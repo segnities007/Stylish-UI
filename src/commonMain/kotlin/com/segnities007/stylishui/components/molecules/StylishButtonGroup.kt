@@ -56,7 +56,7 @@ public enum class StylishButtonGroupOrientation {
 public fun StylishButtonGroup(
     modifier: Modifier = Modifier,
     orientation: StylishButtonGroupOrientation = StylishButtonGroupOrientation.Horizontal,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surface,
     border: BorderStroke? = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     contentPadding: PaddingValues = PaddingValues(0.dp),

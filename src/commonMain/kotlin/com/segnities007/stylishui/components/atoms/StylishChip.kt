@@ -124,7 +124,7 @@ public enum class StylishChipVariant {
  *   chip, used to observe press/focus/hover interactions. When
  *   `null`, an internal one is remembered.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param labelMaxLines Maximum lines for [label] in structured mode.
  * @param labelOverflow Overflow strategy for [label] in structured mode.
  * @param labelStyle Text style for [label] in structured mode.
@@ -170,7 +170,7 @@ public fun StylishChip(
     selected: Boolean = false,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     labelMaxLines: Int = 1,
     labelOverflow: TextOverflow = TextOverflow.Ellipsis,
     labelStyle: TextStyle = MaterialTheme.typography.labelLarge,

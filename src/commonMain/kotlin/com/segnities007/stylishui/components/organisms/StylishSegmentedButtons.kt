@@ -29,7 +29,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import com.segnities007.stylishui.foundation.connectedRowCorners
+import com.segnities007.stylishui.foundation.connectedShape
 import com.segnities007.stylishui.theme.StylishTheme
+
+/** Returns a brand-shaped segment for [index] in a row containing [count] items. */
+@Composable
+public fun StylishSegmentedButtonShape(index: Int, count: Int): Shape = connectedShape(
+    corners = connectedRowCorners(index, count),
+    cornerRadius = StylishTheme.shapes.connectedCornerRadius,
+    joinedCornerRadius = StylishTheme.shapes.joinedCornerRadius,
+)
 
 /**
  * A row of mutually exclusive segmented buttons, wrapping the Material
@@ -102,7 +112,7 @@ public fun StylishMultiChoiceSegmentedButtonRow(
  *
  * The default [shape] renders the segment as a plain rectangle; for
  * joined rows pass
- * `SegmentedButtonDefaults.itemShape(index = i, count = n)` so the
+ * `StylishSegmentedButtonShape(index = i, count = n)` so the
  * outer corners round and the inner corners notch.
  *
  * @param selected Whether this button is selected.
@@ -111,8 +121,8 @@ public fun StylishMultiChoiceSegmentedButtonRow(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in its disabled colors. Defaults to `true`.
  * @param shape The shape of this button. Defaults to
- *   [SegmentedButtonDefaults.baseShape]; use
- *   [SegmentedButtonDefaults.itemShape] for multi-segment rows.
+ *   [StylishTheme.shapes.extraLarge]; use
+ *   [StylishSegmentedButtonShape] for multi-segment rows.
  * @param colors [SegmentedButtonColors] resolving the button colors
  *   per state. Defaults to [SegmentedButtonDefaults.colors].
  * @param border The [BorderStroke] around the button. Defaults to the
@@ -137,7 +147,7 @@ public fun SingleChoiceSegmentedButtonRowScope.StylishSegmentedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = SegmentedButtonDefaults.baseShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: SegmentedButtonColors = SegmentedButtonDefaults.colors(),
     border: BorderStroke = BorderStroke(
         width = SegmentedButtonDefaults.BorderWidth,
@@ -175,7 +185,7 @@ public fun SingleChoiceSegmentedButtonRowScope.StylishSegmentedButton(
  *
  * The default [shape] renders the segment as a plain rectangle; for
  * joined rows pass
- * `SegmentedButtonDefaults.itemShape(index = i, count = n)` so the
+ * `StylishSegmentedButtonShape(index = i, count = n)` so the
  * outer corners round and the inner corners notch.
  *
  * @param checked Whether this button is currently checked.
@@ -185,8 +195,8 @@ public fun SingleChoiceSegmentedButtonRowScope.StylishSegmentedButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in its disabled colors. Defaults to `true`.
  * @param shape The shape of this button. Defaults to
- *   [SegmentedButtonDefaults.baseShape]; use
- *   [SegmentedButtonDefaults.itemShape] for multi-segment rows.
+ *   [StylishTheme.shapes.extraLarge]; use
+ *   [StylishSegmentedButtonShape] for multi-segment rows.
  * @param colors [SegmentedButtonColors] resolving the button colors
  *   per state. Defaults to [SegmentedButtonDefaults.colors].
  * @param border The [BorderStroke] around the button. Defaults to the
@@ -211,7 +221,7 @@ public fun MultiChoiceSegmentedButtonRowScope.StylishSegmentedButton(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = SegmentedButtonDefaults.baseShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: SegmentedButtonColors = SegmentedButtonDefaults.colors(),
     border: BorderStroke = BorderStroke(
         width = SegmentedButtonDefaults.BorderWidth,
@@ -252,14 +262,14 @@ private fun StylishSegmentedButtonsPreview() {
                 StylishSegmentedButton(
                     selected = selected == 0,
                     onClick = { selected = 0 },
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    shape = StylishSegmentedButtonShape(index = 0, count = 2),
                     icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = null) },
                     label = { Text("リスト") },
                 )
                 StylishSegmentedButton(
                     selected = selected == 1,
                     onClick = { selected = 1 },
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    shape = StylishSegmentedButtonShape(index = 1, count = 2),
                     icon = { Icon(Icons.Default.GridView, contentDescription = null) },
                     label = { Text("グリッド") },
                 )
@@ -280,7 +290,7 @@ private fun StylishMultiChoiceSegmentedButtonsPreview() {
                     onCheckedChange = { isChecked ->
                         if (isChecked) checked += 0 else checked -= 0
                     },
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    shape = StylishSegmentedButtonShape(index = 0, count = 2),
                     icon = { Icon(Icons.Default.Check, contentDescription = null) },
                     label = { Text("メール") },
                 )
@@ -289,7 +299,7 @@ private fun StylishMultiChoiceSegmentedButtonsPreview() {
                     onCheckedChange = { isChecked ->
                         if (isChecked) checked += 1 else checked -= 1
                     },
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    shape = StylishSegmentedButtonShape(index = 1, count = 2),
                     icon = { Icon(Icons.Default.Check, contentDescription = null) },
                     label = { Text("SMS") },
                 )

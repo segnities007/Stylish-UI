@@ -8,12 +8,11 @@ cd "$ROOT"
 
 git diff --check
 bash scripts/verify-architecture.sh
-scripts/verify-token-contract.sh
-scripts/verify-quality-evidence.sh
-scripts/verify-release-contract.sh
+python3 scripts/test_design_harness.py
+python3 scripts/verify-design-harness.py
 
 GRADLE_USER_HOME="${GRADLE_USER_HOME:-$ROOT/.gradle-ci}" \
-  ./gradlew check apiCheck \
+  ./gradlew check apiCheck assemble \
   --no-daemon --max-workers=1 \
   -Djava.net.preferIPv4Stack=true \
   -Dkotlin.incremental=false \

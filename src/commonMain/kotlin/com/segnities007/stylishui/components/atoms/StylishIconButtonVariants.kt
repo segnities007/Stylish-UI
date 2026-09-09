@@ -40,7 +40,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container. Defaults to
- *   [IconButtonDefaults.filledShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.filledIconButtonColors].
  * @param interactionSource The [MutableInteractionSource] for the
@@ -56,7 +56,7 @@ public fun StylishFilledIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.filledShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(),
     interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit,
@@ -89,7 +89,7 @@ public fun StylishFilledIconButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container. Defaults to
- *   [IconButtonDefaults.filledShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.filledTonalIconButtonColors].
  * @param interactionSource The [MutableInteractionSource] for the
@@ -105,7 +105,7 @@ public fun StylishFilledTonalIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.filledShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconButtonColors = IconButtonDefaults.filledTonalIconButtonColors(),
     interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit,
@@ -135,7 +135,7 @@ public fun StylishFilledTonalIconButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container and border. Defaults to
- *   [IconButtonDefaults.outlinedShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.outlinedIconButtonColors].
  * @param border Border drawn around the container. Defaults to
@@ -154,7 +154,7 @@ public fun StylishOutlinedIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.outlinedShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconButtonColors = IconButtonDefaults.outlinedIconButtonColors(),
     border: BorderStroke? = IconButtonDefaults.outlinedIconButtonBorder(enabled),
     interactionSource: MutableInteractionSource? = null,

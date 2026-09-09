@@ -53,6 +53,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param maxLabelCount Maximum number of X-axis labels rendered. Labels are
  *   evenly sampled; the last data point's label is always included.
  *   Defaults to 6.
+ * @param animate Whether the chart animates from the baseline on first
+ *   composition. Defaults to `true`.
  *
  * @see BarChartSection
  * @see SimpleLineChart
@@ -76,6 +78,7 @@ public fun LineChartSection(
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 5,
     maxLabelCount: Int = 6,
+    animate: Boolean = true,
 ) {
     StylishSection(
         title = title,
@@ -96,6 +99,7 @@ public fun LineChartSection(
             labelTextSize = labelTextSize,
             gridLineCount = gridLineCount,
             maxLabelCount = maxLabelCount,
+            animate = animate,
         )
     }
 }

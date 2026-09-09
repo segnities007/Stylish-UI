@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -50,11 +51,21 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.theme.stylishLayerColor
+
+private object CatalogLayerLevel {
+    const val Page = 0f
+    const val Card = 0.25f
+    const val Toolbar = 0.5f
+    const val Header = 0.75f
+    const val Control = 0.75f
+}
 
 /**
  * Sort options for the component gallery.
  */
 private enum class SortOption(val label: String) {
+    Number("No."),
     NameAsc("A-Z"),
     NameDesc("Z-A"),
     Category("Category"),
@@ -82,17 +93,29 @@ public fun StylishPlayground(
 ) {
     var selectedCategory by remember { mutableStateOf<DemoCategory?>(null) }
     var searchQuery by remember { mutableStateOf("") }
-    var sortOption by remember { mutableStateOf(SortOption.NameAsc) }
+    var sortOption by remember { mutableStateOf(SortOption.Number) }
+
+    // Stable deletion IDs: position in the master registry, independent of
+    // filtering and sorting so numbers stay put while browsing.
+    val demoNumbers = remember {
+        DemoRegistry.allDemos.mapIndexed { index, demo -> demo.name to index + 1 }.toMap()
+    }
 
     // Get all demos and apply filters/sorting
     val filteredDemos = remember(selectedCategory, searchQuery, sortOption) {
         val demos = DemoRegistry.getDemosByCategory(selectedCategory)
-        val filtered = if (searchQuery.isBlank()) {
+        val rawQuery = searchQuery.trim()
+        val numberQuery = rawQuery.removePrefix("#").trimStart('0')
+        val filtered = if (rawQuery.isBlank()) {
             demos
         } else {
-            demos.filter { it.name.contains(searchQuery, ignoreCase = true) }
+            demos.filter {
+                it.name.contains(rawQuery, ignoreCase = true) ||
+                    (numberQuery.isNotEmpty() && demoNumbers[it.name]?.toString() == numberQuery)
+            }
         }
         when (sortOption) {
+            SortOption.Number -> filtered.sortedBy { demoNumbers[it.name] ?: Int.MAX_VALUE }
             SortOption.NameAsc -> filtered.sortedBy { it.name }
             SortOption.NameDesc -> filtered.sortedByDescending { it.name }
             SortOption.Category -> filtered.sortedBy { it.category.label }
@@ -102,7 +125,7 @@ public fun StylishPlayground(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(stylishLayerColor(CatalogLayerLevel.Page)),
     ) {
         // Tier 1: Global header
         GlobalHeader(darkTheme, onToggleTheme)
@@ -124,7 +147,7 @@ public fun StylishPlayground(
         )
 
         // Component grid
-        ComponentGrid(demos = filteredDemos)
+        ComponentGrid(demos = filteredDemos, numbers = demoNumbers)
     }
 }
 
@@ -140,7 +163,7 @@ private fun GlobalHeader(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
+        color = stylishLayerColor(CatalogLayerLevel.Header),
         tonalElevation = 1.dp,
     ) {
         Row(
@@ -186,7 +209,7 @@ private fun CategoryTabs(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
+        color = stylishLayerColor(CatalogLayerLevel.Card),
         tonalElevation = 1.dp,
     ) {
         LazyRow(
@@ -233,7 +256,7 @@ private fun CategoryTab(
         targetValue = if (selected) {
             MaterialTheme.colorScheme.primary
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+            stylishLayerColor(CatalogLayerLevel.Toolbar)
         },
         animationSpec = tween(
             durationMillis = if (reducedMotion) 0 else 200,
@@ -300,7 +323,7 @@ private fun FilterBar(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
+        color = stylishLayerColor(CatalogLayerLevel.Toolbar),
         tonalElevation = 1.dp,
     ) {
         Row(
@@ -316,7 +339,7 @@ private fun FilterBar(
                     .weight(1f)
                     .height(40.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                    .background(stylishLayerColor(CatalogLayerLevel.Control))
                     .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
@@ -368,7 +391,7 @@ private fun FilterBar(
                             contentDescription = "並べ替え: ${sortOption.label}"
                         }
                         .padding(horizontal = 12.dp, vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    color = stylishLayerColor(CatalogLayerLevel.Control),
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -408,21 +431,24 @@ private fun FilterBar(
 }
 
 /**
- * Responsive grid of component demo cards.
+ * Responsive flow grid of component demo cards.
  *
- * Uses LazyVerticalGrid with adaptive cells for responsive layout:
+ * Uses a lazy staggered grid with adaptive cells so cards keep their
+ * natural heights without row-stretch gaps:
  * - Mobile: 1 column
  * - Tablet: 2-3 columns
  * - Desktop: 4-6 columns
  */
 @Composable
-private fun ComponentGrid(
+private fun ColumnScope.ComponentGrid(
     demos: List<DemoComponent>,
+    numbers: Map<String, Int>,
 ) {
     if (demos.isEmpty()) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
+                .fillMaxWidth()
                 .padding(48.dp),
             contentAlignment = Alignment.Center,
         ) {
@@ -443,17 +469,18 @@ private fun ComponentGrid(
             }
         }
     } else {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 320.dp),
-            modifier = Modifier.fillMaxSize(),
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Adaptive(minSize = 320.dp),
+            modifier = Modifier.weight(1f).fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalItemSpacing = 16.dp,
         ) {
             items(demos, key = { it.name }) { demo ->
                 StylishDemoCard(
                     name = demo.name,
                     code = demo.code,
+                    number = numbers[demo.name],
                     preview = demo.preview,
                 )
             }

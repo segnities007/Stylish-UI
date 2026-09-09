@@ -17,7 +17,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
 public object StylishCardDefaults {
     /** Resolves the standard card shape from the active Stylish theme. */
     @Composable
-    public fun shape(): Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius)
+    public fun shape(): Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius)
 
     /** Resolves card colors while preserving the active component color overrides. */
     @Composable

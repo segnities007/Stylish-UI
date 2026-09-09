@@ -45,7 +45,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * look, clip each item with
  * [CarouselItemScope.maskClip][CarouselItemScope.maskClip] using
  * [RoundedCornerShape] with
- * [StylishTheme.dimensions.connectedCornerRadius].
+ * [StylishTheme.shapes.connectedCornerRadius].
  *
  * @param itemCount A lambda returning the number of carousel items. Used to
  *   construct the default [state] via [rememberCarouselState]; ignored when
@@ -123,7 +123,7 @@ private fun StylishCarouselPreview() {
         ) { index ->
             Box(
                 Modifier
-                    .maskClip(RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius))
+                    .maskClip(RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius))
                     .background(colors[index % colors.size])
                     .height(120.dp),
                 contentAlignment = Alignment.Center,

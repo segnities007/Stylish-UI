@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -33,21 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.atoms.StylishDialogSurface
-import com.segnities007.stylishui.components.atoms.StylishExposedDropdownMenu
-import com.segnities007.stylishui.components.atoms.StylishExposedDropdownMenuBox
-import com.segnities007.stylishui.components.atoms.StylishFilledIconButton
-import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconButton
-import com.segnities007.stylishui.components.atoms.StylishOutlinedIconButton
-import com.segnities007.stylishui.components.atoms.StylishSecureTextField
 import com.segnities007.stylishui.components.atoms.StylishSectionTitle
-import com.segnities007.stylishui.components.atoms.StylishSpeedDial
-import com.segnities007.stylishui.components.atoms.SpeedDialDirection
 import com.segnities007.stylishui.components.charts.StylishAreaChart
 import com.segnities007.stylishui.components.charts.StylishAreaPoint
-import com.segnities007.stylishui.components.charts.StylishScatterChart
-import com.segnities007.stylishui.components.charts.StylishScatterPoint
 import com.segnities007.stylishui.components.models.StylishContentState
-import com.segnities007.stylishui.components.molecules.StylishButtonGroup
 import com.segnities007.stylishui.components.molecules.StylishContentStateHost
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.molecules.StylishMasonry
@@ -57,17 +45,13 @@ import com.segnities007.stylishui.components.molecules.StylishSkeletonLine
 import com.segnities007.stylishui.components.molecules.StylishSnackbar
 import com.segnities007.stylishui.components.molecules.StylishSplitter
 import com.segnities007.stylishui.components.molecules.StylishSwipeToDismissBox
-import com.segnities007.stylishui.components.molecules.StylishToolbar
 import com.segnities007.stylishui.components.molecules.rememberStylishSwipeToDismissBoxState
 import com.segnities007.stylishui.components.molecules.StylishTimePickerDialog
 import com.segnities007.stylishui.components.organisms.StylishCommandItem
 import com.segnities007.stylishui.components.organisms.StylishCommandPalette
 import com.segnities007.stylishui.components.organisms.StylishDialogActions
-import com.segnities007.stylishui.components.organisms.StylishHoverCard
-import com.segnities007.stylishui.components.organisms.StylishScrollArea
 import com.segnities007.stylishui.components.organisms.StylishSingleChoiceSegmentedButtonRow
 import com.segnities007.stylishui.components.organisms.StylishSegmentedButton
-import com.segnities007.stylishui.components.organisms.StylishWideNavigationRail
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -78,112 +62,8 @@ import com.segnities007.stylishui.theme.StylishTheme
  * remains in the adapter demos.
  */
 internal fun getCoverageDemos(): List<DemoComponent> =
-    coverageControlDemos() +
-        coverageChartAndParityDemos() +
-        coverageFeedbackDemos() +
-        coverageInteractionDemos() +
-        coverageNavigationAndAdvancedDemos()
-
-private fun coverageControlDemos(): List<DemoComponent> = listOf(
-    DemoComponent(
-        name = "Connected card anatomy",
-        category = DemoCategory.Buttons,
-        code = """StylishConnectedCard(
-    title = \"Long text card title\",
-    supportingText = \"Supporting text\",
-    enabled = enabled,
-    onClick = { /* select */ },
-)""",
-        preview = {
-            StylishConnectedCard(
-                title = "Long text card title",
-                supportingText = "Supporting text",
-                enabled = true,
-                onClick = {},
-            )
-        },
-    ),
-    DemoComponent(
-        name = "Dialog surface",
-        category = DemoCategory.Buttons,
-        code = """StylishDialogSurface(
-    onDismiss = { open = false },
-    properties = DialogProperties(dismissOnBackPress = true),
-    content = { Text(\"Dialog content\") },
-)""",
-        preview = {
-            StylishDialogSurface(
-                onDismiss = {},
-                animate = false,
-                properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
-            ) {
-                Text("Dialog content", Modifier.padding(24.dp))
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Exposed dropdown menu",
-        category = DemoCategory.Buttons,
-        code = """StylishExposedDropdownMenuBox(
-    expanded = expanded,
-    onExpandedChange = { expanded = it },
-) {
-    TextField(value = value, onValueChange = {}, readOnly = true)
-    StylishExposedDropdownMenu(expanded, onDismissRequest = { expanded = false }) {
-        StylishDropdownMenuItem(text = { Text(\"Option\") }, onClick = { expanded = false })
-    }
-}""",
-        preview = { exposedDropdownCoveragePreview() },
-    ),
-    DemoComponent(
-        name = "Icon button variants",
-        category = DemoCategory.Buttons,
-        code = """StylishFilledIconButton(onClick = onClick) { Icon(Icons.Default.Add, \"Add\") }
-StylishFilledTonalIconButton(onClick = onClick) { Icon(Icons.Default.Settings, \"Settings\") }
-StylishOutlinedIconButton(onClick = onClick) { Icon(Icons.Default.Delete, \"Delete\") }""",
-        preview = {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StylishFilledIconButton(onClick = {}) { Icon(Icons.Default.Add, "Add") }
-                StylishFilledTonalIconButton(onClick = {}) { Icon(Icons.Default.Settings, "Settings") }
-                StylishOutlinedIconButton(onClick = {}) { Icon(Icons.Default.Delete, "Delete") }
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Section title",
-        category = DemoCategory.Buttons,
-        code = """StylishSectionTitle(
-    title = \"Account settings\",
-    maxLines = 1,
-    overflow = TextOverflow.Ellipsis,
-)""",
-        preview = { StylishSectionTitle("Account settings") },
-    ),
-    DemoComponent(
-        name = "Secure text field",
-        category = DemoCategory.Inputs,
-        code = """val state = remember { TextFieldState(\"secret\") }
-StylishSecureTextField(
-    state = state,
-    label = { Text(\"Password\") },
-    isError = showError,
-    enabled = enabled,
-)""",
-        preview = { secureTextFieldCoveragePreview() },
-    ),
-    DemoComponent(
-        name = "Speed dial actions",
-        category = DemoCategory.Buttons,
-        code = """StylishSpeedDial(
-    expanded = expanded,
-    onExpandedChange = { expanded = it },
-    direction = SpeedDialDirection.Up,
-    actionCount = 2,
-    onActionClick = { index -> onAction(index) },
-) { index -> TextButton(onClick = { onActionClick(index) }) { Text(\"Action \${'$'}index\") } }""",
-        preview = { speedDialCoveragePreview() },
-    ),
-)
+    coverageChartAndParityDemos() +
+        coverageInteractionDemos()
 
 private fun coverageChartAndParityDemos(): List<DemoComponent> = listOf(
     DemoComponent(
@@ -198,38 +78,6 @@ private fun coverageChartAndParityDemos(): List<DemoComponent> = listOf(
                 points = listOf(StylishAreaPoint("Jan", 12f), StylishAreaPoint("Feb", 22f), StylishAreaPoint("Mar", 18f)),
                 contentDescription = "Revenue trend",
             )
-        },
-    ),
-    DemoComponent(
-        name = "Scatter chart",
-        category = DemoCategory.Charts,
-        code = """StylishScatterChart(
-    points = points,
-    contentDescription = \"Measurements\",
-    pointRadius = 5.dp,
-)""",
-        preview = {
-            StylishScatterChart(
-                points = listOf(StylishScatterPoint("A", 10f), StylishScatterPoint("B", 24f), StylishScatterPoint("C", 16f)),
-                contentDescription = "Measurements",
-            )
-        },
-    ),
-    DemoComponent(
-        name = "Button group slots",
-        category = DemoCategory.WebParity,
-        code = """StylishButtonGroup(
-    orientation = StylishButtonGroupOrientation.Horizontal,
-    spacing = 8.dp,
-) {
-    Button(onClick = onPrimary) { Text(\"Primary\") }
-    OutlinedButton(onClick = onSecondary) { Text(\"Secondary\") }
-}""",
-        preview = {
-            StylishButtonGroup {
-                Button(onClick = {}) { Text("Primary") }
-                Button(onClick = {}) { Text("Secondary") }
-            }
         },
     ),
     DemoComponent(
@@ -350,24 +198,6 @@ StylishSwipeToDismissBox(
 
 private fun coverageNavigationAndAdvancedDemos(): List<DemoComponent> = listOf(
     DemoComponent(
-        name = "Toolbar slots",
-        category = DemoCategory.Navigation,
-        code = """StylishToolbar(
-    title = \"Workspace\",
-    subtitle = \"3 items\",
-    navigationContent = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, \"Back\") } },
-    actions = { IconButton(onClick = onSettings) { Icon(Icons.Default.Settings, \"Settings\") } },
-)""",
-        preview = {
-            StylishToolbar(
-                title = "Workspace",
-                subtitle = "3 items",
-                navigationContent = { IconButton(onClick = {}) { Icon(Icons.Default.ArrowBack, "Back") } },
-                actions = { IconButton(onClick = {}) { Icon(Icons.Default.Settings, "Settings") } },
-            )
-        },
-    ),
-    DemoComponent(
         name = "Dialog actions",
         category = DemoCategory.Advanced,
         code = """StylishDialogActions(
@@ -386,102 +216,7 @@ private fun coverageNavigationAndAdvancedDemos(): List<DemoComponent> = listOf(
             )
         },
     ),
-    DemoComponent(
-        name = "Hover card",
-        category = DemoCategory.Advanced,
-        code = """StylishHoverCard(
-    trigger = { Text(\"Hover for details\") },
-    content = { Text(\"Additional context\") },
-)""",
-        preview = {
-            StylishHoverCard(
-                trigger = { Text("Hover for details") },
-            ) { Text("Additional context", Modifier.padding(16.dp)) }
-        },
-    ),
-    DemoComponent(
-        name = "Scroll area",
-        category = DemoCategory.Advanced,
-        code = """StylishScrollArea {
-    items.forEach { Text(it) }
-}""",
-        preview = {
-            StylishScrollArea(Modifier.size(width = 260.dp, height = 100.dp)) {
-                repeat(8) { Text("Scrollable item ${it + 1}", Modifier.padding(8.dp)) }
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Wide navigation rail",
-        category = DemoCategory.Navigation,
-        code = """StylishWideNavigationRail {
-    StylishNavigationRailItem(
-        selected = selected,
-        onClick = onSelect,
-        icon = { Icon(Icons.Default.Home, \"Home\") },
-        label = { Text(\"Home\") },
-    )
-}""",
-        preview = {
-            StylishWideNavigationRail {
-                androidx.compose.material3.NavigationRailItem(
-                    selected = true,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.Home, "Home") },
-                    label = { Text("Home") },
-                )
-            }
-        },
-    ),
 )
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun exposedDropdownCoveragePreview() {
-    var expanded by remember { mutableStateOf(true) }
-    var value by remember { mutableStateOf("Category") }
-    StylishExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
-        androidx.compose.material3.TextField(
-            value = value,
-            onValueChange = { value = it },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("Category") },
-        )
-        StylishExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            androidx.compose.material3.DropdownMenuItem(
-                text = { Text("Design") },
-                onClick = { value = "Design"; expanded = false },
-            )
-            androidx.compose.material3.DropdownMenuItem(
-                text = { Text("Engineering") },
-                onClick = { value = "Engineering"; expanded = false },
-            )
-        }
-    }
-}
-
-@Composable
-private fun secureTextFieldCoveragePreview() {
-    val state = remember { androidx.compose.foundation.text.input.TextFieldState("secret") }
-    StylishSecureTextField(state = state, label = { Text("Password") }, isError = false)
-}
-
-@Composable
-private fun speedDialCoveragePreview() {
-    var expanded by remember { mutableStateOf(true) }
-    StylishSpeedDial(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
-        direction = SpeedDialDirection.Up,
-        actionCount = 2,
-        onActionClick = {},
-    ) { index ->
-        androidx.compose.material3.FloatingActionButton(onClick = {}) {
-            Text((index + 1).toString())
-        }
-    }
-}
 
 @Composable
 private fun contentStateCoveragePreview() {

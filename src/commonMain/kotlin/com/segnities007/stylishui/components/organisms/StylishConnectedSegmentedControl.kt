@@ -134,7 +134,7 @@ public fun <T> StylishConnectedSegmentedControl(
                 shape = shape,
                 outlineEdges = edges,
                 outlineCorners = corners,
-                cornerRadius = StylishTheme.dimensions.connectedCornerRadius,
+                cornerRadius = StylishTheme.shapes.connectedCornerRadius,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
                 defaultColors = defaultColors,
             )

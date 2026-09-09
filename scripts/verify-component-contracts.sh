@@ -18,6 +18,18 @@ violations="$tmp/violations.tsv"
 : > "$public_list"
 : > "$violations"
 
+# Brand shape defaults have one seam: StylishTheme.shapes. Component implementation must not
+# bypass it with literal radii, Material defaults, or deprecated dimension radius fields.
+while IFS= read -r match; do
+  [[ -n "$match" ]] || continue
+  printf 'BRAND_SHAPE\t%s\n' "$match" >> "$violations"
+done < <(
+  grep -REn --include='*.kt' \
+    'StylishTheme\.dimensions\.(connectedCornerRadius|joinedCornerRadius|floatingCornerRadius)|RoundedCornerShape\([[:space:]]*[0-9]+\.dp|shape[[:space:]]*=[^,]*(MaterialTheme\.shapes\.|(TextField|OutlinedTextField|Menu|Drawer|SegmentedButton|IconButton)Defaults\.[A-Za-z]*[Ss]hape)' \
+    "$src/com/segnities007/stylishui/components" \
+    "$src/com/segnities007/stylishui/structure" || true
+)
+
 # Kotlin annotations may be followed by an opt-in/suppression annotation.
 while IFS= read -r file; do
   awk -v file="$file" '

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,7 +51,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param columns The number of equal-width columns in the grid. Must be greater
  *   than zero.
  * @param cornerRadius The radius applied to the outer corners. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param spacing The gap between adjacent buttons both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param button A composable lambda that renders a single button. Receives the
@@ -66,7 +67,7 @@ public fun ConnectedButtonGrid(
     items: List<StylishConnectedButtonItem>,
     columns: Int,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     button: ConnectedButtonItemContent,
 ) {
@@ -112,6 +113,7 @@ private fun ConnectedButtonGridPreview() {
                     itemModifier.connectedOutline(edges, corners),
                     shape = shape,
                     color = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ) {
                     Row(Modifier.padding(12.dp), content = item.content)
                 }

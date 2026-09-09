@@ -85,7 +85,7 @@ public fun ConnectedCardLazyColumn(
             card(
                 item,
                 Modifier.fillMaxWidth(),
-                connectedShape(corners, StylishTheme.dimensions.connectedCornerRadius),
+                connectedShape(corners, StylishTheme.shapes.connectedCornerRadius),
                 connectedColumnEdges(index, items.size),
                 corners,
             )

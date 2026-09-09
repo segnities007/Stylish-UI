@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +53,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param modifier The modifier applied to the root [Row].
  * @param cornerRadius The radius applied to the outer corners of the first and
  *   last items. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param spacing The horizontal gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param toggle A composable lambda that renders a single toggle item. Receives
@@ -68,7 +69,7 @@ public fun <T> ConnectedToggleRow(
     selectedIndex: Int?,
     onSelectedChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     toggle: @Composable (
         item: T,
@@ -114,8 +115,8 @@ private fun ConnectedToggleRowPreview() {
                 Surface(
                     itemModifier.connectedOutline(edges, corners),
                     shape = shape,
-                    color = if (isSelected) Color.Black else Color.Transparent,
-                    contentColor = if (isSelected) Color.White else Color.Black,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                    contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                 ) {
                     Row(Modifier.padding(12.dp)) {
                         Text("Day $index")

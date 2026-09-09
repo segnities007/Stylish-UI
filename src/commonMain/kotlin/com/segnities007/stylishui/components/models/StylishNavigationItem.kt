@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * Immutable data describing a single destination in a
- * [com.segnities007.stylishui.components.organisms.StylishNavigationBar].
+ * [com.segnities007.stylishui.components.patterns.StylishAdaptiveNavigation].
  *
  * @property icon The icon displayed for this destination.
  * @property label The text label displayed below (or beside) [icon].

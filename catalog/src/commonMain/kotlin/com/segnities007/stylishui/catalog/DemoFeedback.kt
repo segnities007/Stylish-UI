@@ -5,9 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import com.segnities007.stylishui.components.atoms.StylishText
+import com.segnities007.stylishui.theme.StylishTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishButton
+import com.segnities007.stylishui.components.atoms.StylishDragHandle
 import com.segnities007.stylishui.components.atoms.StylishButtonVariant
 import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.components.atoms.StylishCircularProgressIndicator
@@ -85,7 +85,7 @@ StylishToastHost(host)""",
                             StylishToastData("保存しました", StylishToastVariant.Success),
                         )
                     }
-                }) { Text("成功トースト") }
+                }) { StylishText("成功トースト") }
                 StylishButton(
                     onClick = {
                         scope.launch {
@@ -95,7 +95,7 @@ StylishToastHost(host)""",
                         }
                     },
                     variant = StylishButtonVariant.Outlined,
-                ) { Text("エラートースト") }
+                ) { StylishText("エラートースト") }
             }
             StylishToastHost(hostState, Modifier.fillMaxWidth())
         },
@@ -104,19 +104,19 @@ StylishToastHost(host)""",
         name = "Snackbar",
         category = DemoCategory.Feedback,
         code = """StylishSnackbar(
-    action = { TextButton(onClick = {}) { Text("元に戻す") } },
-) { Text("アイテムを削除しました") }""",
+    action = { StylishButton(onClick = {}, variant = StylishButtonVariant.Text) { StylishText("元に戻す") } },
+) { StylishText("アイテムを削除しました") }""",
         preview = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 StylishSnackbar {
-                    Text("メッセージを送信しました")
+                    StylishText("メッセージを送信しました")
                 }
                 StylishSnackbar(
                     action = {
-                        TextButton(onClick = {}) { Text("元に戻す") }
+                        StylishButton(onClick = {}, variant = StylishButtonVariant.Text) { StylishText("元に戻す") }
                     },
                 ) {
-                    Text("アイテムを削除しました")
+                    StylishText("アイテムを削除しました")
                 }
             }
         },
@@ -125,23 +125,23 @@ StylishToastHost(host)""",
         name = "Popover",
         category = DemoCategory.Feedback,
         code = """StylishPopover(
-    trigger = { StylishButton(onClick = { expanded = true }) { Text("開く") } },
+    trigger = { StylishButton(onClick = { expanded = true }) { StylishText("開く") } },
     expanded = expanded,
     onExpandedChange = { expanded = it },
-) { Text("内容") }""",
+) { StylishText("内容") }""",
         preview = {
             var expanded by remember { mutableStateOf(false) }
             StylishPopover(
                 trigger = {
                     StylishButton(onClick = { expanded = true }, variant = StylishButtonVariant.Outlined) {
-                        Text("フィルターを開く")
+                        StylishText("フィルターを開く")
                     }
                 },
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
                 content = {
-                    Text("絞り込み条件", style = MaterialTheme.typography.titleSmall)
-                    Text("ここにフィルター項目を配置します。", style = MaterialTheme.typography.bodySmall)
+                    StylishText("絞り込み条件", style = StylishTheme.typography.titleSmall)
+                    StylishText("ここにフィルター項目を配置します。", style = StylishTheme.typography.bodySmall)
                 },
             )
         },
@@ -166,10 +166,10 @@ StylishToastHost(host)""",
                     StylishButton(
                         onClick = { expanded = true },
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                            contentColor = MaterialTheme.colorScheme.onError,
+                            containerColor = StylishTheme.colorScheme.error,
+                            contentColor = StylishTheme.colorScheme.onError,
                         ),
-                    ) { Text("記録を削除") }
+                    ) { StylishText("記録を削除") }
                 },
                 title = "この記録を削除しますか?",
                 description = "この操作は取り消せません。",
@@ -183,28 +183,28 @@ StylishToastHost(host)""",
         category = DemoCategory.Feedback,
         code = """StylishAlertDialog(
     onDismissRequest = { open = false },
-    title = { Text("削除") },
-    text = { Text("よろしいですか?") },
-    confirmButton = { StylishButton(onClick = { open = false }) { Text("OK") } },
+    title = { StylishText("削除") },
+    text = { StylishText("よろしいですか?") },
+    confirmButton = { StylishButton(onClick = { open = false }) { StylishText("OK") } },
 )""",
         preview = {
             var open by remember { mutableStateOf(false) }
             StylishButton(onClick = { open = true }, variant = StylishButtonVariant.Outlined) {
-                Text("ダイアログを開く")
+                StylishText("ダイアログを開く")
             }
             if (open) {
                 StylishAlertDialog(
                     onDismissRequest = { open = false },
-                    title = { Text("車両を削除") },
-                    text = { Text("この操作は取り消せません。よろしいですか?") },
+                    title = { StylishText("車両を削除") },
+                    text = { StylishText("この操作は取り消せません。よろしいですか?") },
                     confirmButton = {
-                        StylishButton(onClick = { open = false }) { Text("削除") }
+                        StylishButton(onClick = { open = false }) { StylishText("削除") }
                     },
                     dismissButton = {
                         StylishButton(
                             onClick = { open = false },
                             variant = StylishButtonVariant.Text,
-                        ) { Text("キャンセル") }
+                        ) { StylishText("キャンセル") }
                     },
                 )
             }
@@ -226,7 +226,7 @@ StylishToastHost(host)""",
             StylishButton(
                 onClick = { open = true },
                 variant = StylishButtonVariant.Outlined,
-            ) { Text("削除ダイアログを開く") }
+            ) { StylishText("削除ダイアログを開く") }
             if (open) {
                 StylishDeleteConfirmDialog(
                     title = "記録を削除",
@@ -244,20 +244,22 @@ StylishToastHost(host)""",
         category = DemoCategory.Feedback,
         code = """StylishBottomSheet(
     onDismiss = { open = false },
+    dragHandle = { StylishDragHandle() },
 ) {
-    Text("ボトムシートの内容")
+    StylishText("ボトムシートの内容")
 }""",
         preview = {
             var open by remember { mutableStateOf(false) }
             StylishButton(onClick = { open = true }, variant = StylishButtonVariant.Outlined) {
-                Text("ボトムシートを開く")
+                StylishText("ボトムシートを開く")
             }
             if (open) {
                 StylishBottomSheet(
                     onDismiss = { open = false },
+                    dragHandle = { StylishDragHandle() },
                 ) {
-                    Text("ボトムシートの内容", style = MaterialTheme.typography.titleMedium)
-                    Text("ここに詳細情報を表示します。", style = MaterialTheme.typography.bodyMedium)
+                    StylishText("ボトムシートの内容", style = StylishTheme.typography.titleMedium)
+                    StylishText("ここに詳細情報を表示します。", style = StylishTheme.typography.bodyMedium)
                 }
             }
         },

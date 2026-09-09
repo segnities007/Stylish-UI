@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishModalLayer
 import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.stylishTestTag
@@ -69,11 +70,11 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   appears immediately with no transition.
  * @param shape Shape of the card surface. Defaults to
  *   `RoundedCornerShape` with
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
- * @param containerColor Background color of the card. Defaults to
- *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ *   [StylishTheme.shapes.floatingCornerRadius].
+ * @param containerColor Background color of the nearly opaque floating
+ *   dialog surface.
  * @param horizontalPadding Horizontal margin between the dialog edges
- *   and the screen edges. Defaults to 16 dp.
+ *   and the screen edges. Defaults to [StylishTheme.dimensions.screenPadding].
  * @param contentColor Default content color inside the card. When
  *   `null` (default), the color scheme's default content color is
  *   used.
@@ -93,9 +94,9 @@ public fun StylishDialogSurface(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     animate: Boolean = true,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
     containerColor: Color? = null,
-    horizontalPadding: Dp = 16.dp,
+    horizontalPadding: Dp = StylishTheme.dimensions.screenPadding,
     contentColor: Color? = null,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
     // safeDrawing includes IME. Exclude it here because the Dialog window
@@ -144,15 +145,18 @@ public fun StylishDialogSurface(
             shape = shape,
             colors = if (contentColor != null) {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: stylishModalContainerColor(),
+                    containerColor = containerColor ?: stylishModalContainerColor().copy(alpha = 0.96f),
                     contentColor = contentColor,
                 )
             } else {
                 CardDefaults.cardColors(
-                    containerColor = containerColor ?: stylishModalContainerColor(),
+                    containerColor = containerColor ?: stylishModalContainerColor().copy(alpha = 0.96f),
                 )
             },
-            content = content,
+            content = {
+                val cardScope = this
+                StylishModalLayer { content(cardScope) }
+            },
         )
     }
 }

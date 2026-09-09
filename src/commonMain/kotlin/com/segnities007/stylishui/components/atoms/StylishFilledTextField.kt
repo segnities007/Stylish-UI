@@ -66,7 +66,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param textStyle Typography for the input text. Defaults to
  *   `MaterialTheme.typography.bodyLarge`.
  * @param shape Shape of the field container. Defaults to
- *   `TextFieldDefaults.shape`.
+ *   `StylishTheme.shapes.medium`.
  * @param colors Color scheme for the field. Defaults to
  *   `TextFieldDefaults.colors()`, the filled-field scheme.
  * @param enabled When `false`, the field rejects input and renders in
@@ -112,7 +112,7 @@ public fun StylishFilledTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    shape: Shape = TextFieldDefaults.shape,
+    shape: Shape = StylishTheme.shapes.medium,
     colors: TextFieldColors? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,

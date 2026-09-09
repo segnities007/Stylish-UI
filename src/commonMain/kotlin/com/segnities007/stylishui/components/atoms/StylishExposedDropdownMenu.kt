@@ -89,7 +89,7 @@ public fun StylishExposedDropdownMenuBox(
  * @param matchAnchorWidth Whether the menu's width should be
  *   constrained to match the anchor's width. Defaults to `true`.
  * @param shape Shape of the menu surface. Defaults to
- *   [MenuDefaults.shape].
+ *   [StylishTheme.shapes.extraSmall].
  * @param containerColor Background color of the menu. Defaults to
  *   [MenuDefaults.containerColor].
  * @param tonalElevation Tonal elevation of the menu surface. Defaults
@@ -112,7 +112,7 @@ public fun ExposedDropdownMenuBoxScope.StylishExposedDropdownMenu(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
     matchAnchorWidth: Boolean = true,
-    shape: Shape = MenuDefaults.shape,
+    shape: Shape = StylishTheme.shapes.extraSmall,
     containerColor: Color = MenuDefaults.containerColor,
     tonalElevation: Dp = MenuDefaults.TonalElevation,
     shadowElevation: Dp = MenuDefaults.ShadowElevation,

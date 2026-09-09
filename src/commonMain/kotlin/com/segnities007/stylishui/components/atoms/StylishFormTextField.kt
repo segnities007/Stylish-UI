@@ -72,7 +72,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param textStyle Typography for the input text. Defaults to
  *   `MaterialTheme.typography.bodyLarge`.
  * @param shape Shape of the outlined border. Defaults to
- *   `OutlinedTextFieldDefaults.shape`.
+ *   `StylishTheme.shapes.medium`.
  * @param colors Color scheme for the field. Defaults to
  *   `OutlinedTextFieldDefaults.colors()`, with the cursor color
  *   derived from [cursorBrush] when it is a solid color.
@@ -131,7 +131,7 @@ public fun StylishFormTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    shape: Shape = OutlinedTextFieldDefaults.shape,
+    shape: Shape = StylishTheme.shapes.medium,
     colors: TextFieldColors? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,

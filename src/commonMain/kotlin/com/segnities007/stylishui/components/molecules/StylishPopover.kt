@@ -3,11 +3,7 @@ package com.segnities007.stylishui.components.molecules
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
@@ -47,7 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
-import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
+import com.segnities007.stylishui.foundation.stylishFloatingEnterTransition
+import com.segnities007.stylishui.foundation.stylishFloatingExitTransition
 import com.segnities007.stylishui.theme.StylishTheme
 import kotlin.math.roundToInt
 
@@ -98,9 +96,9 @@ public enum class PopoverPlacement {
  * [trigger] element.
  *
  * The [trigger] is rendered by this composable inside an internal [Box].
- * The popup enters with a short fade + scale animation
- * ([StylishTheme.animation.durationShort]) that is skipped when the
- * platform requests reduced motion (see [isStylishReducedMotionEnabled]).
+ * The popup uses the standard Stylish floating fade + slide animation;
+ * [PopoverPlacement] selects only the slide direction. The popup host stays
+ * composed until the exit transition completes.
  *
  * **Anchoring limitation:** the popup position is computed from the
  * trigger's bounds while the popup is positioned relative to the root,
@@ -149,7 +147,7 @@ public enum class PopoverPlacement {
  * @param contentColor Default content color inside the popup. Defaults
  *   to `MaterialTheme.colorScheme.onSurface`.
  * @param shape Shape of the popup surface. Defaults to [RoundedCornerShape]
- *   with [StylishTheme.dimensions.floatingCornerRadius].
+ *   with [StylishTheme.shapes.floatingCornerRadius].
  * @param border Optional [BorderStroke] drawn around the popup surface.
  *   Defaults to a hairline border using
  *   [StylishTheme.dimensions.outlineWidth] and
@@ -176,7 +174,7 @@ public fun StylishPopover(
     offset: DpOffset = DpOffset(0.dp, 4.dp),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
         MaterialTheme.colorScheme.outlineVariant,
@@ -189,9 +187,11 @@ public fun StylishPopover(
     var triggerBounds by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val density = LocalDensity.current
     val offsetPx = with(density) { IntOffset(offset.x.toPx().roundToInt(), offset.y.toPx().roundToInt()) }
-    val reducedMotion = isStylishReducedMotionEnabled()
-    // Reduced motion must remove both scale and fade interpolation.
-    val animationDuration = if (reducedMotion) 0 else StylishTheme.animation.durationShort
+    val visibilityState = remember { MutableTransitionState(false) }
+    LaunchedEffect(expanded) {
+        visibilityState.targetState = expanded
+    }
+    val popupVisible = expanded || visibilityState.currentState || visibilityState.targetState
 
     val positionProvider = remember(placement, offsetPx) {
         PopoverPopupPositionProvider(
@@ -204,32 +204,17 @@ public fun StylishPopover(
         modifier = modifier.onGloballyPositioned { triggerBounds = it },
     ) {
         trigger()
-        triggerBounds?.let { bounds ->
-            if (expanded) {
-                val triggerPosition = bounds.positionInRoot()
-                val triggerSize = IntSize(bounds.size.width, bounds.size.height)
-                val anchorBounds = IntRect(
-                    triggerPosition.x.roundToInt(),
-                    triggerPosition.y.roundToInt(),
-                    triggerPosition.x.roundToInt() + triggerSize.width,
-                    triggerPosition.y.roundToInt() + triggerSize.height,
-                )
-
+        triggerBounds?.let {
+            if (popupVisible) {
                 Popup(
                     popupPositionProvider = positionProvider,
                     onDismissRequest = onDismissRequest,
                     properties = PopupProperties(focusable = true),
                 ) {
                     AnimatedVisibility(
-                        visible = expanded,
-                        enter = fadeIn(tween(animationDuration)) + scaleIn(
-                            initialScale = if (reducedMotion) 1f else 0.95f,
-                            animationSpec = tween(animationDuration),
-                        ),
-                        exit = fadeOut(tween(animationDuration)) + scaleOut(
-                            targetScale = if (reducedMotion) 1f else 0.95f,
-                            animationSpec = tween(animationDuration),
-                        ),
+                        visibleState = visibilityState,
+                        enter = stylishFloatingEnterTransition(placement.toFloatingDirection()),
+                        exit = stylishFloatingExitTransition(placement.toFloatingDirection()),
                     ) {
                         Surface(
                             modifier = Modifier
@@ -250,6 +235,18 @@ public fun StylishPopover(
         }
     }
 }
+
+private fun PopoverPlacement.toFloatingDirection(): StylishFloatingSlideDirection =
+    when (this) {
+        PopoverPlacement.Top,
+        PopoverPlacement.TopStart,
+        PopoverPlacement.TopEnd -> StylishFloatingSlideDirection.Up
+        PopoverPlacement.Bottom,
+        PopoverPlacement.BottomStart,
+        PopoverPlacement.BottomEnd -> StylishFloatingSlideDirection.Down
+        PopoverPlacement.Start -> StylishFloatingSlideDirection.Start
+        PopoverPlacement.End -> StylishFloatingSlideDirection.End
+    }
 
 /**
  * A [PopupPositionProvider] that positions a popover relative to an anchor

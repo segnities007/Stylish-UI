@@ -44,6 +44,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   10 dp.
  * @param gridLineCount Number of horizontal grid lines including the
  *   baseline. Defaults to 4.
+ * @param animate Whether the chart animates from zero height on first
+ *   composition. Defaults to `true`.
  *
  * @see LineChartSection
  * @see SimpleBarChart
@@ -62,6 +64,7 @@ public fun BarChartSection(
     topRadius: Dp = 4.dp,
     labelTextSize: Dp = 10.dp,
     gridLineCount: Int = 4,
+    animate: Boolean = true,
 ) {
     StylishSection(
         title = title,
@@ -77,6 +80,7 @@ public fun BarChartSection(
             topRadius = topRadius,
             labelTextSize = labelTextSize,
             gridLineCount = gridLineCount,
+            animate = animate,
         )
     }
 }

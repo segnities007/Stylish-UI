@@ -74,7 +74,7 @@ public fun StylishTimePicker(
  * This is the Finish-layer wrapper around the Material 3 [TimePickerDialog]
  * under the [ExperimentalMaterial3Api] opt-in. The dialog surface uses a
  * [RoundedCornerShape] with
- * [StylishTheme.dimensions.connectedCornerRadius] and the theme's
+ * [StylishTheme.shapes.connectedCornerRadius] and the theme's
  * `surfaceContainerHigh` color; like the M3 dialog it applies platform
  * window insets itself, so no additional inset handling is needed. The
  * [confirmButton], [dismissButton], [modeToggleButton], and [title] slots
@@ -93,7 +93,7 @@ public fun StylishTimePicker(
  * @param dismissButton The button that dismisses the dialog, typically a
  *   [TextButton]. When `null`, no dismiss button is shown.
  * @param shape The dialog surface shape. Defaults to [RoundedCornerShape]
- *   with [StylishTheme.dimensions.connectedCornerRadius].
+ *   with [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor The dialog surface color. Defaults to
  *   [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param content The dialog body, typically a [StylishTimePicker] (or any
@@ -112,7 +112,7 @@ public fun StylishTimePickerDialog(
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
     modeToggleButton: @Composable (() -> Unit)? = null,
     dismissButton: @Composable (() -> Unit)? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     content: @Composable ColumnScope.() -> Unit,
 ) {

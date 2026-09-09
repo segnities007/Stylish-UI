@@ -80,7 +80,7 @@ private fun StylishMasonryPreview() {
                     Modifier
                         .fillMaxSize()
                         .height(if (index % 2 == 0) 80.dp else 120.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)),
+                        .background(MaterialTheme.colorScheme.surfaceVariant, StylishTheme.shapes.medium),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text("項目 $index")

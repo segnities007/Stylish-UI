@@ -42,7 +42,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param modifier Modifier applied to the underlying [LazyColumn].
  * @param contentPadding [PaddingValues] applied around the entire lazy
  *   list. Defaults to [StylishTheme.dimensions.screenPadding] horizontal
- *   padding (20.dp).
+ *   padding (20.dp). The nearest [StylishScaffold]'s bottom clearance is
+ *   merged automatically.
  * @param headerSpacing Vertical gap between the [header] and the first
  *   list item. Defaults to [Dp.Unspecified], which resolves to the active
  *   theme's [StylishTheme.dimensions.itemSpacing] so global theme
@@ -79,9 +80,10 @@ public fun StylishPageContent(
     } else {
         headerSpacing
     }
+    val resolvedContentPadding = stylishScaffoldContentPadding(contentPadding)
     LazyColumn(
         modifier.stylishTestTag("page_content").fillMaxSize(),
-        contentPadding = contentPadding,
+        contentPadding = resolvedContentPadding,
         state = listState,
         reverseLayout = reverseLayout,
         verticalArrangement = verticalArrangement,

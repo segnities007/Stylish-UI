@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -232,9 +233,17 @@ private fun <T> StylishTreeNodeRow(
                 )
             }
         } else {
-            Text("•", Modifier.widthIn(min = 48.dp).padding(horizontal = 16.dp))
+            Text(
+                "•",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.widthIn(min = 48.dp).padding(horizontal = 16.dp),
+            )
         }
-        Text(node.label, Modifier.padding(vertical = 10.dp))
+        Text(
+            node.label,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(vertical = 10.dp),
+        )
     }
 }
 

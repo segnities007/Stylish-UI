@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +49,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param spacing The horizontal gap between adjacent cards. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param cornerRadius The radius applied to the outer corners. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param card A composable lambda that renders a single card. Receives the item
  *   data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -62,7 +63,7 @@ public fun ConnectedCardRow(
     items: List<StylishConnectedCardItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     card: ConnectedCardItemContent,
 ) {
     Row(
@@ -99,10 +100,11 @@ private fun ConnectedCardRowPreview() {
                     itemModifier.connectedOutline(edges, corners),
                     shape = shape,
                     color = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ) {
                     Column(Modifier.padding(12.dp)) {
                         Text(item.title)
-                        Text(item.supportingText)
+                        Text(item.supportingText, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

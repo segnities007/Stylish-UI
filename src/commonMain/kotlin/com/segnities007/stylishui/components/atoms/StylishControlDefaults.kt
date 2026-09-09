@@ -15,7 +15,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 public object StylishChipDefaults {
     /** Returns the shared rounded shape for chip controls. */
     @Composable
-    public fun shape(): Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius)
+    public fun shape(): Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius)
 
     /** Returns theme-aware colors for selectable chip controls. */
     @Composable

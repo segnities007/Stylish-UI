@@ -1,14 +1,13 @@
 package com.segnities007.stylishui.catalog
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTimePickerState
+import com.segnities007.stylishui.components.atoms.StylishText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.segnities007.stylishui.components.atoms.StylishFilledTextField
 import com.segnities007.stylishui.components.atoms.StylishFormTextField
 import com.segnities007.stylishui.components.atoms.StylishNumberInput
 import com.segnities007.stylishui.components.atoms.StylishOutlinedTextField
@@ -26,7 +25,7 @@ import kotlinx.datetime.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun getInputDemos(): List<DemoComponent> = listOf(
     DemoComponent(
-        name = "Form text field",
+        name = "Text fields",
         category = DemoCategory.Inputs,
         code = """StylishFormTextField(
     value = value,
@@ -34,9 +33,22 @@ internal fun getInputDemos(): List<DemoComponent> = listOf(
     label = "メールアドレス",
     isError = isError,
     errorMessage = if (isError) "形式が正しくありません" else null,
+)
+StylishOutlinedTextField(
+    value = comment,
+    onValueChange = { comment = it },
+    label = { StylishText("コメント") },
+)
+StylishAutocomplete(
+    value = query,
+    onValueChange = { query = it },
+    options = options,
+    label = "検索",
 )""",
         preview = {
             var value by remember { mutableStateOf("") }
+            var comment by remember { mutableStateOf("") }
+            var query by remember { mutableStateOf("") }
             var isError by remember { mutableStateOf(false) }
             StylishFormTextField(
                 value = value,
@@ -48,58 +60,15 @@ internal fun getInputDemos(): List<DemoComponent> = listOf(
                 isError = isError,
                 errorMessage = if (isError) "「@」を含めて入力してください" else null,
             )
-        },
-    ),
-    DemoComponent(
-        name = "Filled text field",
-        category = DemoCategory.Inputs,
-        code = """StylishFilledTextField(
-    value = value,
-    onValueChange = { value = it },
-    label = "ユーザー名",
-)""",
-        preview = {
-            var value by remember { mutableStateOf("") }
-            StylishFilledTextField(
-                value = value,
-                onValueChange = { value = it },
-                label = "ユーザー名",
-                placeholder = "入力してください",
-            )
-        },
-    ),
-    DemoComponent(
-        name = "Outlined text field",
-        category = DemoCategory.Inputs,
-        code = """StylishOutlinedTextField(
-    value = value,
-    onValueChange = { value = it },
-    label = { Text("コメント") },
-)""",
-        preview = {
-            var value by remember { mutableStateOf("") }
             StylishOutlinedTextField(
-                value = value,
-                onValueChange = { value = it },
-                label = { Text("コメント") },
-                placeholder = { Text("入力してください") },
+                value = comment,
+                onValueChange = { comment = it },
+                label = { StylishText("コメント") },
+                placeholder = { StylishText("入力してください") },
             )
-        },
-    ),
-    DemoComponent(
-        name = "Autocomplete",
-        category = DemoCategory.Inputs,
-        code = """StylishAutocomplete(
-    value = value,
-    onValueChange = { value = it },
-    options = listOf("Stylish UI", "Compose Multiplatform", "Material 3"),
-    label = "検索",
-)""",
-        preview = {
-            var value by remember { mutableStateOf("") }
             StylishAutocomplete(
-                value = value,
-                onValueChange = { value = it },
+                value = query,
+                onValueChange = { query = it },
                 options = listOf("Stylish UI", "Compose Multiplatform", "Material 3", "Kotlin", "KMP"),
                 label = "ライブラリ検索",
             )

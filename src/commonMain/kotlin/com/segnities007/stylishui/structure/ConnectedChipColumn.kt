@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param spacing The vertical gap between adjacent chips. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param cornerRadius The radius applied to the outer corners. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param chip A composable lambda that renders a single chip. Receives the item
  *   data, a modifier (fill-max-width), the connected [Shape], the outline
  *   [ConnectedEdges], and the outline [ConnectedCorners].
@@ -58,7 +59,7 @@ public fun ConnectedChipColumn(
     items: List<StylishConnectedChipItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     chip: ConnectedChipItemContent,
 ) {
     Column(
@@ -94,6 +95,7 @@ private fun ConnectedChipColumnPreview() {
                     itemModifier.connectedOutline(edges, corners),
                     shape = shape,
                     color = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ) {
                     Text(item.label, Modifier.padding(8.dp))
                 }

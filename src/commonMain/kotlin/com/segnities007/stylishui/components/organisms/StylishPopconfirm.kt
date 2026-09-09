@@ -54,7 +54,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   [MaterialTheme.typography.bodySmall].
  * @param shape Corner shape of the popover. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param width Width of the popover. Defaults to 260 dp.
  */
 @Composable
@@ -72,7 +72,7 @@ public fun StylishPopconfirm(
     confirmColors: ButtonColors? = null,
     titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
     descriptionStyle: TextStyle = MaterialTheme.typography.bodySmall,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     width: Dp = 260.dp,
 ) {
     StylishPopover(
@@ -148,7 +148,6 @@ private fun StylishPopconfirmPreview() {
                     ) { Text("削除") }
                 },
                 title = "この記録を削除しますか?",
-                description = "この操作は取り消せません。",
                 confirmLabel = "削除",
                 onConfirm = {},
             )

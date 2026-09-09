@@ -16,7 +16,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * the item's background. Each enabled edge is drawn as a straight line segment; where two
  * adjacent enabled edges meet at an outer corner, a quadratic Bézier curve with the specified
  * [cornerRadius] smoothly connects them. Joined (inner) corners are drawn as sharp right angles
- * because the small [StylishDimensions.joinedCornerRadius] is handled by the clip shape rather
+ * because the small [StylishShapes.joinedCornerRadius] is handled by the clip shape rather
  * than the outline path.
  *
  * The stroke color is taken from [MaterialTheme.colorScheme.outlineVariant] and the stroke
@@ -28,7 +28,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param corners Which corners are outer (rounded) versus joined (sharp). Compute with
  *   [connectedColumnCorners], [connectedRowCorners], or [connectedGridCorners].
  * @param cornerRadius The radius used for outer-corner arcs. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @return A [Modifier] that draws the outline after the decorated content.
  *
  * Note: the Foundation layer normally contains no rendering composables; [connectedOutline]
@@ -41,7 +41,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 public fun Modifier.connectedOutline(
     edges: ConnectedEdges,
     corners: ConnectedCorners,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
 ): Modifier {
     val color = MaterialTheme.colorScheme.outlineVariant
     val outlineWidth = StylishTheme.dimensions.outlineWidth

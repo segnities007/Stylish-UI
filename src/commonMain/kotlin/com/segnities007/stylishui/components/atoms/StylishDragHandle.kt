@@ -35,7 +35,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param height Height of the pill. Defaults to 4.dp (Material
  *   specification).
  * @param shape Shape of the pill. Defaults to
- *   [MaterialTheme.shapes.extraLarge].
+ *   [StylishTheme.shapes.extraLarge].
  * @param color Color of the pill. Defaults to
  *   `MaterialTheme.colorScheme.onSurfaceVariant`.
  */
@@ -45,7 +45,7 @@ public fun StylishDragHandle(
     modifier: Modifier = Modifier,
     width: Dp = 32.dp,
     height: Dp = 4.dp,
-    shape: Shape = MaterialTheme.shapes.extraLarge,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     BottomSheetDefaults.DragHandle(

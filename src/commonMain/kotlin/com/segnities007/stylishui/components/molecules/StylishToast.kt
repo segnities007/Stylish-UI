@@ -164,7 +164,7 @@ public fun rememberStylishToastHostState(): StylishToastHostState =
 public fun StylishToastHost(
     hostState: StylishToastHostState,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
 ) {

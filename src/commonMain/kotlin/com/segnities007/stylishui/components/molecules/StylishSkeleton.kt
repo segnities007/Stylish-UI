@@ -59,7 +59,7 @@ import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 public fun StylishSkeletonLine(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surfaceVariant,
-    shape: Shape = RoundedCornerShape(4.dp),
+    shape: Shape = StylishTheme.shapes.extraSmall,
     minAlpha: Float = 0.3f,
     maxAlpha: Float = 0.7f,
     durationMillis: Int = StylishTheme.animation.durationLong,

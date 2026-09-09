@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -23,10 +25,10 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalLayoutDirection
-import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.StylishPagination
-import com.segnities007.stylishui.components.organisms.StylishNavigationBar
 import com.segnities007.stylishui.components.organisms.StylishQrCode
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBarItem
 import com.segnities007.stylishui.components.organisms.StylishTransfer
 import com.segnities007.stylishui.components.organisms.StylishTransferItem
 import com.segnities007.stylishui.components.charts.StylishAreaChart
@@ -55,14 +57,20 @@ class AccessibilityLayoutSmokeTest {
             ) {
                 StylishTheme(darkTheme = false, strings = com.segnities007.stylishui.theme.StylishJapaneseStrings) {
                     Column(Modifier.size(320.dp)) {
-                        StylishNavigationBar(
-                            items = listOf(
-                                StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
-                                StylishNavigationItem(Icons.Default.Home, "設定"),
-                            ),
-                            alwaysShowLabel = true,
-                            windowInsets = androidx.compose.foundation.layout.WindowInsets(0, 0, 0, 0),
-                        )
+                        StylishShortNavigationBar {
+                            StylishShortNavigationBarItem(
+                                selected = true,
+                                onClick = {},
+                                icon = { Icon(Icons.Default.Home, contentDescription = "ホーム") },
+                                label = { Text("ホーム") },
+                            )
+                            StylishShortNavigationBarItem(
+                                selected = false,
+                                onClick = {},
+                                icon = { Icon(Icons.Default.Home, contentDescription = "設定") },
+                                label = { Text("設定") },
+                            )
+                        }
                         StylishPagination(
                             page = 2,
                             onPageChange = {},
@@ -80,10 +88,10 @@ class AccessibilityLayoutSmokeTest {
             }
         }
 
-        onNodeWithContentDescription("ホーム").assertIsDisplayed()
+        onNodeWithText("ホーム").assertIsDisplayed()
         onNodeWithContentDescription("前のページ").assertIsDisplayed()
         onNodeWithTag("stylish_area_chart").assertIsDisplayed()
-        val selected = onNodeWithContentDescription("ホーム").fetchSemanticsNode().config
+        val selected = onNodeWithText("ホーム").fetchSemanticsNode().config
         assertTrue(selected[SemanticsProperties.Selected])
     }
 
@@ -92,23 +100,23 @@ class AccessibilityLayoutSmokeTest {
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 StylishTheme(darkTheme = false) {
-                    StylishNavigationBar(
-                        items = listOf(
-                            StylishNavigationItem(
-                                icon = Icons.Default.Home,
-                                label = "Dashboard",
-                                selected = true,
-                                iconContent = { Box(Modifier.size(24.dp).testTag("custom_nav_icon")) },
-                            ),
-                        ),
-                        alwaysShowLabel = false,
-                    )
+                    StylishShortNavigationBar {
+                        StylishShortNavigationBarItem(
+                            selected = true,
+                            onClick = {},
+                            icon = { Box(Modifier.size(24.dp).testTag("custom_nav_icon")) },
+                            label = { Text("Dashboard") },
+                        )
+                    }
                 }
             }
         }
 
-        onNodeWithContentDescription("Dashboard").assertIsDisplayed()
-        val state = onNodeWithContentDescription("Dashboard").fetchSemanticsNode().config
+        // The item merges descendants, so the custom icon slot is only
+        // visible in the unmerged tree; the merged label stays searchable.
+        onNodeWithTag("custom_nav_icon", useUnmergedTree = true).assertExists()
+        onNodeWithText("Dashboard").assertIsDisplayed()
+        val state = onNodeWithText("Dashboard").fetchSemanticsNode().config
         assertTrue(state[SemanticsProperties.Selected])
     }
 

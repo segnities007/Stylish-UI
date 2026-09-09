@@ -124,8 +124,8 @@ class ComponentSmokeTest {
         }
 
         val bounds = onNodeWithText("ヘッダー").fetchSemanticsNode().boundsInRoot
-        assertTrue(bounds.left >= 140f)
-        assertTrue(bounds.top > 0f)
+        assertTrue(bounds.left >= 140f, "bounds=$bounds")
+        assertTrue(bounds.top > 0f, "bounds=$bounds")
     }
 
     @Test

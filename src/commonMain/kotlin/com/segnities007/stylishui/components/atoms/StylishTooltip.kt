@@ -121,7 +121,7 @@ public fun StylishTooltip(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
-    shape: Shape = RoundedCornerShape(4.dp),
+    shape: Shape = StylishTheme.shapes.extraSmall,
     textStyle: TextStyle = MaterialTheme.typography.bodySmall,
     placement: TooltipPlacement = TooltipPlacement.Bottom,
     delayMillis: Int = 500,

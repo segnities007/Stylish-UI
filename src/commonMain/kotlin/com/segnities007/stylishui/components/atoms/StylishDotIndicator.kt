@@ -31,6 +31,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * [activeColor]; inactive dots use [inactiveSize] and [inactiveColor].
  * Size changes are animated so the active dot smoothly grows or
  * shrinks as the page changes.
+ * This is the compact inline variant; use [StylishFloatingPagerIndicator]
+ * when the indicator should float above content in a bordered pill.
  *
  * @param pageCount The total number of pages (dots to render). Must be
  *   at least 1.
@@ -44,6 +46,8 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   [MaterialTheme.colorScheme.onSurface].
  * @param inactiveColor Color of inactive dots. Defaults to
  *   [MaterialTheme.colorScheme.outlineVariant].
+ *
+ * @see StylishFloatingPagerIndicator
  */
 @Composable
 public fun StylishDotIndicator(

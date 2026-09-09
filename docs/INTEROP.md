@@ -8,7 +8,7 @@
 
 | プラットフォーム | ステータス | 備考 |
 |---|---|---|
-| Android | ✅ 対応（CI/CDあり） | Dynamic Color（Material You）は Android 12+ で有効 |
+| Android | ✅ 対応（CI/CDあり） | 固定ブランド配色のみ。端末のDynamic Colorは使用しない |
 | JVM Desktop | ✅ 対応（CI/CDあり） | Windows / macOS / Linux。カタログ閲覧は `:website:run` |
 | Web（Wasm） | ❌ 削除（2026-08-21） | 需要がないため削除。カタログはDesktopアプリと`docs/catalog.md`で代替 |
 | iOS | ⚠️ compile対応のみ | `iosArm64` / `iosSimulatorArm64`。検証手段がないためCI/CDゲートはなし |
@@ -20,7 +20,6 @@
 | Compose Multiplatform | 1.11.1 | `compose` plugin と一致 |
 | Kotlin | 2.4.10 | `kotlin` plugin と一致 |
 | `kotlinx-datetime` | 0.8.0 | 必須依存（後述） |
-| `material-kolor`（MaterialKolor） | 5.0.0 | Dynamic Color のシードカラー用（後述） |
 
 Stylish UI は `io.github.segnities007:stylish-ui` の単一 artifact です。
 BOM や version catalog の提供予定はありません（複数 artifact に分かれていないため）。
@@ -37,19 +36,6 @@ BOM や version catalog の提供予定はありません（複数 artifact に�
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.8.0")
 }
-```
-
-### `material-kolor`（MaterialKolor）
-
-Dynamic Color のシードカラー変換を全プラットフォームで行うために追加されました。
-Android ではシステムの Material You パレットが優先されますが、それ以外の
-プラットフォームでも同じシードカラーから一貫したトーンを生成できます。
-
-```kotlin
-StylishTheme(
-    darkTheme = false,
-    dynamicColor = true,   // シードカラー（MaterialTheme.colorScheme の primary）を元に生成
-)
 ```
 
 ## アイコンポリシー
@@ -78,22 +64,21 @@ Stylish UI は M3 の上に構築されています（`MaterialTheme` ベース�
    `StylishTheme { ... }` の中でそのまま使ってください。トークン（色・
    タイポグラフィ）は統一されます。
 3. **Stylish が提供するコンポーネントは Stylish 版を使う**: 対応する Stylish
-   コンポーネントがあるもの（Button / Card / Chip / NavigationBar など）は
+   コンポーネントがあるもの（Button / Card / Chip / SearchBar など）は
    スタイルが統一されるよう Stylish 版を使ってください。対応表は
    [docs/MIGRATION.md](MIGRATION.md) を参照。
-4. **`dynamicColor` の注意**: `StylishTheme(dynamicColor = true)` と M3 の
-   `MaterialTheme` を直接ネストすると色が2重適用されます。ルートは必ず
-   `StylishTheme` を1つにしてください。
+4. **端末Dynamic Colorは禁止**: 壁紙由来の色はブランドを上書きするため使用しません。
+   ルートは`StylishTheme`を1つにし、固定のlight/dark配色を渡してください。
 
 ```kotlin
 StylishTheme(darkTheme = isSystemInDarkTheme()) {
     // M3 と Stylish の混在が可能
     Scaffold(topBar = { TopAppBar(title = { Text("設定") }) }) { padding ->
-        StylishConnectedListItemColumn(
+        StylishConnectedCardColumn(
             items = listOf(
-                StylishConnectedListItem(
-                    headline = "テーマ",
-                    trailingContent = { Switch(checked = true, onCheckedChange = {}) },
+                StylishConnectedCardItem(
+                    title = "テーマ",
+                    supportingText = "外観設定",
                 ),
             ),
             modifier = Modifier.padding(padding),

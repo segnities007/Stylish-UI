@@ -40,6 +40,7 @@ import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.theme.stylishCardContainerColor
+import com.segnities007.stylishui.theme.StylishElevationLayer
 import com.segnities007.stylishui.theme.stylishComponentColors
 
 /**
@@ -111,7 +112,7 @@ public enum class StylishCardVariant {
  *   Stylish look.
  * @param shape Shape of the card surface. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background color. Defaults to
  *   [stylishComponentColors.groupedContainer].
  * @param contentColor Default content color. Defaults to
@@ -244,24 +245,25 @@ public fun StylishCard(
         ),
         border = resolvedBorder,
     ) {
-        if (content != null) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .sizeIn(minHeight = minHeight)
-                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-            ) {
-                content()
-            }
-        } else {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .sizeIn(minHeight = minHeight)
-                    .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(contentSpacing),
-            ) {
+        StylishElevationLayer {
+            if (content != null) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .sizeIn(minHeight = minHeight)
+                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                ) {
+                    content()
+                }
+            } else {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .sizeIn(minHeight = minHeight)
+                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(contentSpacing),
+                ) {
                 leadingContent?.invoke()
                 Column(
                     Modifier.weight(1f),
@@ -284,6 +286,7 @@ public fun StylishCard(
                     }
                 }
                 trailingContent?.invoke()
+                }
             }
         }
     }

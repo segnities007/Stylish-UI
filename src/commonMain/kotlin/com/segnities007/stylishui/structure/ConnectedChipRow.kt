@@ -47,7 +47,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param spacing The horizontal gap between adjacent chips. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param cornerRadius The radius applied to the outer corners. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param fillWidth When `true`, chips share the available width equally instead
  *   of scrolling. Defaults to `false`.
  * @param chip A composable lambda that renders a single chip. Receives the item
@@ -63,7 +63,7 @@ public fun ConnectedChipRow(
     items: List<StylishConnectedChipItem>,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     fillWidth: Boolean = false,
     chip: ConnectedChipItemContent,
 ) {

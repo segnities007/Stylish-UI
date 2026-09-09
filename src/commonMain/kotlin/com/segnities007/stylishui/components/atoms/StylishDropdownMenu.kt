@@ -42,7 +42,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param properties [PopupProperties] for further customization of the
  *   popup behavior. Defaults to a focusable popup.
  * @param shape Shape of the menu surface. Defaults to
- *   [MaterialTheme.shapes.extraSmall].
+ *   [StylishTheme.shapes.extraSmall].
  * @param containerColor Background color of the menu. Defaults to
  *   [MaterialTheme.colorScheme.surfaceContainer].
  * @param content The menu content, typically one or more
@@ -57,7 +57,7 @@ public fun StylishDropdownMenu(
     modifier: Modifier = Modifier,
     offset: DpOffset = DpOffset.Zero,
     properties: PopupProperties = PopupProperties(focusable = true),
-    shape: Shape = MaterialTheme.shapes.extraSmall,
+    shape: Shape = StylishTheme.shapes.extraSmall,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     content: @Composable ColumnScope.() -> Unit,
 ) {

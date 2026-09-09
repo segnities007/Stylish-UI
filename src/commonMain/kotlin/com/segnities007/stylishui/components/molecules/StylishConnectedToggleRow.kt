@@ -49,7 +49,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  * @param modifier The modifier applied to the root layout.
  * @param cornerRadius The radius applied to the outer corners of the first and
  *   last items. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param spacing The horizontal gap between adjacent items. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding The inner padding of each toggle button. Defaults to
@@ -71,7 +71,7 @@ public fun StylishConnectedToggleRow(
     selectedIndex: Int?,
     onSelectedChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
     selectedContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,

@@ -49,6 +49,7 @@ import com.segnities007.stylishui.foundation.stylishInteractiveElevation
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.foundation.stylishTestTag
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
 import com.segnities007.stylishui.theme.stylishCardContainerColor
 import com.segnities007.stylishui.theme.stylishComponentColors
 
@@ -281,46 +282,48 @@ public fun StylishConnectedCard(
                     },
                 ),
         ) {
-            if (content != null) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .sizeIn(minHeight = minHeight)
-                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-                ) {
-                    content()
-                }
-            } else {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .sizeIn(minHeight = minHeight)
-                        .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(contentSpacing),
-                ) {
-                    leadingContent?.invoke()
-                    Column(
-                        Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(titleSpacing, Alignment.CenterVertically),
+            StylishElevationLayer {
+                if (content != null) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .sizeIn(minHeight = minHeight)
+                            .padding(horizontal = horizontalPadding, vertical = verticalPadding),
                     ) {
-                        Text(
-                            title,
-                            style = titleStyle,
-                            maxLines = titleMaxLines,
-                            overflow = titleOverflow,
-                        )
-                        if (supportingText.isNotBlank()) {
-                            Text(
-                                supportingText,
-                                style = supportingTextStyle,
-                                color = supportingTextColor ?: MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = supportingTextMaxLines,
-                                overflow = supportingTextOverflow,
-                            )
-                        }
+                        content()
                     }
-                    trailingContent?.invoke()
+                } else {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .sizeIn(minHeight = minHeight)
+                            .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(contentSpacing),
+                    ) {
+                        leadingContent?.invoke()
+                        Column(
+                            Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(titleSpacing, Alignment.CenterVertically),
+                        ) {
+                            Text(
+                                title,
+                                style = titleStyle,
+                                maxLines = titleMaxLines,
+                                overflow = titleOverflow,
+                            )
+                            if (supportingText.isNotBlank()) {
+                                Text(
+                                    supportingText,
+                                    style = supportingTextStyle,
+                                    color = supportingTextColor ?: MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = supportingTextMaxLines,
+                                    overflow = supportingTextOverflow,
+                                )
+                            }
+                        }
+                        trailingContent?.invoke()
+                    }
                 }
             }
         }

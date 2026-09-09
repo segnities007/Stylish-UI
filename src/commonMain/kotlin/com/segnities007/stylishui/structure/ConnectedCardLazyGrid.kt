@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -103,7 +104,7 @@ public fun ConnectedCardLazyGrid(
                                     card(
                                         item,
                                         Modifier.fillMaxWidth(),
-                                        connectedShape(corners, StylishTheme.dimensions.connectedCornerRadius),
+                                        connectedShape(corners, StylishTheme.shapes.connectedCornerRadius),
                                         connectedGridEdges(index, items.size, columns),
                                         corners,
                                     )
@@ -131,10 +132,11 @@ private fun ConnectedCardLazyGridPreview() {
                     itemModifier.connectedOutline(edges, corners),
                     shape = shape,
                     color = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ) {
                     Column(Modifier.padding(12.dp)) {
                         Text(item.title)
-                        Text(item.supportingText)
+                        Text(item.supportingText, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

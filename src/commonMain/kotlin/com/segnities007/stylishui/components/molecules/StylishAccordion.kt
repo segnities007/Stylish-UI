@@ -79,7 +79,7 @@ public data class StylishAccordionItem(
  *   sections visually grouped.
  * @param shape Corner shape of each section surface. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background of each section. Defaults to
  *   [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param contentColor Foreground color of the section content.
@@ -96,7 +96,7 @@ public fun StylishAccordion(
     expandedIndex: Int? = null,
     onExpandedChange: ((Int?) -> Unit)? = null,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     titleStyle: TextStyle = MaterialTheme.typography.titleMedium,

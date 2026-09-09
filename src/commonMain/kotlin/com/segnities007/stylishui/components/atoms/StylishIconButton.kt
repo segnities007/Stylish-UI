@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
 import com.segnities007.stylishui.theme.stylishElevatedControlContainerColor
 import com.segnities007.stylishui.foundation.stylishInteractiveSurface
 import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
@@ -131,12 +132,14 @@ public fun StylishIconButton(
         border = border,
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
-        IconButton(
-            onClick = onClick,
-            enabled = enabled,
-            interactionSource = resolvedInteractionSource,
-        ) {
-            iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = effectiveContentColor)
+        StylishElevationLayer {
+            IconButton(
+                onClick = onClick,
+                enabled = enabled,
+                interactionSource = resolvedInteractionSource,
+            ) {
+                iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = effectiveContentColor)
+            }
         }
     }
 }

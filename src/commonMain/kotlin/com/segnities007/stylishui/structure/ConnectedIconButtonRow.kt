@@ -40,7 +40,7 @@ public fun ConnectedIconButtonRow(
     items: List<StylishConnectedIconButtonItem>,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = StylishTheme.dimensions.iconButtonMinSize / 2,
-    joinedCornerRadius: Dp = StylishTheme.dimensions.joinedCornerRadius,
+    joinedCornerRadius: Dp = StylishTheme.shapes.joinedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     button: ConnectedIconButtonItemContent,
 ) {

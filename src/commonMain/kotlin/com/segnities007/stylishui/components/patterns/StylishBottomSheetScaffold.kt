@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishModalLayer
 import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
@@ -35,7 +36,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * The scaffold hosts a persistent, partially expandable [sheetContent]
  * above a full-screen [content] area, with optional [topBar] and
  * [snackbarHost] slots. The sheet's top corners use
- * [StylishTheme.dimensions.connectedCornerRadius], matching
+ * [StylishTheme.shapes.connectedCornerRadius], matching
  * [com.segnities007.stylishui.components.organisms.StylishBottomSheet].
  *
  * @param sheetContent The sheet content, laid out inside a
@@ -49,10 +50,10 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   [BottomSheetDefaults.SheetMaxWidth].
  * @param sheetShape Corner shape of the sheet. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius] on the top
+ *   [StylishTheme.shapes.connectedCornerRadius] on the top
  *   corners only.
- * @param sheetContainerColor Background color of the sheet. Defaults
- *   to [MaterialTheme.colorScheme.surface].
+ * @param sheetContainerColor Background color of the opaque sheet surface.
+ *   Defaults to the shared modal container color.
  * @param sheetContentColor Default content color of the sheet.
  *   Defaults to [contentColorFor] of [sheetContainerColor].
  * @param sheetTonalElevation Tonal elevation of the sheet. Defaults
@@ -90,8 +91,8 @@ public fun StylishBottomSheetScaffold(
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
     sheetMaxWidth: Dp = BottomSheetDefaults.SheetMaxWidth,
     sheetShape: Shape = RoundedCornerShape(
-        topStart = StylishTheme.dimensions.connectedCornerRadius,
-        topEnd = StylishTheme.dimensions.connectedCornerRadius,
+        topStart = StylishTheme.shapes.connectedCornerRadius,
+        topEnd = StylishTheme.shapes.connectedCornerRadius,
     ),
     sheetContainerColor: Color = stylishModalContainerColor(),
     sheetContentColor: Color = contentColorFor(sheetContainerColor),
@@ -106,7 +107,10 @@ public fun StylishBottomSheetScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     BottomSheetScaffold(
-        sheetContent = sheetContent,
+        sheetContent = {
+            val sheetScope = this
+            StylishModalLayer { sheetContent(sheetScope) }
+        },
         modifier = modifier.stylishTestTag("bottom_sheet_scaffold"),
         scaffoldState = scaffoldState,
         sheetPeekHeight = sheetPeekHeight,

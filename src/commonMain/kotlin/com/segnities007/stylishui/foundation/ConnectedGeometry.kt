@@ -18,15 +18,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import com.segnities007.stylishui.tokens.DefaultStylishDimensions
+import com.segnities007.stylishui.tokens.DefaultStylishShapes
 
 /**
  * Describes which corners of a Connected UI item are *outer* corners (large radius) versus
  * *inner/joined* corners (small radius).
  *
  * In the Connected UI layout system, items are arranged edge-to-edge with a narrow gap. Corners
- * that face the exterior of the group use [StylishDimensions.connectedCornerRadius] (default
- * 12 dp), while corners that face an adjacent item use [StylishDimensions.joinedCornerRadius]
+ * that face the exterior of the group use [StylishShapes.connectedCornerRadius] (default
+ * 12 dp), while corners that face an adjacent item use [StylishShapes.joinedCornerRadius]
  * (default 2 dp). This creates the visual "notch" effect where items interlock.
  *
  * The coordinate system follows Compose layout conventions: `topStart` is the top-left corner
@@ -55,7 +55,7 @@ public data class ConnectedCorners(
          * A [ConnectedCorners] with all four corners marked as outer corners.
          *
          * Use for a standalone item that has no neighbors — every corner receives the large
-         * [StylishDimensions.connectedCornerRadius].
+         * [StylishShapes.connectedCornerRadius].
          */
         public val Standalone: ConnectedCorners = ConnectedCorners(true, true, true, true)
     }
@@ -112,9 +112,9 @@ public data class ConnectedEdges(
  *
  * @param corners Which corners are outer (large-radius) versus joined (small-radius).
  * @param cornerRadius The radius for outer corners. Defaults to
- *   [DefaultStylishDimensions.connectedCornerRadius] (12 dp).
+ *   [DefaultStylishShapes.connectedCornerRadius] (12 dp).
  * @param joinedCornerRadius The radius for inner/joined corners. Defaults to
- *   [DefaultStylishDimensions.joinedCornerRadius] (2 dp).
+ *   [DefaultStylishShapes.joinedCornerRadius] (2 dp).
  * @return A [Shape] suitable for use with `Modifier.clip()` or `Modifier.background()`.
  * @see ConnectedCorners
  * @see connectedColumnCorners
@@ -123,8 +123,8 @@ public data class ConnectedEdges(
  */
 public fun connectedShape(
     corners: ConnectedCorners,
-    cornerRadius: Dp = DefaultStylishDimensions.connectedCornerRadius,
-    joinedCornerRadius: Dp = DefaultStylishDimensions.joinedCornerRadius,
+    cornerRadius: Dp = DefaultStylishShapes.connectedCornerRadius,
+    joinedCornerRadius: Dp = DefaultStylishShapes.joinedCornerRadius,
 ): Shape = RoundedCornerShape(
     topStart = if (corners.topStart) cornerRadius else joinedCornerRadius,
     topEnd = if (corners.topEnd) cornerRadius else joinedCornerRadius,
@@ -262,9 +262,9 @@ public fun connectedGridCorners(index: Int, size: Int, columns: Int): ConnectedC
  * @param totalItems Total number of items in the grid. Must be greater than zero.
  * @param columns Number of columns in the grid layout. Must be greater than zero.
  * @param outerCornerRadius Radius applied to corners that face the exterior of the grid.
- *   Defaults to [DefaultStylishDimensions.connectedCornerRadius] (12 dp).
+ *   Defaults to [DefaultStylishShapes.connectedCornerRadius] (12 dp).
  * @param joinedCornerRadius Radius applied to corners that face an adjacent item. Defaults
- *   to [DefaultStylishDimensions.joinedCornerRadius] (2 dp).
+ *   to [DefaultStylishShapes.joinedCornerRadius] (2 dp).
  * @return A [Shape] suitable for use with `Modifier.clip()` or `Modifier.background()`.
  * @throws IllegalArgumentException if [columns] is not greater than zero, or if [index] is
  *   outside the range `0 until totalItems`.
@@ -275,8 +275,8 @@ public fun connectedGridItemShape(
     index: Int,
     totalItems: Int,
     columns: Int,
-    outerCornerRadius: Dp = DefaultStylishDimensions.connectedCornerRadius,
-    joinedCornerRadius: Dp = DefaultStylishDimensions.joinedCornerRadius,
+    outerCornerRadius: Dp = DefaultStylishShapes.connectedCornerRadius,
+    joinedCornerRadius: Dp = DefaultStylishShapes.joinedCornerRadius,
 ): Shape {
     val corners = connectedGridCorners(index, totalItems, columns)
     return connectedShape(corners, outerCornerRadius, joinedCornerRadius)

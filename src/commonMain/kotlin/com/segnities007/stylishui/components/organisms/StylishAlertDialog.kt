@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishModalLayer
 import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
@@ -39,11 +40,11 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   proposed action, e.g. a [TextButton] labelled "OK".
  * @param dismissButton Optional composable for the action that dismisses
  *   the dialog, e.g. a [TextButton] labelled "キャンセル".
- * @param containerColor Background color of the dialog. Defaults to
- *   [MaterialTheme.colorScheme.surfaceContainerHigh].
+ * @param containerColor Background color of the nearly opaque floating
+ *   dialog surface.
  * @param shape Corner shape of the dialog. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.floatingCornerRadius].
  * @param tonalElevation Tonal elevation of the dialog surface. Defaults
  *   to 1.dp for a subtle lift.
  * @param properties Platform-specific [DialogProperties] of the dialog.
@@ -62,19 +63,19 @@ public fun StylishAlertDialog(
     text: @Composable (() -> Unit)? = null,
     confirmButton: @Composable () -> Unit,
     dismissButton: @Composable (() -> Unit)? = null,
-    containerColor: Color = stylishModalContainerColor(),
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
-    tonalElevation: Dp = 1.dp,
+    containerColor: Color = stylishModalContainerColor().copy(alpha = 0.96f),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
+    tonalElevation: Dp = StylishTheme.dimensions.floatingElevation,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = true),
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         modifier = modifier.stylishTestTag("alert_dialog"),
-        icon = icon,
-        title = title,
-        text = text,
-        confirmButton = confirmButton,
-        dismissButton = dismissButton,
+        icon = icon?.let { slot -> { StylishModalLayer(slot) } },
+        title = title?.let { slot -> { StylishModalLayer(slot) } },
+        text = text?.let { slot -> { StylishModalLayer(slot) } },
+        confirmButton = { StylishModalLayer(confirmButton) },
+        dismissButton = dismissButton?.let { slot -> { StylishModalLayer(slot) } },
         containerColor = containerColor,
         shape = shape,
         tonalElevation = tonalElevation,

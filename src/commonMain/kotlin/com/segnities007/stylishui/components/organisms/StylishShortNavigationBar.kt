@@ -29,10 +29,9 @@ import com.segnities007.stylishui.theme.StylishTheme
  * A Material 3 short navigation bar with Stylish theme defaults.
  *
  * A compact bottom navigation bar for small screens, wrapping
- * [ShortNavigationBar] unchanged. Unlike
- * [StylishNavigationBar], short navigation bars keep only the selected
- * destination's icon visible and collapse the rest, which makes them
- * suitable for up to three destinations. Combine with
+ * [ShortNavigationBar] unchanged. Short navigation bars keep only the
+ * selected destination's icon visible and collapse the rest, which makes
+ * them suitable for up to three destinations. Combine with
  * [StylishShortNavigationBarItem].
  *
  * @param modifier Modifier applied to the [ShortNavigationBar] root.

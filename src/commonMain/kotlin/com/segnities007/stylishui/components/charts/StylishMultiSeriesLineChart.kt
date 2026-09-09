@@ -172,6 +172,7 @@ public fun StylishMultiSeriesLineChart(
                     Text(
                         line.name,
                         style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .padding(start = 4.dp, end = 16.dp)
                             .then(if (onVisibleSeriesNamesChange != null) Modifier.clickable {
@@ -184,11 +185,25 @@ public fun StylishMultiSeriesLineChart(
                 }
             }
         }
-        if (yAxisLabel != null) Text(yAxisLabel, style = MaterialTheme.typography.labelSmall)
+        if (yAxisLabel != null) {
+            Text(
+                yAxisLabel,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         if (showAxisTicks) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween) {
-                Text(yAxisTickFormatter(max), style = MaterialTheme.typography.labelSmall)
-                Text(yAxisTickFormatter(min), style = MaterialTheme.typography.labelSmall)
+                Text(
+                    yAxisTickFormatter(max),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    yAxisTickFormatter(min),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
         Box(
@@ -318,7 +333,12 @@ public fun StylishMultiSeriesLineChart(
             }
         }
         if (xAxisLabel != null) {
-            Text(xAxisLabel, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 4.dp))
+            Text(
+                xAxisLabel,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 4.dp),
+            )
         }
         selection?.let { selected ->
             val line = series.getOrNull(selected.seriesIndex)

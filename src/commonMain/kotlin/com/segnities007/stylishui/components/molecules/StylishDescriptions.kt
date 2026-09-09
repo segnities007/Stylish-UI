@@ -55,7 +55,7 @@ public data class StylishDescriptionItem(
  *   [MaterialTheme.colorScheme.surfaceContainerHigh].
  * @param shape Corner shape of the surface. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param cellPadding Inner padding of each pair. Defaults to 16 x 12 dp.
  */
 @Composable
@@ -68,7 +68,7 @@ public fun StylishDescriptions(
     labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     valueColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     cellPadding: androidx.compose.foundation.layout.PaddingValues =
         androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
 ) {

@@ -11,15 +11,19 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
-import com.segnities007.stylishui.theme.stylishComponentColors
+import com.segnities007.stylishui.theme.stylishElevatedControlContainerColor
 
 /** Theme-aware defaults that can be reused by custom Stylish button skins. */
 public object StylishButtonDefaults {
     /** Resolves colors for a button variant. */
     @Composable
     public fun colors(variant: StylishButtonVariant): ButtonColors = when (variant) {
-        StylishButtonVariant.Filled, StylishButtonVariant.Elevated -> ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.stylishComponentColors.groupedContainer,
+        StylishButtonVariant.Filled -> ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+        )
+        StylishButtonVariant.Elevated -> ButtonDefaults.buttonColors(
+            containerColor = stylishElevatedControlContainerColor(),
             contentColor = MaterialTheme.colorScheme.onSurface,
         )
         StylishButtonVariant.Tonal -> ButtonDefaults.buttonColors(
@@ -27,7 +31,11 @@ public object StylishButtonDefaults {
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         StylishButtonVariant.Outlined -> ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
+            // Outlined actions still own a surface. Keeping the adaptive
+            // control tone here prevents an outlined trigger from visually
+            // collapsing into the card behind it (for example, menu-open
+            // actions in the catalog).
+            containerColor = stylishElevatedControlContainerColor(),
             contentColor = MaterialTheme.colorScheme.onSurface,
         )
         StylishButtonVariant.Text -> ButtonDefaults.textButtonColors(
@@ -38,7 +46,7 @@ public object StylishButtonDefaults {
 
     /** Resolves the standard Stylish corner shape. */
     @Composable
-    public fun shape(): Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius)
+    public fun shape(): Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius)
 
     /** Resolves the elevation ladder for a button variant. */
     @Composable

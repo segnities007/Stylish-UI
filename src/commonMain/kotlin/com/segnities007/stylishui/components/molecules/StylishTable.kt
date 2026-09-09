@@ -70,7 +70,7 @@ public fun StylishTable(
         horizontal = StylishTheme.dimensions.controlPadding,
         vertical = StylishTheme.dimensions.controlVerticalPadding,
     ),
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
 ) {
     Surface(
         shape = shape,

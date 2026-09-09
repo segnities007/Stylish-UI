@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.testTag
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.isActionable
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
 import com.segnities007.stylishui.theme.stylishComponentColors
 import com.segnities007.stylishui.foundation.stylishInteractiveTarget
 
@@ -38,8 +41,8 @@ import com.segnities007.stylishui.foundation.stylishInteractiveTarget
  * The visual style of a [StylishButton].
  *
  * Mirrors the Material 3 button family: [Filled] is the high-emphasis default,
- * [Tonal] adds a tonal container, [Outlined] adds a hairline border on a
- * transparent container, [Text] is a bare label with no container, and
+ * [Tonal] adds a tonal container, [Outlined] adds a hairline border on an
+ * adaptive control container, [Text] is a bare label with no container, and
  * [Elevated] lifts the button with a floating shadow.
  *
  * @see StylishButton
@@ -51,7 +54,7 @@ public enum class StylishButtonVariant {
     /** Medium-emphasis button: secondary-container fill, no border, no elevation. */
     Tonal,
 
-    /** Medium-emphasis button: transparent container with a hairline border. */
+    /** Medium-emphasis button: adaptive control container with a hairline border. */
     Outlined,
 
     /** Low-emphasis button: transparent container, no border, no elevation. */
@@ -74,7 +77,8 @@ public enum class StylishButtonVariant {
  * consistently with the connected-button family.
  *
  * When [isLoading] is `true` and the button is [enabled], the label
- * row is replaced by a small spinner and clicks are ignored until
+ * row stays composed but invisible under a centered small spinner so
+ * the button skeleton never shifts, and clicks are ignored until
  * loading completes.
  *
  * ## Testing
@@ -93,12 +97,12 @@ public enum class StylishButtonVariant {
  * @param colors [ButtonColors] for the button. When `null` (default),
  *   resolved from [variant]: grouped-container colors for [StylishButtonVariant.Filled]
  *   and [StylishButtonVariant.Elevated], secondary-container colors for
- *   [StylishButtonVariant.Tonal], a transparent container with on-surface
- *   content for [StylishButtonVariant.Outlined], and a transparent container
+ *   [StylishButtonVariant.Tonal], an adaptive control container with
+ *   on-surface content for [StylishButtonVariant.Outlined], and a transparent container
  *   with primary content for [StylishButtonVariant.Text].
  * @param shape Corner shape. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param border Border stroke drawn around the button. When `null`
  *   (default), resolved from [variant]: a hairline of
  *   [StylishTheme.dimensions.outlineWidth] using
@@ -121,10 +125,10 @@ public enum class StylishButtonVariant {
  * @param contentArrangement Horizontal arrangement of the label row
  *   between the leading and trailing slots. Defaults to
  *   [Arrangement.Center].
- * @param isLoading When `true` and [enabled], the label row is
- *   replaced by a 20 dp spinner and clicks are blocked (no-op) until
- *   loading finishes. When the button is disabled, the spinner is not
- *   shown.
+ * @param isLoading When `true` and [enabled], the label row is kept
+ *   invisible under a centered 20 dp spinner (preserving the button
+ *   size) and clicks are blocked (no-op) until loading finishes. When
+ *   the button is disabled, the spinner is not shown.
  * @param leadingContent Optional content before the label (e.g. an
  *   icon). Rendered in a fixed-alignment slot.
  * @param trailingContent Optional content after the label (e.g. a
@@ -143,7 +147,7 @@ public fun StylishButton(
     variant: StylishButtonVariant = StylishButtonVariant.Filled,
     enabled: Boolean = true,
     colors: ButtonColors? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     border: BorderStroke? = null,
     elevation: ButtonElevation? = null,
     interactionSource: MutableInteractionSource? = null,
@@ -163,39 +167,48 @@ public fun StylishButton(
     val resolvedColors = colors ?: StylishButtonDefaults.colors(variant)
     val resolvedBorder = border ?: StylishButtonDefaults.border(variant)
     val resolvedElevation = elevation ?: StylishButtonDefaults.elevation(variant)
-    Button(
-        onClick = onClick,
-        enabled = actionable,
-        modifier = modifier
-            .stylishInteractiveTarget()
-            .testTag("stylish_button")
-            .heightIn(min = minHeight),
-        shape = shape,
-        colors = resolvedColors,
-        elevation = resolvedElevation,
-        border = resolvedBorder,
-        contentPadding = contentPadding,
-        interactionSource = interactionSource,
-    ) {
-        if (isLoading && enabled) {
+    // Preserve the skeleton while loading: the label rows stay composed
+    // (invisible) so the button keeps its size, with the spinner overlaid.
+    val loading = isLoading && enabled
+    val contentAlpha = if (loading) 0f else 1f
+    Box(contentAlignment = Alignment.Center) {
+        Button(
+            onClick = onClick,
+            enabled = actionable,
+            modifier = modifier
+                .stylishInteractiveTarget()
+                .testTag("stylish_button")
+                .heightIn(min = minHeight),
+            shape = shape,
+            colors = resolvedColors,
+            elevation = resolvedElevation,
+            border = resolvedBorder,
+            contentPadding = contentPadding,
+            interactionSource = interactionSource,
+        ) {
+            StylishElevationLayer {
+                if (leadingContent != null) {
+                    Row(modifier = Modifier.alpha(contentAlpha), content = leadingContent)
+                }
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .alpha(contentAlpha),
+                    horizontalArrangement = contentArrangement,
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = content,
+                )
+                if (trailingContent != null) {
+                    Row(modifier = Modifier.alpha(contentAlpha), content = trailingContent)
+                }
+            }
+        }
+        if (loading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(20.dp),
                 color = resolvedColors.contentColor,
                 strokeWidth = 2.5.dp,
             )
-        } else {
-            if (leadingContent != null) {
-                Row(content = leadingContent)
-            }
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = contentArrangement,
-                verticalAlignment = Alignment.CenterVertically,
-                content = content,
-            )
-            if (trailingContent != null) {
-                Row(content = trailingContent)
-            }
         }
     }
 }

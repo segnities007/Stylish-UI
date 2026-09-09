@@ -44,6 +44,17 @@ Supporting layers (not components):
 
 Every component must satisfy the design checklist in [DESIGN.md](DESIGN.md) — **Clear, Simple, Modern**. Review it before creating or modifying any UI component.
 
+### Edge-to-edge and insets
+
+Stylish UI is edge-to-edge by default. Host Activities must enable edge-to-edge
+(for Android, call `enableEdgeToEdge()`), and page backgrounds/content should be
+allowed to render behind system bars. Do not add `statusBarsPadding()` or
+`navigationBarsPadding()` to a whole-screen root and do not blindly apply a
+Scaffold `innerPadding` to full-screen content. The page container owns the
+insets for its header and floating surfaces; a standalone component may opt into
+`WindowInsets.statusBars` explicitly when no such container exists. Avoid
+consuming the same inset in both parent and child.
+
 ## Architecture: The Three Layers (Visual Completeness)
 
 Orthogonal to Atomic Design (which measures **composition** complexity), every
@@ -144,6 +155,11 @@ Every public composable, function, and data class must have a KDoc comment descr
    squash-merged branch causes recurring merge conflicts because Git cannot
    recognise that the work is already in `main`. After a PR is merged,
    delete the branch and create a fresh one from the latest `main`.
+   Do not create additional branches per agent or per small subtask. Keep all
+   parallel work for the same repository and purpose on this one task branch,
+   separating agents by disjoint file ownership and integrating their work
+   into the same PR. Multiple checkpoint commits are fine; squash the whole
+   PR once at merge time.
 3. **Create branches ONLY from `origin/main`** — never from an existing
    branch. A branch created from a merged branch inherits commits that are
    already in `main`, which GitHub flags as conflicts even if the content

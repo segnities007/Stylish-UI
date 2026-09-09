@@ -1,0 +1,235 @@
+<div id="stylish-ui-milk-tea-chroma-options" class="mt-palette" aria-label="Stylish UI milk tea chroma options">
+  <div class="mt-heading">
+    <h2>Milk Tea · 彩度係数の比較</h2>
+    <p>明度は固定。数字が小さいほど彩度が低く、C17（0.425）が現在の設定です。</p>
+  </div>
+  <div id="mt-option-grid" class="mt-option-grid"></div>
+</div>
+
+<style>
+  #stylish-ui-milk-tea-chroma-options {
+    --mt-ink: light-dark(#2b261f, #f8efe4);
+    --mt-muted: light-dark(#756d63, #c7b9a7);
+    --mt-border: light-dark(#d8cec1, #5c5045);
+    --mt-panel: light-dark(#fffdf9, #28231e);
+    --mt-accent: light-dark(#9b7956, #d9b78f);
+    box-sizing: border-box;
+    color-scheme: light dark;
+    color: var(--mt-ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.35;
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  #stylish-ui-milk-tea-chroma-options * {
+    box-sizing: border-box;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-heading {
+    margin: 0 0 14px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options h2 {
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 0 0 5px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options p {
+    color: var(--mt-muted);
+    font-size: 13px;
+    margin: 0;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-option-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-option {
+    background: var(--mt-panel);
+    border: 1px solid var(--mt-border);
+    border-radius: 14px;
+    min-width: 0;
+    padding: 12px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-option[data-current="true"] {
+    border-color: var(--mt-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--mt-accent) 18%, transparent);
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-option-title {
+    align-items: baseline;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-id {
+    font-size: 15px;
+    font-weight: 750;
+    letter-spacing: 0.02em;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-scale {
+    color: var(--mt-muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-theme {
+    margin-top: 8px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-theme-label {
+    color: var(--mt-muted);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-swatches {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-swatch {
+    border-radius: 8px;
+    min-height: 54px;
+    padding: 8px 6px 6px;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-swatch-name {
+    display: block;
+    font-size: 10px;
+    font-weight: 750;
+    opacity: 0.75;
+  }
+
+  #stylish-ui-milk-tea-chroma-options .mt-swatch-hex {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+
+  @media (max-width: 620px) {
+    #stylish-ui-milk-tea-chroma-options .mt-option-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById("stylish-ui-milk-tea-chroma-options");
+  const grid = root.querySelector("#mt-option-grid");
+  const options = Array.from({ length: 20 }, (_, index) => ({
+    id: `MT-C${String(index + 1).padStart(2, "0")}`,
+    chromaScale: (index + 1) / 40,
+  }));
+
+  const lightBottom = [239 / 255, 228 / 255, 211 / 255];
+  const lightTop = [255 / 255, 250 / 255, 242 / 255];
+  const darkBottom = [28 / 255, 25 / 255, 21 / 255];
+  const darkTop = [75 / 255, 66 / 255, 55 / 255];
+
+  const srgbToLinear = (value) => value <= 0.04045
+    ? value / 12.92
+    : Math.pow((value + 0.055) / 1.055, 2.4);
+  const linearToSrgb = (value) => {
+    const clamped = Math.max(0, Math.min(1, value));
+    return clamped <= 0.0031308
+      ? 12.92 * clamped
+      : 1.055 * Math.pow(clamped, 1 / 2.4) - 0.055;
+  };
+
+  const toOklab = ([red, green, blue]) => {
+    const r = srgbToLinear(red);
+    const g = srgbToLinear(green);
+    const b = srgbToLinear(blue);
+    const l = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
+    const m = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
+    const s = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b;
+    const lRoot = Math.cbrt(l);
+    const mRoot = Math.cbrt(m);
+    const sRoot = Math.cbrt(s);
+    return [
+      0.2104542553 * lRoot + 0.793617785 * mRoot - 0.0040720468 * sRoot,
+      1.9779984951 * lRoot - 2.428592205 * mRoot + 0.4505937099 * sRoot,
+      0.0259040371 * lRoot + 0.7827717662 * mRoot - 0.808675766 * sRoot,
+    ];
+  };
+
+  const fromOklab = ([lightness, a, b]) => {
+    const lRoot = lightness + 0.3963377774 * a + 0.2158037573 * b;
+    const mRoot = lightness - 0.1055613458 * a - 0.0638541728 * b;
+    const sRoot = lightness - 0.0894841775 * a - 1.291485548 * b;
+    const l = lRoot * lRoot * lRoot;
+    const m = mRoot * mRoot * mRoot;
+    const s = sRoot * sRoot * sRoot;
+    return [
+      linearToSrgb(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+      linearToSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+      linearToSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+    ];
+  };
+
+  const mixOklab = (bottom, top, level) => {
+    const lower = toOklab(bottom);
+    const upper = toOklab(top);
+    return fromOklab(lower.map((value, index) => value + (upper[index] - value) * level));
+  };
+
+  const desaturate = (color, chromaScale) => {
+    const [lightness, a, b] = toOklab(color);
+    return fromOklab([lightness, a * chromaScale, b * chromaScale]);
+  };
+
+  const toHex = (color) => `#${color.map((value) => Math.round(value * 255)
+    .toString(16).padStart(2, "0")).join("").toUpperCase()}`;
+  const relativeLuminance = ([red, green, blue]) =>
+    0.2126 * srgbToLinear(red) + 0.7152 * srgbToLinear(green) + 0.0722 * srgbToLinear(blue);
+  const textColor = (color) => relativeLuminance(color) > 0.46 ? "#332D26" : "#FFF8EE";
+
+  const themeMarkup = (label, bottom, top, chromaScale) => {
+    const tonedBottom = desaturate(bottom, chromaScale);
+    const tonedTop = desaturate(top, chromaScale);
+    const layers = [
+      ["Page", tonedBottom],
+      ["Card", mixOklab(tonedBottom, tonedTop, 0.5)],
+      ["Modal", tonedTop],
+    ];
+    return `
+      <div class="mt-theme">
+        <div class="mt-theme-label">${label}</div>
+        <div class="mt-swatches">
+          ${layers.map(([name, color]) => {
+            const foreground = textColor(color);
+            return `<div class="mt-swatch" role="img" aria-label="${label} ${name} ${toHex(color)}" style="background:${toHex(color)};color:${foreground}">
+              <span class="mt-swatch-name">${name}</span>
+              <span class="mt-swatch-hex">${toHex(color)}</span>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>`;
+  };
+
+  grid.innerHTML = options.map(({ id, chromaScale }) => `
+    <section class="mt-option" data-current="${chromaScale === 0.425}" aria-label="${id}, chroma scale ${chromaScale.toFixed(3)}">
+      <div class="mt-option-title">
+        <span class="mt-id">${id}${chromaScale === 0.425 ? " · current" : ""}</span>
+        <span class="mt-scale">chroma × ${chromaScale.toFixed(3)}</span>
+      </div>
+      ${themeMarkup("LIGHT", lightBottom, lightTop, chromaScale)}
+      ${themeMarkup("DARK", darkBottom, darkTop, chromaScale)}
+    </section>`).join("");
+})();
+</script>

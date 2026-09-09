@@ -17,9 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.models.StylishNavigationItem
-import com.segnities007.stylishui.components.organisms.StylishNavigationBar
 import com.segnities007.stylishui.components.organisms.StylishNavigationRail
 import com.segnities007.stylishui.components.organisms.StylishNavigationRailItem
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBarItem
 import com.segnities007.stylishui.foundation.StylishWindowBreakpoints
 import com.segnities007.stylishui.foundation.StylishWindowWidthSizeClass
 import com.segnities007.stylishui.foundation.calculateStylishWindowSizeClass
@@ -27,8 +28,8 @@ import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
- * Responsive navigation orchestrator that chooses a bottom bar for compact
- * windows and a navigation rail for medium/expanded windows.
+ * Responsive navigation orchestrator that chooses a short bottom bar for
+ * compact windows and a navigation rail for medium/expanded windows.
  *
  * This keeps the destination model identical across phone, tablet, desktop,
  * and web layouts while allowing callers to customize breakpoints and content.
@@ -46,7 +47,17 @@ public fun StylishAdaptiveNavigation(
             StylishWindowWidthSizeClass.Compact -> {
                 Column {
                     androidx.compose.foundation.layout.Box(Modifier.weight(1f).fillMaxSize()) { content() }
-                    StylishNavigationBar(items = items)
+                    StylishShortNavigationBar {
+                        items.forEach { item ->
+                            StylishShortNavigationBarItem(
+                                selected = item.selected,
+                                onClick = item.onClick,
+                                enabled = item.enabled,
+                                icon = { item.iconContent?.invoke() ?: androidx.compose.material3.Icon(item.icon, item.label) },
+                                label = { androidx.compose.material3.Text(item.label) },
+                            )
+                        }
+                    }
                 }
             }
             StylishWindowWidthSizeClass.Medium,

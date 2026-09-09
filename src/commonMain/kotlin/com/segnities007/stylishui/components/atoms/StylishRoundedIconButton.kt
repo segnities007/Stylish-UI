@@ -14,14 +14,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -29,6 +34,48 @@ import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
 import com.segnities007.stylishui.foundation.stylishTestTag
+
+private data class StylishRoundedIconButtonSemantics(
+    val role: Role?,
+    val selected: Boolean?,
+)
+
+private val LocalStylishRoundedIconButtonSemantics =
+    staticCompositionLocalOf<StylishRoundedIconButtonSemantics?> { null }
+
+@Composable
+internal fun StylishRoundedIconButtonWithSemantics(
+    imageVector: ImageVector,
+    contentDescription: String? = null,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    active: Boolean = false,
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
+    border: BorderStroke? = null,
+    minWidth: Dp = StylishTheme.dimensions.roundedIconButtonMinWidth,
+    minHeight: Dp = 48.dp,
+    role: Role? = null,
+    selected: Boolean? = null,
+) {
+    CompositionLocalProvider(
+        LocalStylishRoundedIconButtonSemantics provides
+            StylishRoundedIconButtonSemantics(role = role, selected = selected),
+    ) {
+        StylishRoundedIconButton(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            onClick = onClick,
+            modifier = modifier,
+            enabled = enabled,
+            active = active,
+            shape = shape,
+            border = border,
+            minWidth = minWidth,
+            minHeight = minHeight,
+        )
+    }
+}
 
 /**
  * A pill-shaped icon button rendered on a wide rounded-rectangle
@@ -67,7 +114,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   `onSurfaceVariant`.
  * @param shape Shape of the surface. Defaults to
  *   `RoundedCornerShape` with
- *   [StylishTheme.dimensions.floatingCornerRadius].
+ *   [StylishTheme.shapes.floatingCornerRadius].
  * @param border Optional border stroke drawn around the surface. Defaults to
  *   `null`; pass an explicit stroke when an outlined treatment is intentional.
  * @param minWidth Minimum width of the tappable surface.
@@ -95,7 +142,7 @@ public fun StylishRoundedIconButton(
     active: Boolean = false,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
     border: BorderStroke? = null,
     minWidth: Dp = StylishTheme.dimensions.roundedIconButtonMinWidth,
     minHeight: Dp = 48.dp,
@@ -113,6 +160,17 @@ public fun StylishRoundedIconButton(
         MaterialTheme.colorScheme.onSurfaceVariant
     }
     val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val requestedSemantics = LocalStylishRoundedIconButtonSemantics.current
+    val actionSemantics = requestedSemantics?.let { semantics ->
+        if (semantics.role != null || semantics.selected != null) {
+            Modifier.semantics {
+                semantics.role?.let { this.role = it }
+                semantics.selected?.let { this.selected = it }
+            }
+        } else {
+            Modifier
+        }
+    } ?: Modifier
 
     Surface(
         modifier = modifier
@@ -144,13 +202,18 @@ public fun StylishRoundedIconButton(
         shadowElevation = if (enabled) StylishTheme.dimensions.interactiveElevation else 0.dp,
     ) {
         if (enabled) {
-            IconButton(onClick = onClick, interactionSource = resolvedInteractionSource) {
+            IconButton(
+                onClick = onClick,
+                modifier = actionSemantics,
+                interactionSource = resolvedInteractionSource,
+            ) {
                 iconContent?.invoke() ?: Icon(imageVector, contentDescription, tint = resolvedContentColor)
             }
         } else {
             Box(
                 Modifier
                     .sizeIn(minWidth = minWidth, minHeight = minHeight)
+                    .then(actionSemantics)
                     .semantics {
                         disabled()
                         if (contentDescription != null) {

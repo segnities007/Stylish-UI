@@ -52,7 +52,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param spacing The gap between adjacent chips both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param cornerRadius The radius applied to the outer corners. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param chip A composable lambda that renders a single chip. Receives the item
  *   data, a modifier (including weight and fill-max-height), the connected
  *   [Shape], the outline [ConnectedEdges], and the outline [ConnectedCorners].
@@ -67,7 +67,7 @@ public fun ConnectedChipGrid(
     columns: Int,
     modifier: Modifier = Modifier,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     chip: ConnectedChipItemContent,
 ) {
     require(columns > 0) { "columns must be greater than zero" }

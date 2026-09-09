@@ -2,14 +2,9 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -42,11 +37,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.VisibilityState
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.foundation.stylishFocusRing
 import com.segnities007.stylishui.foundation.stylishStateLayer
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
+import com.segnities007.stylishui.theme.stylishFloatingContainerColor
 
 /**
  * A pill-shaped floating action button that pairs an icon with a text label,
@@ -83,12 +81,12 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param modifier [Modifier] applied to the root surface.
  * @param enabled When `false`, the button ignores pointer input and renders
  *   with Material's disabled treatment.
- * @param containerColor Background color of the surface. Defaults to
- *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ * @param containerColor Background color of the floating surface. Defaults to
+ *   the shared floating container color.
  * @param contentColor Default tint for content inside the surface. Defaults
  *   to `MaterialTheme.colorScheme.onSurface`.
  * @param shape Shape of the surface. Defaults to a pill shape using
- *   [StylishTheme.dimensions.floatingCornerRadius].
+ *   [StylishTheme.shapes.floatingCornerRadius].
  * @param border Border stroke around the surface. Defaults to a hairline of
  *   [StylishTheme.dimensions.outlineWidth] (0.4 dp) using
  *   `MaterialTheme.colorScheme.outlineVariant`.
@@ -122,7 +120,7 @@ public fun StylishExtendedFab(
     enabled: Boolean = true,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
     border: BorderStroke? = null,
     tonalElevation: Dp = StylishTheme.dimensions.floatingElevation,
     shadowElevation: Dp = StylishTheme.dimensions.floatingElevation,
@@ -139,11 +137,10 @@ public fun StylishExtendedFab(
         animationSpec = if (reducedMotion) snap() else tween(StylishTheme.animation.durationShort),
         label = "extendedFabShadowElevation",
     )
-    AnimatedVisibility(
+    StylishFloatingVisibility(
         modifier = modifier,
         visible = visibilityState.isVisible(),
-        enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
-        exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
+        direction = StylishFloatingSlideDirection.Down,
     ) {
         Surface(
             modifier = Modifier
@@ -171,7 +168,7 @@ public fun StylishExtendedFab(
                     },
                 ),
             shape = shape,
-            color = containerColor ?: MaterialTheme.colorScheme.surfaceContainerHigh,
+            color = containerColor ?: stylishFloatingContainerColor(),
             contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
             border = border ?: BorderStroke(
                 StylishTheme.dimensions.outlineWidth,
@@ -183,24 +180,26 @@ public fun StylishExtendedFab(
             enabled = enabled,
             interactionSource = resolvedInteractionSource,
         ) {
-            Row(
-                modifier = Modifier.padding(
-                    PaddingValues(
-                        start = StylishTheme.dimensions.controlPadding,
-                        end = StylishTheme.dimensions.controlPadding,
+            StylishElevationLayer {
+                Row(
+                    modifier = Modifier.padding(
+                        PaddingValues(
+                            start = StylishTheme.dimensions.controlPadding,
+                            end = StylishTheme.dimensions.controlPadding,
+                        ),
                     ),
-                ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
-            ) {
-                iconContent?.invoke() ?: Icon(
-                    imageVector = icon,
-                    contentDescription = contentDescription,
-                )
-                Text(
-                    text = text,
-                    style = textStyle,
-                )
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(StylishTheme.dimensions.inlineSpacing),
+                ) {
+                    iconContent?.invoke() ?: Icon(
+                        imageVector = icon,
+                        contentDescription = contentDescription,
+                    )
+                    Text(
+                        text = text,
+                        style = textStyle,
+                    )
+                }
             }
         }
     }

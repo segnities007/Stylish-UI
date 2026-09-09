@@ -1,14 +1,12 @@
 package com.segnities007.stylishui.theme
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
-import com.materialkolor.dynamicColorScheme
 import com.segnities007.stylishui.tokens.DefaultStylishAnimationTokens
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 import com.segnities007.stylishui.tokens.DefaultStylishShapes
@@ -18,6 +16,7 @@ import com.segnities007.stylishui.tokens.LocalStylishShapes
 import com.segnities007.stylishui.tokens.StylishAnimationTokens
 import com.segnities007.stylishui.tokens.StylishDimensions
 import com.segnities007.stylishui.tokens.StylishShapes
+import com.segnities007.stylishui.tokens.toMaterialShapes
 
 /**
  * Accessor object for the current [StylishTheme] composition-local values.
@@ -34,6 +33,14 @@ import com.segnities007.stylishui.tokens.StylishShapes
  * @see StylishShapes
  */
 public object StylishTheme {
+    /** Resolved light/dark/dynamic colors, shared by all Stylish components. */
+    public val colorScheme: ColorScheme
+        @Composable get() = MaterialTheme.colorScheme
+
+    /** Resolved typography, including the host's font overrides. */
+    public val typography: Typography
+        @Composable get() = MaterialTheme.typography
+
     /** The dimension tokens provided by the current [StylishTheme] composition. */
     public val dimensions: StylishDimensions
         @Composable get() = LocalStylishDimensions.current
@@ -52,6 +59,77 @@ public object StylishTheme {
 }
 
 /**
+ * Applies one light/dark brand directly through [StylishTheme], without a registry or injected
+ * brand object.
+ *
+ * Material 3 remains responsible for component behavior. Its color, typography, and shape
+ * systems are applied together with Stylish UI's dimensions, shapes, motion, and component
+ * colors. Descendant components read these values from the normal Compose theme hierarchy.
+ *
+ * @param lightColorScheme Material 3 semantic colors used in light mode.
+ * @param darkColorScheme Material 3 semantic colors used in dark mode.
+ * @param darkTheme Whether to select [darkColorScheme].
+ * @param highContrast Whether to select the matching high-contrast scheme.
+ * @param highContrastLightColorScheme Optional brand-owned high-contrast light scheme.
+ * @param highContrastDarkColorScheme Optional brand-owned high-contrast dark scheme.
+ * @param typography Material 3 typography shared by Material and Stylish components.
+ * @param materialShapes Compatibility override for internal Material 3 shapes. Normally omit it
+ *   so [shapes] remains the single brand shape source.
+ * @param dimensions Stylish spacing, sizing, elevation, and geometry tokens.
+ * @param shapes Single shape scale for Stylish components and internal Material 3 primitives.
+ * @param animation Stylish motion tokens.
+ * @param lightComponentColors Optional light component colors; `null` derives them from
+ *   [lightColorScheme].
+ * @param darkComponentColors Optional dark component colors; `null` derives them from
+ *   [darkColorScheme].
+ * @param strings Localized labels supplied independently from visual branding.
+ * @param content The composable content that inherits the theme.
+ */
+@Composable
+public fun StylishTheme(
+    lightColorScheme: ColorScheme,
+    darkColorScheme: ColorScheme,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    highContrast: Boolean = false,
+    highContrastLightColorScheme: ColorScheme? = null,
+    highContrastDarkColorScheme: ColorScheme? = null,
+    typography: Typography = StylishTypography,
+    dimensions: StylishDimensions = DefaultStylishDimensions,
+    shapes: StylishShapes = DefaultStylishShapes,
+    materialShapes: Shapes = shapes.toMaterialShapes(),
+    animation: StylishAnimationTokens = DefaultStylishAnimationTokens,
+    lightComponentColors: StylishComponentColors? = null,
+    darkComponentColors: StylishComponentColors? = null,
+    strings: StylishStrings = StylishStrings(),
+    content: @Composable () -> Unit,
+) {
+    StylishTheme(
+        darkTheme = darkTheme,
+        colorScheme = if (darkTheme) darkColorScheme else lightColorScheme,
+        highContrast = highContrast,
+        highContrastColorScheme = when {
+            !highContrast -> null
+            darkTheme -> highContrastDarkColorScheme
+            else -> highContrastLightColorScheme
+        },
+        typography = typography,
+        materialShapes = materialShapes,
+        dimensions = dimensions,
+        shapes = shapes,
+        animation = animation,
+        componentColors = if (highContrast) {
+            null
+        } else if (darkTheme) {
+            darkComponentColors
+        } else {
+            lightComponentColors
+        },
+        strings = strings,
+        content = content,
+    )
+}
+
+/**
  * Root theme composable that applies the Stylish UI design language to all descendant content.
  *
  * Wraps [MaterialTheme] with a [CompositionLocalProvider] for [StylishDimensions],
@@ -63,28 +141,20 @@ public object StylishTheme {
  *
  * @param darkTheme Whether to use the dark color scheme. Typically derived from
  *   `isSystemInDarkTheme()`.
- * @param dynamicColor When `true` and the platform supports it (Android 12+), the wallpaper
- *   derived Material You scheme overrides [colorScheme]. On other platforms this parameter
- *   has no effect. Ignored while [seedColor] resolves a scheme.
- * @param seedColor When non-null, a seed color used to generate a Material You style
- *   [ColorScheme] on **every** platform via MaterialKolor, overriding both [dynamicColor]
- *   and [colorScheme]. Use this for brand-colored themes that still follow the tonal
- *   Material 3 color system.
  * @param colorScheme The Material 3 [ColorScheme] to apply. Defaults to [StylishDarkColorScheme]
- *   when [darkTheme] is `true`, otherwise [StylishLightColorScheme]. Ignored when [seedColor]
- *   or [dynamicColor] resolves a dynamic scheme.
+ *   when [darkTheme] is `true`, otherwise [StylishLightColorScheme]. Only fixed brand schemes
+ *   are supported; device wallpaper colors are never applied.
  * @param highContrast When `true`, use an explicit high-contrast semantic role set. Pass
  *   [highContrastColorScheme] to preserve product branding while retaining this mode contract.
  * @param highContrastColorScheme Optional application-owned high-contrast scheme. When `null`,
  *   Stylish's deterministic light or dark high-contrast scheme is selected.
  * @param typography The Material 3 [Typography] scale. Defaults to [StylishTypography].
- * @param materialShapes The Material 3 [Shapes] scale applied to M3 primitives that do not use
- *   an explicit shape parameter. Defaults to the Material 3 defaults. Use [shapes] to style
- *   Stylish-specific shape tokens.
+ * @param materialShapes Compatibility override for the internal Material 3 [Shapes] scale. Leave
+ *   `null` so [shapes] remains the single brand shape source.
  * @param dimensions The [StylishDimensions] spatial tokens. Defaults to [DefaultStylishDimensions].
  *   Override globally here, or per-component via individual parameters.
- * @param shapes The [StylishShapes] corner-radius tokens. Defaults to [DefaultStylishShapes].
- *   Override globally here, or per-component via individual parameters.
+ * @param shapes The single brand shape scale for both Stylish components and internal Material 3
+ *   primitives. Defaults to [DefaultStylishShapes].
  * @param animation The [StylishAnimationTokens] motion tokens. Defaults to
  *   [DefaultStylishAnimationTokens]. Override globally here, or per-component via individual
  *   parameters where available.
@@ -102,14 +172,12 @@ public object StylishTheme {
  */
 @Composable
 public fun StylishTheme(
-    darkTheme: Boolean,
-    dynamicColor: Boolean = false,
-    seedColor: Color? = null,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     colorScheme: ColorScheme = if (darkTheme) StylishDarkColorScheme else StylishLightColorScheme,
     highContrast: Boolean = false,
     highContrastColorScheme: ColorScheme? = null,
     typography: Typography = StylishTypography,
-    materialShapes: Shapes = Shapes(),
+    materialShapes: Shapes? = null,
     dimensions: StylishDimensions = DefaultStylishDimensions,
     shapes: StylishShapes = DefaultStylishShapes,
     animation: StylishAnimationTokens = DefaultStylishAnimationTokens,
@@ -118,12 +186,6 @@ public fun StylishTheme(
     content: @Composable () -> Unit,
 ) {
     val resolvedColorScheme = when {
-        seedColor != null -> remember(seedColor, darkTheme) {
-            dynamicColorScheme(seedColor = seedColor, isDark = darkTheme)
-        }
-        dynamicColor -> {
-            rememberDynamicColorSchemes()?.let { if (darkTheme) it.second else it.first } ?: colorScheme
-        }
         highContrast -> highContrastColorScheme
             ?: if (darkTheme) StylishHighContrastDarkColorScheme else StylishHighContrastLightColorScheme
         else -> colorScheme
@@ -136,11 +198,13 @@ public fun StylishTheme(
         LocalStylishComponentColors provides resolvedComponentColors,
         LocalStylishStrings provides strings,
     ) {
-        MaterialTheme(
-            colorScheme = resolvedColorScheme,
-            typography = typography,
-            shapes = materialShapes,
-            content = content,
-        )
+        StylishLayerRoot {
+            MaterialTheme(
+                colorScheme = resolvedColorScheme,
+                typography = typography,
+                shapes = materialShapes ?: shapes.toMaterialShapes(),
+                content = content,
+            )
+        }
     }
 }

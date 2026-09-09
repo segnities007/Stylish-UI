@@ -47,7 +47,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   greater than zero.
  * @param cornerRadius The radius applied to the outer corners of the grid.
  *   Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param spacing The gap between adjacent buttons both horizontally and
  *   vertically. Defaults to [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding The inner padding of each button. Defaults to
@@ -71,7 +71,7 @@ public fun StylishConnectedButtonGrid(
     items: List<StylishConnectedButtonItem>,
     columns: Int,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
     defaultColors: ButtonColors = ButtonDefaults.buttonColors(

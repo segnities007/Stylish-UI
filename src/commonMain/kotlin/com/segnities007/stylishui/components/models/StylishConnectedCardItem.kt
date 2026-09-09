@@ -43,6 +43,8 @@ import androidx.compose.runtime.Immutable
  * @property content When non-null, replaces the entire structured row with
  *   caller-supplied content, enabling fully custom card layouts. When `null`
  *   (default), the structured three-slot row is rendered.
+ * @property stableKey Optional stable key used by lazy connected-card layouts
+ *   when item titles are not unique. It is not rendered.
  * @see com.segnities007.stylishui.foundation.isActionable
  * @see com.segnities007.stylishui.foundation.ConnectedCorners
  */
@@ -56,4 +58,5 @@ public data class StylishConnectedCardItem(
     val leadingContent: (@Composable () -> Unit)? = null,
     val trailingContent: (@Composable () -> Unit)? = null,
     val content: (@Composable () -> Unit)? = null,
+    val stableKey: String? = null,
 )

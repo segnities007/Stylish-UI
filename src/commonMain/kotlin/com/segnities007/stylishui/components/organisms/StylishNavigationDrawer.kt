@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
  * @param gesturesEnabled When `false`, swipe gestures do not open or
  *   close the drawer. Defaults to `true`.
  * @param shape Corner shape of the drawer sheet. Defaults to
- *   [DrawerDefaults.shape] (the Material 3 drawer shape).
+ *   [StylishTheme.shapes.large] (the Material 3 drawer shape).
  * @param containerColor Background color of the drawer sheet.
  *   Defaults to [DrawerDefaults.modalContainerColor]
  *   (surfaceContainerLow), the Material 3 modal drawer spec value.
@@ -75,7 +75,7 @@ public fun StylishModalNavigationDrawer(
     modifier: Modifier = Modifier,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     gesturesEnabled: Boolean = true,
-    shape: Shape = DrawerDefaults.shape,
+    shape: Shape = StylishTheme.shapes.large,
     containerColor: Color = DrawerDefaults.modalContainerColor,
     contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = DrawerDefaults.ModalDrawerElevation,
@@ -123,7 +123,7 @@ public fun StylishModalNavigationDrawer(
  * @param gesturesEnabled When `false`, swipe gestures do not open or
  *   close the drawer. Defaults to `true`.
  * @param shape Corner shape of the drawer sheet. Defaults to
- *   [DrawerDefaults.shape] (the Material 3 drawer shape).
+ *   [StylishTheme.shapes.large] (the Material 3 drawer shape).
  * @param containerColor Background color of the drawer sheet.
  *   Defaults to [DrawerDefaults.standardContainerColor] (surface),
  *   the Material 3 standard drawer spec value.
@@ -145,7 +145,7 @@ public fun StylishDismissibleNavigationDrawer(
     modifier: Modifier = Modifier,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     gesturesEnabled: Boolean = true,
-    shape: Shape = DrawerDefaults.shape,
+    shape: Shape = StylishTheme.shapes.large,
     containerColor: Color = DrawerDefaults.standardContainerColor,
     contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = DrawerDefaults.DismissibleDrawerElevation,
@@ -185,7 +185,7 @@ public fun StylishDismissibleNavigationDrawer(
  * @param modifier Modifier applied to the
  *   [PermanentNavigationDrawer] root.
  * @param shape Corner shape of the drawer sheet. Defaults to
- *   [DrawerDefaults.shape] (the Material 3 drawer shape).
+ *   [StylishTheme.shapes.large] (the Material 3 drawer shape).
  * @param containerColor Background color of the drawer sheet.
  *   Defaults to [DrawerDefaults.standardContainerColor] (surface),
  *   the Material 3 standard drawer spec value.
@@ -205,7 +205,7 @@ public fun StylishDismissibleNavigationDrawer(
 public fun StylishPermanentNavigationDrawer(
     drawerContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
-    shape: Shape = DrawerDefaults.shape,
+    shape: Shape = StylishTheme.shapes.large,
     containerColor: Color = DrawerDefaults.standardContainerColor,
     contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = DrawerDefaults.PermanentDrawerElevation,

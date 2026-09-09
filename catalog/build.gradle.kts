@@ -19,5 +19,12 @@ kotlin {
             implementation(libs.compose.multiplatform.ui.tooling.preview)
             implementation(libs.kotlinx.datetime)
         }
+        commonTest.dependencies {
+            implementation(libs.compose.ui.test)
+            implementation(kotlin("test"))
+        }
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
     }
 }

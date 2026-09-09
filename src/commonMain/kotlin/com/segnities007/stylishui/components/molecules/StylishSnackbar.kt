@@ -34,7 +34,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A snackbar styled with the Stylish design language — rounded corners
- * from [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
+ * from [StylishTheme.shapes.connectedCornerRadius] and theme-aware
  * container/content colors.
  *
  * Use together with [StylishSnackbarHost] to display transient
@@ -44,7 +44,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   action label, and duration.
  * @param modifier Modifier applied to the [Snackbar] root.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background color.
  * @param contentColor Text color for the message.
  * @param actionColor Text color for the action button.
@@ -55,7 +55,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
 public fun StylishSnackbar(
     snackbarData: SnackbarData,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
     actionColor: Color = MaterialTheme.colorScheme.inversePrimary,
@@ -75,7 +75,7 @@ public fun StylishSnackbar(
  * composing the message and action content directly instead of driving the
  * snackbar from a [SnackbarData]. Carries the same styling as the
  * [SnackbarData] overload: rounded corners from
- * [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
+ * [StylishTheme.shapes.connectedCornerRadius] and theme-aware
  * container/content colors.
  *
  * @param modifier Modifier applied to the [Snackbar] root.
@@ -87,7 +87,7 @@ public fun StylishSnackbar(
  * @param actionOnNewLine When `true`, [action] is placed on a separate line
  *   below the message. Defaults to `false`.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background color.
  * @param contentColor Text color for the message.
  * @param actionColor Text color applied to [action].
@@ -101,7 +101,7 @@ public fun StylishSnackbar(
     action: (@Composable () -> Unit)? = null,
     dismissAction: (@Composable () -> Unit)? = null,
     actionOnNewLine: Boolean = false,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
     actionColor: Color = MaterialTheme.colorScheme.inversePrimary,
@@ -140,7 +140,7 @@ public fun StylishSnackbar(
 public fun StylishSnackbarHost(
     hostState: SnackbarHostState,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
     contentColor: Color = MaterialTheme.colorScheme.inverseOnSurface,
     actionColor: Color = MaterialTheme.colorScheme.inversePrimary,

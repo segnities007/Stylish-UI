@@ -2,7 +2,6 @@ package com.segnities007.stylishui.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import com.materialkolor.ktx.harmonize
 
 /**
  * Lightens this color by interpolating it toward [Color.White].
@@ -27,17 +26,3 @@ public fun Color.stylishLighten(factor: Float): Color = lerp(this, Color.White, 
  * @see stylishLighten
  */
 public fun Color.stylishDarken(factor: Float): Color = lerp(this, Color.Black, factor)
-
-/**
- * Harmonizes this color with a [primary] color so that both share a compatible hue while
- * remaining distinguishable.
- *
- * Delegates to MaterialKolor's HCT-based harmonization ([com.materialkolor.ktx.harmonize]),
- * which shifts this color's hue toward the primary color's hue in a way that leaves the
- * original color recognizable. Use it to tint accent colors toward a brand primary without
- * losing their identity.
- *
- * @param primary The color to harmonize toward, typically `ColorScheme.primary`.
- * @return The harmonized color.
- */
-public fun Color.stylishHarmonizeWith(primary: Color): Color = harmonize(primary)

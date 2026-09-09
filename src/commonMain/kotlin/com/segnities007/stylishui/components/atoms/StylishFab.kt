@@ -2,14 +2,9 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -34,11 +29,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.foundation.VisibilityState
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
 import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.foundation.rememberStylishInteractionSource
 import com.segnities007.stylishui.foundation.stylishInteractiveSurface
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
+import com.segnities007.stylishui.theme.stylishFloatingContainerColor
 import com.segnities007.stylishui.tokens.DefaultStylishDimensions
 
 /**
@@ -105,8 +103,8 @@ public enum class StylishFabSize {
  * @param onClick Called when the button is tapped.
  * @param enabled When `false`, the button ignores pointer input and
  *   renders with Material's disabled treatment.
- * @param containerColor Background color of the surface. Defaults to
- *   `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ * @param containerColor Background color of the floating surface. Defaults
+ *   to the shared floating container color.
  * @param contentColor Default tint for content inside the surface.
  *   Defaults to `MaterialTheme.colorScheme.onSurface`.
  * @param shape Shape of the surface. Defaults to [CircleShape].
@@ -167,11 +165,10 @@ public fun StylishFab(
         animationSpec = if (reducedMotion) snap() else tween(StylishTheme.animation.durationShort),
         label = "fabShadowElevation",
     )
-    AnimatedVisibility(
+    StylishFloatingVisibility(
         modifier = modifier,
         visible = visibilityState.isVisible(),
-        enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { it },
-        exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { it },
+        direction = StylishFloatingSlideDirection.Down,
     ) {
         Surface(
             modifier = Modifier
@@ -180,7 +177,7 @@ public fun StylishFab(
                 .then(if (enabled) Modifier.stylishInteractiveSurface(resolvedInteractionSource, resolvedShape) else Modifier),
         shape = resolvedShape,
         // TopBarと同じsurfaceContainerHigh・透過率のフローティング要素
-        color = containerColor ?: MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+        color = containerColor ?: stylishFloatingContainerColor(),
         contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
         border = border ?: BorderStroke(
             StylishTheme.dimensions.outlineWidth,
@@ -189,12 +186,14 @@ public fun StylishFab(
         tonalElevation = tonalElevation,
         shadowElevation = resolvedShadowElevation,
     ) {
-        IconButton(
-            onClick = onClick,
-            enabled = enabled,
-            interactionSource = resolvedInteractionSource,
-        ) {
-            iconContent?.invoke() ?: Icon(imageVector, contentDescription)
+        StylishElevationLayer {
+            IconButton(
+                onClick = onClick,
+                enabled = enabled,
+                interactionSource = resolvedInteractionSource,
+            ) {
+                iconContent?.invoke() ?: Icon(imageVector, contentDescription)
+            }
         }
     }
     }

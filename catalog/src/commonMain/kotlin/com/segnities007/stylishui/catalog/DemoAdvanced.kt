@@ -1,7 +1,8 @@
 package com.segnities007.stylishui.catalog
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,14 +24,8 @@ import com.segnities007.stylishui.components.organisms.StylishDataTableSortState
 import com.segnities007.stylishui.components.organisms.StylishMenu
 import com.segnities007.stylishui.components.organisms.StylishMenuItem
 import com.segnities007.stylishui.components.organisms.StylishMenubar
-import com.segnities007.stylishui.components.organisms.StylishQrCode
-import com.segnities007.stylishui.components.organisms.StylishScrollArea
-import com.segnities007.stylishui.components.organisms.StylishTransfer
-import com.segnities007.stylishui.components.organisms.StylishTransferItem
 import com.segnities007.stylishui.components.organisms.StylishTree
 import com.segnities007.stylishui.components.organisms.StylishTreeNode
-import com.segnities007.stylishui.components.organisms.StylishUpload
-import com.segnities007.stylishui.components.organisms.StylishUploadFile
 
 /**
  * Advanced, data-rich and platform-adapter demos.
@@ -79,36 +74,12 @@ internal fun getAdvancedDemos(): List<DemoComponent> = listOf(
             }
             var expandedIds by remember { mutableStateOf<Set<Any>>(setOf("src")) }
             var selectedId by remember { mutableStateOf<Any?>(null) }
-            StylishTree(nodes, expandedIds = expandedIds, onExpandedIdsChange = { expandedIds = it }, selectedId = selectedId, onSelectedIdChange = { selectedId = it })
+            Box(Modifier.fillMaxWidth().height(240.dp)) {
+                StylishTree(nodes, expandedIds = expandedIds, onExpandedIdsChange = { expandedIds = it }, selectedId = selectedId, onSelectedIdChange = { selectedId = it })
+            }
         },
     ),
-    DemoComponent(
-        name = "Transfer list",
-        category = DemoCategory.Advanced,
-        code = """StylishTransfer(
-    available = items,
-    selectedKeys = selectedKeys,
-    onSelectedKeysChange = { selectedKeys = it },
-)""",
-        preview = {
-            val items = remember { listOf("design", "tokens", "a11y", "charts").map { StylishTransferItem(it, it, it) } }
-            var selectedKeys by remember { mutableStateOf<Set<Any>>(setOf("tokens")) }
-            StylishTransfer(items, selectedKeys, onSelectedKeysChange = { selectedKeys = it }, modifier = Modifier.fillMaxWidth())
-        },
-    ),
-    DemoComponent(
-        name = "Upload adapter",
-        category = DemoCategory.Advanced,
-        code = """StylishUpload(
-    files = files,
-    onFilesChange = { files = it },
-    onRequestFiles = { platformFilePicker.launch() },
-)""",
-        preview = {
-            var files by remember { mutableStateOf(listOf(StylishUploadFile("tokens.json", 3_024, "application/json"))) }
-            StylishUpload(files, onFilesChange = { files = it }, onRequestFiles = { files = files + StylishUploadFile("new-file.txt", 512, "text/plain") })
-        },
-    ),
+
     DemoComponent(
         name = "Color picker",
         category = DemoCategory.Advanced,
@@ -119,28 +90,7 @@ StylishColorPicker(color = color, onColorChange = { color = it })""",
             StylishColorPicker(color = color, onColorChange = { color = it })
         },
     ),
-    DemoComponent(
-        name = "QR code matrix",
-        category = DemoCategory.Advanced,
-        code = """StylishQrCode(
-    matrix = matrixFromEncoder,
-    contentDescription = \"招待コード\",
-)""",
-        preview = {
-            val matrix = remember {
-                listOf(
-                    listOf(true, true, true, false, true, true, true),
-                    listOf(true, false, true, false, true, false, true),
-                    listOf(true, true, true, false, true, true, true),
-                    listOf(false, false, false, true, false, false, false),
-                    listOf(true, true, true, false, true, false, true),
-                    listOf(true, false, true, false, false, true, true),
-                    listOf(true, true, true, false, true, true, true),
-                )
-            }
-            StylishQrCode(matrix, modifier = Modifier.size(56.dp), contentDescription = "招待コード")
-        },
-    ),
+
     DemoComponent(
         name = "Context menu",
         category = DemoCategory.Advanced,
@@ -223,6 +173,7 @@ private fun dataTablePreview() {
     var selectedKeys by remember { mutableStateOf<Set<Any>>(emptySet()) }
     var sortState by remember { mutableStateOf<StylishDataTableSortState?>(null) }
     var widths by remember { mutableStateOf(mapOf("name" to 148.dp, "status" to 96.dp)) }
+    Box(Modifier.fillMaxWidth().height(280.dp)) {
     StylishDataTable(
         rows = rows,
         columns = listOf(
@@ -238,4 +189,5 @@ private fun dataTablePreview() {
         onColumnWidthsChange = { widths = it },
         modifier = Modifier.fillMaxWidth(),
     )
+    }
 }

@@ -107,7 +107,7 @@ public fun StylishPinInput(
     val focusRequester = remember { FocusRequester() }
     val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isFocused by resolvedInteractionSource.collectIsFocusedAsState()
-    val boxShape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius)
+    val boxShape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius)
     Box(
         modifier = modifier
             .testTag("stylish_pininput")

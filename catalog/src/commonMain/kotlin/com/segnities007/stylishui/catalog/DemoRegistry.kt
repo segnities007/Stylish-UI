@@ -7,22 +7,45 @@ package com.segnities007.stylishui.catalog
  * enabling filtering, searching, and grid-based display.
  */
 internal object DemoRegistry {
+    private val demosRepresentedByAnotherCatalogEntry = setOf(
+        "Divider",
+        "Dot indicator",
+        "Tab bar",
+        "Form field",
+        "Large top app bar",
+        "Gradient footer",
+        "Gradient navigation rail",
+        "Snackbar",
+        "Popconfirm",
+        "Delete confirm dialog",
+        "Empty state",
+        "Connected card row",
+        "Connected card grid",
+        "Header",
+        "Footer",
+        "Page content",
+        "Elevation levels",
+    )
+
     /**
      * Returns all available demo components across all categories.
      */
     val allDemos: List<DemoComponent> by lazy {
-        getButtonDemos() +
-            getSelectionDemos() +
-            getInputDemos() +
-            getNavigationDemos() +
-            getFeedbackDemos() +
-            getConnectedDemos() +
-            getChartDemos() +
-            getAdvancedDemos() +
-            getWebParityDemos() +
-            getPatternDemos() +
-            getCoverageDemos() +
-            getExtendedCoverageDemos()
+        (
+            getButtonDemos() +
+                getSelectionDemos() +
+                getInputDemos() +
+                getNavigationDemos() +
+                getFeedbackDemos() +
+                getConnectedDemos() +
+                getChartDemos() +
+                getAdvancedDemos() +
+                getWebParityDemos() +
+                getPatternDemos() +
+                getCoverageDemos() +
+                getExtendedCoverageDemos() +
+                getDesignHarnessDemos()
+        ).filterNot { it.name in demosRepresentedByAnotherCatalogEntry }
     }
 
     /**

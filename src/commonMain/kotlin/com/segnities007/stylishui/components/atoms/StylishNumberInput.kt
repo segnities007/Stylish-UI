@@ -80,7 +80,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   `MaterialTheme.typography.bodyLarge`.
  * @param shape Shape of the field's outlined border. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param colors Color scheme for the field. Defaults to
  *   `OutlinedTextFieldDefaults.colors()`.
  * @param interactionSource The [MutableInteractionSource] for the field,
@@ -103,7 +103,7 @@ public fun StylishNumberInput(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     colors: TextFieldColors? = null,
     interactionSource: MutableInteractionSource? = null,
     decrementContentDescription: String? = null,

@@ -2,17 +2,11 @@ package com.segnities007.stylishui.components.patterns
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.draw.clip
@@ -42,11 +36,14 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.components.atoms.StylishFloatingVisibility
 import com.segnities007.stylishui.components.atoms.StylishIconButton
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
 import com.segnities007.stylishui.foundation.VisibilityState
-import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
 import com.segnities007.stylishui.foundation.isVisible
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
+import com.segnities007.stylishui.theme.stylishFloatingContainerColor
 
 /**
  * A floating page header that hosts navigation, title, and action slots.
@@ -69,10 +66,10 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   When null, no trailing content is shown.
  * @param modifier Modifier applied to the outer [Column].
  * @param shape Corner shape of the header surface. Defaults to
- *   [RoundedCornerShape] with [StylishTheme.dimensions.floatingCornerRadius]
+ *   [RoundedCornerShape] with [StylishTheme.shapes.floatingCornerRadius]
  *   radius, matching the floating aesthetic.
- * @param containerColor Background color of the header surface. Defaults
- *   to [MaterialTheme.colorScheme.surfaceContainerHigh].
+ * @param containerColor Background color of the floating header surface.
+ *   Defaults to the shared floating container color.
  * @param contentColor Default content color propagated to child
  *   composables. Defaults to [MaterialTheme.colorScheme.onSurface].
  * @param border Optional [BorderStroke] drawn around the surface.
@@ -106,9 +103,9 @@ public fun StylishHeader(
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
     // フローティング要素共通の透過率 + primaryContainer のアクセント色
-    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    containerColor: Color = stylishFloatingContainerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
@@ -126,12 +123,10 @@ public fun StylishHeader(
     windowInsets: WindowInsets = WindowInsets(0.dp),
     visibilityState: VisibilityState = VisibilityState.AlwaysVisible,
 ) {
-    val reducedMotion = isStylishReducedMotionEnabled()
-    AnimatedVisibility(
+    StylishFloatingVisibility(
         modifier = modifier,
         visible = visibilityState.isVisible(),
-        enter = if (reducedMotion) fadeIn(snap()) else fadeIn(tween(StylishTheme.animation.durationShort)) + slideInVertically(tween(StylishTheme.animation.durationShort)) { -it },
-        exit = if (reducedMotion) fadeOut(snap()) else fadeOut(tween(StylishTheme.animation.durationShort)) + slideOutVertically(tween(StylishTheme.animation.durationShort)) { -it },
+        direction = StylishFloatingSlideDirection.Up,
     ) {
         Column(
             modifier = Modifier
@@ -185,8 +180,10 @@ private fun PlainHeaderSurface(
         tonalElevation = tonalElevation,
         shadowElevation = shadowElevation,
     ) {
-        Box(Modifier.fillMaxWidth().height(height)) {
-            content()
+        StylishElevationLayer {
+            Box(Modifier.fillMaxWidth().height(height)) {
+                content()
+            }
         }
     }
 }
@@ -202,11 +199,18 @@ private fun HeaderRow(
     // タイトルはバー全体の真ん中に配置する。navigation/actions は左右に重ね、
     // 長いタイトルは内側パディング(64dp = 標準アイコンボタン2個分)で保護する。
     // MemoEditor のインライン タイトル編集と同じ方式。
-    Box(Modifier.fillMaxSize()) {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        // Keep the title centered on normal app bars, but leave a measurable
+        // title slot when a header is placed in a narrow parent (for example
+        // an adaptive rail or a component preview).
+        val titleHorizontalPadding = minOf(
+            HeaderTitleHorizontalPadding,
+            maxWidth / 4,
+        )
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(horizontal = HeaderTitleHorizontalPadding)
+                .padding(horizontal = titleHorizontalPadding)
                 .semantics { heading() },
             contentAlignment = Alignment.Center,
         ) { title() }

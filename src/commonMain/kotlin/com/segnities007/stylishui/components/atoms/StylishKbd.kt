@@ -65,7 +65,7 @@ public fun StylishKbd(
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
-    shape: Shape = RoundedCornerShape(6.dp),
+    shape: Shape = StylishTheme.shapes.small,
     contentPadding: PaddingValues = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
 ) {
     Box(

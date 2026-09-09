@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -90,6 +91,7 @@ private fun ConnectedAvatarRowPreview() {
                     Surface(
                         modifier = itemModifier.size(32.dp),
                         shape = CircleShape,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(item)
@@ -100,6 +102,7 @@ private fun ConnectedAvatarRowPreview() {
                     Surface(
                         modifier = itemModifier.size(32.dp),
                         shape = CircleShape,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text("+$hiddenCount")

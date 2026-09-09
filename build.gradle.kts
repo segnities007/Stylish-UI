@@ -65,6 +65,28 @@ tasks.register<Exec>("checkArchitecture") {
     commandLine("bash", layout.projectDirectory.file("scripts/verify-architecture.sh").asFile.absolutePath)
 }
 
+tasks.register<Exec>("checkDesignHarness") {
+    group = "verification"
+    description = "Checks the constrained consumer's allowed imports and screen entry point."
+    commandLine("python3", layout.projectDirectory.file("scripts/verify-design-harness.py").asFile.absolutePath)
+}
+
+tasks.register<Exec>("testDesignHarnessChecker") {
+    group = "verification"
+    description = "Checks positive and negative design-harness source fixtures."
+    commandLine("python3", layout.projectDirectory.file("scripts/test_design_harness.py").asFile.absolutePath)
+}
+
+tasks.register<Exec>("checkMaterialFreeConsumer") {
+    group = "verification"
+    description = "Checks that the flexible consumer needs no direct Material UI imports."
+    commandLine(
+        "python3", layout.projectDirectory.file("scripts/verify-design-harness.py").asFile.absolutePath,
+        "--profile", "material-free",
+        "catalog/src/commonMain/kotlin/com/segnities007/stylishui/catalog/materialfree",
+    )
+}
+
 tasks.register<Exec>("checkModuleBoundaries") {
     group = "verification"
     description = "Checks the Gradle module graph and source package boundaries."
@@ -298,6 +320,7 @@ tasks.register("generateSbom") {
 }
 
 tasks.named("check") {
+    dependsOn("checkDesignHarness", "testDesignHarnessChecker", "checkMaterialFreeConsumer")
     dependsOn("checkComposableSize")
     dependsOn("checkComponentInventory")
     dependsOn("checkArchitecture")
@@ -338,6 +361,13 @@ kotlin {
 
     jvm()
 
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        // Compose UI test bundles require the Skiko executable runtime.
+        binaries.executable()
+        browser()
+    }
+
     iosArm64()
     iosSimulatorArm64()
 
@@ -357,10 +387,13 @@ kotlin {
             implementation(libs.compose.ui.util)
             implementation(libs.compose.multiplatform.ui.tooling.preview)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.material.kolor)
         }
 
         commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
+
+        wasmJsTest.dependencies {
             implementation(kotlin("test"))
         }
 

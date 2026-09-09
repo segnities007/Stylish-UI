@@ -115,14 +115,16 @@ public fun StylishDeleteConfirmDialog(
                 maxLines = titleMaxLines,
                 overflow = titleOverflow,
             )
-            Spacer(Modifier.height(StylishTheme.dimensions.itemSpacing + StylishTheme.dimensions.inlineSpacing))
-            Text(
-                message,
-                style = messageStyle,
-                color = messageColor,
-                maxLines = messageMaxLines,
-                overflow = messageOverflow,
-            )
+            if (message.isNotBlank()) {
+                Spacer(Modifier.height(StylishTheme.dimensions.itemSpacing + StylishTheme.dimensions.inlineSpacing))
+                Text(
+                    message,
+                    style = messageStyle,
+                    color = messageColor,
+                    maxLines = messageMaxLines,
+                    overflow = messageOverflow,
+                )
+            }
             Spacer(Modifier.height(StylishTheme.dimensions.contentSpacing + StylishTheme.dimensions.itemSpacing))
             StylishDialogActions(
                 confirmLabel = confirmLabel,
@@ -145,7 +147,7 @@ private fun StylishDeleteConfirmDialogPreview() {
     StylishTheme(darkTheme = false) {
         StylishDeleteConfirmDialog(
             title = "給油記録を削除",
-            message = "この給油記録を削除しますか？この操作は取り消せません。",
+            message = "",
             confirmLabel = "削除",
             cancelLabel = "キャンセル",
             onConfirm = {},

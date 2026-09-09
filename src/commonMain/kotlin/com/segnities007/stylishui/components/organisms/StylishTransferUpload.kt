@@ -265,8 +265,8 @@ private fun TransferPane(
                         if (focusedKey == item.key) requester.requestFocus()
                     }
                     Text(
-                        item.label,
-                        Modifier
+                        text = item.label,
+                        modifier = Modifier
                             .fillMaxWidth()
                             .testTag("stylish_transfer_item_${item.key}")
                             .stylishRovingFocus(
@@ -304,6 +304,11 @@ private fun TransferPane(
                                     columnSpan = 1,
                                 )
                             },
+                        color = if (item.key in highlighted) {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
                     )
                 }
             }
@@ -343,7 +348,7 @@ public fun StylishUpload(
                 },
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(file.name)
+                Text(file.name, color = MaterialTheme.colorScheme.onSurface)
                 IconButton(
                     onClick = { onFilesChange(files - file) },
                     enabled = enabled,

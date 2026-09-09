@@ -53,7 +53,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param errorMessage Optional supporting error text.
  * @param shape Corner shape of the field and popover. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param width Width of the suggestion popover. Defaults to 320 dp.
  */
 @Composable
@@ -72,7 +72,7 @@ public fun StylishAutocomplete(
     enabled: Boolean = true,
     isError: Boolean = false,
     errorMessage: String? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     width: Dp = 320.dp,
 ) {
     val suggestions = remember(value, options) {
@@ -118,7 +118,7 @@ public fun StylishAutocomplete(
                             onOptionSelect?.invoke(suggestion)
                             expanded = false
                         },
-                        shape = RoundedCornerShape(6.dp),
+                        shape = StylishTheme.shapes.small,
                         color = Color.Transparent,
                         modifier = Modifier.fillMaxWidth(),
                     ) {

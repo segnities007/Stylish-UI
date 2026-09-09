@@ -43,7 +43,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
  *   describe each button's content, click action, colors, and enabled state.
  * @param cornerRadius The radius applied to the outer corners of the first and
  *   last buttons. Defaults to
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param spacing The vertical gap between adjacent buttons. Defaults to
  *   [StylishTheme.dimensions.connectedSpacing] (3 dp).
  * @param contentPadding The inner padding of each button. Defaults to
@@ -66,7 +66,7 @@ import com.segnities007.stylishui.theme.stylishComponentColors
 public fun StylishConnectedButtonColumn(
     items: List<StylishConnectedButtonItem>,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = StylishTheme.dimensions.connectedCornerRadius,
+    cornerRadius: Dp = StylishTheme.shapes.connectedCornerRadius,
     spacing: Dp = StylishTheme.dimensions.connectedSpacing,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     defaultColors: ButtonColors = ButtonDefaults.buttonColors(

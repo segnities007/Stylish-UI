@@ -28,7 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.segnities007.stylishui.theme.StylishElevationLevel
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.containerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
@@ -57,10 +59,10 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   field, e.g. a clear button.
  * @param shape Corner shape of the collapsed search bar. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param colors [SearchBarColors] for the bar. Defaults to
- *   [SearchBarDefaults.colors] with a
- *   [MaterialTheme.colorScheme.surfaceContainerHigh] container.
+ *   [SearchBarDefaults.colors] with the
+ *   [StylishElevationLevel.Raised] container color.
  * @param content Content shown below the input field while [active],
  *   typically a column of suggestion [Text]s or rows.
  */
@@ -76,9 +78,9 @@ public fun StylishSearchBar(
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     colors: SearchBarColors = SearchBarDefaults.colors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        containerColor = StylishElevationLevel.Raised.containerColor(),
     ),
     content: @Composable ColumnScope.() -> Unit = {},
 ) {

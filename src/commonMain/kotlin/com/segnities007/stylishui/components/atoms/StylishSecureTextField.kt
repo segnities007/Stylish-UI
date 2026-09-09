@@ -86,7 +86,7 @@ private const val StylishObfuscationCharacter: Char = '\u2022'
  *   queryable, receiving a function that returns the
  *   [TextLayoutResult] (or `null` when not yet laid out).
  * @param shape Shape of the field's container. Defaults to
- *   [TextFieldDefaults.shape].
+ *   [StylishTheme.shapes.medium].
  * @param colors Color scheme for the field. Defaults to
  *   [TextFieldDefaults.colors].
  * @param contentPadding Padding separating the input text from the
@@ -122,7 +122,7 @@ public fun StylishSecureTextField(
     ),
     onKeyboardAction: KeyboardActionHandler? = null,
     onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
-    shape: Shape = TextFieldDefaults.shape,
+    shape: Shape = StylishTheme.shapes.medium,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     contentPadding: PaddingValues =
         if (label == null || labelPosition is TextFieldLabelPosition.Above) {

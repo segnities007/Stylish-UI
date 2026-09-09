@@ -39,6 +39,8 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishElevationLayer
+import com.segnities007.stylishui.theme.stylishLayerColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -53,6 +55,9 @@ import kotlinx.coroutines.launch
  *
  * @param name Display name shown above the preview.
  * @param code Kotlin source code snippet for the component.
+ * @param number Stable deletion ID shown before [name], or `null` to hide
+ *   it. Numbers come from the position in `DemoRegistry.allDemos`, so they
+ *   stay put while filtering and sorting.
  * @param modifier Modifier applied to the card.
  * @param preview Composable that renders the interactive preview.
  */
@@ -60,6 +65,7 @@ import kotlinx.coroutines.launch
 public fun StylishDemoCard(
     name: String,
     code: String,
+    number: Int? = null,
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
 ) {
@@ -70,41 +76,47 @@ public fun StylishDemoCard(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            color = stylishLayerColor(level = 0.25f),
             tonalElevation = 1.dp,
             shadowElevation = 6.dp,
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                // Component name
-                Text(
-                    name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                
-                // Preview content
-                preview()
-
-                // Code toggle button
-                TextButton(
-                    onClick = { showCode = !showCode },
-                    modifier = Modifier.semantics {
-                        role = Role.Button
-                        contentDescription = if (showCode) "コードを隠す" else "コードを表示"
-                    },
+            StylishElevationLayer {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    Icon(
-                        Icons.Default.Code,
-                        contentDescription = null,
-                        modifier = Modifier.padding(end = 4.dp),
+                    // Component name with its stable deletion ID.
+                    Text(
+                        text = if (number != null) {
+                            "#" + number.toString().padStart(3, '0') + " " + name
+                        } else {
+                            name
+                        },
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
-                    Text(if (showCode) "コードを隠す" else "コードを表示")
+
+                    // Preview content
+                    preview()
+
+                    // Code toggle button
+                    TextButton(
+                        onClick = { showCode = !showCode },
+                        modifier = Modifier.semantics {
+                            role = Role.Button
+                            contentDescription = if (showCode) "コードを隠す" else "コードを表示"
+                        },
+                    ) {
+                        Icon(
+                            Icons.Default.Code,
+                            contentDescription = null,
+                            modifier = Modifier.padding(end = 4.dp),
+                        )
+                        Text(if (showCode) "コードを隠す" else "コードを表示")
+                    }
                 }
             }
         }
@@ -183,7 +195,7 @@ private fun StylishDemoCardPreview() {
     StylishTheme(darkTheme = true) {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(stylishLayerColor(level = 0f))
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {

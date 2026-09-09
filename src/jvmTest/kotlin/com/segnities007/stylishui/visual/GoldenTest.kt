@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,10 +49,10 @@ import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
-import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
-import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBarItem
 import com.segnities007.stylishui.theme.StylishTheme
 import java.awt.image.BufferedImage
 import java.io.File
@@ -336,13 +337,26 @@ private fun GoldenScene() {
                     StylishConnectedCardItem(title = "通知", supportingText = "オン"),
                 ),
             )
-            StylishNavigationBar(
-                items = listOf(
-                    StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
-                    StylishNavigationItem(Icons.Default.Search, "検索"),
-                    StylishNavigationItem(Icons.Default.Settings, "設定"),
-                ),
-            )
+            StylishShortNavigationBar {
+                StylishShortNavigationBarItem(
+                    selected = true,
+                    onClick = {},
+                    icon = { Icon(Icons.Default.Home, contentDescription = "ホーム") },
+                    label = { Text("ホーム") },
+                )
+                StylishShortNavigationBarItem(
+                    selected = false,
+                    onClick = {},
+                    icon = { Icon(Icons.Default.Search, contentDescription = "検索") },
+                    label = { Text("検索") },
+                )
+                StylishShortNavigationBarItem(
+                    selected = false,
+                    onClick = {},
+                    icon = { Icon(Icons.Default.Settings, contentDescription = "設定") },
+                    label = { Text("設定") },
+                )
+            }
             SimplePieChart(
                 data = listOf(
                     PieChartData("食品", 40f, stylishChartColor(0)),

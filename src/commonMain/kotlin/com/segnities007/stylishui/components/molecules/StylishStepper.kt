@@ -166,6 +166,7 @@ public fun StylishStepper(
                 Text(
                     label,
                     style = labelStyle,
+                    color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     modifier = Modifier.padding(top = StylishTheme.dimensions.inlineSpacing),

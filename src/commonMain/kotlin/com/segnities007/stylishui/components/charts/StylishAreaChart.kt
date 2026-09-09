@@ -86,7 +86,12 @@ public fun StylishAreaChart(
                 drawPath(line, color, style = Stroke(width = 2.dp.toPx()))
             }
         }
-        Text("${range.start} – ${range.endInclusive}", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 4.dp))
+        Text(
+            "${range.start} – ${range.endInclusive}",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp),
+        )
     }
 }
 

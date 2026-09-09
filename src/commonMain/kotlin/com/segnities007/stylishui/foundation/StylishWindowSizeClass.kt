@@ -3,6 +3,7 @@ package com.segnities007.stylishui.foundation
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -89,7 +90,7 @@ public fun StylishAdaptiveLayout(
 @Composable
 private fun StylishAdaptiveLayoutPreview() {
     StylishTheme(darkTheme = false) {
-        Surface {
+        Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
             StylishAdaptiveLayout(
                 modifier = Modifier.fillMaxWidth(),
                 compact = { Text("Compact", Modifier.padding(16.dp)) },

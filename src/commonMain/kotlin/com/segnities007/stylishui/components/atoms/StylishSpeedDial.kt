@@ -2,15 +2,6 @@ package com.segnities007.stylishui.components.atoms
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
 import com.segnities007.stylishui.theme.StylishTheme
 
 /**
@@ -98,12 +89,10 @@ private class StylishSpeedDialScope(
  * [androidx.compose.material3.Surface] with an icon) and call
  * [onActionClick] with the index from its click handler.
  *
- * The actions fan out along [direction] (up/down/start/end) with a
- * fade + expand/shrink animation driven by
- * [StylishTheme.animation.durationShort]. When the platform requests
- * reduced motion (see [isStylishReducedMotionEnabled]) the actions snap
- * in and out without animation, and the container does not animate its
- * size.
+ * The actions fan out along [direction] (up/down/start/end) with the
+ * standard Stylish floating fade + full-distance slide animation. The
+ * duration, easing, and reduced-motion behavior come from the shared
+ * floating motion contract.
  *
  * ## Usage pattern
  *
@@ -184,77 +173,17 @@ public fun StylishSpeedDial(
     onActionClick: (Int) -> Unit = {},
     actions: @Composable SpeedDialScope.(index: Int) -> Unit,
 ) {
-    val reducedMotion = isStylishReducedMotionEnabled()
-    val containerModifier = modifier
-        .testTag("stylish_speeddial")
-        .then(
-            if (reducedMotion) {
-                Modifier
-            } else {
-                Modifier.animateContentSize()
-            },
-        )
+    val containerModifier = modifier.testTag("stylish_speeddial")
     val actionSlot: @Composable () -> Unit = {
-        if (reducedMotion) {
-            if (expanded) {
-                StylishSpeedDialActions(
-                    actionCount = actionCount,
-                    expanded = expanded,
-                    actions = actions,
-                )
-            }
-        } else {
-            val fadeSpec = tween<Float>(
-                durationMillis = StylishTheme.animation.durationShort,
-                easing = StylishTheme.animation.defaultEasing,
+        StylishFloatingVisibility(
+            visible = expanded,
+            direction = direction.toFloatingDirection(),
+        ) {
+            StylishSpeedDialActions(
+                actionCount = actionCount,
+                expanded = expanded,
+                actions = actions,
             )
-            val enterTransition = fadeIn(fadeSpec) + when (direction) {
-                SpeedDialDirection.Up -> expandVertically(
-                    expandFrom = Alignment.Bottom,
-                    clip = true,
-                )
-                SpeedDialDirection.Down -> expandVertically(
-                    expandFrom = Alignment.Top,
-                    clip = true,
-                )
-                SpeedDialDirection.Start -> expandHorizontally(
-                    expandFrom = Alignment.End,
-                    clip = true,
-                )
-                SpeedDialDirection.End -> expandHorizontally(
-                    expandFrom = Alignment.Start,
-                    clip = true,
-                )
-            }
-            val exitTransition = fadeOut(fadeSpec) + when (direction) {
-                SpeedDialDirection.Up -> shrinkVertically(
-                    shrinkTowards = Alignment.Bottom,
-                    clip = true,
-                )
-                SpeedDialDirection.Down -> shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    clip = true,
-                )
-                SpeedDialDirection.Start -> shrinkHorizontally(
-                    shrinkTowards = Alignment.End,
-                    clip = true,
-                )
-                SpeedDialDirection.End -> shrinkHorizontally(
-                    shrinkTowards = Alignment.Start,
-                    clip = true,
-                )
-            }
-            AnimatedVisibility(
-                visible = expanded,
-                enter = enterTransition,
-                exit = exitTransition,
-            ) {
-                StylishSpeedDialActions(
-                    actionCount = actionCount,
-                    expanded = expanded,
-                    actions = actions,
-                )
-            }
         }
     }
     val mainFab: @Composable () -> Unit = {
@@ -303,6 +232,14 @@ public fun StylishSpeedDial(
         }
     }
 }
+
+private fun SpeedDialDirection.toFloatingDirection(): StylishFloatingSlideDirection =
+    when (this) {
+        SpeedDialDirection.Up -> StylishFloatingSlideDirection.Up
+        SpeedDialDirection.Down -> StylishFloatingSlideDirection.Down
+        SpeedDialDirection.Start -> StylishFloatingSlideDirection.Start
+        SpeedDialDirection.End -> StylishFloatingSlideDirection.End
+    }
 
 @Composable
 private fun StylishSpeedDialActions(

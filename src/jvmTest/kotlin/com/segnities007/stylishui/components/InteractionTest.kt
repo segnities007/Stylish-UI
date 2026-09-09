@@ -2,14 +2,17 @@ package com.segnities007.stylishui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.LayoutDirection
@@ -24,14 +27,15 @@ import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.components.atoms.StylishSwitch
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.models.StylishSegmentedOption
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonRow
 import com.segnities007.stylishui.components.molecules.StylishPagination
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.organisms.StylishConnectedSegmentedControl
-import com.segnities007.stylishui.components.organisms.StylishNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishDialogActions
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBar
+import com.segnities007.stylishui.components.organisms.StylishShortNavigationBarItem
 import com.segnities007.stylishui.components.organisms.StylishDataTable
 import com.segnities007.stylishui.components.organisms.StylishDataTableColumn
 import com.segnities007.stylishui.theme.StylishTheme
@@ -174,6 +178,22 @@ class InteractionTest {
     }
 
     @Test
+    fun dialogActionsHideBlankCancelAction() = runComposeUiTest {
+        var clicks = 0
+        setContent {
+            StylishTheme(darkTheme = false) {
+                StylishDialogActions(
+                    confirmLabel = "閉じる",
+                    onConfirm = { clicks++ },
+                )
+            }
+        }
+        onAllNodesWithText("キャンセル").assertCountEquals(0)
+        onNodeWithText("閉じる").performClick()
+        kotlin.test.assertEquals(1, clicks)
+    }
+
+    @Test
     fun disabledConnectedChipDoesNotInvokeCallback() = runComposeUiTest {
         var clicks = 0
         setContent {
@@ -195,11 +215,14 @@ class InteractionTest {
         var clicks = 0
         setContent {
             StylishTheme(darkTheme = false) {
-                StylishNavigationBar(
-                    items = listOf(
-                        StylishNavigationItem(Icons.Default.Home, "ホーム", onClick = { clicks++ }),
-                    ),
-                )
+                StylishShortNavigationBar {
+                    StylishShortNavigationBarItem(
+                        selected = false,
+                        onClick = { clicks++ },
+                        icon = { Icon(Icons.Default.Home, contentDescription = "ホーム") },
+                        label = { Text("ホーム") },
+                    )
+                }
             }
         }
         onNodeWithText("ホーム").performClick()

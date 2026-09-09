@@ -5,14 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,10 +25,11 @@ import com.segnities007.stylishui.components.atoms.StylishButton
 import com.segnities007.stylishui.components.atoms.StylishFloatingFab
 import com.segnities007.stylishui.components.molecules.StylishSkeletonCard
 import com.segnities007.stylishui.components.patterns.StylishFooter
+import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishLayerColor
 import com.segnities007.stylishui.components.patterns.StylishFloatingTopBar
 import com.segnities007.stylishui.components.patterns.StylishPageContent
 import com.segnities007.stylishui.components.patterns.StylishScaffold
-import com.segnities007.stylishui.components.patterns.StylishTopAppBar
 
 /**
  * Returns all pattern-related demo components for the catalog.
@@ -83,23 +88,39 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
     Content(Modifier.padding(top = headerHeight))
 }""",
         preview = {
-            StylishScaffold(
-                header = {
-                    Text("Scaffold", style = MaterialTheme.typography.titleLarge)
-                },
-                floatingActionButton = {
-                    StylishFloatingFab(Icons.Default.Add, "追加", {})
-                },
-            ) { headerHeight ->
-                Column(
-                    Modifier
-                        .padding(top = headerHeight)
-                        .padding(horizontal = 16.dp),
-                ) {
-                    Text(
-                        "Scaffold は浮遊ヘッダー・FAB・コンテンツ領域をまとめるページ骨組みです。",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+            // StylishScaffold fills its parent and lays out with infinite
+            // maxHeight when unbounded: bound it so the catalog grid item
+            // never hands it infinite constraints.
+            Box(Modifier.fillMaxWidth().height(320.dp)) {
+                StylishScaffold(
+                    header = {
+                        Text("Scaffold", style = MaterialTheme.typography.titleLarge)
+                    },
+                    floatingBottomCenter = {
+                        androidx.compose.material3.Surface(
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                            color = stylishLayerColor(level = 0.62f),
+                        ) {
+                            Text(
+                                "indicator",
+                                modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            )
+                        }
+                    },
+                    floatingActionButton = {
+                        StylishFloatingFab(Icons.Default.Add, "追加", {})
+                    },
+                ) { headerHeight ->
+                    Column(
+                        Modifier
+                            .padding(top = headerHeight)
+                            .padding(horizontal = 16.dp),
+                    ) {
+                        Text(
+                            "Scaffold は浮遊ヘッダー・FAB・コンテンツ領域をまとめるページ骨組みです。",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
                 }
             }
         },
@@ -113,16 +134,18 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
     item { Text("コンテンツ") }
 }""",
         preview = {
-            StylishPageContent(
-                header = {
-                    StylishFloatingTopBar(title = { Text("Page Content") })
-                },
-            ) {
-                item {
-                    Text("スクロール可能なページコンテンツです。", style = MaterialTheme.typography.bodyMedium)
-                }
-                item {
-                    StylishButton(onClick = {}) { Text("ボタン") }
+            Box(Modifier.fillMaxWidth().height(320.dp)) {
+                StylishPageContent(
+                    header = {
+                        StylishFloatingTopBar(title = { Text("Page Content") })
+                    },
+                ) {
+                    item {
+                        Text("スクロール可能なページコンテンツです。", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    item {
+                        StylishButton(onClick = {}) { Text("ボタン") }
+                    }
                 }
             }
         },
@@ -135,6 +158,35 @@ internal fun getPatternDemos(): List<DemoComponent> = listOf(
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 StylishSkeletonCard(Modifier.fillMaxWidth())
                 StylishSkeletonCard(Modifier.fillMaxWidth())
+            }
+        },
+    ),
+    DemoComponent(
+        name = "Elevation levels",
+        category = DemoCategory.Patterns,
+        code = """(0..8).forEach { step ->
+    val level = step / 8f
+    Surface(color = stylishLayerColor(level)) { Text("level = ${'$'}level") }
+}""",
+        preview = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                (0..8).forEach { step ->
+                    val level = step / 8f
+                    Surface(
+                        color = stylishLayerColor(level),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(
+                            StylishTheme.dimensions.outlineWidth,
+                            MaterialTheme.colorScheme.outlineVariant,
+                        ),
+                    ) {
+                        Text(
+                            "level = $level",
+                            modifier = Modifier.padding(12.dp),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
             }
         },
     ),

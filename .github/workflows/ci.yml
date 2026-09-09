@@ -65,7 +65,15 @@ jobs:
       # via jvmTest. On the first run they record the baseline PNGs under
       # src/jvmTest/resources/golden/ and pass; afterwards they compare
       # pixel-by-pixel. Update baselines by deleting the PNGs in a PR.
-      - name: Build and test
+      - name: Verify design harness consumers
+        # Run the fast consumer contract independently of platform dependency setup.
+        # Gradle check also owns the same gates for local runs.
+        run: |
+          python3 scripts/test_design_harness.py
+          python3 scripts/verify-design-harness.py
+          python3 scripts/verify-design-harness.py --profile material-free catalog/src/commonMain/kotlin/com/segnities007/stylishui/catalog/materialfree
+
+      - name: Compile and run platform tests
         run: ./gradlew check
         env:
           WRITE_VISUAL_MATRIX: '1'

@@ -107,8 +107,11 @@ public data class StylishDimensions(
     public val pressedElevation: Dp = 0.dp,
     public val disabledElevation: Dp = 0.dp,
     public val floatingElevation: Dp = 2.dp,
+    @Deprecated("Configure shapes through StylishShapes.connectedCornerRadius")
     public val connectedCornerRadius: Dp = 12.dp,
+    @Deprecated("Configure shapes through StylishShapes.joinedCornerRadius")
     public val joinedCornerRadius: Dp = 2.dp,
+    @Deprecated("Configure shapes through StylishShapes.floatingCornerRadius")
     public val floatingCornerRadius: Dp = 28.dp,
     public val spacingNone: Dp = 0.dp,
     public val spacingXxs: Dp = 2.dp,

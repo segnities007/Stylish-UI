@@ -104,6 +104,7 @@ public fun StylishAvatar(
                 else -> Text(
                     text = initials.trim().take(3),
                     style = MaterialTheme.typography.titleMedium,
+                    color = contentColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

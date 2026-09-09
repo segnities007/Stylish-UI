@@ -43,8 +43,8 @@ StylishTheme(colorScheme = MyColorScheme) {
 | `Divider` / `HorizontalDivider` | `StylishHorizontalDivider` / `StylishVerticalDivider` | |
 | `CircularProgressIndicator` / `LinearProgressIndicator` | `StylishCircularProgressIndicator` / `StylishLinearProgressIndicator` | |
 | `Snackbar` / `SnackbarHost` | `StylishSnackbar` / `StylishSnackbarHost` | |
-| `ListItem` | `StylishListItem` | 連結グループは `StylishConnectedListItemColumn` など |
-| `NavigationBar` / `NavigationBarItem` | `StylishNavigationBar` + `StylishNavigationItem` | モデルデータ方式 |
+| `ListItem` | `StylishListItem` | 連結グループは `StylishConnectedCardColumn` など |
+| `NavigationBar` / `NavigationBarItem` | —（廃止。`StylishGradientFooter` / `StylishFloatingBottomBar` または `StylishShortNavigationBar` を使用） | `StylishNavigationBar` は削除済み |
 | `TabRow` / `Tab` | `StylishTabBar` | |
 | `TopAppBar` 系 | `StylishTopAppBar` | M3 experimental のラッパー |
 | `SearchBar` / `DockedSearchBar` | `StylishSearchBar` | M3 experimental のラッパー |
@@ -55,10 +55,17 @@ StylishTheme(colorScheme = MyColorScheme) {
 | — | `StylishConnectedCardRow` / `StylishConnectedCardColumn` / `StylishConnectedCardGrid` | M3 にない連結カード |
 | — | `StylishConnectedButtonRow` / Column / Grid | M3 にない連結ボタン |
 | — | `StylishConnectedChipRow` / Column / Grid | M3 にない連結チップ |
-| — | `StylishConnectedListItemRow` / Column / Grid / LazyColumn / LazyGrid | M3 にない連結リスト |
 | — | `SimplePieChart` / `SimpleBarChart` / `SimpleLineChart` | チャート（common で全プラットフォーム） |
 
 ## テーマの移行
+
+### Dynamic Color廃止（固定ブランド配色のみ）
+
+`StylishTheme` の `dynamicColor` / `seedColor` 引数、`DynamicColor.*`、
+`Color.stylishHarmonizeWith`、および `material-kolor` 依存は廃止しました。
+端末の壁紙由来色やシード生成は使用せず、`StylishLightColorScheme` /
+`StylishDarkColorScheme`（明るいミルクティーの固定ブランド配色）のみです。
+旧引数を渡していた呼び出しは引数を削除してください。
 
 ### `StylishTheme` ラッパー
 
@@ -67,7 +74,6 @@ StylishTheme(colorScheme = MyColorScheme) {
 ```kotlin
 StylishTheme(
     darkTheme = isSystemInDarkTheme(),
-    dynamicColor = true,             // Android 12+ では Material You
     colorScheme = MyColorScheme,     // M3 の ColorScheme をそのまま渡せる
     typography = MyTypography,       // M3 の Typography
     shapes = MyShapes,               // M3 の Shapes
@@ -79,13 +85,15 @@ M3 の `MaterialTheme.colorScheme` / `typography` / `shapes` への参照は、
 
 ### トークンの上書き
 
-Stylish 固有のトークンは `dimensions` / `animation` パラメータで上書きします。
+形は `shapes`、寸法とモーションは `dimensions` / `animation` で上書きします。
 
 ```kotlin
 StylishTheme(
     darkTheme = false,
-    dimensions = StylishDimensions(
+    shapes = StylishShapes(
         connectedCornerRadius = 20.dp,  // 連結グループの外側の角丸
+    ),
+    dimensions = StylishDimensions(
         connectedSpacing = 6.dp,        // 連結アイテム間の隙間
         outlineWidth = 1.dp,            // ヘアライン枠の太さ
         interactiveElevation = 2.dp,    // 操作可能アイテムの浮き
@@ -95,7 +103,7 @@ StylishTheme(
 ```
 
 トークンの一覧は `com.segnities007.stylishui.tokens.StylishDimensions` /
-`StylishAnimationTokens` の KDoc を参照してください。
+`StylishShapes` / `StylishAnimationTokens` の KDoc を参照してください。
 
 ### 色の上書き
 

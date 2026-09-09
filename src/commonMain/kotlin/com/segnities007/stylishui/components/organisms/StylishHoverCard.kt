@@ -24,7 +24,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.molecules.StylishPopover
+import com.segnities007.stylishui.theme.StylishElevationLevel
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.containerColor
 import kotlinx.coroutines.delay
 
 /**
@@ -39,9 +41,9 @@ import kotlinx.coroutines.delay
  * @param modifier Modifier applied to the trigger wrapper.
  * @param trigger The content that opens the card on hover.
  * @param shape Corner shape of the card. Defaults to [RoundedCornerShape]
- *   with [StylishTheme.dimensions.connectedCornerRadius].
+ *   with [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background of the card. Defaults to
- *   [MaterialTheme.colorScheme.surfaceContainerHigh].
+ *   the [StylishElevationLevel.Raised] container color.
  * @param contentColor Foreground color of the card.
  * @param width Width of the card. Defaults to 320 dp.
  * @param delayMillis Hover duration before the card opens. Defaults to
@@ -52,8 +54,8 @@ import kotlinx.coroutines.delay
 public fun StylishHoverCard(
     modifier: Modifier = Modifier,
     trigger: @Composable () -> Unit,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
+    containerColor: Color = StylishElevationLevel.Raised.containerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     width: Dp = 320.dp,
     delayMillis: Int = 300,

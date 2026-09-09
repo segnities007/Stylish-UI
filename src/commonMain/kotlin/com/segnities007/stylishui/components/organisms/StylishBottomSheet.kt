@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,14 +27,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishModalLayer
 import com.segnities007.stylishui.theme.stylishModalContainerColor
 import com.segnities007.stylishui.foundation.stylishTestTag
 
 /**
  * A modal bottom sheet styled with the Stylish design language —
- * rounded top corners from
- * [StylishTheme.dimensions.connectedCornerRadius] and theme-aware
- * container colors.
+ * a floating all-corner shape, restrained translucency, screen-edge
+ * margins, and content padding.
  *
  * Wraps Material 3 [ModalBottomSheet] with Stylish defaults.
  *
@@ -47,13 +48,15 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  * @param sheetState The state of the sheet. Defaults to
  *   [rememberModalBottomSheetState] honoring
  *   [skipPartiallyExpanded].
- * @param shape Corner shape of the sheet. Defaults to
- *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius] on the top
- *   corners only.
+ * @param shape Floating shape of the sheet.
  * @param containerColor Background color of the sheet.
  * @param contentColor Default content color.
  * @param tonalElevation Tonal elevation of the sheet surface.
+ * @param horizontalMargin Horizontal space between the floating sheet
+ *   and the window edges.
+ * @param bottomMargin Space between the floating sheet and the bottom
+ *   safe drawing edge.
+ * @param contentPadding Padding applied inside the sheet around [content].
  * @param scrimColor Color of the scrim that obscures content while
  *   the sheet is open. Defaults to
  *   [BottomSheetDefaults.ScrimColor] (32% alpha scrim).
@@ -79,13 +82,16 @@ public fun StylishBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = skipPartiallyExpanded,
     ),
-    shape: Shape = RoundedCornerShape(
-        topStart = StylishTheme.dimensions.connectedCornerRadius,
-        topEnd = StylishTheme.dimensions.connectedCornerRadius,
-    ),
-    containerColor: Color = stylishModalContainerColor(),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
+    containerColor: Color = stylishModalContainerColor().copy(alpha = 0.96f),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
-    tonalElevation: Dp = 1.dp,
+    tonalElevation: Dp = StylishTheme.dimensions.floatingElevation,
+    horizontalMargin: Dp = StylishTheme.dimensions.screenPadding,
+    bottomMargin: Dp = StylishTheme.dimensions.contentSpacing,
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = StylishTheme.dimensions.screenPadding,
+        vertical = StylishTheme.dimensions.contentSpacing,
+    ),
     // M3's own default (BottomSheetDefaults.ScrimColor) carries 32% alpha;
     // an opaque scrim color would black out everything behind the sheet.
     scrimColor: Color = BottomSheetDefaults.ScrimColor,
@@ -96,7 +102,10 @@ public fun StylishBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        modifier = modifier.stylishTestTag("bottom_sheet"),
+        modifier = modifier
+            .padding(horizontal = horizontalMargin)
+            .padding(bottom = bottomMargin)
+            .stylishTestTag("bottom_sheet"),
         sheetState = sheetState,
         shape = shape,
         containerColor = containerColor,
@@ -106,7 +115,16 @@ public fun StylishBottomSheet(
         dragHandle = dragHandle,
         contentWindowInsets = contentWindowInsets,
         properties = properties,
-        content = content,
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(contentPadding),
+            ) {
+                val contentScope = this
+                StylishModalLayer { content(contentScope) }
+            }
+        },
     )
 }
 

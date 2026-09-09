@@ -53,7 +53,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  *   Defaults to [MaterialTheme.typography.bodyLarge].
  * @param editShape Corner shape of the input field. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param singleLine Whether the value is a single line. When `true`, the
  *   IME done action commits the edit. Defaults to `true`.
  */
@@ -65,7 +65,7 @@ public fun StylishEditable(
     enabled: Boolean = true,
     onCommit: ((String) -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    editShape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    editShape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     singleLine: Boolean = true,
 ) {
     var editing by remember { mutableStateOf(false) }

@@ -22,7 +22,7 @@ import com.segnities007.stylishui.theme.StylishTheme
 /**
  * A small notification badge that communicates a count or status at a
  * glance. Intended for the badge slot of a navigation item (see
- * [StylishNavigationBar]) and similar compact contexts such as icon
+ * [StylishShortNavigationBar]) and similar compact contexts such as icon
  * buttons or tab bars.
  *
  * The [content] is rendered inside a pill-shaped [Surface] using the
@@ -46,7 +46,7 @@ import com.segnities007.stylishui.theme.StylishTheme
  * @param content Content inside the badge, typically a short [Text]
  *   such as a count (`"3"`, `"99+"`) or a dot.
  *
- * @see StylishNavigationBar
+ * @see StylishShortNavigationBar
  */
 @Composable
 public fun StylishBadge(

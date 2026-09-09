@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1080" viewBox="0 0 1200 1080">
+  <rect width="1200" height="1080" fill="#15120F"/>
+  <style>
+    text { font-family: sans-serif; fill: #F7EFE4; }
+    .title { font-size: 30px; font-weight: 700; }
+    .id { font-size: 23px; font-weight: 700; }
+    .mode { font-size: 16px; font-weight: 700; }
+    .hex { font-size: 13px; }
+    .note { font-size: 15px; fill: #CFC3B4; }
+  </style>
+  <text x="50" y="50" class="title">Stylish UI — Toasted Milk Tea Variations</text>
+  <text x="50" y="78" class="note">Page → Surface → Raised → Overlay → Modal · MT-04 is the reference</text>
+
+  <g transform="translate(50 115)">
+    <text x="0" y="0" class="id">MT-04  Toasted / Reference</text><text x="0" y="30" class="mode">LIGHT</text>
+    <g transform="translate(80 10)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#EDDDC2"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#F3E4CC"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#F7EAD6"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#FAF0E0"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#FDF6EA"/><text x="14" y="44" class="hex" fill="#2B261F">#EDDDC2</text><text x="204" y="44" class="hex" fill="#2B261F">#F3E4CC</text><text x="394" y="44" class="hex" fill="#2B261F">#F7EAD6</text><text x="584" y="44" class="hex" fill="#2B261F">#FAF0E0</text><text x="774" y="44" class="hex" fill="#2B261F">#FDF6EA</text></g>
+    <text x="0" y="115" class="mode">DARK</text><g transform="translate(80 95)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#1B140D"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#261B12"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#322319"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#3F2C20"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#4C3628"/><text x="14" y="44" class="hex">#1B140D</text><text x="204" y="44" class="hex">#261B12</text><text x="394" y="44" class="hex">#322319</text><text x="584" y="44" class="hex">#3F2C20</text><text x="774" y="44" class="hex">#4C3628</text></g>
+  </g>
+
+  <g transform="translate(50 315)">
+    <text x="0" y="0" class="id">MT-05  Golden Toast / More golden</text><text x="0" y="30" class="mode">LIGHT</text>
+    <g transform="translate(80 10)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#EBD8B7"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#F1DFC2"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#F5E6CE"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#F9EDDB"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#FCF5E8"/><text x="14" y="44" class="hex" fill="#2B261F">#EBD8B7</text><text x="204" y="44" class="hex" fill="#2B261F">#F1DFC2</text><text x="394" y="44" class="hex" fill="#2B261F">#F5E6CE</text><text x="584" y="44" class="hex" fill="#2B261F">#F9EDDB</text><text x="774" y="44" class="hex" fill="#2B261F">#FCF5E8</text></g>
+    <text x="0" y="115" class="mode">DARK</text><g transform="translate(80 95)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#1C140A"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#281C0F"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#352516"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#422F1D"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#503A25"/><text x="14" y="44" class="hex">#1C140A</text><text x="204" y="44" class="hex">#281C0F</text><text x="394" y="44" class="hex">#352516</text><text x="584" y="44" class="hex">#422F1D</text><text x="774" y="44" class="hex">#503A25</text></g>
+  </g>
+
+  <g transform="translate(50 515)">
+    <text x="0" y="0" class="id">MT-06  Creamy Toast / Softer</text><text x="0" y="30" class="mode">LIGHT</text>
+    <g transform="translate(80 10)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#EFE0C8"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#F4E6D1"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#F7ECDA"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#FAF2E4"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#FDF8EF"/><text x="14" y="44" class="hex" fill="#2B261F">#EFE0C8</text><text x="204" y="44" class="hex" fill="#2B261F">#F4E6D1</text><text x="394" y="44" class="hex" fill="#2B261F">#F7ECDA</text><text x="584" y="44" class="hex" fill="#2B261F">#FAF2E4</text><text x="774" y="44" class="hex" fill="#2B261F">#FDF8EF</text></g>
+    <text x="0" y="115" class="mode">DARK</text><g transform="translate(80 95)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#1B1510"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#261D16"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#31261D"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#3D3025"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#4A3A2D"/><text x="14" y="44" class="hex">#1B1510</text><text x="204" y="44" class="hex">#261D16</text><text x="394" y="44" class="hex">#31261D</text><text x="584" y="44" class="hex">#3D3025</text><text x="774" y="44" class="hex">#4A3A2D</text></g>
+  </g>
+
+  <g transform="translate(50 715)">
+    <text x="0" y="0" class="id">MT-07  Roasted Assam / Deeper brown</text><text x="0" y="30" class="mode">LIGHT</text>
+    <g transform="translate(80 10)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#E8D5B8"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#EFDEC5"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#F4E6D1"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#F8EDDC"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#FCF5E8"/><text x="14" y="44" class="hex" fill="#2B261F">#E8D5B8</text><text x="204" y="44" class="hex" fill="#2B261F">#EFDEC5</text><text x="394" y="44" class="hex" fill="#2B261F">#F4E6D1</text><text x="584" y="44" class="hex" fill="#2B261F">#F8EDDC</text><text x="774" y="44" class="hex" fill="#2B261F">#FCF5E8</text></g>
+    <text x="0" y="115" class="mode">DARK</text><g transform="translate(80 95)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#18110B"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#241910"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#312117"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#3E2B1E"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#4C3627"/><text x="14" y="44" class="hex">#18110B</text><text x="204" y="44" class="hex">#241910</text><text x="394" y="44" class="hex">#312117</text><text x="584" y="44" class="hex">#3E2B1E</text><text x="774" y="44" class="hex">#4C3627</text></g>
+  </g>
+
+  <g transform="translate(50 915)">
+    <text x="0" y="0" class="id">MT-08  Cocoa Toast / Less yellow</text><text x="0" y="30" class="mode">LIGHT</text>
+    <g transform="translate(80 10)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#EAD9C2"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#F0E1CC"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#F4E8D7"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#F8EFE2"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#FCF6ED"/><text x="14" y="44" class="hex" fill="#2B261F">#EAD9C2</text><text x="204" y="44" class="hex" fill="#2B261F">#F0E1CC</text><text x="394" y="44" class="hex" fill="#2B261F">#F4E8D7</text><text x="584" y="44" class="hex" fill="#2B261F">#F8EFE2</text><text x="774" y="44" class="hex" fill="#2B261F">#FCF6ED</text></g>
+    <text x="0" y="115" class="mode">DARK</text><g transform="translate(80 95)"><rect x="0" y="0" width="190" height="72" rx="12" fill="#1A1410"/><rect x="190" y="0" width="190" height="72" rx="12" fill="#251C17"/><rect x="380" y="0" width="190" height="72" rx="12" fill="#30251E"/><rect x="570" y="0" width="190" height="72" rx="12" fill="#3C2E26"/><rect x="760" y="0" width="190" height="72" rx="12" fill="#49392F"/><text x="14" y="44" class="hex">#1A1410</text><text x="204" y="44" class="hex">#251C17</text><text x="394" y="44" class="hex">#30251E</text><text x="584" y="44" class="hex">#3C2E26</text><text x="774" y="44" class="hex">#49392F</text></g>
+  </g>
+</svg>

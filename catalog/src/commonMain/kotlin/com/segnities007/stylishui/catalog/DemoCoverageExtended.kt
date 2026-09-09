@@ -16,20 +16,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -41,9 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishButton
@@ -54,17 +47,13 @@ import com.segnities007.stylishui.components.atoms.StylishInlineSpacer
 import com.segnities007.stylishui.components.atoms.StylishItemSpacer
 import com.segnities007.stylishui.components.atoms.StylishSectionSpacer
 import com.segnities007.stylishui.components.atoms.StylishSpacer
-import com.segnities007.stylishui.components.atoms.StylishVisuallyHidden
 import com.segnities007.stylishui.components.charts.BarChartData
 import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
-import com.segnities007.stylishui.components.models.StylishNavigationItem
 import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedButton
 import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedCardItem
-import com.segnities007.stylishui.components.molecules.DefaultStylishConnectedChip
-import com.segnities007.stylishui.components.molecules.StylishCarousel
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardGrid
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
@@ -77,9 +66,7 @@ import com.segnities007.stylishui.components.molecules.StylishTimePickerDialog
 import com.segnities007.stylishui.components.molecules.rememberStylishDateRangePickerState
 import com.segnities007.stylishui.components.organisms.StylishCommandItem
 import com.segnities007.stylishui.components.organisms.StylishCommandPalette
-import com.segnities007.stylishui.components.organisms.StylishDismissibleNavigationDrawer
 import com.segnities007.stylishui.components.organisms.StylishMultiChoiceSegmentedButtonRow
-import com.segnities007.stylishui.components.organisms.StylishPermanentNavigationDrawer
 import com.segnities007.stylishui.components.organisms.StylishSegmentedButton
 import com.segnities007.stylishui.components.organisms.StylishSingleChoiceSegmentedButtonRow
 import com.segnities007.stylishui.components.patterns.BarChartSection
@@ -88,7 +75,6 @@ import com.segnities007.stylishui.components.patterns.StylishSlideDirection
 import com.segnities007.stylishui.components.patterns.StylishScrollHideVisibility
 import com.segnities007.stylishui.components.patterns.StylishModernScreen
 import com.segnities007.stylishui.components.patterns.LineChartSection
-import com.segnities007.stylishui.components.patterns.StylishAdaptiveNavigation
 import com.segnities007.stylishui.components.patterns.StylishBottomSheetScaffold
 import com.segnities007.stylishui.foundation.ConnectedCorners
 import com.segnities007.stylishui.foundation.ConnectedEdges
@@ -118,18 +104,9 @@ import kotlinx.coroutines.launch
  */
 internal fun getExtendedCoverageDemos(): List<DemoComponent> =
     extendedOrganismDemos() +
-        extendedNavigationDrawerDemos() +
-        extendedSegmentedButtonDemos() +
-        extendedPatternChartDemos() +
         extendedScreenScaffoldDemos() +
         extendedScrollAdaptiveDemos() +
-        extendedBottomSheetDemos() +
-        extendedMoleculeDemos() +
-        extendedConnectedGridDemos() +
-        extendedConnectedLazyDemos() +
-        extendedDefaultRenderersDemos() +
-        extendedChipRendererDemos() +
-        extendedAtomDemos()
+        extendedMoleculeDemos().filter { it.name == "Date range picker inline" }
 
 private fun extendedOrganismDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
@@ -183,99 +160,6 @@ if (expanded) {
                         ),
                     ),
                 )
-            }
-        },
-    ),
-)
-
-private fun extendedNavigationDrawerDemos(): List<DemoComponent> = listOf(
-    DemoComponent(
-        name = "Dismissible navigation drawer",
-        category = DemoCategory.Navigation,
-        code = """val drawerState = rememberDrawerState(DrawerValue.Open)
-StylishDismissibleNavigationDrawer(
-    drawerContent = {
-        Text("メニュー")
-        NavigationDrawerItem(label = { Text("ホーム") }, selected = true, onClick = {})
-        NavigationDrawerItem(label = { Text("設定") }, selected = false, onClick = {})
-    },
-    drawerState = drawerState,
-) { MainScreen() }""",
-        preview = {
-            val drawerState = rememberDrawerState(DrawerValue.Open)
-            Box(Modifier.fillMaxWidth().height(220.dp)) {
-                StylishDismissibleNavigationDrawer(
-                    drawerContent = {
-                        Text(
-                            "メニュー",
-                            Modifier.padding(16.dp),
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("ホーム") },
-                            selected = true,
-                            onClick = {},
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("記録一覧") },
-                            selected = false,
-                            onClick = {},
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("設定") },
-                            selected = false,
-                            onClick = {},
-                        )
-                    },
-                    drawerState = drawerState,
-                ) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("スワイプでドロワーを閉じる")
-                    }
-                }
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Permanent navigation drawer",
-        category = DemoCategory.Navigation,
-        code = """StylishPermanentNavigationDrawer(
-    drawerContent = {
-        Text("ワークスペース")
-        NavigationDrawerItem(label = { Text("ダッシュボード") }, selected = true, onClick = {})
-        NavigationDrawerItem(label = { Text("レポート") }, selected = false, onClick = {})
-    },
-) { MainScreen() }""",
-        preview = {
-            Box(Modifier.fillMaxWidth().height(220.dp)) {
-                StylishPermanentNavigationDrawer(
-                    drawerContent = {
-                        Text(
-                            "ワークスペース",
-                            Modifier.padding(16.dp),
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("ダッシュボード") },
-                            selected = true,
-                            onClick = {},
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("レポート") },
-                            selected = false,
-                            onClick = {},
-                        )
-                        NavigationDrawerItem(
-                            label = { Text("メンバー") },
-                            selected = false,
-                            onClick = {},
-                        )
-                    },
-                ) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("常設ドロワーの横のコンテンツ")
-                    }
-                }
             }
         },
     ),
@@ -409,63 +293,7 @@ private fun extendedPatternChartDemos(): List<DemoComponent> = listOf(
 )
 
 private fun extendedScreenScaffoldDemos(): List<DemoComponent> = listOf(
-    DemoComponent(
-        name = "Screen scaffold pinned header",
-        category = DemoCategory.Patterns,
-        code = """StylishScaffold(
-    header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
-    floatingBottomCenter = { PagerDotPill() },
-    floatingActionButton = { Fab() },
-) { headerHeight ->
-    LazyColumn(contentPadding = PaddingValues(top = headerHeight)) { Items() }
-}""",
-        preview = {
-            StylishScaffold(
-                header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
-                floatingBottomCenter = {
-                    Surface(
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
-                        color = MaterialTheme.colorScheme.surfaceContainer,
-                    ) {
-                        Text(
-                            "indicator",
-                            modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        )
-                    }
-                },
-            ) { innerPadding ->
-                Box(androidx.compose.ui.Modifier.padding(innerPadding)) {
-                    Text(
-                        "スクロールしてもヘッダーは固定されます",
-                        modifier = androidx.compose.ui.Modifier.padding(20.dp),
-                    )
-                }
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Modern screen scroll page",
-        category = DemoCategory.Patterns,
-        code = """StylishModernScreen(
-    header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
-    floatingBottomCenter = { IndicatorPill() },
-    floatingActionButton = { Fab() },
-) {
-    items(20) { index -> Card("項目 ${'$'}index") }
-}""",
-        preview = {
-            StylishModernScreen(
-                header = { Text("ページタイトル", style = MaterialTheme.typography.titleLarge) },
-            ) {
-                items(8) { index ->
-                    Text(
-                        "項目 $index",
-                        modifier = androidx.compose.ui.Modifier.padding(vertical = 8.dp),
-                    )
-                }
-            }
-        },
-    ),
+
 )
 
 private fun extendedScrollAdaptiveDemos(): List<DemoComponent> = listOf(
@@ -493,47 +321,7 @@ private fun extendedScrollAdaptiveDemos(): List<DemoComponent> = listOf(
             }
         },
     ),
-    DemoComponent(
-        name = "Adaptive navigation scaffold",
-        category = DemoCategory.Patterns,
-        code = """StylishAdaptiveNavigation(
-    items = listOf(
-        StylishNavigationItem(Icons.Default.Home, "ホーム", selected = true),
-        StylishNavigationItem(Icons.Default.Settings, "設定"),
-    ),
-) { DashboardContent() }""",
-        preview = {
-            var selected by remember { mutableIntStateOf(0) }
-            Box(Modifier.fillMaxWidth().height(240.dp)) {
-                StylishAdaptiveNavigation(
-                    items = listOf(
-                        StylishNavigationItem(
-                            Icons.Default.Home,
-                            "ホーム",
-                            selected = selected == 0,
-                            onClick = { selected = 0 },
-                        ),
-                        StylishNavigationItem(
-                            Icons.Default.Notifications,
-                            "通知",
-                            selected = selected == 1,
-                            onClick = { selected = 1 },
-                        ),
-                        StylishNavigationItem(
-                            Icons.Default.Settings,
-                            "設定",
-                            selected = selected == 2,
-                            onClick = { selected = 2 },
-                        ),
-                    ),
-                ) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(if (selected == 0) "ホームのコンテンツ" else "選択: $selected")
-                    }
-                }
-            }
-        },
-    ),
+
 )
 
 private fun extendedBottomSheetDemos(): List<DemoComponent> = listOf(
@@ -578,24 +366,7 @@ private fun extendedMoleculeDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Molecules
     // ------------------------------------------------------------------
-    DemoComponent(
-        name = "Carousel multi browse",
-        category = DemoCategory.WebParity,
-        code = """StylishCarousel(
-    itemCount = { banners.size },
-    preferredItemWidth = 200.dp,
-    modifier = Modifier.fillMaxWidth(),
-    itemSpacing = 8.dp,
-) { index ->
-    Box(
-        Modifier
-            .maskClip(RoundedCornerShape(12.dp))
-            .background(banners[index % banners.size])
-            .height(120.dp),
-    ) { Text("バナー ${'$'}index") }
-}""",
-        preview = { carouselCoveragePreview() },
-    ),
+
     DemoComponent(
         name = "Date range picker inline",
         category = DemoCategory.Inputs,
@@ -609,7 +380,11 @@ StylishDateRangePicker(state = state, modifier = Modifier.padding(20.dp))""",
                 initialSelectedStartDateMillis = 1_783_123_200_000,
                 initialSelectedEndDateMillis = 1_784_217_600_000,
             )
-            StylishDateRangePicker(state = state)
+            // M3 DatePicker hosts a lazy month grid: bound the height so the
+            // outer catalog grid never hands it infinite constraints.
+            Box(Modifier.fillMaxWidth().height(420.dp)) {
+                StylishDateRangePicker(state = state)
+            }
         },
     ),
     DemoComponent(
@@ -794,54 +569,6 @@ private fun extendedConnectedLazyDemos(): List<DemoComponent> = listOf(
             }
         },
     ),
-    DemoComponent(
-        name = "Connected cards lazy column employees",
-        category = DemoCategory.Connected,
-        code = """StylishConnectedCardLazyColumn(
-    items = employees.map {
-        StylishConnectedCardItem(it.name, it.role, onClick = {})
-    },
-)""",
-        preview = {
-            Box(Modifier.fillMaxWidth().height(240.dp)) {
-                StylishConnectedCardLazyColumn(
-                    items = listOf(
-                        StylishConnectedCardItem("田中 太郎", "設計担当・東京オフィス", onClick = {}),
-                        StylishConnectedCardItem("鈴木 花子", "開発担当・大阪オフィス", onClick = {}),
-                        StylishConnectedCardItem("佐藤 次郎", "テスト担当・リモート"),
-                        StylishConnectedCardItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
-                        StylishConnectedCardItem("山本 一郎", "インフラ担当・休職中", enabled = false),
-                        StylishConnectedCardItem("中村 桜", "データ分析担当", onClick = {}),
-                    ),
-                )
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Connected cards lazy grid employees",
-        category = DemoCategory.Connected,
-        code = """StylishConnectedCardLazyGrid(
-    items = employees.map {
-        StylishConnectedCardItem(it.name, it.role, onClick = {})
-    },
-    columns = 2,
-)""",
-        preview = {
-            Box(Modifier.fillMaxWidth().height(240.dp)) {
-                StylishConnectedCardLazyGrid(
-                    items = listOf(
-                        StylishConnectedCardItem("田中 太郎", "設計担当", onClick = {}),
-                        StylishConnectedCardItem("鈴木 花子", "開発担当", onClick = {}),
-                        StylishConnectedCardItem("佐藤 次郎", "テスト担当"),
-                        StylishConnectedCardItem("高橋 美咲", "プロダクトマネージャー", onClick = {}),
-                        StylishConnectedCardItem("山本 一郎", "休職中", enabled = false),
-                        StylishConnectedCardItem("中村 桜", "データ分析担当", onClick = {}),
-                    ),
-                    columns = 2,
-                )
-            }
-        },
-    ),
 )
 
 private fun extendedDefaultRenderersDemos(): List<DemoComponent> = listOf(
@@ -914,88 +641,13 @@ DefaultStylishConnectedButton(
     ),
 )
 
-private fun extendedChipRendererDemos(): List<DemoComponent> = listOf(
-    DemoComponent(
-        name = "Default connected chip renderer",
-        category = DemoCategory.Connected,
-        code = """DefaultStylishConnectedChip(
-    item = StylishConnectedChipItem("選択済み", onClick = {}, selected = true),
-    modifier = Modifier.fillMaxWidth(),
-    shape = connectedShape(ConnectedCorners.Standalone),
-    outlineEdges = ConnectedEdges.All,
-    outlineCorners = ConnectedCorners.Standalone,
-    labelMaxLines = 1,
-    labelOverflow = TextOverflow.Ellipsis,
-    labelStyle = MaterialTheme.typography.labelLarge,
-    selectedContainerColor = MaterialTheme.colorScheme.primary,
-    selectedContentColor = MaterialTheme.colorScheme.onPrimary,
-    unselectedContainerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
-    contentSpacing = 6.dp,
-)""",
-        preview = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                DefaultStylishConnectedChip(
-                    item = StylishConnectedChipItem("選択済みチップ", onClick = {}, selected = true),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = connectedShape(ConnectedCorners.Standalone),
-                    outlineEdges = ConnectedEdges.All,
-                    outlineCorners = ConnectedCorners.Standalone,
-                    labelMaxLines = 1,
-                    labelOverflow = TextOverflow.Ellipsis,
-                    labelStyle = MaterialTheme.typography.labelLarge,
-                    selectedContainerColor = MaterialTheme.colorScheme.primary,
-                    selectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedContainerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-                    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
-                    contentSpacing = 6.dp,
-                )
-                DefaultStylishConnectedChip(
-                    item = StylishConnectedChipItem("未選択チップ", onClick = {}),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = connectedShape(ConnectedCorners.Standalone),
-                    outlineEdges = ConnectedEdges.All,
-                    outlineCorners = ConnectedCorners.Standalone,
-                    labelMaxLines = 1,
-                    labelOverflow = TextOverflow.Ellipsis,
-                    labelStyle = MaterialTheme.typography.labelLarge,
-                    selectedContainerColor = MaterialTheme.colorScheme.primary,
-                    selectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedContainerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-                    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
-                    contentSpacing = 6.dp,
-                )
-                DefaultStylishConnectedChip(
-                    item = StylishConnectedChipItem("無効なチップ", enabled = false),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = connectedShape(ConnectedCorners.Standalone),
-                    outlineEdges = ConnectedEdges.All,
-                    outlineCorners = ConnectedCorners.Standalone,
-                    labelMaxLines = 1,
-                    labelOverflow = TextOverflow.Ellipsis,
-                    labelStyle = MaterialTheme.typography.labelLarge,
-                    selectedContainerColor = MaterialTheme.colorScheme.primary,
-                    selectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedContainerColor = MaterialTheme.stylishComponentColors.groupedContainer,
-                    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp),
-                    contentSpacing = 6.dp,
-                )
-            }
-        },
-    ),
-)
-
 private fun extendedAtomDemos(): List<DemoComponent> = listOf(
     // ------------------------------------------------------------------
     // Atoms
     // ------------------------------------------------------------------
     DemoComponent(
         name = "Rhythm spacers",
-        category = DemoCategory.Buttons,
+        category = DemoCategory.Advanced,
         code = """Column {
     Block()
     StylishContentSpacer()      // 16 dp — コンテンツブロック間
@@ -1033,59 +685,7 @@ private fun extendedAtomDemos(): List<DemoComponent> = listOf(
             }
         },
     ),
-    DemoComponent(
-        name = "Visually hidden announcement",
-        category = DemoCategory.Buttons,
-        code = """Row(verticalAlignment = Alignment.CenterVertically) {
-    Icon(Icons.Default.Notifications, contentDescription = null)
-    StylishVisuallyHidden {
-        Text("通知: 新着メッセージが3件あります")
-    }
-    Text("通知")
-}""",
-        preview = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                androidx.compose.material3.Icon(
-                    Icons.Default.Notifications,
-                    contentDescription = null,
-                )
-                StylishVisuallyHidden {
-                    Text("通知: 新着メッセージが3件あります")
-                }
-                Text("通知アイコン（スクリーンリーダー用ラベルは非表示）")
-            }
-        },
-    ),
 )
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
-@Composable
-private fun carouselCoveragePreview() {
-    val primary = MaterialTheme.colorScheme.primary
-    val tertiary = MaterialTheme.colorScheme.tertiary
-    val secondary = MaterialTheme.colorScheme.secondary
-    val banners = remember(primary, tertiary, secondary) { listOf(primary, tertiary, secondary) }
-    StylishCarousel(
-        itemCount = { banners.size * 2 },
-        preferredItemWidth = 180.dp,
-        modifier = Modifier.fillMaxWidth(),
-        itemSpacing = 8.dp,
-    ) { index ->
-        Box(
-            Modifier
-                .maskClip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
-                .background(banners[index % banners.size])
-                .height(120.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                "バナー ${index + 1}",
-                color = Color.White,
-                style = MaterialTheme.typography.titleMedium,
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

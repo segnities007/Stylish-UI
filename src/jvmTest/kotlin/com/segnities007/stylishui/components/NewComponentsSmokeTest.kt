@@ -2,6 +2,7 @@ package com.segnities007.stylishui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -9,8 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.segnities007.stylishui.components.atoms.StylishAvatar
 import com.segnities007.stylishui.components.atoms.StylishConnectedCard
@@ -26,12 +29,16 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedCardColum
 import com.segnities007.stylishui.components.molecules.StylishConnectedCardLazyColumn
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.organisms.StylishAlertDialog
+import com.segnities007.stylishui.components.organisms.StylishBottomSheet
 import com.segnities007.stylishui.components.organisms.StylishSearchBar
 import com.segnities007.stylishui.components.patterns.StylishTopAppBar
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.StylishLightColorScheme
 import com.segnities007.stylishui.tokens.StylishAnimationTokens
 import com.segnities007.stylishui.tokens.StylishDimensions
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class, ExperimentalMaterial3Api::class)
 class NewComponentsSmokeTest {
@@ -110,6 +117,23 @@ class NewComponentsSmokeTest {
             }
         }
         waitForIdle()
+    }
+
+    @Test
+    fun bottomSheetFloatsFromEdgesAndPadsContent() = runComposeUiTest {
+        setContent {
+            StylishTheme(darkTheme = false) {
+                StylishBottomSheet(onDismiss = {}) {
+                    Text("シート本文")
+                }
+            }
+        }
+
+        val sheetBounds = onNodeWithTag("stylish_bottom_sheet").fetchSemanticsNode().boundsInRoot
+        val contentBounds = onNodeWithText("シート本文").fetchSemanticsNode().boundsInRoot
+        assertTrue(sheetBounds.left > 0f)
+        assertTrue(contentBounds.left > sheetBounds.left)
+        assertTrue(contentBounds.right < sheetBounds.right)
     }
 
     @Test
@@ -239,12 +263,19 @@ class ThemeAndTokensTest {
     }
 
     @Test
-    fun dynamicColorFallsBackToStaticSchemeOnJvm() = runComposeUiTest {
+    fun brandSchemeIsFixed() = runComposeUiTest {
+        val brandPrimary = Color(0xFF2B261F)
+        var resolvedPrimary: Color? = null
         setContent {
-            StylishTheme(darkTheme = false, dynamicColor = true) {
-                Text("ダイナミックカラー")
+            StylishTheme(
+                darkTheme = false,
+                colorScheme = StylishLightColorScheme.copy(primary = brandPrimary),
+            ) {
+                resolvedPrimary = MaterialTheme.colorScheme.primary
+                Text("ブランドカラー")
             }
         }
-        onNodeWithText("ダイナミックカラー").assertIsDisplayed()
+        onNodeWithText("ブランドカラー").assertIsDisplayed()
+        runOnIdle { assertEquals(brandPrimary, resolvedPrimary) }
     }
 }

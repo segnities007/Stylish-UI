@@ -1,21 +1,18 @@
 package com.segnities007.stylishui.catalog
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import com.segnities007.stylishui.components.atoms.StylishAvatar
+import com.segnities007.stylishui.components.atoms.StylishText
 import com.segnities007.stylishui.components.models.StylishConnectedButtonItem
 import com.segnities007.stylishui.components.models.StylishConnectedCardItem
 import com.segnities007.stylishui.components.models.StylishConnectedChipItem
 import com.segnities007.stylishui.components.models.StylishConnectedIconButtonItem
+import com.segnities007.stylishui.components.models.StylishIcons
 import com.segnities007.stylishui.components.molecules.StylishAvatarItem
 import com.segnities007.stylishui.components.molecules.StylishConnectedAvatarRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedButtonColumn
@@ -26,7 +23,6 @@ import com.segnities007.stylishui.components.molecules.StylishConnectedCardRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipColumn
 import com.segnities007.stylishui.components.molecules.StylishConnectedChipRow
 import com.segnities007.stylishui.components.molecules.StylishConnectedIconButtonRow
-import androidx.compose.material3.Text
 
 /**
  * Returns all connected-component demo components for the catalog.
@@ -119,53 +115,27 @@ internal fun getConnectedDemos(): List<DemoComponent> = listOf(
             )
         },
     ),
-    DemoComponent(
-        name = "Connected cards",
-        category = DemoCategory.Connected,
-        code = """StylishConnectedCardColumn(
-    items = listOf(
-        StylishConnectedCardItem(title = "見出し", supportingText = "説明", onClick = {}),
-        StylishConnectedCardItem(title = "見出し", supportingText = "説明", enabled = false),
-    ),
-)""",
-        preview = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                StylishConnectedCardColumn(
-                    items = listOf(
-                        StylishConnectedCardItem(title = "Actionable", supportingText = "クリック可能な項目", onClick = {}),
-                        StylishConnectedCardItem(title = "Read only", supportingText = "表示専用の項目"),
-                        StylishConnectedCardItem(title = "Disabled", supportingText = "無効な項目", enabled = false),
-                    ),
-                )
-                StylishConnectedCardRow(
-                    items = listOf(
-                        StylishConnectedCardItem(title = "A", onClick = {}),
-                        StylishConnectedCardItem(title = "B", onClick = {}),
-                    ),
-                )
-            }
-        },
-    ),
+
     DemoComponent(
         name = "Connected buttons",
         category = DemoCategory.Connected,
         code = """StylishConnectedButtonRow(
     items = listOf(
-        StylishConnectedButtonItem(onClick = {}) { Text("OK") },
-        StylishConnectedButtonItem(onClick = {}) { Text("キャンセル") },
+        StylishConnectedButtonItem(onClick = {}) { StylishText("OK") },
+        StylishConnectedButtonItem(onClick = {}) { StylishText("キャンセル") },
     ),
 )""",
         preview = {
             StylishConnectedButtonRow(
                 items = listOf(
-                    StylishConnectedButtonItem(onClick = {}) { Text("保存") },
-                    StylishConnectedButtonItem(onClick = {}) { Text("キャンセル") },
+                    StylishConnectedButtonItem(onClick = {}) { StylishText("保存") },
+                    StylishConnectedButtonItem(onClick = {}) { StylishText("キャンセル") },
                 ),
             )
             StylishConnectedButtonColumn(
                 items = listOf(
-                    StylishConnectedButtonItem(onClick = {}) { Text("全項目") },
-                    StylishConnectedButtonItem(onClick = {}) { Text("選択項目") },
+                    StylishConnectedButtonItem(onClick = {}) { StylishText("全項目") },
+                    StylishConnectedButtonItem(onClick = {}) { StylishText("選択項目") },
                 ),
             )
         },
@@ -175,19 +145,19 @@ internal fun getConnectedDemos(): List<DemoComponent> = listOf(
         category = DemoCategory.Connected,
         code = """StylishConnectedIconButtonRow(
     items = listOf(
-        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
-        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
-        StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
-        StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
+        StylishConnectedIconButtonItem(StylishIcons.Settings, "設定1", onClick = {}),
+        StylishConnectedIconButtonItem(StylishIcons.Settings, "設定2", onClick = {}),
+        StylishConnectedIconButtonItem(StylishIcons.Settings, "設定3", onClick = {}),
+        StylishConnectedIconButtonItem(StylishIcons.Search, "検索", onClick = {}, active = true),
     ),
 )""",
         preview = {
             StylishConnectedIconButtonRow(
                 items = listOf(
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定1", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定2", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Settings, "設定3", onClick = {}),
-                    StylishConnectedIconButtonItem(Icons.Default.Search, "検索", onClick = {}, active = true),
+                    StylishConnectedIconButtonItem(StylishIcons.Settings, "設定1", onClick = {}),
+                    StylishConnectedIconButtonItem(StylishIcons.Settings, "設定2", onClick = {}),
+                    StylishConnectedIconButtonItem(StylishIcons.Settings, "設定3", onClick = {}),
+                    StylishConnectedIconButtonItem(StylishIcons.Search, "検索", onClick = {}, active = true),
                 ),
             )
         },

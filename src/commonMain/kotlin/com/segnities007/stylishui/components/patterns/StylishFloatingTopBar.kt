@@ -4,14 +4,17 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishFloatingContainerColor
 
 /** Floating top bar with a centered title and edge action slots. */
 @Composable
@@ -20,8 +23,8 @@ public fun StylishFloatingTopBar(
     navigation: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.floatingCornerRadius),
-    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.floatingCornerRadius),
+    containerColor: Color = stylishFloatingContainerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     border: BorderStroke? = BorderStroke(
         StylishTheme.dimensions.outlineWidth,
@@ -54,4 +57,10 @@ public fun StylishFloatingTopBar(
         windowInsets = windowInsets,
         visibilityState = visibilityState,
     )
+}
+
+@Preview(name = "Floating top bar", showBackground = true)
+@Composable
+private fun StylishFloatingTopBarPreview() {
+    StylishFloatingTopBar(title = { Text("Page title") })
 }

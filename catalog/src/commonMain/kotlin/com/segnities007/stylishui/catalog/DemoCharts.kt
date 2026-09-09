@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import com.segnities007.stylishui.components.atoms.StylishText
+import com.segnities007.stylishui.theme.StylishTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,11 +22,7 @@ import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.components.atoms.StylishCode
 import com.segnities007.stylishui.components.atoms.StylishRating
 import com.segnities007.stylishui.components.atoms.StylishKbd
-import com.segnities007.stylishui.components.charts.BarChartData
-import com.segnities007.stylishui.components.charts.LineChartData
 import com.segnities007.stylishui.components.charts.PieChartData
-import com.segnities007.stylishui.components.charts.SimpleBarChart
-import com.segnities007.stylishui.components.charts.SimpleLineChart
 import com.segnities007.stylishui.components.charts.SimplePieChart
 import com.segnities007.stylishui.components.charts.stylishChartColor
 import com.segnities007.stylishui.components.molecules.StylishAccordion
@@ -77,55 +73,6 @@ internal fun getChartDemos(): List<DemoComponent> = listOf(
             )
         },
     ),
-    DemoComponent(
-        name = "Bar chart",
-        category = DemoCategory.Charts,
-        code = """SimpleBarChart(
-    contentDescriptionPrefix = "月別売上",
-    emptyLabel = "データがありません",
-    data = listOf(
-        BarChartData("1月", 30000f),
-        BarChartData("2月", 45000f),
-    ),
-)""",
-        preview = {
-            SimpleBarChart(
-                contentDescriptionPrefix = "月別売上",
-                emptyLabel = "データがありません",
-                data = listOf(
-                    BarChartData("1月", 30000f),
-                    BarChartData("2月", 45000f),
-                    BarChartData("3月", 28000f),
-                    BarChartData("4月", 52000f),
-                ),
-            )
-        },
-    ),
-    DemoComponent(
-        name = "Line chart",
-        category = DemoCategory.Charts,
-        code = """SimpleLineChart(
-    contentDescriptionPrefix = "週間推移",
-    emptyLabel = "データがありません",
-    data = listOf(
-        LineChartData("月", 10f),
-        LineChartData("火", 25f),
-    ),
-)""",
-        preview = {
-            SimpleLineChart(
-                contentDescriptionPrefix = "週間推移",
-                emptyLabel = "データがありません",
-                data = listOf(
-                    LineChartData("月", 10f),
-                    LineChartData("火", 25f),
-                    LineChartData("水", 18f),
-                    LineChartData("木", 32f),
-                    LineChartData("金", 28f),
-                ),
-            )
-        },
-    ),
 )
 
 /**
@@ -165,8 +112,8 @@ internal fun getWebParityDemos(): List<DemoComponent> = listOf(
         category = DemoCategory.WebParity,
         code = """StylishAccordion(
     items = listOf(
-        StylishAccordionItem("車両情報", { Text("内容") }),
-        StylishAccordionItem("メンテナンス", { Text("内容") }),
+        StylishAccordionItem("車両情報", { StylishText("内容") }),
+        StylishAccordionItem("メンテナンス", { StylishText("内容") }),
     ),
 )""",
         preview = {
@@ -174,11 +121,11 @@ internal fun getWebParityDemos(): List<DemoComponent> = listOf(
                 items = listOf(
                     StylishAccordionItem(
                         title = "車両情報",
-                        content = { Text("ナンバー・年式・色などの基本情報を表示します。", style = MaterialTheme.typography.bodyMedium) },
+                        content = { StylishText("ナンバー・年式・色などの基本情報を表示します。", style = StylishTheme.typography.bodyMedium) },
                     ),
                     StylishAccordionItem(
                         title = "メンテナンス",
-                        content = { Text("整備履歴の一覧です。", style = MaterialTheme.typography.bodyMedium) },
+                        content = { StylishText("整備履歴の一覧です。", style = StylishTheme.typography.bodyMedium) },
                     ),
                 ),
             )
@@ -320,14 +267,14 @@ StylishKbd("K")""",
     title = "セクションタイトル",
     supportingText = "補足テキスト",
 ) {
-    Text("コンテンツ")
+    StylishText("コンテンツ")
 }""",
         preview = {
             StylishSection(
                 title = "車両情報",
                 supportingText = "基本情報のセクション",
             ) {
-                Text("セクションのコンテンツをここに配置します。", style = MaterialTheme.typography.bodyMedium)
+                StylishText("セクションのコンテンツをここに配置します。", style = StylishTheme.typography.bodyMedium)
             }
         },
     ),

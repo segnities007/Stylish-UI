@@ -54,7 +54,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.segnities007.stylishui.theme.StylishElevationLevel
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.containerColor
 
 /**
  * One selectable entry of a [StylishCommandPalette].
@@ -96,9 +98,9 @@ public data class StylishCommandItem(
  *   to 8.
  * @param shape Corner shape of the palette. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param containerColor Background of the palette. Defaults to
- *   [MaterialTheme.colorScheme.surfaceContainerHigh].
+ *   the [StylishElevationLevel.Raised] container color.
  * @param contentColor Foreground color of the palette.
  * @param width Width of the palette. Defaults to 480 dp.
  */
@@ -112,8 +114,8 @@ public fun StylishCommandPalette(
     items: List<StylishCommandItem>,
     placeholder: String = "コマンドを入力…",
     maxResults: Int = 8,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
+    containerColor: Color = StylishElevationLevel.Raised.containerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     width: Dp = 480.dp,
 ) {

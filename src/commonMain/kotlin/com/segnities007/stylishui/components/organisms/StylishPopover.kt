@@ -2,9 +2,8 @@ package com.segnities007.stylishui.components.organisms
 
 import androidx.compose.ui.tooling.preview.Preview
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -42,8 +40,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
-import com.segnities007.stylishui.foundation.isStylishReducedMotionEnabled
+import com.segnities007.stylishui.foundation.StylishFloatingSlideDirection
+import com.segnities007.stylishui.foundation.stylishFloatingEnterTransition
+import com.segnities007.stylishui.foundation.stylishFloatingExitTransition
+import com.segnities007.stylishui.theme.StylishElevationLevel
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.containerColor
 import kotlin.math.roundToInt
 
 /**
@@ -59,10 +61,8 @@ import kotlin.math.roundToInt
  * horizontally under the anchor and placed [offset] below it.
  *
  * The anchor is rendered by this composable inside an internal [Box].
- * The popup enters with a short fade + scale animation
- * ([StylishTheme.animation.durationShort]) that snaps instead of tweening
- * when the platform requests reduced motion (see
- * [isStylishReducedMotionEnabled]).
+ * The popup uses the standard Stylish floating fade + slide animation and
+ * remains hosted until its exit transition completes.
  *
  * **Anchoring limitation:** the popup position is computed from the
  * anchor's bounds while the popup is positioned relative to its enclosing
@@ -102,9 +102,9 @@ import kotlin.math.roundToInt
  *   rendered inside the wrapping [Box].
  * @param shape Shape of the popup surface. Defaults to
  *   [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius] (12 dp).
+ *   [StylishTheme.shapes.connectedCornerRadius] (12 dp).
  * @param containerColor Background color of the popup surface. Defaults
- *   to `MaterialTheme.colorScheme.surfaceContainerHigh`.
+ *   to the [StylishElevationLevel.Raised] container color.
  * @param contentColor Default content color inside the popup. Defaults
  *   to `MaterialTheme.colorScheme.onSurface`.
  * @param contentPadding Padding around the content inside the popup.
@@ -127,8 +127,8 @@ public fun StylishPopover(
     onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     anchor: @Composable () -> Unit,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
+    containerColor: Color = StylishElevationLevel.Raised.containerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     contentPadding: PaddingValues = PaddingValues(
         horizontal = StylishTheme.dimensions.controlPadding,
@@ -144,27 +144,17 @@ public fun StylishPopover(
     val density = LocalDensity.current
     val popupWidthPx = with(density) { width.toPx() }
     val offsetPx = with(density) { offset.toPx() }
-    val reducedMotion = isStylishReducedMotionEnabled()
-    val animationDuration = StylishTheme.animation.durationShort
-    val enterProgress = remember { Animatable(0f) }
+    val visibilityState = remember { MutableTransitionState(false) }
     LaunchedEffect(expanded) {
-        if (expanded) {
-            enterProgress.animateTo(
-                targetValue = 1f,
-                animationSpec = if (reducedMotion) {
-                    snap()
-                } else {
-                    tween(animationDuration)
-                },
-            )
-        }
+        visibilityState.targetState = expanded
     }
+    val popupVisible = expanded || visibilityState.currentState || visibilityState.targetState
     Box(
         modifier = modifier.onGloballyPositioned { anchorBounds = it },
     ) {
         anchor()
         anchorBounds?.let { bounds ->
-            if (expanded) {
+            if (popupVisible) {
                 Popup(
                     alignment = Alignment.TopStart,
                     offset = IntOffset(
@@ -174,26 +164,26 @@ public fun StylishPopover(
                     onDismissRequest = { onExpandedChange(false) },
                     properties = properties,
                 ) {
-                    Surface(
-                        modifier = Modifier
-                            .width(width)
-                            .testTag("stylish_popover")
-                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape)
-                            .graphicsLayer {
-                                val p = enterProgress.value
-                                alpha = p
-                                scaleX = if (reducedMotion) 1f else 0.95f + 0.05f * p
-                                scaleY = if (reducedMotion) 1f else 0.95f + 0.05f * p
-                            },
-                        shape = shape,
-                        color = containerColor,
-                        contentColor = contentColor,
-                        tonalElevation = tonalElevation,
+                    AnimatedVisibility(
+                        visibleState = visibilityState,
+                        enter = stylishFloatingEnterTransition(StylishFloatingSlideDirection.Down),
+                        exit = stylishFloatingExitTransition(StylishFloatingSlideDirection.Down),
                     ) {
-                        Column(
-                            modifier = Modifier.padding(contentPadding),
-                            content = content,
-                        )
+                        Surface(
+                            modifier = Modifier
+                                .width(width)
+                                .testTag("stylish_popover")
+                                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape),
+                            shape = shape,
+                            color = containerColor,
+                            contentColor = contentColor,
+                            tonalElevation = tonalElevation,
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(contentPadding),
+                                content = content,
+                            )
+                        }
                     }
                 }
             }

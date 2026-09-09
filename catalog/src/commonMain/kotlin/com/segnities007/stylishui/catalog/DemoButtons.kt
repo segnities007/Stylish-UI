@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -29,20 +31,19 @@ import com.segnities007.stylishui.components.atoms.StylishCard
 import com.segnities007.stylishui.components.atoms.StylishChip
 import com.segnities007.stylishui.components.atoms.StylishChipVariant
 import com.segnities007.stylishui.components.atoms.StylishDotIndicator
-import com.segnities007.stylishui.components.atoms.StylishDragHandle
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenu
 import com.segnities007.stylishui.components.atoms.StylishDropdownMenuItem
 import com.segnities007.stylishui.components.atoms.StylishExtendedFab
-import com.segnities007.stylishui.components.atoms.StylishFloatingFab
-import com.segnities007.stylishui.components.atoms.StylishFabSize
+import com.segnities007.stylishui.components.atoms.StylishFilledIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledIconToggleButton
+import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconButton
 import com.segnities007.stylishui.components.atoms.StylishFilledTonalIconToggleButton
 import com.segnities007.stylishui.components.atoms.StylishHorizontalDivider
 import com.segnities007.stylishui.components.atoms.StylishIconButton
 import com.segnities007.stylishui.components.atoms.StylishIconToggleButton
+import com.segnities007.stylishui.components.atoms.StylishOutlinedIconButton
 import com.segnities007.stylishui.components.atoms.StylishOutlinedIconToggleButton
 import com.segnities007.stylishui.components.atoms.StylishRoundedIconButton
-import com.segnities007.stylishui.components.atoms.StylishSwitch
 import com.segnities007.stylishui.components.atoms.StylishTooltip
 import com.segnities007.stylishui.components.atoms.StylishVerticalDivider
 
@@ -50,62 +51,46 @@ import com.segnities007.stylishui.components.atoms.StylishVerticalDivider
  * Returns all button-related demo components for the catalog.
  */
 internal fun getButtonDemos(): List<DemoComponent> = listOf(
-    DemoComponent(
-        name = "Button variants",
-        category = DemoCategory.Buttons,
-        code = """StylishButton(
-    onClick = {},
-    variant = StylishButtonVariant.Tonal,
-    enabled = enabled,
-) { Text("保存する") }""",
-        preview = {
-            var variant by remember { mutableStateOf(StylishButtonVariant.Filled) }
-            var enabled by remember { mutableStateOf(true) }
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                StylishButtonVariant.entries.forEach { v ->
-                    StylishChip(
-                        label = v.name,
-                        onClick = { variant = v },
-                        selected = variant == v,
-                    )
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                StylishButton(onClick = {}, variant = variant, enabled = enabled) { Text("保存する") }
-                StylishSwitch(checked = enabled, onCheckedChange = { enabled = it })
-            }
-        },
-    ),
+
     DemoComponent(
         name = "Loading button",
         category = DemoCategory.Buttons,
         code = """StylishButton(
     onClick = {},
     isLoading = loading,
-) { Text(if (loading) "処理中…" else "実行") }""",
+) { Text("実行") }""",
         preview = {
+            // The label stays put while loading: content turns invisible
+            // under a centered spinner instead of being replaced.
             var loading by remember { mutableStateOf(false) }
             StylishButton(onClick = { loading = !loading }, isLoading = loading) {
-                Text(if (loading) "処理中…" else "実行")
+                Text("実行")
             }
         },
     ),
     DemoComponent(
         name = "Icon buttons",
         category = DemoCategory.Buttons,
-        code = """StylishIconButton(Icons.Default.Add, "追加", {})
-StylishRoundedIconButton(Icons.Default.Add, "追加", {})""",
+        code = """StylishTooltip(text = "アイテムを追加") {
+    StylishIconButton(Icons.Default.Add, "追加", {})
+}
+StylishRoundedIconButton(Icons.Default.Add, "追加", {})
+StylishFilledIconButton(onClick = onClick) { Icon(Icons.Default.Add, "Add") }
+StylishFilledTonalIconButton(onClick = onClick) { Icon(Icons.Default.Settings, "Settings") }
+StylishOutlinedIconButton(onClick = onClick) { Icon(Icons.Default.Delete, "Delete") }""",
         preview = {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                StylishIconButton(Icons.Default.Add, "追加", {})
+                StylishTooltip(text = "アイテムを追加") {
+                    StylishIconButton(Icons.Default.Add, "追加", {})
+                }
                 StylishRoundedIconButton(Icons.Default.Favorite, "お気に入り", {})
                 StylishIconButton(Icons.Default.Share, "共有", {})
+                StylishFilledIconButton(onClick = {}) { Icon(Icons.Default.Add, "Add") }
+                StylishFilledTonalIconButton(onClick = {}) { Icon(Icons.Default.Settings, "Settings") }
+                StylishOutlinedIconButton(onClick = {}) { Icon(Icons.Default.Delete, "Delete") }
             }
         },
     ),
@@ -146,36 +131,7 @@ StylishRoundedIconButton(Icons.Default.Add, "追加", {})""",
             }
         },
     ),
-    DemoComponent(
-        name = "Floating action button",
-        category = DemoCategory.Buttons,
-        code = """StylishFloatingFab(
-    imageVector = Icons.Default.Add,
-    contentDescription = "追加",
-    sizeVariant = StylishFabSize.Large,
-) {}""",
-        preview = {
-            var size by remember { mutableStateOf(StylishFabSize.Regular) }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                StylishFabSize.entries.forEach { s ->
-                    StylishChip(
-                        label = s.name,
-                        onClick = { size = s },
-                        selected = size == s,
-                    )
-                }
-                StylishFloatingFab(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "追加",
-                    sizeVariant = size,
-                    onClick = {},
-                )
-            }
-        },
-    ),
+
     DemoComponent(
         name = "Extended FAB",
         category = DemoCategory.Buttons,
@@ -215,26 +171,6 @@ StylishChip(label = "フィルタ", onClick = {}, variant = StylishChipVariant.F
                     selected = selected,
                 )
                 StylishChip(label = "無効", onClick = {}, enabled = false)
-            }
-        },
-    ),
-    DemoComponent(
-        name = "Tooltip",
-        category = DemoCategory.Buttons,
-        code = """StylishTooltip(text = "ツールチップのテキスト") {
-    StylishButton(onClick = {}) { Text("ホバー") }
-}""",
-        preview = {
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                StylishTooltip(text = "アイテムを追加") {
-                    StylishIconButton(Icons.Default.Add, "追加", {})
-                }
-                StylishTooltip(text = "編集する") {
-                    StylishIconButton(Icons.Default.Edit, "編集", {})
-                }
-                StylishTooltip(text = "共有リンクをコピー") {
-                    StylishIconButton(Icons.Default.Share, "共有", {})
-                }
             }
         },
     ),
@@ -345,19 +281,6 @@ StylishVerticalDivider()""",
                 }
             }
             StylishDotIndicator(pageCount = 5, currentPage = page)
-        },
-    ),
-    DemoComponent(
-        name = "Drag handle",
-        category = DemoCategory.Buttons,
-        code = """StylishDragHandle()""",
-        preview = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                StylishDragHandle()
-            }
         },
     ),
 )

@@ -28,6 +28,23 @@ StylishUI は **Foundation（基礎）→ Structure（構造）→ Finish（仕�
 
 ---
 
+## Edge-to-edge とInsets
+
+Stylish UIの画面は、**Edge-to-edgeを標準**とする。背景とスクロールコンテンツはシステムバーの背後まで広げ、必要な操作領域の保護だけをコンテナまたは該当コンポーネントに委譲する。
+
+| 項目 | 契約 |
+|------|------|
+| Window | Androidホストは`enableEdgeToEdge()`（または同等設定）を有効にする |
+| 画面背景 | ステータスバー・ナビゲーションバーの背後まで描画する |
+| Header | `StylishScaffold` / `StylishModernScreen`がステータスバー領域を所有し、Headerへ二重にInsetsを加えない |
+| Floating UI | ナビゲーションバーの上に配置し、画面全体へ一律の下部Paddingを加えない |
+| ScaffoldのPadding | 受け取った`innerPadding`を全画面へ機械的に適用せず、コンテンツの役割に応じて使う |
+| 単独利用 | Insetsを所有する親がない場合だけ`WindowInsets.statusBars`等を明示する |
+
+ルートに`statusBarsPadding()`を付けて画面全体を下へ押し下げる、またはScaffoldのInsetsを親子で重ねる実装は、Edge-to-edgeの契約違反とする。第一要素の可読性・操作性を守るための余白は、Header自身またはスクロールコンテンツの初期Paddingとして局所的に設ける。
+
+---
+
 ## Clear — 情報が明確か
 
 | # | 判定項目 | Yes/No |
@@ -105,7 +122,7 @@ StylishTheme(
 ) { ... }
 ```
 
-Android 12+ では `dynamicColor = true` で Material You（壁紙由来）の色を適用できます（他のプラットフォームでは無視され、静的スキームにフォールバック）。`seedColor` を指定すると **全プラットフォーム** で MaterialKolor によるシードカラー由来のダイナミックスキーム（トーナル M3 配色）が適用されます。`animation` パラメータでモーショントークン（`StylishAnimationTokens`）、`shapes` パラメータで角丸トークン（`StylishShapes`）、`componentColors` パラメータで派生コンポーネントカラー（`StylishComponentColors`）も上書き可能です。
+色は固定ブランド配色のみです。端末のDynamic Color（壁紙由来）やシードカラー生成は使用しません。`animation` パラメータでモーショントークン（`StylishAnimationTokens`）、`shapes` パラメータで角丸トークン（`StylishShapes`）、`componentColors` パラメータで派生コンポーネントカラー（`StylishComponentColors`）も上書き可能です。
 
 ### 個別上書き（コンポーネントパラメータ経由）
 
@@ -162,6 +179,15 @@ StylishConnectedButtonRow(
 | `defaultEasing` | FastOutSlowIn | 全アニメーションの標準イージング |
 | `emphasizedEasing` | Emphasized | 強調モーションのイージング（減速して着地） |
 | `gentleEasing` | LinearOutSlowIn | フェードイン等の穏やかなイージング |
+
+Floating surface の表示・非表示は `StylishFloatingVisibility` に集約する。
+Enter と Exit は `fade + full-distance slide` の組み合わせとし、
+`StylishTheme.animation.durationMedium` と `defaultEasing` を使う。
+上・下・開始・終了の方向だけを差し替え、移動距離・透過・速度・
+Reduced Motion 時の即時切り替えは変更しない。`StylishFab`、
+`StylishExtendedFab`、`StylishHeader`、`StylishFooter`、Popover、
+Scaffold の Floating slot はこの契約に従う。SpeedDial の展開方向や
+Tooltip など別の役割を持つコンポーネントは、それぞれの専用モーションを持つ。
 
 #### `StylishShapes`（角丸）
 

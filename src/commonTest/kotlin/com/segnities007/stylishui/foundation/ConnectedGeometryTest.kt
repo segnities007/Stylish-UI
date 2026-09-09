@@ -75,6 +75,14 @@ class ConnectedGeometryTest {
     }
 
     @Test
+    fun `single row and column items are standalone`() {
+        assertEquals(ConnectedCorners.Standalone, connectedRowCorners(0, 1))
+        assertEquals(ConnectedCorners.Standalone, connectedColumnCorners(0, 1))
+        assertEquals(ConnectedEdges.All, connectedRowEdges(0, 1))
+        assertEquals(ConnectedEdges.All, connectedColumnEdges(0, 1))
+    }
+
+    @Test
     fun `invalid geometry is rejected at the public boundary`() {
         assertFailsWith<IllegalArgumentException> {
             connectedGridCorners(index = 0, size = 1, columns = 0)

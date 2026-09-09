@@ -53,7 +53,7 @@ import com.segnities007.stylishui.foundation.stylishTestTag
  *   button, used to observe press/focus/hover interactions. When
  *   `null`, an internal one is remembered.
  * @param shape Shape of the button's container. Defaults to
- *   [IconButtonDefaults.standardShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param content The content of the button, typically an [Icon].
  *
  * @see StylishFilledIconToggleButton
@@ -68,7 +68,7 @@ public fun StylishIconToggleButton(
     enabled: Boolean = true,
     colors: IconToggleButtonColors = IconButtonDefaults.iconToggleButtonColors(),
     interactionSource: MutableInteractionSource? = null,
-    shape: Shape = IconButtonDefaults.standardShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     content: @Composable () -> Unit,
 ) {
     IconToggleButton(
@@ -99,7 +99,7 @@ public fun StylishIconToggleButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container. Defaults to
- *   [IconButtonDefaults.filledShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.filledIconToggleButtonColors].
  * @param interactionSource The [MutableInteractionSource] for the
@@ -117,7 +117,7 @@ public fun StylishFilledIconToggleButton(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.filledShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconToggleButtonColors = IconButtonDefaults.filledIconToggleButtonColors(),
     interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit,
@@ -150,7 +150,7 @@ public fun StylishFilledIconToggleButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container. Defaults to
- *   [IconButtonDefaults.filledShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.filledTonalIconToggleButtonColors].
  * @param interactionSource The [MutableInteractionSource] for the
@@ -168,7 +168,7 @@ public fun StylishFilledTonalIconToggleButton(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.filledShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconToggleButtonColors = IconButtonDefaults.filledTonalIconToggleButtonColors(),
     interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit,
@@ -202,7 +202,7 @@ public fun StylishFilledTonalIconToggleButton(
  * @param enabled When `false`, the button ignores pointer input and
  *   renders in the disabled color scheme.
  * @param shape Shape of the button's container and border. Defaults to
- *   [IconButtonDefaults.outlinedShape].
+ *   [StylishTheme.shapes.extraLarge].
  * @param colors Colors used in each state. Defaults to
  *   [IconButtonDefaults.outlinedIconToggleButtonColors].
  * @param border Border drawn around the container. Defaults to
@@ -223,7 +223,7 @@ public fun StylishOutlinedIconToggleButton(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = IconButtonDefaults.outlinedShape,
+    shape: Shape = StylishTheme.shapes.extraLarge,
     colors: IconToggleButtonColors = IconButtonDefaults.outlinedIconToggleButtonColors(),
     border: BorderStroke? = IconButtonDefaults.outlinedIconToggleButtonBorder(enabled, checked),
     interactionSource: MutableInteractionSource? = null,

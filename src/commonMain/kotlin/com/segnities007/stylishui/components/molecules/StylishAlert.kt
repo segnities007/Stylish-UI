@@ -61,7 +61,7 @@ public enum class StylishAlertVariant { Info, Success, Warning, Error }
  * @param containerColor Optional override for the alert background.
  * @param contentColor Optional override for the foreground.
  * @param shape Corner shape. Defaults to [RoundedCornerShape] with
- *   [StylishTheme.dimensions.connectedCornerRadius].
+ *   [StylishTheme.shapes.connectedCornerRadius].
  * @param icon Optional leading icon. Defaults to the variant icon.
  */
 @Composable
@@ -74,7 +74,7 @@ public fun StylishAlert(
     action: (@Composable () -> Unit)? = null,
     containerColor: Color? = null,
     contentColor: Color? = null,
-    shape: Shape = RoundedCornerShape(StylishTheme.dimensions.connectedCornerRadius),
+    shape: Shape = RoundedCornerShape(StylishTheme.shapes.connectedCornerRadius),
     icon: (@Composable () -> Unit)? = null,
 ) {
     val strings = StylishTheme.strings

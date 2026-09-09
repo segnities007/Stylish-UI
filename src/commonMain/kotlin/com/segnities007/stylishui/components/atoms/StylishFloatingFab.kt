@@ -3,6 +3,8 @@ package com.segnities007.stylishui.components.atoms
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,8 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.segnities007.stylishui.foundation.VisibilityState
 import com.segnities007.stylishui.theme.StylishTheme
+import com.segnities007.stylishui.theme.stylishFloatingContainerColor
 
 /** Floating action button using the shared floating color and opacity. */
 @Composable
@@ -21,7 +25,7 @@ public fun StylishFloatingFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+    containerColor: Color = stylishFloatingContainerColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     shape: Shape? = null,
     sizeVariant: StylishFabSize = StylishFabSize.Regular,
@@ -50,5 +54,15 @@ public fun StylishFloatingFab(
         interactionSource = interactionSource,
         iconContent = iconContent,
         visibilityState = visibilityState,
+    )
+}
+
+@Preview(name = "Floating FAB", showBackground = true)
+@Composable
+private fun StylishFloatingFabPreview() {
+    StylishFloatingFab(
+        imageVector = Icons.Default.Add,
+        contentDescription = "追加",
+        onClick = {},
     )
 }
